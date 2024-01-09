@@ -19,7 +19,7 @@ function Action() {
   const ref = useClickOutside(close, false);
 
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-5 justify-stretch items-center">
       <span
         onClick={handleToggle}
         title="Danh sách tin đã lưu"
