@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 14px;
+  line-height: 20px;
+  vertical-align: baseline;
+  font-family: "Lexend", sans-serif;
+}
+
+/* active nav link */
+li a.active::before {
+  width: 100%;
+}
