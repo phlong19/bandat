@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-function Button({ children, variant, to }) {
+function Button({ children, variant, to,onClick }) {
   if (to) {
     return (
       <NavLink className="" to={to}>
@@ -8,7 +8,7 @@ function Button({ children, variant, to }) {
       </NavLink>
     );
   }
-  return <button className="">{children}</button>;
+  return <button onClick={onClick} className="">{children}</button>;
 }
 
 export default Button;
