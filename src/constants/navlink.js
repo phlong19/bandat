@@ -7,6 +7,8 @@ export const navLinks = [
       { title: "Bán nhà riêng", type: "nha-rieng" },
       { title: "Bán nhà biệt thự, liền kề", type: "biet-thu-lien-ke" },
       { title: "Bán nhà mặt phố", type: "nha-mat-pho" },
+      { title: "Bán nhà mặt phố", type: "nha-mat-pho" },
+
       {
         title: "Bán shophouse, nhà phố thương mại",
         type: "shophouse-nha-pho-thuong-mai",
@@ -46,4 +48,5 @@ export const navLinks = [
       { title: "Cho thuê loại bất động sản khác", type: "cac-loai-khac" },
     ],
   },
+  
 ];
