@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa6";
-import { BsFillSunFill, BsFillMoonStarsFill } from "react-icons/bs";
+import ToggleTheme from "../ui/ToggleTheme";
 
 import Button from "../ui/Button";
 
 import { useClickOutside } from "../hooks/useClickOutside";
-import { useDarkMode } from "../context/DarkModeContext";
 
 function Action() {
   const [show, setShow] = useState(false);
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   function close() {
     setShow(false);
@@ -36,17 +34,7 @@ function Action() {
           box
         </div>
       )}
-      <Button onClick={toggleDarkMode}>
-        {isDarkMode ? (
-          <span className="text-lg">
-            <BsFillMoonStarsFill />
-          </span>
-        ) : (
-          <span className="text-lg">
-            <BsFillSunFill />
-          </span>
-        )}
-      </Button>
+      <ToggleTheme />
       <Button to={"dang-nhap"}>nhap</Button>
       <Button to={"dang-ky"}>ky</Button>
       <Button>dang tin</Button>
