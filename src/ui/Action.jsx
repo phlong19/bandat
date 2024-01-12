@@ -6,7 +6,7 @@ import Button from "../ui/Button";
 
 import { useClickOutside } from "../hooks/useClickOutside";
 
-function Action() {
+function Action({ onClose }) {
   const [show, setShow] = useState(false);
 
   function close() {
@@ -35,8 +35,12 @@ function Action() {
         </div>
       )}
       <ToggleTheme />
-      <Button to={"dang-nhap"}>nhap</Button>
-      <Button to={"dang-ky"}>ky</Button>
+      <Button to={"dang-nhap"} onClick={onClose}>
+        nhap
+      </Button>
+      <Button to={"dang-ky"} onClick={onClose}>
+        ky
+      </Button>
       <Button>dang tin</Button>
     </div>
   );
