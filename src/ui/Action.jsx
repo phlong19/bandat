@@ -35,11 +35,11 @@ function Action({ onClose }) {
         </div>
       )}
       <ToggleTheme />
-      <Button to={"dang-nhap"} onClick={onClose}>
-        nhap
+      <Button to={"dang-nhap"} onClick={onClose} variant="light">
+        Dang nhap
       </Button>
-      <Button to={"dang-ky"} onClick={onClose}>
-        ky
+      <Button to={"dang-ky"} onClick={onClose} variant="light">
+        Dang ky
       </Button>
       <Button>dang tin</Button>
     </div>

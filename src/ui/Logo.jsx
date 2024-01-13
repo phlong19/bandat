@@ -6,7 +6,7 @@ function Logo() {
   return (
     <Link to="/" className="mt-2">
       <img
-        src={isDarkMode ? "./logo-darkv3.png" : "./logo-lightv1.png"}
+        src={isDarkMode ? "./logo-dark.png" : "./logo-light.png"}
         alt="logo"
         className="w-40"
       />
