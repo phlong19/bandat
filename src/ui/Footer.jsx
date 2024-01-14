@@ -100,7 +100,7 @@ function Footer() {
         {/* info */}
         <div className="relative z-50 pb-3 pt-6 text-left">
           <p className="lg:hidden">
-            Copyright © 2023 - {new Date().getFullYear} LandHub.com.vn.
+            Copyright © 2023 - {currentYear} LandHub.com.vn.
           </p>
           {/* mobile hidden */}
           <div className="mt-3 hidden w-full font-roboto lg:flex lg:flex-wrap lg:gap-3">

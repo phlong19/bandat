@@ -16,7 +16,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import AppLayout from "./ui/AppLayout";
+import ScrollToTop from "./ui/ScrollToTop";
 import { DarkMode } from "./context/DarkModeContext";
+import { UserAuthentication } from "./context/UserContext";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -31,27 +33,36 @@ function App() {
     <DarkMode>
       <QueryClientProvider client={client}>
         <ReactQueryDevtools />
-        <BrowserRouter>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route index element={<Home />} />
-              <Route path="nha-dat-ban" element={<ListingPage />} />
-              {/* base on type to filter query data */}
-              <Route path="nha-dat-ban/:type" element={<ListingPage />} />
-              <Route path="nha-dat-cho-thue" element={<ListingPage />} />
-              <Route path="nha-dat-cho-thue/:type" element={<ListingPage />} />
-              <Route path="du-an" element={<Projects />} />
-              <Route path="nha-dat/:land" element={<Details />} />
-              <Route path="tin-da-luu" element={<BookMarks />} />
-              <Route path="tin-tuc" element={<News />} />
-              <Route path="tin-tuc/:title" element={<NewDetails />} />
-              <Route path="danh-ba" element={<Contacts />} />
-              <Route path="dang-nhap" element={<Login />} />
-              <Route path="dang-ky" element={<Register />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <UserAuthentication>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route index element={<Home />} />
+                <Route path="nha-dat-ban" element={<ListingPage />} />
+                {/* base on type to filter query data */}
+                <Route path="nha-dat-ban/:type" element={<ListingPage />} />
+                <Route path="nha-dat-cho-thue" element={<ListingPage />} />
+                <Route
+                  path="nha-dat-cho-thue/:type"
+                  element={<ListingPage />}
+                />
+                <Route path="du-an" element={<Projects />} />
+                <Route path="nha-dat/:land" element={<Details />} />
+                <Route path="tin-da-luu" element={<BookMarks />} />
+                <Route path="tin-tuc" element={<News />} />
+                <Route path="tin-tuc/:title" element={<NewDetails />} />
+                <Route path="danh-ba" element={<Contacts />} />
+                <Route path="dang-nhap" element={<Login />} />
+                <Route path="dang-ky" element={<Register />} />
+              </Route>
+
+              {/* manage */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </UserAuthentication>
+
         {/* notifications */}
         <Toaster
           position="top-right"

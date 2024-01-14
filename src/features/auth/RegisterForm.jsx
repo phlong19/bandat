@@ -11,21 +11,18 @@ function RegisterForm() {
     getValues,
     formState: { errors },
   } = useForm();
-  // yep, duplicate with this 'register'
-  const { signup, isLoading } = useRegister();
 
-  // isLoggingIn for spinner render
+  const { signup, isLoading } = useRegister();
 
   function onSubmit(data) {
     console.log(data);
-    // losing phone number, need FIX
     signup(data);
   }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative mx-auto w-64 space-y-7 py-3 pt-10 text-center sm:w-3/5"
+      className="relative mx-auto w-72 space-y-7 py-3 pt-10 text-center"
     >
       <h2 className="pb-3 font-lexend text-3xl font-medium text-primary dark:text-secondary">
         Đăng ký
@@ -33,7 +30,9 @@ function RegisterForm() {
       <FormInput
         label="Họ và tên"
         id="fullName"
-        hookForm={{ ...register("fullName", { required: "ten may la gi",minLength:8 }) }}
+        hookForm={{
+          ...register("fullName", { required: "ten may la gi", minLength: 8 }),
+        }}
         errors={errors}
       />
 

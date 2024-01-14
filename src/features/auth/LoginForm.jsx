@@ -1,39 +1,57 @@
 import { useForm } from "react-hook-form";
 import { useLogin } from "./useLogin";
+import FormInput from "../../ui/FormInput";
+import Button from "../../ui/Button";
+import MiniSpinner from "../../ui/MiniSpinner";
 
 function LoginForm() {
-  const { register, handleSubmit, getValues } = useForm();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
   const { login, isLoggingIn } = useLogin();
-
-  // isLoggingIn for spinner render
 
   function onSubmit(data) {
     if (!getValues("email") || !getValues("password")) return;
     login(data);
-    console.log(data);
   }
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mx-4 flex w-64 flex-col py-3"
+      className="relative mx-auto w-72 space-y-7 py-3 pt-10 text-center"
     >
-      <label htmlFor="email">email</label>
-      <input
-        type="text"
+      <h2 className="pb-3 font-lexend text-3xl font-medium text-primary dark:text-secondary">
+        Đăng nhap
+      </h2>
+      <FormInput
+        label="Email"
+        errors={errors}
+        hookForm={{
+          ...register("email", {
+            required: "nhap email vao",
+            value: "kpm68635@omeie.com",
+          }),
+        }}
         id="email"
-        {...register("email", { required: true })}
+        type="email"
       />
-      <label htmlFor="pass">mat khau</label>
-      <input
+      <FormInput
         type="password"
-        id="pass"
-        {...register("password", { required: true })}
+        label="Mật khẩu"
+        errors={errors}
+        hookForm={{
+          ...register("password", {
+            required: "nhap mk vao dcm",
+            value: "123456789",
+          }),
+        }}
+        id="password"
       />
 
-      <button className="mt-2">
-        {isLoggingIn ? "dang dang nhap, doi 1 ty" : "login"}
-      </button>
+      <Button width>{isLoggingIn ? <MiniSpinner /> : "dang nhap"}</Button>
     </form>
   );
 }

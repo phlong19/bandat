@@ -5,11 +5,9 @@ import { FaBars, FaXmark } from "react-icons/fa6";
 
 import Logo from "./Logo";
 import MobileAction from "./MobileAction";
-import { useDarkMode } from "../context/DarkModeContext";
 import ToggleTheme from "./ToggleTheme";
 
 function MobileNav() {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [show, setShow] = useState(false);
   const ref = useClickOutside(close);
 
@@ -29,7 +27,7 @@ function MobileNav() {
         {show && (
           <motion.div
             ref={ref}
-            className="fixed bottom-0 right-0 top-0 z-40 w-[350px] rounded-lg bg-white text-lg leading-6 shadow shadow-black/60 dark:bg-dark dark:text-white"
+            className="fixed bottom-0 right-0 top-0 z-40 max-h-[90%] w-[350px] overflow-y-scroll rounded-lg bg-white text-lg leading-6 shadow shadow-black/60 dark:bg-dark dark:text-white md:max-h-full"
             initial={{ x: "350px" }}
             animate={{ x: "0px" }}
             transition={{ duration: 0.25 }}
@@ -38,15 +36,13 @@ function MobileNav() {
             {/* header */}
             <div className="flex items-center justify-between border-b border-black/20 py-4 pl-4 dark:border-white/20">
               <Logo />
-              
-          <span className="-mr-11 mt-1">
 
-              <ToggleTheme />
-          </span>
+              <span className="-mr-11 mt-1">
+                <ToggleTheme />
+              </span>
               <button className="mr-2 h-16 text-3xl" onClick={close}>
                 <FaXmark />
               </button>
-            
             </div>
             <MobileAction onClose={close} />
           </motion.div>
