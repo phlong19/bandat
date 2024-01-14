@@ -2,10 +2,14 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { FaBars, FaXmark } from "react-icons/fa6";
-import Action from "./Action";
-import Logo from "../ui/Logo";
 
-function MobileHeader() {
+import Logo from "./Logo";
+import MobileAction from "./MobileAction";
+import { useDarkMode } from "../context/DarkModeContext";
+import ToggleTheme from "./ToggleTheme";
+
+function MobileNav() {
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [show, setShow] = useState(false);
   const ref = useClickOutside(close);
 
@@ -14,14 +18,13 @@ function MobileHeader() {
   }
 
   return (
-    <div className="sticky left-0 top-0 flex justify-between bg-white px-3.5 text-end text-primary shadow shadow-black/50 dark:bg-dark dark:text-white">
-      <div className="flex items-center">
-        <Logo />
-      </div>
-
+    <div
+      className={`${show && "fixed inset-0 z-30 backdrop-blur-sm"} text-end`}
+    >
       <button className="h-16 text-3xl" onClick={() => setShow(true)}>
         <FaBars />
       </button>
+
       <AnimatePresence>
         {show && (
           <motion.div
@@ -35,11 +38,17 @@ function MobileHeader() {
             {/* header */}
             <div className="flex items-center justify-between border-b border-black/20 py-4 pl-4 dark:border-white/20">
               <Logo />
+              
+          <span className="-mr-11 mt-1">
+
+              <ToggleTheme />
+          </span>
               <button className="mr-2 h-16 text-3xl" onClick={close}>
                 <FaXmark />
               </button>
+            
             </div>
-            <Action onClose={close} />
+            <MobileAction onClose={close} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -47,4 +56,4 @@ function MobileHeader() {
   );
 }
 
-export default MobileHeader;
+export default MobileNav;

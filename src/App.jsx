@@ -7,8 +7,10 @@ import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
 import Details from "./pages/Details";
 import News from "./pages/News";
+import NewDetails from "./pages/NewDetails";
 import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
+import BookMarks from "./pages/BookMarks";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -39,8 +41,10 @@ function App() {
               <Route path="nha-dat-cho-thue" element={<ListingPage />} />
               <Route path="nha-dat-cho-thue/:type" element={<ListingPage />} />
               <Route path="du-an" element={<Projects />} />
-              <Route path="/:product" element={<Details />} />
+              <Route path="nha-dat/:land" element={<Details />} />
+              <Route path="tin-da-luu" element={<BookMarks />} />
               <Route path="tin-tuc" element={<News />} />
+              <Route path="tin-tuc/:title" element={<NewDetails />} />
               <Route path="danh-ba" element={<Contacts />} />
               <Route path="dang-nhap" element={<Login />} />
               <Route path="dang-ky" element={<Register />} />

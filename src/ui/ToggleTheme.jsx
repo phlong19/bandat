@@ -5,13 +5,13 @@ import Button from "./Button";
 function ToggleTheme() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   return (
-    <Button onClick={toggleDarkMode}>
+    <Button onClick={toggleDarkMode} variant="other">
       {isDarkMode ? (
-        <span className="text-lg">
+        <span className="text-xl">
           <BsFillMoonStarsFill />
         </span>
       ) : (
-        <span className="text-lg">
+        <span className="text-xl">
           <BsFillSunFill />
         </span>
       )}
