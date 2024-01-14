@@ -26,6 +26,11 @@ body {
   }
 }
 
+input:focus-within ~ label,
+input:not(:placeholder-shown) ~ label {
+  @apply -translate-y-1/2 text-base font-bold text-primary dark:bg-dark dark:text-secondary;
+}
+
 /* active nav link */
 li a.active::before {
   width: 100%;

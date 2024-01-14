@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { homeLinks } from "../constants/navlink";
 import { products } from "../constants/products";
 import ListItem from "../features/list/ListItem";
+import Searchbar from "../ui/Searchbar";
 
 function Home() {
   return (
     <div className="h-screen bg-light px-4 pt-3 text-dark dark:bg-dark dark:text-light">
-      <ul className="flex w-full items-center justify-center gap-3">
+      <ul className="flex xl:hidden w-full items-center justify-center gap-3">
         {homeLinks.map((link) => (
           <li
             key={link.title}
@@ -32,6 +33,9 @@ function Home() {
           ))}
         </div>
       </div>
+
+            <Searchbar />
+
     </div>
   );
 }

@@ -36,12 +36,12 @@ function Action({ onClose }) {
       )}
       <ToggleTheme />
       <Button to={"dang-nhap"} onClick={onClose} variant="light">
-        Dang nhap
+        Đăng nhập
       </Button>
       <Button to={"dang-ky"} onClick={onClose} variant="light">
-        Dang ky
+        Đăng ký
       </Button>
-      <Button>dang tin</Button>
+      <Button>Đăng tin</Button>
     </div>
   );
 }

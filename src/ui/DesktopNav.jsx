@@ -6,7 +6,7 @@ import Action from "./Action";
 function DesktopNav() {
   return (
     <>
-      <ul className="mr-auto pl-6 flex gap-5 pt-3.5">
+      <ul className="mr-auto flex gap-5 pl-6 pt-3.5">
         {navLinks.map((link, i) => (
           <li key={i} className="group inline-block pb-2.5">
             <NavLink to={link.to} className="nav-link">

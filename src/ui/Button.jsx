@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
 
-function Button({ children, variant = "fill", to, onClick, icon, className }) {
-  const base =
-    "inline-flex gap-2 justify-center font-medium font-lexend w-[calc(50%-24px)] items-center text-base sm:text-lg rounded-lg transition-all duration-300 py-3 px-3.5 opacity-90 hover:opacity-100 ";
+function Button({ children, variant = "fill", to, onClick, icon, gap=true }) {
+  const base = `${
+    gap ? "gap-2" : "gap-0"
+  } flex xl:gap-0 font-medium justify-center font-lexend xl:w-32 w-1/2 items-center text-base rounded-lg transition-all duration-300 py-3 px-3.5 opacity-90 hover:opacity-100 `;
   const variants = {
     light:
       base +
@@ -12,11 +13,7 @@ function Button({ children, variant = "fill", to, onClick, icon, className }) {
 
   if (to) {
     return (
-      <NavLink
-        className={variants[variant]}
-        onClick={onClick}
-        to={to}
-      >
+      <NavLink className={variants[variant]} onClick={onClick} to={to}>
         <span className="text-base">{icon}</span>
         {children}
       </NavLink>

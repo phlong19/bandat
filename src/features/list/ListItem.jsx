@@ -11,14 +11,14 @@ function ListItem({ title, imgs, price, area, district, city }) {
       <div className="flex items-center justify-between">
         {/* imgs */}
         <div>
-          {imgs.map((image, i) => (
+          {/* {imgs.map((image, i) => (
             <img
               key={i}
               src={image}
               alt="anh san pham"
               className="min-w-30 h-[90px] min-h-[90px] rounded object-cover"
             />
-          ))}
+          ))} */}
         </div>
         {/* informations */}
         <div>
