@@ -52,14 +52,31 @@ export const navLinks = [
 export const mobileNavLinks = [
   { title: "Tin đăng đã lưu", icon: "RegHeart", to: "tin-da-luu" },
   { title: "Trang chủ", icon: "House", to: "/" },
-  { title: "Nhà đất bán", icon: "HouseFlag", to: "nha-dat-ban" },
-  { title: "Nhà đất cho thuê", icon: "BuildingFlag", to: "nha-dat-cho-thue" },
+  {
+    title: "Nhà đất bán",
+    icon: "HouseFlag",
+    to: "nha-dat-ban",
+    child_links: [
+      { title: "", icon: "", to: "" },
+      { title: "", icon: "", to: "" },
+    ],
+  },
+  {
+    title: "Nhà đất cho thuê",
+    icon: "BuildingFlag",
+    to: "nha-dat-cho-thue",
+    child_links: [
+      { title: "", icon: "", to: "" },
+      { title: "", icon: "", to: "" },
+    ],
+  },
   { title: "Dự án", icon: "City", to: "du-an" },
   { title: "Tin tức", icon: "RegNewspaper", to: "tin-tuc" },
   // later
   { title: "Góp ý - Báo lỗi", icon: "RegAddressBook", to: "hom-thu-gop-y" },
   { title: "Giới thiệu về chúng tôi", icon: "RegAddressBook", to: "danh-ba" },
   { title: "Liên hệ", icon: "RegAddressBook", to: "danh-ba" },
+  //
 ];
 
 export const homeLinks = [

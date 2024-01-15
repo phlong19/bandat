@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useLogin } from "./useLogin";
 import FormInput from "../../ui/FormInput";
 import Button from "../../ui/Button";
-import MiniSpinner from "../../ui/MiniSpinner";
+import Spinner from "../../ui/Spinner";
 
 function LoginForm() {
   const {
@@ -51,7 +51,7 @@ function LoginForm() {
         id="password"
       />
 
-      <Button width>{isLoggingIn ? <MiniSpinner /> : "dang nhap"}</Button>
+      <Button width>{isLoggingIn ? <Spinner /> : "dang nhap"}</Button>
     </form>
   );
 }

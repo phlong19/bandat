@@ -1,6 +1,5 @@
 import supabase from "./supabase";
-const defaultAvatar =
-  "https://res.cloudinary.com/ddot3p3my/image/upload/v1690302821/users/image_2023-07-25_233343045_zggymb.png";
+import { ADMIN_LEVEL, defaultAvatar } from "../constants/anyVariables";
 
 export async function login({ email, password }) {
   const { data, error: loginError } = await supabase.auth.signInWithPassword({
@@ -9,8 +8,6 @@ export async function login({ email, password }) {
   });
 
   if (loginError) throw new Error(loginError.message);
-
-  // const {data:userData,error}=await supabase.from('')
 
   return data;
 }
@@ -24,7 +21,7 @@ export async function register({ fullName, email, phone, password }) {
         phoneNumber: phone,
         fullName: fullName,
         avatar: defaultAvatar,
-        level: 1, // test access level
+        level: ADMIN_LEVEL, // temporary when development
       },
     },
   });

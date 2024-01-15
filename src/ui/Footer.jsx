@@ -10,13 +10,14 @@ import {
 
 import Button from "./Button";
 import Logo from "./Logo";
+import { fb, git, ins, x } from "../constants/anyVariables";
 
 const currentYear = new Date().getFullYear();
 
 function Footer() {
   return (
-    <footer className="bg-gray-200 px-4 text-center font-lexend text-dark dark:bg-dark/90 dark:text-light lg:text-left lg:text-base">
-      <div className="relative mx-auto max-w-[1400px] lg:flex lg:gap-4">
+    <footer className="bg-gray-200 px-4 text-center font-lexend text-dark dark:bg-dark/90 dark:text-light lg:px-8 lg:text-left lg:text-base">
+      <div className="relative mx-auto max-w-[1400px] lg:flex lg:gap-3.5">
         <div className="lg:min-w-[33%] lg:pt-6">
           <span className="flex justify-center pb-4 lg:block">
             <Logo footer />
@@ -70,27 +71,27 @@ function Footer() {
               </li>
             </ul>
           </div>
-          {/* social, mobile hidden */}
-          <div className="hidden lg:mt-2 lg:block">
+          {/* socials media, mobile hidden */}
+          <div className="hidden lg:mt-32 lg:block xl:mt-10">
             <h3 className="text-xl font-bold">Kết nối với chúng tôi qua</h3>
-            <ul className="flex text-4xl gap-3 pt-4 text-primary dark:text-secondary">
+            <ul className="flex gap-3 pt-4 text-4xl text-primary dark:text-secondary">
               <li>
-                <a href="https://www.facebook.com/">
+                <a href={fb}>
                   <FaFacebook />
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/?lang=vi">
+                <a href={x}>
                   <FaSquareXTwitter />
                 </a>
               </li>
               <li>
-                <a href="https://www.instagram.com/">
+                <a href={ins}>
                   <FaInstagram />
                 </a>
               </li>
               <li>
-                <a href="https://www.github.com/">
+                <a href={git}>
                   <FaGithub />
                 </a>
               </li>
@@ -134,7 +135,7 @@ function Footer() {
                 </div>
               </a>
             </div>
-            <div className="h-36 w-1/3 max-w-[250px]">
+            <div className="h-36 w-1/3 max-w-[250px] lg:ml-3 xl:mr-0">
               <a
                 href="mailto:hotro@landhub.com.vn"
                 className="flex h-full items-center justify-center gap-3"

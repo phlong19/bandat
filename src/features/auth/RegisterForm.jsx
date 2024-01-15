@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useRegister } from "./useRegister";
 import FormInput from "../../ui/FormInput";
 import Button from "../../ui/Button";
-import MiniSpinner from "../../ui/MiniSpinner";
+import Spinner from "../../ui/Spinner";
 
 function RegisterForm() {
   const {
@@ -83,7 +83,7 @@ function RegisterForm() {
         }}
       />
 
-      <Button gap={false}>{isLoading ? <MiniSpinner /> : "Đăng ký"}</Button>
+      <Button gap={false}>{isLoading ? <Spinner /> : "Đăng ký"}</Button>
     </form>
   );
 }

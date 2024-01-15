@@ -7,7 +7,7 @@ function AppLayout() {
   return (
     <>
       <Header />
-      <main className="min-h-screen w-full bg-light text-dark dark:bg-dark dark:text-light">
+      <main className="relative min-h-[600px] w-full bg-light text-dark dark:bg-dark dark:text-light">
         <Outlet />
       </main>
       <Footer />
