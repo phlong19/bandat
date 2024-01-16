@@ -27,7 +27,7 @@ function MobileNav() {
         {show && (
           <motion.div
             ref={ref}
-            className="fixed bottom-0 right-0 top-0 z-40 max-h-[90%] w-[350px] overflow-y-scroll rounded-lg bg-white text-lg leading-6 shadow shadow-black/60 dark:bg-dark dark:text-white md:max-h-full"
+            className="fixed bottom-0 right-0 top-0 z-40 max-h-[90%] w-[350px] overflow-y-auto rounded-lg bg-white text-lg leading-6 shadow shadow-black/60 dark:bg-dark dark:text-white md:max-h-full"
             initial={{ x: "350px" }}
             animate={{ x: "0px" }}
             transition={{ duration: 0.25 }}

@@ -10,9 +10,7 @@ import {
 
 import Button from "./Button";
 import Logo from "./Logo";
-import { fb, git, ins, x } from "../constants/anyVariables";
-
-const currentYear = new Date().getFullYear();
+import { currentYear, fb, git, ins, x } from "../constants/anyVariables";
 
 function Footer() {
   return (

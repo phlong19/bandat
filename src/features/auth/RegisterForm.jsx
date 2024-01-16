@@ -4,6 +4,8 @@ import FormInput from "../../ui/FormInput";
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
 
+// FIX - form too long, thinking about splitting into steps
+
 function RegisterForm() {
   const {
     register,
@@ -83,7 +85,7 @@ function RegisterForm() {
         }}
       />
 
-      <Button gap={false}>{isLoading ? <Spinner /> : "Đăng ký"}</Button>
+      <Button gap={false} width>{isLoading ? <Spinner /> : "Đăng ký"}</Button>
     </form>
   );
 }

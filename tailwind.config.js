@@ -21,6 +21,9 @@ export default {
       minWidth: {
         30: "120px",
       },
+      screens: {
+        xl: "1200px",
+      },
     },
   },
   plugins: [],

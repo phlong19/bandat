@@ -9,7 +9,7 @@ import Logout from "../features/auth/Logout";
 function MobileAction({ onClose }) {
   const { user, isAuthenticated, level } = useAuth();
   return (
-    <div className="mt-4 overflow-y-scroll px-2 text-left">
+    <div className="mt-4 overflow-y-auto px-2 text-left">
       {!isAuthenticated ? (
         <div className="flex justify-center gap-3">
           <Button

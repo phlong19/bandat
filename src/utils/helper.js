@@ -32,3 +32,10 @@ export function formatDate(dateString, monthType = "long", withTime = false) {
   const date = new Date(dateString).toLocaleDateString("vi-VN", options);
   return date;
 }
+
+// format number
+export function formatNumber(input) {
+  const result = input.toLocaleString("vi-VN");
+
+  return result;
+}

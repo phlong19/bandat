@@ -1,3 +1,6 @@
+// current year
+export const currentYear = new Date().getFullYear();
+
 // max item 1 page
 export const LIMIT_PER_PAGE = 10;
 
@@ -21,3 +24,9 @@ const ins = "";
 const x = "";
 const git = "https://github.com/phlong19/bandat/";
 export { fb, ins, x, git };
+
+// purType page title
+const purTypeTrue = `Mua Bán Nhà Đất Việt Nam Giá Rẻ, Mới Nhất ${currentYear}`;
+const purTypeFalse = `Cho Thuê Nhà Đất Toàn Việt Nam Giá Rẻ, Chính Chủ ${currentYear}`;
+
+export { purTypeTrue, purTypeFalse };

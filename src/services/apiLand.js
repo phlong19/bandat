@@ -32,10 +32,11 @@ export async function getList(type, citeria) {
     city: CityDirectory (cityName),
     dis: DistrictDirectory (disName),
     images: REImages(mediaLink),
-    type: REType(REType_Name)
+    type: REType(REType_Name),
   `,
     )
-    .eq("purType", type);
+    .eq("purType", type)
+    .range(0, LIMIT_PER_PAGE - 1);
   // order(vip)
 
   if (error) throw new Error(error.message);

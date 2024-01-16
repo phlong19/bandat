@@ -22,6 +22,7 @@ import EditorDashboard from "./pages/EditorDashboard";
 // UI
 import AppLayout from "./ui/AppLayout";
 import ManageLayout from "./ui/ManageLayout";
+import AuthenticationLayout from "./ui/AuthenticationLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import ScrollToTop from "./ui/ScrollToTop";
 
@@ -72,8 +73,10 @@ function App() {
               </Route>
 
               {/* no layout with this 2 path */}
-              <Route path="dang-nhap" element={<Login />} />
-              <Route path="dang-ky" element={<Register />} />
+              <Route element={<AuthenticationLayout />}>
+                <Route path="dang-nhap" element={<Login />} />
+                <Route path="dang-ky" element={<Register />} />
+              </Route>
 
               {/* require authenticated user */}
               <Route

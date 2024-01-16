@@ -10,7 +10,7 @@ function Button({
   width = false,
 }) {
   const base = `${icon ? "gap-2 " : "gap-0 "}${
-    width ? "md:w-32" : "md:w-auto"
+    width ? "md:w-32" : "xl:w-auto"
   } flex font-medium justify-center font-lexend max-h-10 w-1/2 items-center text-base rounded-lg transition-all duration-300 py-6 md:py-3 px-3.5 opacity-90 hover:opacity-100 `;
   const variants = {
     light:
