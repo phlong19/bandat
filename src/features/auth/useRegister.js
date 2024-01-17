@@ -12,11 +12,14 @@ export function useRegister() {
       console.log(data);
       // vietnamese later on
       toast.success(
-        `User < ${data.user.user_metadata.fullName} > has been created. Please check for email verification.`,
+        `User < ${data[0].fullName} > has been created. Please check for email verification.`,
       );
       navigate("/dang-nhap");
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => {
+      console.log(err);
+      toast.error(err.message);
+    },
   });
 
   // duplicate name, so register => signup :(

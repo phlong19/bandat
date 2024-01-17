@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { test } from "../../services/apiTest";
+import { getHomepage } from "../../services/apiLand";
 
-export function useData() {
+export function useHomePage() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["sell"],
-    queryFn: test,
+    queryKey: ["homepage"],
+    queryFn: getHomepage,
   });
 
   return { data, isLoading, error };

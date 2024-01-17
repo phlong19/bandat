@@ -1,6 +1,5 @@
 import supabase from "./supabase";
-const defaultAvatar =
-  "https://res.cloudinary.com/ddot3p3my/image/upload/v1690302821/users/image_2023-07-25_233343045_zggymb.png";
+import { ADMIN_LEVEL, defaultAvatar } from "../constants/anyVariables";
 
 export async function login({ email, password }) {
   const { data, error: loginError } = await supabase.auth.signInWithPassword({
@@ -10,30 +9,39 @@ export async function login({ email, password }) {
 
   if (loginError) throw new Error(loginError.message);
 
-  // const {data:userData,error}=await supabase.from('')
-
   return data;
 }
 
 export async function register({ fullName, email, phone, password }) {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        phoneNumber: phone,
+  const { data: justCreateUser, error: createNewError } =
+    await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+  if (createNewError) throw new Error(createNewError.message);
+
+  // insert profile after created user successfully
+  // for development, auto add user level as admin = 3
+  const { data, error } = await supabase
+    .from("Profile")
+    .insert([
+      {
+        id: justCreateUser.user.id,
         fullName: fullName,
+        phone: phone,
+        level: ADMIN_LEVEL,
         avatar: defaultAvatar,
-        level: 1, // test access level
       },
-    },
-  });
+    ])
+    .select();
 
   if (error) throw new Error(error.message);
 
   return data;
 }
 
+// FIX - also get user information in profile table
 export async function getCurrentUser() {
   const { data: session } = await supabase.auth.getSession();
 

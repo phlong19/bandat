@@ -10,26 +10,26 @@ function Button({
   width = false,
 }) {
   const base = `${icon ? "gap-2 " : "gap-0 "}${
-    width ? "md:w-32" : "md:w-auto"
-  } flex font-medium justify-center font-lexend max-h-10 w-1/2 items-center text-base rounded-lg transition-all duration-300 py-3 px-3.5 opacity-90 hover:opacity-100 `;
+    width ? "md:w-32" : "xl:w-auto"
+  } flex font-medium justify-center font-lexend max-h-10 w-1/2 items-center text-base rounded-lg transition-all duration-300 py-6 md:py-3 px-3.5 opacity-90 hover:opacity-100 `;
   const variants = {
     light:
       base +
       "dark:text-light dark:border-light border-primary text-primary border",
-    fill: base + "text-white bg-primary dark:bg-secondary dark:text-black",
+    fill: base + "text-white bg-primary border border-primary dark:border-secondary dark:bg-secondary dark:text-black",
   };
   // FIX width to be more re-usable out side action
   if (to) {
     return (
       <NavLink className={variants[variant]} onClick={onClick} to={to}>
-        <span className="text-base">{icon}</span>
+        <span className="text-lg">{icon}</span>
         {children}
       </NavLink>
     );
   }
   return (
     <button disabled={disabled} onClick={onClick} className={variants[variant]}>
-      <span className="text-base">{icon}</span>
+      <span className="text-lg">{icon}</span>
       {children}
     </button>
   );

@@ -1,6 +1,6 @@
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { useLogout } from "./useLogout";
-import MiniSpinner from "../../ui/MiniSpinner";
+import Spinner from "../../ui/Spinner";
 import Button from "../../ui/Button";
 
 function Logout() {
@@ -13,7 +13,7 @@ function Logout() {
           <FaArrowRightFromBracket />
         </span>
       ) : (
-        <MiniSpinner />
+        <Spinner />
       )}
     </Button>
   );
