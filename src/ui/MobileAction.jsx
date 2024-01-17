@@ -5,9 +5,16 @@ import { mobileNavLinks } from "../constants/navlink";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/UserContext";
 import Logout from "../features/auth/Logout";
+import SpinnerFullPage from "./SpinnerFullPage";
+import { EDITOR_LEVEL } from "../constants/anyVariables";
 
 function MobileAction({ onClose }) {
-  const { user, isAuthenticated, level } = useAuth();
+  const { data, isAuthenticated, level, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <SpinnerFullPage />;
+  }
+
   return (
     <div className="mt-4 overflow-y-auto px-2 text-left">
       {!isAuthenticated ? (
@@ -27,13 +34,13 @@ function MobileAction({ onClose }) {
       ) : (
         <div className="flex w-full flex-col items-center">
           <img
-            src={user.user_metadata.avatar}
-            alt={user.user_metadata.fullName}
+            src={data.avatar}
+            alt={data.fullName}
             className="w-1/3 rounded-full bg-dark/20 dark:bg-light"
           />
           <h3 className="pt-5">{level}</h3>
           <Logout />
-          {level >= 5 && <Button>editor page</Button>}
+          {level >= EDITOR_LEVEL && <Button>editor page</Button>}
         </div>
       )}
       <div className="mt-3.5 flex w-full items-stretch justify-center">

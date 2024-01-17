@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 function ManageLayout() {
   // maybe a sidebar ?
   return (
-    <div>
+    <div className="w-full h-screen">
       <Outlet />
     </div>
   );

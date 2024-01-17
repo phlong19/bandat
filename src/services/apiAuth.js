@@ -13,13 +13,13 @@ export async function login({ email, password }) {
 }
 
 export async function register({ fullName, email, phone, password }) {
-  const { data: justCreateUser, error: createNewError } =
+  const { data: justCreateUser, error: registerError } =
     await supabase.auth.signUp({
       email,
       password,
     });
 
-  if (createNewError) throw new Error(createNewError.message);
+  if (registerError) throw new Error(registerError.message);
 
   // insert profile after created user successfully
   // for development, auto add user level as admin = 3
@@ -47,11 +47,20 @@ export async function getCurrentUser() {
 
   if (!session.session) return null;
 
-  const { data, error } = await supabase.auth.getUser();
+  const { data, error: getUserError } = await supabase.auth.getUser();
+
+  if (getUserError) throw new Error(getUserError.message);
+
+  const { data: profile, error } = await supabase
+    .from("Profile")
+    .select("*")
+    .eq("id", data.user.id);
 
   if (error) throw new Error(error.message);
 
-  return data?.user;
+  const possibleUser = data?.user;
+
+  return { possibleUser, profile };
 }
 
 export async function logout() {

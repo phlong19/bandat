@@ -1,6 +1,4 @@
-const billion = 1000000000;
-const million = 1000000;
-export const m2 = "/m²";
+import { billion, million } from "../constants/anyVariables";
 
 // calc how much money per m2
 export function pricePerArea(price, area) {
@@ -38,4 +36,9 @@ export function formatNumber(input) {
   const result = input.toLocaleString("vi-VN");
 
   return result;
+}
+
+// hidden last 3-digit of phone number
+export function hiddenLast3PhoneNum(input) {
+  return "0" + input.toString().slice(0, 6) + "***";
 }
