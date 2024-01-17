@@ -168,7 +168,7 @@ function Footer() {
             <span className="block items-center justify-start gap-3.5 lg:flex">
               <p>Chịu trách nhiệm quản lý: Ông Vũ Nguyễn Công Bình</p>
               <span className="hidden lg:block">|</span>
-              <p>Chịu trách nhiệm dữ liệu: Ông Nguyễn Văn Luật</p>
+              <p>Chịu trách nhiệm dữ liệu: Ông Lưu Tiến Luật</p>
             </span>
             <span className="block items-center justify-start gap-3.5 lg:flex">
               <p>Chịu trách nhiệm hình ảnh: Ông Vũ Đặng Minh Đức</p>
