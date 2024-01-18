@@ -1,47 +1,36 @@
-import { useAuth } from "../context/UserContext";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { LuShieldAlert } from "react-icons/lu";
 
-import Spinner from "./Spinner";
+import SpinnerFullPage from "./SpinnerFullPage";
 
-import {
-  ADMIN_LEVEL,
-  EDITOR_LEVEL,
-  emailsList,
-} from "../constants/anyVariables";
+import { useAuth } from "../context/UserContext";
 
 function ProtectedRoute({ children, accessLevel }) {
+  const { data, level, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
-  const { user, level, isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading)
-    return (
-      <div className="relative flex h-full w-full items-center justify-center">
-        <Spinner inButton={false} />
-      </div>
-    );
-  // FIX
-  console.log(emailsList);
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        toast.error("Vui lòng đăng nhập để xem trang", {
+          icon: (
+            <span className="text-2xl text-yellow-500">
+              <LuShieldAlert />
+            </span>
+          ),
+        });
+        navigate("/dang-nhap");
+      } else if (data && level < accessLevel) {
+        navigate("/khong-co-quyen");
+      }
+    }
+  }, [data, isAuthenticated, isLoading, navigate, accessLevel, level]);
 
-  if (isAuthenticated && user) {
-    if (accessLevel === EDITOR_LEVEL && level >= accessLevel) {
-      return children;
-    }
-    // further check for admin
-    else if (
-      accessLevel === ADMIN_LEVEL &&
-      emailsList.includes(user.email) &&
-      level === ADMIN_LEVEL
-    ) {
-      return children;
-    }
-  } else {
-    toast.error("may deo co quyen xem trang nay, cut!");
-    // user not login => go to login page
-    if (!user) navigate("/dang-nhap");
-    // not meet the require permission => go home
-    navigate("/");
-  }
+  if (isLoading) return <SpinnerFullPage />;
+
+  return children;
 }
 
 export default ProtectedRoute;

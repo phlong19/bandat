@@ -32,7 +32,7 @@ function LoginForm() {
         hookForm={{
           ...register("email", {
             required: "nhap email vao",
-            value: "kpm68635@omeie.com",
+            value: "vyj55254@nezid.com",
           }),
         }}
         id="email"
@@ -45,7 +45,7 @@ function LoginForm() {
         hookForm={{
           ...register("password", {
             required: "nhap mk vao dcm",
-            value: "123456789",
+            value: "123456",
           }),
         }}
         id="password"

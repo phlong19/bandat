@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { homeLinks } from "../constants/navlink";
 import { products } from "../constants/products";
+import { FaXmark } from "react-icons/fa6";
 
 function Home() {
-
   return (
     <div className="h-screen bg-light px-4 pt-3 text-dark dark:bg-dark dark:text-light">
       <ul className="flex w-full items-center justify-center gap-3 xl:hidden">
@@ -27,13 +28,41 @@ function Home() {
         {/* homepage list */}
         <div>
           {products.map((product, index) => (
-            <div key={index}>
-              {/* <ListItem product={product} /> */}
-            </div>
+            <div key={index}>{/* <ListItem product={product} /> */}</div>
           ))}
         </div>
       </div>
       {/*  */}
+      {/* <button
+        onClick={() =>
+          toast.success(
+            "hello this is a success message and is a really long one, for stimulate when we have some database error or unexpected ones, let write some more to see if it break the line and go down more and more",
+          )
+        }
+      >
+        make a toast
+      </button>
+      <br />
+      <button onClick={() => toast.dismiss()}>dismiss</button>
+      <br />
+      <button
+        onClick={toast(
+          (t) => (
+            <div className="flex gap-3">
+              <span>
+                can be a custom message, to make a reusable custom toast
+                component
+              </span>
+              <button onClick={() => toast.dismiss(t.id)} className="text-2xl">
+                <FaXmark />
+              </button>
+            </div>
+          ),
+          { icon: "🔥", duration: 3000 },
+        )}
+      >
+        custom toast
+      </button> */}
     </div>
   );
 }

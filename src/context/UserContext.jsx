@@ -4,10 +4,12 @@ import { useUser } from "../features/auth/useUser";
 const UserContext = createContext();
 
 function UserAuthentication({ children }) {
-  const { user, isAuthenticated, isLoading, level } = useUser();
+  const { data, isAuthenticated, isLoading, level, email } = useUser();
 
   return (
-    <UserContext.Provider value={{ user, isAuthenticated, isLoading, level }}>
+    <UserContext.Provider
+      value={{ email, data, isAuthenticated, isLoading, level }}
+    >
       {children}
     </UserContext.Provider>
   );

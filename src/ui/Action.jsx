@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa6";
+
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
 import ToggleBox from "./ToggleBox";
+import SpinnerFullPage from "./SpinnerFullPage";
 
 import Logout from "../features/auth/Logout";
-
 import { useAuth } from "../context/UserContext";
+import { USER_LEVEL } from "../constants/anyVariables";
 
 function Action({ onClose }) {
-  const { user, isAuthenticated, level } = useAuth();
+  const { data, isAuthenticated, level, isLoading } = useAuth();
 
   // bookmarks box
   const [show, setShow] = useState(false);
@@ -35,6 +37,10 @@ function Action({ onClose }) {
     }
   }
 
+  if (isLoading) {
+    return <SpinnerFullPage />;
+  }
+
   return (
     <div className="flex items-center justify-stretch gap-5">
       <span
@@ -58,14 +64,14 @@ function Action({ onClose }) {
       ) : (
         <div className="flex items-center">
           <img
-            src={user.user_metadata.avatar}
-            alt={user.user_metadata.fullName}
+            src={data.avatar}
+            alt={data.fullName}
             className="relative w-8 cursor-pointer rounded-full border border-dark bg-dark/20 dark:border-white dark:bg-white"
             onClick={handleUserToggle}
           />
           {userToggle && (
             <ToggleBox close={() => setUserToggle(false)}>
-              {level >= 1 && <Button>admin panel</Button>}
+              {level >= USER_LEVEL && <Button to='/control'>admin panel</Button>}
               <Logout />
             </ToggleBox>
           )}

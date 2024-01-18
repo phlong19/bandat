@@ -24,6 +24,7 @@ import AppLayout from "./ui/AppLayout";
 import ManageLayout from "./ui/ManageLayout";
 import AuthenticationLayout from "./ui/AuthenticationLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
 
 // context and api
@@ -87,6 +88,7 @@ function App() {
                 }
               >
                 {/* path for user to write RE post */}
+                {/* FIX */}
                 <Route path="dang-tin" />
 
                 {/* editor path */}
@@ -111,7 +113,8 @@ function App() {
                 />
               </Route>
 
-              {/* 404 */}
+              {/* 404 & unauthorized */}
+              <Route path="khong-co-quyen" element={<Unauthorized />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
@@ -119,13 +122,17 @@ function App() {
 
         {/* notifications */}
         <Toaster
-          position="top-right"
-          containerStyle={{ margin: "8px" }}
+          containerClassName="m-2 md:m-3"
           toastOptions={{
-            style: {
-              fontSize: "16px",
-              maxWidth: "500px",
-              padding: "16px 24px",
+            position: "top-right",
+            duration: 3500,
+            className:
+              "md:font-base py-4 px-6 max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 4000,
             },
           }}
         />

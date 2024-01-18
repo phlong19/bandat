@@ -89,10 +89,94 @@ function Footer() {
 
      
         </div>
-    </div>
-    <hr width="100%"   /> 
-        <div className="float-left max-w-[1000px]  pl-[105px]  pt-[70px] pr-[70px] xl:max-w-[800px] text-[10px]"> 
-        <p></p>
+        {/* info */}
+        <div className="relative z-50 pb-3 pt-6 text-left">
+          <p className="lg:hidden">
+            Copyright © 2023 - {currentYear} LandHub.com.vn.
+          </p>
+          {/* mobile hidden */}
+          <div className="mt-3 hidden w-full font-roboto lg:flex lg:flex-wrap lg:gap-3">
+            <div className="h-36 w-1/3 max-w-[250px]">
+              <a
+                href="tel:19009069"
+                className="ml-1 flex h-full items-center justify-start gap-3 xl:justify-center"
+              >
+                <span className="text-4xl">
+                  <FiPhoneCall />
+                </span>
+                <div>
+                  <p className="font-normal">Hotline:</p>
+                  <p className="text-base font-semibold">1900 9069</p>
+                </div>
+              </a>
+            </div>
+            <div className="h-36 w-1/3 max-w-[250px]">
+              <a
+                href="mailto:hotro@landhub.com.vn"
+                className="flex h-full items-center justify-center gap-3"
+              >
+                <span className="text-4xl">
+                  <TbUserQuestion />
+                </span>
+                <div>
+                  <p className="font-normal">Hỗ trợ khách hàng:</p>
+                  <p className="text-base font-semibold">
+                    hotro@landhub.com.vn
+                  </p>
+                </div>
+              </a>
+            </div>
+            <div className="h-36 w-1/3 max-w-[250px] lg:ml-3 xl:mr-0">
+              <a
+                href="mailto:hotro@landhub.com.vn"
+                className="flex h-full items-center justify-center gap-3"
+              >
+                <span className="text-4xl">
+                  <FiHeadphones />
+                </span>
+                <div>
+                  <p className="font-normal">Chăm sóc khách hàng:</p>
+                  <p className="text-base font-semibold">
+                    hotro@landhub.com.vn
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <p className="mt-3">
+            Giấy ĐKKD 020891742683 cấp lần đầu ngày 01/01/2023
+            <br />
+            Giấy phép thiết lập trang thông tin điện tử tổng hợp trên mạng số
+            191/GP-TTĐT do Sở TTTT Hà Nội cấp ngày 11/01/2024
+          </p>
+          <span className="space-y-3">
+            <span className="block items-center justify-start gap-3.5 lg:mt-2.5 lg:flex">
+              <p className="mt-3 lg:m-0">
+                Chịu trách nhiệm nội dung: Ông Phạm Hoàng Long
+              </p>
+              <span className="hidden lg:block">|</span>
+              <p>Chịu trách nhiệm nội dung: Ông Phan Anh Duy</p>
+            </span>
+            <span className="block items-center justify-start gap-3.5 lg:flex">
+              <p>Chịu trách nhiệm quản lý: Ông Vũ Nguyễn Công Bình</p>
+              <span className="hidden lg:block">|</span>
+              <p>Chịu trách nhiệm dữ liệu: Ông Lưu Tiến Luật</p>
+            </span>
+            <span className="block items-center justify-start gap-3.5 lg:flex">
+              <p>Chịu trách nhiệm hình ảnh: Ông Vũ Đặng Minh Đức</p>
+              <span className="hidden lg:block">|</span>
+              <p>Chịu trách nhiệm dữ liệu: Bà Nguyễn Thu Huyền</p>
+            </span>
+            <p>Quy chế, quy định giao dịch có hiệu lực từ 31/12/2023</p>
+            <br />
+            <span className="text-primary dark:text-secondary">
+              Ghi rõ nguồn &quot;LandHub.com.vn&quot; khi phát hành lại thông
+              tin từ website này.
+            </span>
+          </span>
+          <p className="mt-6 hidden lg:block">
+            Copyright © 2023 - {currentYear} LandHub.com.vn.
+          </p>
         </div>
     <div className="float-left max-w-[1000px]   pt-[70px] pr-[70px] xl:max-w-[800px] text-[10px]">
             <p>Copyright © 2024 LandHub.com.vn</p>
@@ -112,7 +196,7 @@ function Footer() {
         </div>
        
 </div>
-  );
+</div>      
+  );   
 }
-
 export default Footer;

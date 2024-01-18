@@ -32,10 +32,11 @@ export async function getList(type, citeria) {
     city: CityDirectory (cityName),
     dis: DistrictDirectory (disName),
     images: REImages(mediaLink),
-    type: REType(REType_Name),
+    profile: Profile(phone,fullName,avatar)
   `,
     )
     .eq("purType", type)
+    // for pagination
     .range(0, LIMIT_PER_PAGE - 1);
   // order(vip)
 
@@ -43,3 +44,10 @@ export async function getList(type, citeria) {
 
   return data;
 }
+
+// city: CityDirectory (cityName),
+// dis: DistrictDirectory (disName),
+// images: REImages(mediaLink),
+// type: REType(REType_Name),
+// profile: Profile(phone,fullName,avatar),
+// legalDocs: LegalDoc!LegalDoc_postID_fkey (doc_name)
