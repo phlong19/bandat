@@ -1,5 +1,9 @@
 import supabase from "./supabase";
-import { ADMIN_LEVEL, defaultAvatar } from "../constants/anyVariables";
+import {
+  ADMIN_LEVEL,
+  USER_LEVEL,
+  defaultAvatar,
+} from "../constants/anyVariables";
 
 export async function login({ email, password }) {
   const { data, error: loginError } = await supabase.auth.signInWithPassword({
@@ -30,7 +34,7 @@ export async function register({ fullName, email, phone, password }) {
         id: justCreateUser.user.id,
         fullName: fullName,
         phone: phone,
-        level: ADMIN_LEVEL,
+        level: USER_LEVEL,
         avatar: defaultAvatar,
       },
     ])
