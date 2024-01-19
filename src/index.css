@@ -3,6 +3,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
 
+/* leaflet */
+@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -8,11 +8,15 @@ export function pricePerArea(price, area) {
 // 1.000.000.000 => 1 billion
 export function formatCurrency(input) {
   if (Number(input) > billion) {
-    return Math.ceil(input / billion) + " tỷ";
+    return round2Digit(input / billion) + " tỷ";
   }
   if (Number(input) > million) {
-    return Math.ceil(input / million) + " triệu";
+    return round2Digit(input / million) + " triệu";
   }
+}
+
+function round2Digit(num) {
+  return parseFloat(Number(num).toFixed(2));
 }
 
 // date format: 2024-01-15T07:16:46.580913+00:00 => 15 tháng 1, 2024

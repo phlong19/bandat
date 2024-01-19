@@ -11,6 +11,7 @@ import { BiPhoneCall } from "react-icons/bi";
 
 import {
   formatCurrency,
+  formatDate,
   hiddenLast3PhoneNum,
   pricePerArea,
 } from "../../utils/helper";
@@ -30,6 +31,7 @@ function ListItem({ data, purType }) {
     city: { cityName },
     created_at,
     dis: { disName },
+    ward: { wardName },
     description,
     floor,
     images,
@@ -37,8 +39,9 @@ function ListItem({ data, purType }) {
     price,
     profile: { phone, avatar, fullName },
   } = data;
+  // console.log(data);
   return (
-    <div>
+    <div className="mt-2 rounded-lg bg-white p-1 dark:bg-black md:p-2 lg:p-2.5">
       <Link to={`/nha-dat/${slugify(name)}`}>
         {/* images */}
         <div className="relative mx-auto w-full overflow-hidden">
@@ -101,7 +104,7 @@ function ListItem({ data, purType }) {
             <SlLocationPin />
           </span>
           <span>
-            {disName}, {cityName}
+            {wardName}, {disName}, {cityName}
           </span>
         </div>
         {/* author */}
@@ -114,10 +117,10 @@ function ListItem({ data, purType }) {
             />
             <div>
               <span className="font-semibold">{fullName}</span>
-              <p>dang hom nay</p>
+              <p>{formatDate(created_at)}</p>
             </div>
           </div>
-          <div className="flex gap-1">
+          <div className="flex items-center gap-1">
             <Button
               onClick={() => setHiddenPhoneNum(true)}
               widthBase={false}

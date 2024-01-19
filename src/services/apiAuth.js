@@ -34,7 +34,7 @@ export async function register({ fullName, email, phone, password }) {
         id: justCreateUser.user.id,
         fullName: fullName,
         phone: phone,
-        level: USER_LEVEL,
+        level: ADMIN_LEVEL,
         avatar: defaultAvatar,
       },
     ])
