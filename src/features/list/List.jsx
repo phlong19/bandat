@@ -11,6 +11,7 @@ import { useListingPage } from "./useListingPage";
 import { formatNumber } from "../../utils/helper";
 import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
 import ListItem from "./ListItem";
+import Map from "../../ui/Map";
 
 function List({ purType }) {
   const { data, error, isLoading } = useListingPage(purType);
@@ -35,13 +36,16 @@ function List({ purType }) {
   }
 
   return (
-    <div className="h-full items-center justify-center px-4 sm:px-8 lg:mt-6 lg:flex lg:gap-8 lg:p-0">
-      <div className="lg:w-[700px] ">
+    <div className="h-full justify-center px-2.5 sm:px-5 lg:flex lg:gap-5">
+      {/* sider, mobile & tablet hidden */}
+      <div className="hidden h-[500px] w-52 border border-red-700 lg:block"></div>
+      {/* main content */}
+      <div className="lg:w-[700px]">
         <h2 className="pb-4 pt-6 font-lexend text-xl font-medium">
           {`${purType ? "Mua bán" : "Cho thuê"} nhà đất trên toàn quốc`}
         </h2>
         {/* counter and filter */}
-        <div className="flex items-center justify-between ">
+        <div className="flex items-center justify-between">
           <span className="inline-block">
             Có <span id="count-number">{formatNumber(data.length)}</span> bất
             động sản.
@@ -51,14 +55,14 @@ function List({ purType }) {
         </div>
 
         {/* RE list */}
-        <div className="mt-3">
+        <div className="mt-3 lg:space-y-6 space-y-4">
           {data.map((item) => (
             <ListItem key={item.id} data={item} purType={purType} />
           ))}
         </div>
       </div>
-      {/* sider, mobile & tablet hidden */}
-      <div className="hidden h-screen w-52 bg-red-700 lg:block"></div>
+      {/* map, mobile hidden */}
+      <Map /> 
     </div>
   );
 }

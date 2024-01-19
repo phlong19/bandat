@@ -31,11 +31,14 @@ export async function getList(type, citeria) {
       `*,
     city: CityDirectory (cityName),
     dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName),
     images: REImages(mediaLink),
+    docs: REDocs(docName: LegalDoc(doc_name)),
     profile: Profile(phone,fullName,avatar)
   `,
     )
     .eq("purType", type)
+    // .eq("status", true)
     // for pagination
     .range(0, LIMIT_PER_PAGE - 1);
   // order(vip)

@@ -11,12 +11,14 @@ import { BiPhoneCall } from "react-icons/bi";
 
 import {
   formatCurrency,
+  formatDate,
   hiddenLast3PhoneNum,
   pricePerArea,
 } from "../../utils/helper";
 import { m2 } from "../../constants/anyVariables";
 import Button from "../../ui/Button";
 import Bookmark from "../../ui/Bookmark";
+import ItemImages from "../../ui/ItemImages";
 
 function ListItem({ data, purType }) {
   const [hiddenPhoneNum, setHiddenPhoneNum] = useState(false);
@@ -29,6 +31,7 @@ function ListItem({ data, purType }) {
     city: { cityName },
     created_at,
     dis: { disName },
+    ward: { wardName },
     description,
     floor,
     images,
@@ -36,35 +39,16 @@ function ListItem({ data, purType }) {
     price,
     profile: { phone, avatar, fullName },
   } = data;
+  // console.log(data);
   return (
-    <div>
+    <div className="mt-2 rounded-lg bg-white p-1 dark:bg-black md:p-2 lg:p-2.5">
       <Link to={`/nha-dat/${slugify(name)}`}>
         {/* images */}
         <div className="relative mx-auto w-full overflow-hidden">
           {/* vip label */}
           <div className="absolute"></div>
 
-          <img
-            src={images[0].mediaLink}
-            alt="main img"
-            className="aspect-video w-full rounded-t object-cover"
-          />
-          <div className="flex items-center justify-center gap-[2px]">
-            {images.slice(1, 4).map((item, i) => (
-              <img
-                key={i}
-                src={item.mediaLink}
-                alt="child img"
-                className="mt-[2px] aspect-[4/3] w-1/3 rounded-b object-cover"
-              />
-            ))}
-          </div>
-          <div className="absolute bottom-0 right-0 flex h-10 w-full items-center justify-end gap-2 bg-[linear-gradient(180deg,rgba(44,44,44,0)_0%,rgba(44,44,44,0.8)_100%)] font-semibold text-white">
-            <span className="text-2xl">
-              <IoImagesOutline />
-            </span>
-            <span className="mr-3 text-base">{images.length - 4}</span>
-          </div>
+          <ItemImages images={images} />
         </div>
       </Link>
 
@@ -120,7 +104,7 @@ function ListItem({ data, purType }) {
             <SlLocationPin />
           </span>
           <span>
-            {disName}, {cityName}
+            {wardName}, {disName}, {cityName}
           </span>
         </div>
         {/* author */}
@@ -133,10 +117,10 @@ function ListItem({ data, purType }) {
             />
             <div>
               <span className="font-semibold">{fullName}</span>
-              <p>dang hom nay</p>
+              <p>{formatDate(created_at)}</p>
             </div>
           </div>
-          <div className="flex gap-1">
+          <div className="flex items-center gap-1">
             <Button
               onClick={() => setHiddenPhoneNum(true)}
               widthBase={false}
