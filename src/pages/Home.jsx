@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
-import { toast } from "react-hot-toast";
 import { homeLinks } from "../constants/navlink";
 import { products } from "../constants/products";
-import { FaXmark } from "react-icons/fa6";
 
 function Home() {
   return (
-    <div className="h-screen bg-light px-4 pt-3 text-dark dark:bg-dark dark:text-light">
+    <div className="h-[calc(100vh-72px)] mt-[72px] bg-light px-4 pt-3 text-dark dark:bg-dark dark:text-light">
       <ul className="flex w-full items-center justify-center gap-3 xl:hidden">
         {homeLinks.map((link) => (
           <li

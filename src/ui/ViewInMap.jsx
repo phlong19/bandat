@@ -1,20 +1,19 @@
 import { useState } from "react";
+import { FaMap, FaRegMap } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
-import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
-function Bookmark({ isMapView }) {
+function ViewInMap({ isMapView }) {
   const [hover, setHover] = useState(false);
-  // FIX ADD BOOKMARK TO LOCAL STORAGE
 
   function handleClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    toast.error("khong the add vao bookmark, vi da lam dau =))");
+    toast.error("khong the chi den vi tri chinh xac, vi da lam dau =))");
   }
 
   return (
     <button
-      title="Lưu vào tin của bạn"
+      title="Xem trên map"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={handleClick}
@@ -22,11 +21,11 @@ function Bookmark({ isMapView }) {
         !isMapView ? "p-2.5" : "p-1.5"
       } group rounded-md border border-light bg-prim-light dark:border-dark dark:bg-sec-light lg:border-0`}
     >
-      <span className="text-xl text-black transition-colors duration-300 group-hover:fill-red-500 group-hover:text-red-500">
-        {hover ? <FaHeart /> : <FaRegHeart />}
+      <span className="text-xl text-black transition-colors duration-300 group-hover:fill-green-600 group-hover:text-green-600">
+        {hover ? <FaMap /> : <FaRegMap />}
       </span>
     </button>
   );
 }
 
-export default Bookmark;
+export default ViewInMap;
