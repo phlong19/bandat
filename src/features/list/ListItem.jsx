@@ -20,8 +20,10 @@ import { m2 } from "../../constants/anyVariables";
 import Button from "../../ui/Button";
 import Bookmark from "../../ui/Bookmark";
 import ItemImages from "../../ui/ItemImages";
+import { useMapView } from "../../context/MapViewContext";
 
-function ListItem({ data, purType, mapView, isPopup = false }) {
+function ListItem({ data, purType, isPopup = false }) {
+  const { mapView } = useMapView();
   const [hiddenPhoneNum, setHiddenPhoneNum] = useState(false);
   const isLaptop = useMediaQuery({
     query: "(min-width: 1000px)",
@@ -45,8 +47,8 @@ function ListItem({ data, purType, mapView, isPopup = false }) {
     <div
       className={`${
         !isPopup
-          ? "mt-2  bg-white p-1 shadow-sm shadow-prim-light dark:bg-black/20 dark:shadow-sec-light md:p-2 lg:m-0 lg:w-[49%] xl:w-[32%] lg:p-2.5 xl:p-2"
-          : "p-[2px] lg:w-full min-w-[160px] text-black"
+          ? "mt-2 bg-white p-1 shadow-sm shadow-prim-light dark:bg-black/20 dark:shadow-sec-light md:p-2 lg:m-0 lg:w-[49%] lg:p-2.5 xl:w-[32%] xl:p-2"
+          : "min-w-[160px] p-[2px] text-black lg:w-full"
       }  rounded-lg lg:max-w-[320px]`}
     >
       {!isPopup && (
@@ -56,12 +58,7 @@ function ListItem({ data, purType, mapView, isPopup = false }) {
             {/* vip label */}
             <div className="absolute"></div>
 
-            <ItemImages
-              images={images}
-              isLaptop={isLaptop}
-              isPopup={isPopup}
-              isMapView={mapView}
-            />
+            <ItemImages images={images} isLaptop={isLaptop} isPopup={isPopup} />
           </div>
         </Link>
       )}
@@ -94,7 +91,7 @@ function ListItem({ data, purType, mapView, isPopup = false }) {
             {purType ? m2 : "/tháng"}
           </span>
           {/* bed bath floor */}
-          {(!mapView || isPopup) && (
+          {(!mapView || isPopup || !isLaptop) && (
             <div className="flex gap-2.5">
               {bed_room && (
                 <span className="flex items-center gap-1.5">
@@ -115,7 +112,7 @@ function ListItem({ data, purType, mapView, isPopup = false }) {
               {floor && (
                 <span
                   className={`${
-                    isPopup ? "flex" : "hidden"
+                    !isLaptop || isPopup ? "flex" : "hidden"
                   } items-center gap-1.5`}
                 >
                   {floor}
@@ -137,8 +134,8 @@ function ListItem({ data, purType, mapView, isPopup = false }) {
           </span>
         </div>
         {/* author */}
-        {!mapView && (
-          <div className="flex w-full items-center justify-between">
+        {(!mapView || !isLaptop) && (
+          <div className="xs:flex hidden w-full items-center justify-between">
             <div className="flex h-8 w-[45%] items-center">
               <img
                 src={avatar}

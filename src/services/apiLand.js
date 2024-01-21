@@ -25,7 +25,7 @@ export async function getHomepage() {
 // purType true = sell | false = rent
 // citeria for sort, mostly
 export async function getList(type, citeria) {
-  const { data, error } = await supabase
+  const { data, count, error } = await supabase
     .from("REDirectory")
     .select(
       `*,
@@ -36,6 +36,7 @@ export async function getList(type, citeria) {
     docs: REDocs(docName: LegalDoc(doc_name)),
     profile: Profile(phone,fullName,avatar)
   `,
+      { count: "exact" },
     )
     .eq("purType", type)
     // .eq("status", true)
@@ -44,6 +45,9 @@ export async function getList(type, citeria) {
   // order(vip)
 
   if (error) throw new Error(error.message);
+
+  // every thing is object =)) 
+  data.count = count;
 
   return data;
 }

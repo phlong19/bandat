@@ -1,8 +1,11 @@
 import { IoImagesOutline } from "react-icons/io5";
 import Bookmark from "./Bookmark";
 import ViewInMap from "./ViewInMap";
+import { useMapView } from "../context/MapViewContext";
 
-function ItemImages({ images, isLaptop, isPopup, isMapView }) {
+function ItemImages({ images, isLaptop, isPopup }) {
+  const { mapView } = useMapView();
+
   return (
     <div className="items-stretch justify-center md:flex md:gap-1 xl:relative">
       <img
@@ -30,12 +33,10 @@ function ItemImages({ images, isLaptop, isPopup, isMapView }) {
       )}
       {!isPopup && isLaptop && (
         <div className="absolute right-2 top-2 flex flex-col justify-center gap-2">
-          <div className="">
-            <Bookmark isMapView={isMapView} />
-          </div>
           <div>
-            <ViewInMap isMapView={isMapView} />
+            <Bookmark />
           </div>
+          <div>{mapView && <ViewInMap />}</div>
         </div>
       )}
     </div>

@@ -27,9 +27,10 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
 
-// context and api
+// context api
 import { DarkMode } from "./context/DarkModeContext";
 import { UserAuthentication } from "./context/UserContext";
+import { MapView } from "./context/MapViewContext";
 
 // constants
 import {
@@ -55,7 +56,13 @@ function App() {
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
-              <Route element={<AppLayout />}>
+              <Route
+                element={
+                  <MapView>
+                    <AppLayout />
+                  </MapView>
+                }
+              >
                 <Route index element={<Home />} />
                 <Route path="nha-dat-ban" element={<ListingPage />} />
                 {/* base on type to filter query data */}

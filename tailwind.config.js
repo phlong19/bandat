@@ -22,6 +22,7 @@ export default {
         30: "120px",
       },
       screens: {
+        xs: "350px",
         xl: "1200px",
       },
     },
