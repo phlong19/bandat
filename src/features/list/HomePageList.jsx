@@ -1,18 +1,16 @@
 import toast from "react-hot-toast";
-import Spinner from "../../ui/Spinner";
+
+import SpinnerFullPage from "../../ui/SpinnerFullPage";
 import ErrorFallBack from "../../ui/ErrorFallBack";
 
-import useHomePage from "./useHomePage";
+import { useHomePage } from "./useHomePage";
+import List from "./List";
 
 function HomePageList() {
   const { data, error, isLoading } = useHomePage();
 
   if (isLoading) {
-    return (
-      <div className="absolute flex h-full w-full items-center justify-center bg-light dark:bg-dark">
-        <Spinner inButton={false} width={50} height={50} />
-      </div>
-    );
+    return <SpinnerFullPage />;
   }
 
   if (error) {
@@ -22,7 +20,7 @@ function HomePageList() {
 
   return (
     <div>
-      home
+      <List purType={true} home />
     </div>
   );
 }

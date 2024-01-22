@@ -1,20 +1,25 @@
 // libs
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 
 // UI
-import Spinner from "../../ui/Spinner";
+import Map from "../../ui/Map";
+import SpinnerFullPage from "../../ui/SpinnerFullPage";
 import ErrorFallBack from "../../ui/ErrorFallBack";
+import ListItem from "./ListItem";
+import SkewedToggle from "../../ui/SkewedToggle";
 
 // hooks & helpers & context
 import { useListingPage } from "./useListingPage";
 import { formatNumber } from "../../utils/helper";
 import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
-import ListItem from "./ListItem";
-import Map from "../../ui/Map";
+import Pagination from "../../ui/Pagination";
+import { useMapView } from "../../context/MapViewContext";
 
-function List({ purType }) {
+function List({ purType, home = false }) {
   const { data, error, isLoading } = useListingPage(purType);
+  const { mapView } = useMapView();
 
   // change page title
   useEffect(() => {
@@ -23,11 +28,7 @@ function List({ purType }) {
   }, [purType]);
 
   if (isLoading) {
-    return (
-      <div className="absolute flex h-full w-full items-center justify-center bg-light dark:bg-dark">
-        <Spinner inButton={false} width={50} height={50} />
-      </div>
-    );
+    return <SpinnerFullPage />;
   }
 
   if (error) {
@@ -36,33 +37,59 @@ function List({ purType }) {
   }
 
   return (
-    <div className="h-full justify-center px-2.5 sm:px-5 lg:flex lg:gap-5">
+    <div className="relative h-full justify-center px-2.5 sm:px-5 lg:flex lg:gap-2">
       {/* sider, mobile & tablet hidden */}
-      <div className="hidden h-[500px] w-52 border border-red-700 lg:block"></div>
+
       {/* main content */}
-      <div className="lg:w-[700px]">
+      <div
+        className={`z-10 h-full w-full ${mapView ? " overflow-y-auto" : ""}`}
+      >
         <h2 className="pb-4 pt-6 font-lexend text-xl font-medium">
           {`${purType ? "Mua bán" : "Cho thuê"} nhà đất trên toàn quốc`}
         </h2>
         {/* counter and filter */}
         <div className="flex items-center justify-between">
           <span className="inline-block">
-            Có <span id="count-number">{formatNumber(data.length)}</span> bất
-            động sản.
+            Có <span>{formatNumber(data.length)}</span> bất động sản.
           </span>
           {/* filter here */}
           <div className="mr-2 w-1/3 bg-red-500">filter drop down</div>
+          {/* toggle grid & map views */}
+          {!home && (
+            <div className="hidden items-center gap-2 lg:flex">
+              <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
+              <SkewedToggle />
+            </div>
+          )}
         </div>
 
         {/* RE list */}
-        <div className="mt-3 lg:space-y-6 space-y-4">
-          {data.map((item) => (
-            <ListItem key={item.id} data={item} purType={purType} />
+        <div
+          className={`${
+            mapView ? "xl:gap-3" : "mx-auto max-w-[1400px] xl:gap-8"
+          } mt-3 space-y-4 lg:flex lg:flex-wrap lg:gap-2 lg:space-y-0`}
+        >
+          {/* for development */}
+          {Array.from({ length: 6 }).map((dt, i) => (
+            <React.Fragment key={i}>
+              {data.map((item) => (
+                <ListItem
+                  key={item.id}
+                  data={item}
+                  purType={purType}
+                  mapView={mapView}
+                />
+              ))}
+            </React.Fragment>
           ))}
         </div>
+        {/* total count later */}
+        <Pagination count={data.count} />
       </div>
-      {/* map, mobile hidden */}
-      <Map /> 
+      <AnimatePresence mode="popLayout">
+        {/* map, mobile hidden */}
+        {mapView && !home && <Map data={data} purType={purType} />}
+      </AnimatePresence>
     </div>
   );
 }

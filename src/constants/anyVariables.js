@@ -2,7 +2,7 @@
 export const currentYear = new Date().getFullYear();
 
 // max item 1 page
-export const LIMIT_PER_PAGE = 10;
+export const LIMIT_PER_PAGE = 12;
 
 // level access
 const USER_LEVEL = 1;

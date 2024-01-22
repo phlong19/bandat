@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { toast } from "react-hot-toast";
 import { homeLinks } from "../constants/navlink";
 import { products } from "../constants/products";
-import { FaXmark } from "react-icons/fa6";
+import HomePageList from "../features/list/HomePageList";
+import Searchbar from "../ui/Searchbar";
 
 function Home() {
   return (
-    <div className="h-screen bg-light px-4 pt-3 text-dark dark:bg-dark dark:text-light">
+    <div className="min-h-[calc(100vh-72px)] mt-[72px] bg-light px-1 pt-3 text-dark dark:bg-dark dark:text-light">
       <ul className="flex w-full items-center justify-center gap-3 xl:hidden">
         {homeLinks.map((link) => (
           <li
@@ -25,14 +25,11 @@ function Home() {
         <h2 className="pb-4 pt-6 font-lexend text-xl font-medium">
           Bất động sản dành cho bạn
         </h2>
+        <Searchbar />
         {/* homepage list */}
-        <div>
-          {products.map((product, index) => (
-            <div key={index}>{/* <ListItem product={product} /> */}</div>
-          ))}
-        </div>
+       <HomePageList />
       </div>
-      {/*  */}
+      
       {/* <button
         onClick={() =>
           toast.success(
