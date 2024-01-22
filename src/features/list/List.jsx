@@ -17,7 +17,7 @@ import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
 import Pagination from "../../ui/Pagination";
 import { useMapView } from "../../context/MapViewContext";
 
-function List({ purType }) {
+function List({ purType, home = false }) {
   const { data, error, isLoading } = useListingPage(purType);
   const { mapView } = useMapView();
 
@@ -55,10 +55,12 @@ function List({ purType }) {
           {/* filter here */}
           <div className="mr-2 w-1/3 bg-red-500">filter drop down</div>
           {/* toggle grid & map views */}
-          <div className="hidden items-center gap-2 lg:flex">
-            <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
-            <SkewedToggle />
-          </div>
+          {!home && (
+            <div className="hidden items-center gap-2 lg:flex">
+              <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
+              <SkewedToggle />
+            </div>
+          )}
         </div>
 
         {/* RE list */}
@@ -86,7 +88,7 @@ function List({ purType }) {
       </div>
       <AnimatePresence mode="popLayout">
         {/* map, mobile hidden */}
-        {mapView && <Map data={data} purType={purType} />}
+        {mapView && !home && <Map data={data} purType={purType} />}
       </AnimatePresence>
     </div>
   );

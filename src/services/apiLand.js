@@ -6,10 +6,10 @@ export async function getHomepage() {
     .from("REDirectory")
     .select(
       `*,
-    city: CityDirectory (cityName),
-    dis: DistrictDirectory (disName),
-    images: REImages(mediaLink),
-    type: REType(REType_Name)
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      images: REImages(mediaLink),
+      profile: Profile(phone,fullName,avatar)
   `,
     )
     // .order(vip)
@@ -25,6 +25,7 @@ export async function getHomepage() {
 // purType true = sell | false = rent
 // citeria for sort, mostly
 export async function getList(type, citeria) {
+  // switch case for citerias
   const { data, count, error } = await supabase
     .from("REDirectory")
     .select(
@@ -42,7 +43,7 @@ export async function getList(type, citeria) {
     // .eq("status", true)
     // for pagination
     .range(0, LIMIT_PER_PAGE - 1);
-  // order(vip)
+  // .order(vip)
 
   if (error) throw new Error(error.message);
 
