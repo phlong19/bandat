@@ -39,7 +39,7 @@ export async function getList(type, citeria) {
   `,
       { count: "exact" },
     )
-    .eq("purType", type)
+    // .eq("purType", type)
     // .eq("status", true)
     // for pagination
     .range(0, LIMIT_PER_PAGE - 1);

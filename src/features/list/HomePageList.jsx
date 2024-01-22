@@ -4,7 +4,6 @@ import SpinnerFullPage from "../../ui/SpinnerFullPage";
 import ErrorFallBack from "../../ui/ErrorFallBack";
 
 import { useHomePage } from "./useHomePage";
-import List from "./List";
 
 function HomePageList() {
   const { data, error, isLoading } = useHomePage();
@@ -20,7 +19,7 @@ function HomePageList() {
 
   return (
     <div>
-      <List purType={true} home />
+      
     </div>
   );
 }

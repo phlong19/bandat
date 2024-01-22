@@ -42,14 +42,14 @@ function ListItem({ data, purType, isPopup = false }) {
     price,
     profile: { phone, avatar, fullName },
   } = data;
-  // console.log(data);
+
   return (
     <div
       className={`${
         !isPopup
-          ? "mt-2 bg-white p-1 shadow-sm shadow-prim-light dark:bg-black/20 dark:shadow-sec-light md:p-2 lg:m-0 lg:w-[49%] lg:p-2.5 xl:w-[32%] xl:p-2"
+          ? "mt-2 bg-white p-1 shadow-sm shadow-prim-light dark:bg-black/20 dark:shadow-sec-light md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
           : "min-w-[160px] p-[2px] text-black lg:w-full"
-      }  rounded-lg lg:max-w-[320px]`}
+      }  rounded-lg`}
     >
       {!isPopup && (
         <Link to={`/nha-dat/${slugify(name)}`}>
@@ -135,7 +135,7 @@ function ListItem({ data, purType, isPopup = false }) {
         </div>
         {/* author */}
         {(!mapView || !isLaptop) && (
-          <div className="xs:flex hidden w-full items-center justify-between">
+          <div className="hidden w-full items-center justify-between xs:flex">
             <div className="flex h-8 w-[45%] items-center">
               <img
                 src={avatar}
@@ -143,7 +143,7 @@ function ListItem({ data, purType, isPopup = false }) {
                 className="object-conver mr-3 h-8 w-8 rounded-full border border-dark/50 dark:border-light/50"
               />
               <div>
-                <span className="font-semibold">{fullName}</span>
+                <span className="line-clamp-1 font-semibold">{fullName}</span>
                 <p>{formatDate(created_at, "short")}</p>
               </div>
             </div>

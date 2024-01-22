@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { homeLinks } from "../constants/navlink";
-import { products } from "../constants/products";
 import HomePageList from "../features/list/HomePageList";
 import Searchbar from "../ui/Searchbar";
 
