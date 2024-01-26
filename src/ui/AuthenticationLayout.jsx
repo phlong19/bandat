@@ -1,14 +1,16 @@
 import { Outlet } from "react-router-dom";
-import Header from './Header'
+import Logo from "./Logo";
 
 function AuthenticationLayout() {
   return (
-    <>
-    <Header />
-    <div className="flex h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)] w-full items-center justify-center text-black dark:text-white bg-light dark:bg-dark">
+    
+    <div className="flex flex-col relative min-h-screen max-h-screen w-full items-center justify-center text-black dark:text-white bg-light dark:bg-dark">
+      <div className="scale-150">
+        <Logo/>
+      </div>
       <Outlet />
     </div>
-    </>
+  
   );
 }
 

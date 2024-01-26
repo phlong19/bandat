@@ -221,3 +221,321 @@ export const data = [
     },
   },
 ];
+
+export const city = [
+  {
+    cityID: 1,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hà Nội",
+  },
+  {
+    cityID: 2,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hà Giang",
+  },
+  {
+    cityID: 3,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Cao Bằng",
+  },
+  {
+    cityID: 4,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bắc Kạn",
+  },
+  {
+    cityID: 5,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Tuyên Quang",
+  },
+  {
+    cityID: 6,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Lào Cai",
+  },
+  {
+    cityID: 7,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Điện Biên",
+  },
+  {
+    cityID: 8,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Lai Châu",
+  },
+  {
+    cityID: 9,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Sơn La",
+  },
+  {
+    cityID: 10,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Yên Bái",
+  },
+  {
+    cityID: 11,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hoà Bình",
+  },
+  {
+    cityID: 12,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Thái Nguyên",
+  },
+  {
+    cityID: 13,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Lạng Sơn",
+  },
+  {
+    cityID: 14,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Quảng Ninh",
+  },
+  {
+    cityID: 15,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bắc Giang",
+  },
+  {
+    cityID: 16,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Phú Thọ",
+  },
+  {
+    cityID: 17,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Vĩnh Phúc",
+  },
+  {
+    cityID: 18,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bắc Ninh",
+  },
+  {
+    cityID: 19,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hải Dương",
+  },
+  {
+    cityID: 20,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hải Phòng",
+  },
+  {
+    cityID: 21,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hưng Yên",
+  },
+  {
+    cityID: 22,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Thái Bình",
+  },
+  {
+    cityID: 23,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hà Nam",
+  },
+  {
+    cityID: 24,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Nam Định",
+  },
+  {
+    cityID: 25,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Ninh Bình",
+  },
+  {
+    cityID: 26,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Thanh Hóa",
+  },
+  {
+    cityID: 27,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Nghệ An",
+  },
+  {
+    cityID: 28,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hà Tĩnh",
+  },
+  {
+    cityID: 29,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Quảng Bình",
+  },
+  {
+    cityID: 30,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Quảng Trị",
+  },
+  {
+    cityID: 31,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Thừa Thiên Huế",
+  },
+  {
+    cityID: 32,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Đà Nẵng",
+  },
+  {
+    cityID: 33,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Quảng Nam",
+  },
+  {
+    cityID: 34,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Quảng Ngãi",
+  },
+  {
+    cityID: 35,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bình Định",
+  },
+  {
+    cityID: 36,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Phú Yên",
+  },
+  {
+    cityID: 37,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Khánh Hòa",
+  },
+  {
+    cityID: 38,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Ninh Thuận",
+  },
+  {
+    cityID: 39,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bình Thuận",
+  },
+  {
+    cityID: 40,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Kon Tum",
+  },
+  {
+    cityID: 41,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Gia Lai",
+  },
+  {
+    cityID: 42,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Đắk Lắk",
+  },
+  {
+    cityID: 43,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Đắk Nông",
+  },
+  {
+    cityID: 44,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Lâm Đồng",
+  },
+  {
+    cityID: 45,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bình Phước",
+  },
+  {
+    cityID: 46,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Tây Ninh",
+  },
+  {
+    cityID: 47,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bình Dương",
+  },
+  {
+    cityID: 48,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Đồng Nai",
+  },
+  {
+    cityID: 49,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bà Rịa - Vũng Tàu",
+  },
+  {
+    cityID: 50,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hồ Chí Minh",
+  },
+  {
+    cityID: 51,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Long An",
+  },
+  {
+    cityID: 52,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Tiền Giang",
+  },
+  {
+    cityID: 53,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bến Tre",
+  },
+  {
+    cityID: 54,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Trà Vinh",
+  },
+  {
+    cityID: 55,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Vĩnh Long",
+  },
+  {
+    cityID: 56,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Đồng Tháp",
+  },
+  {
+    cityID: 57,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " An Giang",
+  },
+  {
+    cityID: 58,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Kiên Giang",
+  },
+  {
+    cityID: 59,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Cần Thơ",
+  },
+  {
+    cityID: 60,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Hậu Giang",
+  },
+  {
+    cityID: 61,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Sóc Trăng",
+  },
+  {
+    cityID: 62,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Bạc Liêu",
+  },
+  {
+    cityID: 63,
+    created_at: "2024-01-23T13:53:06.766296+00:00",
+    cityName: " Cà Mau",
+  },
+];

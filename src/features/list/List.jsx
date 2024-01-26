@@ -9,7 +9,7 @@ import SpinnerFullPage from "../../ui/SpinnerFullPage";
 import ErrorFallBack from "../../ui/ErrorFallBack";
 import ListItem from "./ListItem";
 import SkewedToggle from "../../ui/SkewedToggle";
-import Searchbar from "../../ui/Searchbar";
+import Searchbar from "./Searchbar";
 
 // hooks & helpers & context
 import { useListingPage } from "./useListingPage";
@@ -34,19 +34,19 @@ function List({ purType }) {
 
   useEffect(() => {
     if (mapView) {
-      // If mapView is true, animate the map sliding in and the list shrinking
+      // if true, animate the map sliding in and the list shrinking
       mapAnimationControl.start({
         x: "0%",
-        width: "50%",
+        width: "46%",
         opacity: 1,
         transition: { duration: 0.5 },
       });
       listAnimationControl.start({
-        width: "50%",
+        width: "80%",
         transition: { duration: 0.5 },
       });
     } else {
-      // If mapView is false, animate the map sliding out and the list expanding
+      // if false, animate the map sliding out and the list expanding
       mapAnimationControl.start({
         x: "100%",
         opacity: 0,
@@ -55,7 +55,6 @@ function List({ purType }) {
       listAnimationControl
         .start({ width: "100%", transition: { duration: 0.5 } })
         .then(() => {
-          // You can optionally reset the map's width to 0 after the sliding out animation
           mapAnimationControl.set({ width: 0 });
         });
     }
@@ -78,7 +77,7 @@ function List({ purType }) {
       <AnimatePresence presenceAffectsLayout>
         <motion.div
           animate={listAnimationControl}
-          className={`z-10 h-full w-full ${mapView ? " overflow-y-auto" : ""}`}
+          className={`z-10 h-full w-full ${mapView ? "overflow-y-auto" : ""}`}
         >
           <div className="pt-4">
             <Searchbar />
@@ -104,9 +103,9 @@ function List({ purType }) {
           <div
             className={`${
               mapView
-                ? "lg:grid-cols-2 lg:gap-2 xl:grid-cols-3 xl:gap-2.5"
-                : "mx-auto max-w-[1400px] lg:gap-3 xl:gap-6"
-            } mt-3 space-y-4 lg:grid lg:grid-cols-3 lg:space-y-0 xl:grid-cols-4`}
+                ? "lg:grid-cols-2 lg:gap-2 xl:grid-cols-3 xl:gap-2.5 3xl:grid-cols-4"
+                : "mx-auto max-w-[1400px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-6"
+            } mt-3 space-y-4 lg:grid lg:space-y-0`}
           >
             {/* for development */}
             {Array.from({ length: 4 }).map((dt, i) => (

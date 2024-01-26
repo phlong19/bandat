@@ -47,15 +47,19 @@ export async function getList(type, citeria) {
 
   if (error) throw new Error(error.message);
 
-  // every thing is object =)) 
+  // every thing is object =))
   data.count = count;
 
   return data;
 }
 
-// city: CityDirectory (cityName),
-// dis: DistrictDirectory (disName),
-// images: REImages(mediaLink),
-// type: REType(REType_Name),
-// profile: Profile(phone,fullName,avatar),
-// legalDocs: LegalDoc!LegalDoc_postID_fkey (doc_name)
+export async function getCity() {
+  const { data, error } = await supabase.from("CityDirectory").select(
+    `*`,
+    { count: "exact" },
+  );
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}

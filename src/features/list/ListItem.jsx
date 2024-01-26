@@ -90,7 +90,7 @@ function ListItem({ data, purType, isPopup = false }) {
             {formatCurrency(pricePerArea(price, area))}
             {purType ? m2 : "/tháng"}
           </span>
-          {/* bed bath floor */}
+          {/* bed | bath | floor */}
           {(!mapView || isPopup || !isLaptop) && (
             <div className="flex gap-2.5">
               {bed_room && (

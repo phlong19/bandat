@@ -7,19 +7,19 @@ function ItemImages({ images, isLaptop, isPopup }) {
   const { mapView } = useMapView();
 
   return (
-    <div className="items-stretch justify-center md:flex md:gap-1 xl:relative">
+    <div className="items-stretch justify-center md:flex md:gap-0.5 xl:relative">
       <img
         src={images[0].mediaLink}
         alt="main img"
-        className="aspect-video w-full rounded-t object-cover md:w-1/4 md:rounded-md md:py-[1px] lg:h-full lg:w-full"
+        className="aspect-video w-full rounded-t object-cover md:w-1/3 md:rounded-md md:pt-[1px] lg:h-full lg:w-full"
       />
-      <div className="flex items-center justify-center gap-[2px] lg:hidden">
+      <div className="flex items-stretch justify-center gap-[2px] lg:hidden">
         {images.slice(1, 4).map((item, i) => (
           <img
             key={i}
             src={item.mediaLink}
             alt="child img"
-            className="mt-[2px] aspect-[4/3] w-1/3 rounded-b object-cover md:gap-1 md:rounded-md"
+            className="mt-[2px] aspect-[4/3] md:min-w-[200px] w-1/3 rounded-b object-cover md:gap-1 md:rounded-md"
           />
         ))}
       </div>

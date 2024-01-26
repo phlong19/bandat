@@ -6,7 +6,7 @@ function Map({ data, purType }) {
     <MapContainer
       center={[21.028511, 105.804817]}
       zoom={8}
-      className="h-full rounded-lg lg:w-[calc(100vw/2-25px)]"
+      className="h-full rounded-lg lg:w-[calc(100vw/2-85px)]"
       scrollWheelZoom={true}
       // a bit ugly code to set the width, but this is the only way to fix the map bug with animation
     >

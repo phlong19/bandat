@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { homeLinks } from "../constants/navlink";
 import HomePageList from "../features/list/HomePageList";
-import Searchbar from "../ui/Searchbar";
+import Searchbar from "../features/list/Searchbar";
 
 function Home() {
   return (
-    <div className="min-h-[calc(100vh-72px)] mt-[72px] bg-light px-1 pt-3 text-dark dark:bg-dark dark:text-light">
+    <div className="mt-[72px] min-h-[calc(100vh-72px)] bg-light px-1 pt-3 text-dark dark:bg-dark dark:text-light">
       <ul className="flex w-full items-center justify-center gap-3 xl:hidden">
         {homeLinks.map((link) => (
           <li
@@ -26,9 +26,9 @@ function Home() {
         </h2>
         <Searchbar />
         {/* homepage list */}
-       <HomePageList />
+        <HomePageList />
       </div>
-      
+
       {/* <button
         onClick={() =>
           toast.success(
