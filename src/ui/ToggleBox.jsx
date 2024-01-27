@@ -1,10 +1,14 @@
 import { useClickOutside } from "../hooks/useClickOutside";
 
-function ToggleBox({ children, close }) {
+function ToggleBox({ children, close, childX, type = false }) {
   const ref = useClickOutside(close, false);
 
   return (
-    <div ref={ref} className="bg fixed top-36 h-40 min-w-80">
+    <div
+      ref={ref}
+      style={{ right: type ? childX - 65 : childX }}
+      className={`${type ? "w-64" : "w-80"} fixed top-20 h-40 dark:bg-black bg-white`}
+    >
       {children}
     </div>
   );
