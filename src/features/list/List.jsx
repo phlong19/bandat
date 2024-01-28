@@ -35,7 +35,7 @@ function List({ purType, home = false }) {
     toast.error(error.message);
     return <ErrorFallBack />;
   }
-
+console.log(data)
   return (
     <div className="relative h-full justify-center px-2.5 sm:px-5 lg:flex lg:gap-2">
       {/* sider, mobile & tablet hidden */}
