@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
-
-import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import Button from "../ui/Button";
-
+import { news } from "../data/news";
 import { city } from "../data/city";
 import { navLinks } from "../constants/navlink";
-import { news } from "../data/news";
+import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
+import { Link } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+import { useState } from "react";
+import Pagination from "../ui/Pagination";
+import slugify from "react-slugify";
+import Searchbar from "../ui/Searchbar";
+import BreadCrumb from "../ui/BreadCrumb";
 
 function News() {
   const [show1, setShow1] = useState(false);
@@ -20,21 +21,7 @@ function News() {
 
   return (
     <div>
-      {/* <div className="flex w-full items-center border-b bg-white pb-5 pt-[20px] dark:bg-dark">
-        <div className="flex w-full items-center gap-2 pl-2.5 xl:pl-[50px] ">
-          <div className="">
-            <Link to="/" className="dark:text-light">
-              <BsHouse />
-            </Link>
-          </div>
-          <div className="">
-            <IoIosArrowForward />
-          </div>
-          <Link to="/tin-tuc" className="pt-[3px]">
-            <h1 className="font-semibold">Tin tức</h1>
-          </Link>
-        </div>
-      </div> */}
+      <BreadCrumb></BreadCrumb>
       <div className="max-w-full bg-white dark:bg-dark">
         <div className="mx-auto flex max-w-[800px] flex-col items-center bg-white py-10 text-center dark:bg-dark">
           <h1 className="font-lexend text-2xl font-bold md:text-4xl">
@@ -50,50 +37,54 @@ function News() {
       <div className="justify-center bg-white dark:bg-dark lg:flex ">
         <div className="bg-white px-3.5 dark:bg-dark">
           {news.map((item, i) => (
-            <div
-              key={i}
-              className="mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b-[1px] lg:bg-white lg:pb-5 lg:shadow-none"
-            >
-              <img
-                src={item.img}
-                className="w-full rounded-t-md lg:h-[150px] lg:w-[260px] lg:rounded-md"
-              />
-              <div className="p-3">
-                <i className="text-gray-400">{item.date}</i>
-                <h1 className="py-2 font-montserrat text-base font-semibold lg:text-lg lg:font-bold">
-                  {item.title}
-                </h1>
-                <p className="line-clamp-3 ">{item.summary}</p>
+            <Link to={`/tin-tuc/${slugify(item.title)}`} key={i}>
+              <div className="mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b-[1px] lg:bg-white lg:pb-5 lg:shadow-none ">
+                <img
+                  src={item.img}
+                  className="w-full rounded-t-md lg:h-[150px] lg:w-[260px] lg:rounded-md  "
+                />
+                <div className="p-3 ">
+                  <i className="text-gray-400">{item.date}</i>
+                  <h1 className="py-2 font-montserrat text-base font-semibold lg:text-lg lg:font-bold">
+                    {item.title}
+                  </h1>
+                  <p className="line-clamp-3 ">{item.summary}</p>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
-          <div className="flex justify-center p-5 text-center dark:bg-dark">
-            <Button variant="light" icon={<IoIosArrowDown />}>
-              Xem thêm
-            </Button>
+          <div className="flex justify-center">
+            <Pagination></Pagination>
           </div>
         </div>
-        <div className="p-3.5 lg:max-w-[270px] ">
-          <div className="rounded-md border border-prim-light bg-white p-3 dark:border-sec-light dark:bg-dark">
-            <h1 className="text-center text-xl font-bold">Tin nổi bật</h1>
-            {news.map((item, i) => (
-              <div key={i} className="py-3">
-                <i className="text-gray-400">{item.date}</i>
-                <h1 className="font-montserrat font-semibold">{item.title}</h1>
-              </div>
-            ))}
-          </div>
-          <div className="py-3">
-            <div className="rounded-md border border-prim-light bg-white p-3 dark:border-sec-light dark:bg-dark">
-              <h1 className="text-center text-lg font-semibold">
-                Thị trường BDS tại tỉnh/thành phố
-              </h1>
-              {city.map((item, i) => (
-                <div key={i} className="flex items-center p-3">
-                  <img src={item.img} className="h-10 w-20 rounded-xl " />
-                  <h1 className="pl-3">{item.cityname}</h1>
-                </div>
+
+        <div className=" lg:max-w-[300px] ">
+          <div className=" ">
+            <div className="rounded-md border-[1px] bg-white p-3 dark:bg-dark">
+              <h1 className="text-center text-xl font-bold">Tin nổi bật</h1>
+              {news.map((item, i) => (
+                <Link to={`/tin-tuc/${slugify(item.title)}`} key={i}>
+                  <div key={i} className="py-3">
+                    <i className="text-gray-400">{item.date}</i>
+                    <h1 className="line-clamp-3 font-montserrat font-semibold">
+                      {item.title}
+                    </h1>
+                  </div>
+                </Link>
               ))}
+            </div>
+            <div className="mt-5">
+              <div className="rounded-md border-[1px] bg-white p-3 dark:bg-dark ">
+                <h1 className="text-center text-lg font-semibold">
+                  Thị trường BDS tại 10 tỉnh/thành phố lớn
+                </h1>
+                {city.map((item, i) => (
+                  <div key={i} className="flex items-center p-3">
+                    <img src={item.img} className="h-10 w-20 rounded-xl " />
+                    <h1 className="pl-3">{item.cityname}</h1>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -104,8 +95,12 @@ function News() {
             <div key={item.title} className="px-10">
               <h1 className="text-lg font-semibold">{item.title}</h1>
               {item.child_links.map((item2) => (
-                <Link className="block" key={item2.title}>
-                  {item2.title}{" "}
+                <Link
+                  to={`/${item.to}/${item2.type}`}
+                  className="block"
+                  key={item2.title}
+                >
+                  {item2.title}
                 </Link>
               ))}
             </div>
