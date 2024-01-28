@@ -86,36 +86,46 @@ export const homeLinks = [
 ];
 
 export const sellSelectOptions = [
-  { title: "Nhà riêng", value: "nha-rieng" },
-  { title: "Căn hộ chung cư", value: "can-ho-chung-cu" },
-  { title: "Nhà biệt thự, liền kề", value: "biet-thu-lien-ke" },
-  { title: "Nhà mặt phố", value: "nha-mat-pho" },
+  { value: "nha-rieng", label: "Nhà riêng" },
+  { value: "can-ho-chung-cu", label: "Căn hộ chung cư" },
+  { value: "biet-thu-lien-ke", label: "Nhà biệt thự, liền kề" },
+  { value: "nha-mat-pho", label: "Nhà mặt phố" },
   {
-    title: "Shophouse, nhà phố thương mại",
     value: "shophouse-nha-pho-thuong-mai",
+    label: "Shophouse, nhà phố thương mại",
   },
-  { title: "Đất nền dự án", value: "dat-nen-du-an" },
-  { title: "Trang trại, khu nghỉ dưỡng", value: "trang-trai-khu-nghi-duong" },
-  { title: "Condotel", value: "condotel" },
-  { title: "Kho, nhà xưởng", value: "kho-nha-xuong" },
-  { title: "Loại bất động sản khác", value: "cac-loai-khac" },
+  { value: "dat-nen-du-an", label: "Đất nền dự án" },
+  { value: "trang-trai-khu-nghi-duong", label: "Trang trại, khu nghỉ dưỡng" },
+  { value: "condotel", label: "Condotel" },
+  { value: "kho-nha-xuong", label: "Kho, nhà xưởng" },
+  { value: "cac-loai-khac", label: "Loại bất động sản khác" },
 ];
 
 export const rentSelectOptions = [
-  { title: "Nhà riêng", value: "nha-rieng" },
-  { title: "Căn hộ chung cư", value: "can-ho-chung-cu" },
-  { title: "Nhà biệt thự, liền kề", value: "biet-thu-lien-ke" },
-  { title: "Nhà mặt phố", value: "nha-mat-pho" },
+  { label: "Nhà riêng", value: "nha-rieng" },
+  { label: "Căn hộ chung cư", value: "can-ho-chung-cu" },
+  { label: "Nhà biệt thự, liền kề", value: "biet-thu-lien-ke" },
+  { label: "Nhà mặt phố", value: "nha-mat-pho" },
   {
-    title: "Shophouse, nhà phố thương mại",
+    label: "Shophouse, nhà phố thương mại",
     value: "shophouse-nha-pho-thuong-mai",
   },
-  { title: "Nhà trọ, phòng trọ", value: "nha-tro-phong-tro" },
-  { title: "Văn phòng", value: "van-phong" },
+  { label: "Nhà trọ, phòng trọ", value: "nha-tro-phong-tro" },
+  { label: "Văn phòng", value: "van-phong" },
   {
-    title: "Cửa hàng, ki ốt",
+    label: "Cửa hàng, ki ốt",
     value: "cua-hang-ki-ot",
   },
-  { title: "Kho, nhà xưởng, đất", value: "kho-nha-xuong-dat" },
-  { title: "Loại bất động sản khác", value: "cac-loai-khac" },
+  { label: "Kho, nhà xưởng, đất", value: "kho-nha-xuong-dat" },
+  { label: "Loại bất động sản khác", value: "cac-loai-khac" },
+];
+
+export const areaOptions = [
+  { label: "Dưới 30m²", value: "0-30" },
+  { label: "30 - 50m²", value: "30-50" },
+  { label: "50 - 80m²", value: "50-80" },
+  { label: "80 - 100m²", value: "80-100" },
+  { label: "100 - 150m²", value: "100-150" },
+  { label: "150 - 200m²", value: "150-200" },
+  { label: "200 - 250m²", value: "200-250" },
 ];
