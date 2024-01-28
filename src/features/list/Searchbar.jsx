@@ -6,7 +6,6 @@ import {
 } from "../../constants/navlink";
 import { useSearchbar } from "./useSearchbar";
 import ErrorFallBack from "../../ui/ErrorFallBack";
-import SpinnerFullPage from "../../ui/SpinnerFullPage";
 
 import Button from "../../ui/Button";
 import { TbRefresh } from "react-icons/tb";
@@ -45,10 +44,10 @@ function Searchbar() {
 
   return (
     <div className="mx-auto flex flex-col items-stretch justify-center gap-1 md:w-full lg:w-2/3">
-      <div className="flex gap-1.5">
+      <div className="flex gap-1.5 justify-center">
         {/* purType */}
         <select
-          className="select hidden min-w-32 sm:block"
+          className="select hidden min-w-32 sm:block lg:max-w-32"
           name="purType"
           id="purType"
           defaultValue="none"
@@ -66,7 +65,7 @@ function Searchbar() {
         <select
           name="reType"
           id="reType"
-          className="select hidden sm:block md:min-w-36 lg:min-w-60"
+          className="select hidden sm:block md:min-w-36 lg:min-w-60 lg:max-w-60"
           defaultValue="none"
           onChange={(e) => {
             searchParams.set("reType", e.target.value);
@@ -103,7 +102,7 @@ function Searchbar() {
         </div>
       </div>
       {/* address  */}
-      <div className="hidden w-full justify-center gap-1.5 sm:flex xl:w-[84%]">
+      <div className="hidden w-full justify-center gap-1.5 sm:flex">
         {/* city */}
         <select
           name="city"
@@ -189,7 +188,7 @@ function Searchbar() {
         <select
           name="area"
           id="area"
-          className="select min-h-9 min-w-[20%]"
+          className="select min-h-9 min-w-30 lg:max-w-36"
           defaultValue="none"
           onChange={(e) => {
             searchParams.set("area", e.target.value);
