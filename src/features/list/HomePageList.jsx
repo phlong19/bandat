@@ -6,16 +6,16 @@ import ErrorFallBack from "../../ui/ErrorFallBack";
 import { useHomePage } from "./useHomePage";
 
 function HomePageList() {
-  const { data, error, isLoading } = useHomePage();
+  // const { data, error, isLoading } = useHomePage();
 
-  if (isLoading) {
-    return <SpinnerFullPage />;
-  }
+  // if (isLoading) {
+  //   return <SpinnerFullPage />;
+  // }
 
-  if (error) {
-    toast.error(error.message);
-    return <ErrorFallBack />;
-  }
+  // if (error) {
+  //   toast.error(error.message);
+  //   return <ErrorFallBack />;
+  // }
 
   return (
     <div>

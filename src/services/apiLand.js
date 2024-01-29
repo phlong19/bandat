@@ -53,13 +53,44 @@ export async function getList(type, citeria) {
   return data;
 }
 
-export async function getCity() {
-  const { data, error } = await supabase.from("CityDirectory").select(
-    `*`,
-    { count: "exact" },
-  );
+const data = {};
+data.city = data.dis = data.ward = [];
 
-  if (error) throw new Error(error.message);
+export async function getAddress(city, district, ward) {
+
+  if (!city && !district && !ward) {
+    data.dis = data.ward = [];
+    const { data: city, error } = await supabase
+      .from("CityDirectory")
+      .select("*", { count: "exact" });
+
+    if (error) throw new Error(error.message);
+
+    data.city = city;
+  }
+
+  if (city && !district && !ward) {
+    data.ward = [];
+    const { data: dis, error } = await supabase
+      .from("DistrictDirectory")
+      .select("*", { count: "exact" })
+      .eq("cityID", city);
+
+    if (error) throw new Error(error.message);
+
+    data.dis = dis;
+  }
+
+  if (city && district && !ward) {
+    const { data: ward, error } = await supabase
+      .from("WardDirectory")
+      .select("*", { count: "exact" })
+      .eq("disID", district);
+
+    if (error) throw new Error(error.message);
+
+    data.ward = ward;
+  }
 
   return data;
 }
