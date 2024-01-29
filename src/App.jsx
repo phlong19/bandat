@@ -18,6 +18,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import EditorDashboard from "./pages/EditorDashboard";
+import UserDashboard from "./pages/UserDashboard";
+import AccountManagement from "./pages/AccountManagement";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -31,6 +33,10 @@ import ScrollToTop from "./ui/ScrollToTop";
 import { DarkMode } from "./context/DarkModeContext";
 import { UserAuthentication } from "./context/UserContext";
 import { MapView } from "./context/MapViewContext";
+
+import "@mantine/core/styles.css";
+
+import { MantineProvider } from "@mantine/core";
 
 // constants
 import {
@@ -53,74 +59,78 @@ function App() {
       <QueryClientProvider client={client}>
         <ReactQueryDevtools />
         <UserAuthentication>
-          <MapView>
-            <BrowserRouter>
-              <ScrollToTop />
-              <Routes>
-                <Route element={<AppLayout />}>
-                  <Route index element={<Home />} />
-                  <Route path="nha-dat-ban" element={<ListingPage />} />
-                  {/* base on type to filter query data */}
-                  <Route path="nha-dat-ban/:type" element={<ListingPage />} />
-                  <Route path="nha-dat-cho-thue" element={<ListingPage />} />
+          <MantineProvider>
+            <MapView>
+              <BrowserRouter>
+                <ScrollToTop />
+                <Routes>
+                  <Route element={<AppLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="nha-dat-ban" element={<ListingPage />} />
+                    {/* base on type to filter query data */}
+                    <Route path="nha-dat-ban/:type" element={<ListingPage />} />
+                    <Route path="nha-dat-cho-thue" element={<ListingPage />} />
+                    <Route
+                      path="nha-dat-cho-thue/:type"
+                      element={<ListingPage />}
+                    />
+                    <Route path="du-an" element={<Projects />} />
+                    <Route path="nha-dat/:land" element={<Details />} />
+                    <Route path="tin-da-luu" element={<BookMarks />} />
+                    <Route path="tin-tuc" element={<News />} />
+                    <Route path="tin-tuc/:title" element={<NewDetails />} />
+                    <Route path="danh-ba" element={<Contacts />} />
+                  </Route>
+
+                  {/* no layout with this 2 path */}
+                  <Route element={<AuthenticationLayout />}>
+                    <Route path="dang-nhap" element={<Login />} />
+                    <Route path="dang-ky" element={<Register />} />
+                  </Route>
+
+                  {/* require authenticated user */}
                   <Route
-                    path="nha-dat-cho-thue/:type"
-                    element={<ListingPage />}
-                  />
-                  <Route path="du-an" element={<Projects />} />
-                  <Route path="nha-dat/:land" element={<Details />} />
-                  <Route path="tin-da-luu" element={<BookMarks />} />
-                  <Route path="tin-tuc" element={<News />} />
-                  <Route path="tin-tuc/:title" element={<NewDetails />} />
-                  <Route path="danh-ba" element={<Contacts />} />
-                </Route>
-
-                {/* no layout with this 2 path */}
-                <Route element={<AuthenticationLayout />}>
-                  <Route path="dang-nhap" element={<Login />} />
-                  <Route path="dang-ky" element={<Register />} />
-                </Route>
-
-                {/* require authenticated user */}
-                <Route
-                  element={
-                    <ProtectedRoute accessLevel={USER_LEVEL}>
-                      <ManageLayout />
-                    </ProtectedRoute>
-                  }
-                >
-                  {/* path for user to write RE post */}
-                  {/* FIX */}
-                  <Route path="dang-tin" />
-
-                  {/* editor path */}
-                  <Route
-                    path="quan-ly-bai-viet"
                     element={
-                      <ProtectedRoute accessLevel={EDITOR_LEVEL}>
-                        <EditorDashboard />
+                      <ProtectedRoute accessLevel={USER_LEVEL}>
+                        <ManageLayout />
                       </ProtectedRoute>
                     }
-                  />
-                  {/* admin path */}
-                  {/* if anyone can think out a name cooler, powerful than this */}
-                  {/* please let me know */}
-                  <Route
-                    path="control"
-                    element={
-                      <ProtectedRoute accessLevel={ADMIN_LEVEL}>
-                        <AdminPanel />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Route>
+                  >
+                    {/* path for user to write RE post */}
+                    <Route path="dang-tin" element={<UserDashboard />} />
 
-                {/* 404 & unauthorized */}
-                <Route path="khong-co-quyen" element={<Unauthorized />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </MapView>
+                    {/* user account management */}
+                    <Route path="tai-khoan" element={<AccountManagement />} />
+
+                    {/* editor path */}
+                    <Route
+                      path="quan-ly-tin-tuc"
+                      element={
+                        <ProtectedRoute accessLevel={EDITOR_LEVEL}>
+                          <EditorDashboard />
+                        </ProtectedRoute>
+                      }
+                    />
+                    {/* admin path */}
+                    {/* if anyone can think out a name cooler, powerful than this */}
+                    {/* please let me know */}
+                    <Route
+                      path="control"
+                      element={
+                        <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                          <AdminPanel />
+                        </ProtectedRoute>
+                      }
+                    />
+                  </Route>
+
+                  {/* 404 & unauthorized */}
+                  <Route path="khong-co-quyen" element={<Unauthorized />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </MapView>
+          </MantineProvider>
         </UserAuthentication>
 
         {/* notifications */}

@@ -1,5 +1,9 @@
 import { useState, useRef } from "react";
+import { NavLink } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa6";
+import { FaRegNewspaper } from "react-icons/fa";
+import { GrUserSettings } from "react-icons/gr";
+import { GiQueenCrown } from "react-icons/gi";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
@@ -8,7 +12,7 @@ import SpinnerFullPage from "./SpinnerFullPage";
 
 import Logout from "../features/auth/Logout";
 import { useAuth } from "../context/UserContext";
-import { USER_LEVEL } from "../constants/anyVariables";
+import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 
 function Action({ onClose }) {
   const width = window.innerWidth;
@@ -36,6 +40,8 @@ function Action({ onClose }) {
   const [userToggle, setUserToggle] = useState(false);
   function handleUserToggle(e) {
     e.stopPropagation();
+    const { x } = bookmarkRef.current.getBoundingClientRect();
+    setChildX(width - x - 180);
     if (userToggle !== true) {
       setShow(false);
       setUserToggle(true);
@@ -82,15 +88,47 @@ function Action({ onClose }) {
           />
           {userToggle && (
             <ToggleBox close={() => setUserToggle(false)} type childX={childX}>
-              {level >= USER_LEVEL && (
-                <Button to="/control">admin panel</Button>
-              )}
-              <Logout />
+              <div className="flex flex-col gap-2">
+                <NavLink
+                  to="/tai-khoan"
+                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium"
+                >
+                  <span className="text-xl">
+                    <GrUserSettings />
+                  </span>
+                  Quản lý tài khoản
+                </NavLink>
+                {level >= EDITOR_LEVEL && (
+                  <NavLink
+                    to="/quan-ly-tin-tuc"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium"
+                  >
+                    <span className="text-xl">
+                      <FaRegNewspaper />
+                    </span>
+                    Quản lý tin tức
+                  </NavLink>
+                )}
+                {level >= ADMIN_LEVEL && (
+                  <NavLink
+                    to="/control"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium"
+                  >
+                    <span className="text-xl">
+                      <GiQueenCrown />
+                    </span>
+                    Admin Panel
+                  </NavLink>
+                )}
+              </div>
+              <span className="flex mt-3 w-full items-center justify-center">
+                <Logout />
+              </span>
             </ToggleBox>
           )}
         </div>
       )}
-      <Button>Đăng tin</Button>
+      <Button to='/dang-tin'>Đăng tin</Button>
     </div>
   );
 }

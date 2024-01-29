@@ -36,11 +36,8 @@ function Searchbar() {
   }
 
   if (error) {
-    console.log(error);
     return <ErrorFallBack home />;
   }
-
-  console.log(data);
 
   return (
     <div className="mx-auto flex flex-col items-stretch justify-center gap-1 md:w-full lg:w-2/3">
