@@ -91,7 +91,7 @@ function Action({ onClose }) {
               <div className="flex flex-col gap-2">
                 <NavLink
                   to="/tai-khoan"
-                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium"
+                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
                 >
                   <span className="text-xl">
                     <GrUserSettings />
@@ -101,7 +101,7 @@ function Action({ onClose }) {
                 {level >= EDITOR_LEVEL && (
                   <NavLink
                     to="/quan-ly-tin-tuc"
-                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
                   >
                     <span className="text-xl">
                       <FaRegNewspaper />
@@ -112,7 +112,7 @@ function Action({ onClose }) {
                 {level >= ADMIN_LEVEL && (
                   <NavLink
                     to="/control"
-                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
                   >
                     <span className="text-xl">
                       <GiQueenCrown />
@@ -121,14 +121,14 @@ function Action({ onClose }) {
                   </NavLink>
                 )}
               </div>
-              <span className="flex mt-3 w-full items-center justify-center">
+              <span className="mt-3 flex w-full items-center justify-center">
                 <Logout />
               </span>
             </ToggleBox>
           )}
         </div>
       )}
-      <Button to='/dang-tin'>Đăng tin</Button>
+      <Button to="/dang-tin">Đăng tin</Button>
     </div>
   );
 }

@@ -34,9 +34,9 @@ import { DarkMode } from "./context/DarkModeContext";
 import { UserAuthentication } from "./context/UserContext";
 import { MapView } from "./context/MapViewContext";
 
-import "@mantine/core/styles.css";
-
-import { MantineProvider } from "@mantine/core";
+// components lib
+import { theme } from "./styles/theme";
+import { ChakraProvider } from '@chakra-ui/react'
 
 // constants
 import {
@@ -53,13 +53,15 @@ const client = new QueryClient({
   },
 });
 
+
+
 function App() {
   return (
-    <DarkMode>
-      <QueryClientProvider client={client}>
-        <ReactQueryDevtools />
-        <UserAuthentication>
-          <MantineProvider>
+    <ChakraProvider theme={theme}>
+      <DarkMode>
+        <QueryClientProvider client={client}>
+          <ReactQueryDevtools />
+          <UserAuthentication>
             <MapView>
               <BrowserRouter>
                 <ScrollToTop />
@@ -130,27 +132,27 @@ function App() {
                 </Routes>
               </BrowserRouter>
             </MapView>
-          </MantineProvider>
-        </UserAuthentication>
+          </UserAuthentication>
 
-        {/* notifications */}
-        <Toaster
-          containerClassName="m-2 md:m-3"
-          toastOptions={{
-            position: "top-right",
-            duration: 3500,
-            className:
-              "md:font-base py-4 px-6 max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
-            success: {
-              duration: 3000,
-            },
-            error: {
-              duration: 4000,
-            },
-          }}
-        />
-      </QueryClientProvider>
-    </DarkMode>
+          {/* notifications */}
+          <Toaster
+            containerClassName="m-2 md:m-3"
+            toastOptions={{
+              position: "top-right",
+              duration: 3500,
+              className:
+                "md:font-base py-4 px-6 max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 4000,
+              },
+            }}
+          />
+        </QueryClientProvider>
+      </DarkMode>{" "}
+    </ChakraProvider>
   );
 }
 

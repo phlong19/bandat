@@ -41,7 +41,7 @@ function Searchbar() {
 
   return (
     <div className="mx-auto flex flex-col items-stretch justify-center gap-1 md:w-full lg:w-2/3">
-      <div className="flex gap-1.5 justify-center">
+      <div className="flex justify-center gap-1.5">
         {/* purType */}
         <select
           className="select hidden min-w-32 sm:block lg:max-w-32"
@@ -186,13 +186,13 @@ function Searchbar() {
           name="area"
           id="area"
           className="select min-h-9 min-w-30 lg:max-w-36"
-          defaultValue="none"
+          defaultValue="all"
           onChange={(e) => {
             searchParams.set("area", e.target.value);
             setSearchParams(searchParams);
           }}
         >
-          <option value="none">Diện tích</option>
+          <option value="all">Diện tích</option>
           {areaOptions.map((item, i) => (
             <option value={item.value} key={i}>
               {item.label}

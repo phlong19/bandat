@@ -57,7 +57,6 @@ const data = {};
 data.city = data.dis = data.ward = [];
 
 export async function getAddress(city, district, ward) {
-
   if (!city && !district && !ward) {
     data.dis = data.ward = [];
     const { data: city, error } = await supabase

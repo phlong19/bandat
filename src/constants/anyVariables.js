@@ -34,3 +34,4 @@ const million = 1000000;
 const m2 = "/m²";
 
 export { billion, million, m2 };
+
