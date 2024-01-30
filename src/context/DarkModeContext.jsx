@@ -1,24 +1,24 @@
 import { createContext, useContext, useEffect } from "react";
 import { useLocalStorageState } from "../hooks/useLocalStorage";
-import {useMantineColorScheme} from '@mantine/core'
+import { useColorMode } from "@chakra-ui/react";
 
 const DarkContext = createContext();
 
 function DarkMode({ children }) {
   const [isDarkMode, setIsDarkMode] = useLocalStorageState(false, "isDarkMode");
-  const { setColorScheme } = useMantineColorScheme();
+  const { setColorMode } = useColorMode();
 
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
       document.documentElement.classList.remove("light");
-      setColorScheme("dark");
+      setColorMode("dark");
     } else {
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.add("light");
-      setColorScheme("light");
+      setColorMode("light");
     }
-  }, [isDarkMode,setColorScheme]);
+  }, [isDarkMode, setColorMode]);
 
   function toggleDarkMode() {
     setIsDarkMode((mode) => !mode);
