@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { LuShieldAlert } from "react-icons/lu";
@@ -13,7 +14,7 @@ function ProtectedRoute({ children, accessLevel }) {
 
   useEffect(() => {
     if (!isLoading) {
-      if (!isAuthenticated) {
+      if (!isAuthenticated || !data) {
         toast.error("Vui lòng đăng nhập để xem trang", {
           icon: (
             <span className="text-2xl text-yellow-500">
@@ -30,7 +31,7 @@ function ProtectedRoute({ children, accessLevel }) {
 
   if (isLoading) return <SpinnerFullPage />;
 
-  return children;
+  if (data && isAuthenticated) return children;
 }
 
 export default ProtectedRoute;

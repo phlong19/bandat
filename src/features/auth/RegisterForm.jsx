@@ -43,7 +43,7 @@ function RegisterForm() {
           errors={errors}
         />
 
-        <FormInput
+        {/* <FormInput
           label="Số điện thoại"
           id="phone"
           type="tel"
@@ -54,7 +54,7 @@ function RegisterForm() {
             }),
           }}
           errors={errors}
-        />
+        /> */}
         <FormInput
           label="Email"
           id="email"

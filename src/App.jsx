@@ -151,7 +151,7 @@ function App() {
             }}
           />
         </QueryClientProvider>
-      </DarkMode>{" "}
+      </DarkMode>
     </ChakraProvider>
   );
 }

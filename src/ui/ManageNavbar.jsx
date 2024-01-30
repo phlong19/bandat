@@ -29,8 +29,6 @@ function ManageNavbar() {
   const { data } = useAuth();
   const { logout } = useLogout();
 
-  console.log(data);
-
   return (
     <Flex
       justify="space-between"
@@ -38,7 +36,7 @@ function ManageNavbar() {
       align="center"
       boxShadow="2xl"
     >
-      <Flex direction="column" mt="5" p={0} align="center" gap={2}>
+      <Flex direction="column" mt="5" p={0} align="center" gap={2} id="manage_navlink">
         <NavLink to="/" className="mb-2">
           <Image boxSize="30" src="./icon.png" />
         </NavLink>
@@ -69,15 +67,15 @@ function ManageNavbar() {
         gap={3}
       >
         <Center>
-          <Menu>
+          <Menu matchWidth>
             <MenuButton>
               <Avatar
                 name={data.fullName}
                 boxShadow="dark-lg"
-                size="md"
+                size="sm"
                 src={data.avatar}
               >
-                <AvatarBadge bg="green.500" boxSize='1em' />
+                <AvatarBadge bg="green.500"  boxSize='1em' />
               </Avatar>
             </MenuButton>
             <MenuList fontSize="18" boxShadow="dark-lg" border={0}>

@@ -1,9 +1,5 @@
 import supabase from "./supabase";
-import {
-  ADMIN_LEVEL,
-  USER_LEVEL,
-  defaultAvatar,
-} from "../constants/anyVariables";
+import { ADMIN_LEVEL, USER_LEVEL } from "../constants/anyVariables";
 
 export async function login({ email, password }) {
   const { data, error: loginError } = await supabase.auth.signInWithPassword({
@@ -16,7 +12,7 @@ export async function login({ email, password }) {
   return data;
 }
 
-export async function register({ fullName, email, phone, password }) {
+export async function register({ fullName, email, password }) {
   const { data: justCreateUser, error: registerError } =
     await supabase.auth.signUp({
       email,
@@ -33,9 +29,7 @@ export async function register({ fullName, email, phone, password }) {
       {
         id: justCreateUser.user.id,
         fullName: fullName,
-        phone: phone,
-        level: ADMIN_LEVEL,
-        avatar: defaultAvatar,
+        level: USER_LEVEL,
       },
     ])
     .select();
@@ -45,7 +39,14 @@ export async function register({ fullName, email, phone, password }) {
   return data;
 }
 
-// FIX - also get user information in profile table
+// authenticated user want to post => have to verify phone num
+export async function verify(phone, token) {
+  const { data, error } = await supabase.auth.verifyOtp({
+    phone,
+    token,
+  });
+}
+
 export async function getCurrentUser() {
   const { data: session } = await supabase.auth.getSession();
 
