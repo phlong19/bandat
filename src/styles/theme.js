@@ -12,10 +12,15 @@ const colors = {
 
 export const theme = extendTheme({
   colors,
+  font: {
+    lexend: `'Lexend, sans-serif'`,
+    roboto: `'Roboto',sans-serif`,
+    montserrat: `'Montserrat',sans-serif`,
+  },
   styles: {
     global: (props) => ({
       body: {
-        fontFamily: "Roboto, sans-serif",
+        fontFamily: `"Lexend", sans-serif`,
         color: mode("black", "white")(props),
         bg: mode("white", "dark")(props),
         lineHeight: "base",

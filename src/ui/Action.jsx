@@ -7,26 +7,49 @@ import { GiQueenCrown } from "react-icons/gi";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
+import ToggleBox from "./ToggleBox";
 import SpinnerFullPage from "./SpinnerFullPage";
+import Avatar from "./Avatar";
 
-import {
-  Avatar,
-  AvatarBadge,
-  Menu,
-  MenuList,
-  MenuItem,
-  MenuButton,
-} from "@chakra-ui/react";
-
+import Logout from "../features/auth/Logout";
 import { useAuth } from "../context/UserContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
-import { TbLogout2 } from "react-icons/tb";
-import { HiOutlineCog8Tooth } from "react-icons/hi2";
-import { useLogout } from "../features/auth/useLogout";
 
 function Action({ onClose }) {
+  const width = window.innerWidth;
   const { data, isAuthenticated, level, isLoading } = useAuth();
-  const { logout } = useLogout();
+  const [childX, setChildX] = useState(0);
+
+  const bookmarkRef = useRef(null);
+
+  // bookmarks box
+  const [show, setShow] = useState(false);
+  function handleToggle(e) {
+    e.stopPropagation();
+    const { x } = bookmarkRef.current.getBoundingClientRect();
+    setChildX(width - x - 180);
+
+    if (show !== true) {
+      setUserToggle(false);
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }
+
+  // user details box
+  const [userToggle, setUserToggle] = useState(false);
+  function handleUserToggle(e) {
+    e.stopPropagation();
+    const { x } = bookmarkRef.current.getBoundingClientRect();
+    setChildX(width - x - 180);
+    if (userToggle !== true) {
+      setShow(false);
+      setUserToggle(true);
+    } else {
+      setUserToggle(false);
+    }
+  }
 
   if (isLoading) {
     return <SpinnerFullPage />;
@@ -34,17 +57,18 @@ function Action({ onClose }) {
 
   return (
     <div className="flex items-center justify-stretch gap-5">
-      <Menu title="Danh sách tin đã lưu">
-        <MenuButton>
-          <FaRegHeart fontSize={18} />
-        </MenuButton>
-        <MenuList>
-          <MenuItem>hi</MenuItem>
-          <MenuItem>ha</MenuItem>
-          <MenuItem>ho</MenuItem>
-        </MenuList>
-      </Menu>
-
+      <span
+        ref={bookmarkRef}
+        id="bookmark"
+        onClick={handleToggle}
+        title="Danh sách tin đã lưu"
+        className="relative cursor-pointer p-3 text-xl"
+      >
+        <FaRegHeart />
+      </span>
+      {show && (
+        <ToggleBox childX={childX} close={() => setShow(false)}></ToggleBox>
+      )}
       <ToggleTheme />
       {!isAuthenticated ? (
         <>
@@ -56,36 +80,49 @@ function Action({ onClose }) {
           </Button>
         </>
       ) : (
-        <Menu boundary="body" matchWidth>
-          <MenuButton>
-            <Avatar
-              name={data.fullName}
-              boxShadow="dark-lg"
-              size="sm"
-              src={data.avatar}
-            >
-              <AvatarBadge bg="blue.500" boxSize="1.5em" m={0}>
-                {/* if user has verified account */}
-                <span className="p-[1.5px] text-[10px]">✔</span>
-              </AvatarBadge>
-            </Avatar>
-          </MenuButton>
-          <MenuList fontSize="18" boxShadow="dark-lg" border={0}>
-            <MenuItem
-              icon={<HiOutlineCog8Tooth fontSize="16" />}
-              as={NavLink}
-              to="/tai-khoan"
-            >
-              Quản lý tài khoản
-            </MenuItem>
-            <MenuItem
-              icon={<TbLogout2 fontSize="16" />}
-              onClick={() => logout()}
-            >
-              Đăng xuất
-            </MenuItem>
-          </MenuList>
-        </Menu>
+        <div className="flex items-center">
+          <Avatar avatar={data.avatar} fullName={data.fullName} onClick={handleUserToggle} />
+          {userToggle && (
+            <ToggleBox close={() => setUserToggle(false)} type childX={childX}>
+              <div className="flex flex-col gap-2">
+                <NavLink
+                  to="/tai-khoan"
+                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+                >
+                  <span className="text-xl">
+                    <GrUserSettings />
+                  </span>
+                  Quản lý tài khoản
+                </NavLink>
+                {level >= EDITOR_LEVEL && (
+                  <NavLink
+                    to="/quan-ly-tin-tuc"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+                  >
+                    <span className="text-xl">
+                      <FaRegNewspaper />
+                    </span>
+                    Quản lý tin tức
+                  </NavLink>
+                )}
+                {level >= ADMIN_LEVEL && (
+                  <NavLink
+                    to="/control"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+                  >
+                    <span className="text-xl">
+                      <GiQueenCrown />
+                    </span>
+                    Admin Panel
+                  </NavLink>
+                )}
+              </div>
+              <span className="mt-3 flex w-full items-center justify-center">
+                <Logout />
+              </span>
+            </ToggleBox>
+          )}
+        </div>
       )}
       <Button to="/dang-tin">Đăng tin</Button>
     </div>

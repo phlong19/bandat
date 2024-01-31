@@ -18,7 +18,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import EditorDashboard from "./pages/EditorDashboard";
-import UserDashboard from "./pages/UserDashboard";
 import AccountManagement from "./pages/AccountManagement";
 
 // UI
@@ -28,6 +27,7 @@ import AuthenticationLayout from "./ui/AuthenticationLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
+import UserDashboard from "./pages/UserDashboard";
 
 // context api
 import { DarkMode } from "./context/DarkModeContext";
@@ -36,7 +36,7 @@ import { MapView } from "./context/MapViewContext";
 
 // components lib
 import { theme } from "./styles/theme";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from "@chakra-ui/react";
 
 // constants
 import {
@@ -52,8 +52,6 @@ const client = new QueryClient({
     },
   },
 });
-
-
 
 function App() {
   return (
@@ -98,8 +96,12 @@ function App() {
                       </ProtectedRoute>
                     }
                   >
-                    {/* path for user to write RE post */}
-                    <Route path="dang-tin" element={<UserDashboard />} />
+                    {/* path for user to write & manage RE post */}
+                    <Route path="dang-tin" element={<UserDashboard form />} />
+                    <Route
+                      path="quan-ly-bai-viet"
+                      element={<UserDashboard />}
+                    />
 
                     {/* user account management */}
                     <Route path="tai-khoan" element={<AccountManagement />} />
@@ -124,6 +126,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+                    {/* <Route path="" element */}
                   </Route>
 
                   {/* 404 & unauthorized */}

@@ -91,5 +91,19 @@ export async function getAddress(city, district, ward) {
     data.ward = ward;
   }
 
+  if (city && district && ward) {
+    const { data: address, error } = await supabase
+      .from("WardDirectory")
+      .select(
+        `*, dis: DistrictDirectory(disName, city: CityDirectory(cityName))`,
+      )
+      .eq("wardID", ward);
+    if (error) throw new Error(error.message);
+
+    data.city = address[0].dis.city.cityName;
+    data.dis = address[0].dis.disName;
+    data.ward = address[0].wardName;
+  }
+
   return data;
 }
