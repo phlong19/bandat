@@ -6,7 +6,9 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/UserContext";
 import Logout from "../features/auth/Logout";
 import SpinnerFullPage from "./SpinnerFullPage";
-import { EDITOR_LEVEL } from "../constants/anyVariables";
+import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
+import Avatar from "./Avatar";
+import { Flex, Box, Center } from "@chakra-ui/react";
 
 function MobileAction({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
@@ -32,22 +34,36 @@ function MobileAction({ onClose }) {
           </Button>
         </div>
       ) : (
-        <div className="flex w-full flex-col items-center">
-          <img
-            src={data.avatar}
-            alt={data.fullName}
-            className="w-1/3 rounded-full bg-dark/20 dark:bg-light"
-          />
-          <h3 className="pt-5">{level}</h3>
+        <Flex
+          direction="column"
+          minW="100%"
+          justify="center"
+          align="center"
+          gap={3}
+          pb={3}
+        >
+          <Avatar src={data.avatar} fullName={data.fullName} mobile />
+          {/* fix later */}
           <Logout />
-          {level >= EDITOR_LEVEL && <Button>editor page</Button>}
-        </div>
+
+          {level >= EDITOR_LEVEL && (
+            <Button to="/quan-ly-tin-tuc">Quan ly tin tuc</Button>
+          )}
+          {level >= ADMIN_LEVEL && <Button to="/control">admin panel</Button>}
+        </Flex>
       )}
-      <div className="mt-3.5 flex w-full items-stretch justify-center">
-        <Button variant="light" icon={<FaPencil />} onClick={onClose}>
-          Đăng tin
-        </Button>
-      </div>
+      <Box>
+        <Center>
+          <Button
+            variant="light"
+            to="/dang-tin"
+            icon={<FaPencil />}
+            onClick={onClose}
+          >
+            Đăng tin
+          </Button>
+        </Center>
+      </Box>
       <ul className="mt-3">
         {isAuthenticated && (
           <li className="relative w-full overflow-hidden">

@@ -1,7 +1,8 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
+import slugify from "react-slugify";
 
-function ChakraBreadcrumb({ page }) {
+function ChakraBreadcrumb({ page = "" }) {
   return (
     <Breadcrumb fontSize={18} fontFamily="lexend">
       <BreadcrumbItem>
@@ -11,7 +12,7 @@ function ChakraBreadcrumb({ page }) {
       </BreadcrumbItem>
 
       <BreadcrumbItem>
-        <BreadcrumbLink as={NavLink} to={`/${page}`}>
+        <BreadcrumbLink as={NavLink} to={`/${slugify(page.toLowerCase())}`}>
           {page}
         </BreadcrumbLink>
       </BreadcrumbItem>

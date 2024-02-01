@@ -7,7 +7,7 @@ function ManageLayout() {
   return (
     <Flex>
       <ManageNavbar />
-      <Box flex={1} minH="100dvh" overflowY="scroll" pl="12" pt="30">
+      <Box flex={1} minH="100dvh" overflowY="scroll" px="6" pt="30">
         <Outlet />
       </Box>
     </Flex>

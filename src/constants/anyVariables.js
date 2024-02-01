@@ -3,6 +3,8 @@ export const currentYear = new Date().getFullYear();
 
 // max item 1 page
 export const LIMIT_PER_PAGE = 12;
+// max row in a table
+export const LIMIT_PER_TABLE = 8;
 
 // level access
 const USER_LEVEL = 1;
@@ -31,3 +33,13 @@ const m2 = "/m²";
 
 export { billion, million, m2 };
 
+// table captions
+export const reCaptions = [
+  "Name & Phone",
+  "purType",
+  "tieu de",
+  "dia chi",
+  "report",
+  "status",
+  "dang ngay",
+];
