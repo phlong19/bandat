@@ -13,7 +13,7 @@ function ProtectedRoute({ children, accessLevel }) {
 
   useEffect(() => {
     if (!isLoading) {
-      if (!isAuthenticated) {
+      if (!isAuthenticated || !data) {
         toast.error("Vui lòng đăng nhập để xem trang", {
           icon: (
             <span className="text-2xl text-yellow-500">
@@ -30,7 +30,7 @@ function ProtectedRoute({ children, accessLevel }) {
 
   if (isLoading) return <SpinnerFullPage />;
 
-  return children;
+  if (data && isAuthenticated) return children;
 }
 
 export default ProtectedRoute;

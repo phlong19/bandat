@@ -7,7 +7,6 @@ import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
 import Pagination from "../ui/Pagination";
 import slugify from "react-slugify";
-import Searchbar from "../ui/Searchbar";
 import BreadCrumb from "../ui/BreadCrumb";
 
 function News() {

@@ -7,7 +7,7 @@ function ToggleBox({ children, close, childX, type = false }) {
     <div
       ref={ref}
       style={{ right: type ? childX - 65 : childX }}
-      className={`${type ? "w-64" : "w-80"} fixed top-20 h-40 dark:bg-black bg-white`}
+      className={`${type ? "w-64 mx-auto" : "w-80"} fixed top-20 min-h-40 rounded-lg shadow-sm shadow-black/25 dark:shadow-white/25 dark:bg-black bg-white p-4`}
     >
       {children}
     </div>
