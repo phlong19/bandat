@@ -1,6 +1,11 @@
+import QuillEditor from "../features/form/QuillEditor";
 
 function EditorDashboard() {
-  return <div>hi</div>;
+  return (
+    <div>
+      <QuillEditor allowImage={false} />
+    </div>
+  );
 }
 
 export default EditorDashboard;

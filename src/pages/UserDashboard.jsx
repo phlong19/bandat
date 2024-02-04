@@ -17,7 +17,6 @@ function UserDashboard({ form = false }) {
   // admin: all posts
   // user: only posts from that user
 
-  // note LIMIT_PER_TABLE = 8
   const re_data = Array.from({ length: 3 })
     .map((item) => data)
     .flat()

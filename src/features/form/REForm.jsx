@@ -6,25 +6,27 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import QuillEditor from "./QuillEditor";
 
 function REForm({ edit = false }) {
-  const { register, formState, getValues, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    getValues,
+    handleSubmit,
+    control,
+  } = useForm();
 
-  const { errors } = formState;
-
-  function onSubmit() {}
+  function onSubmit(data) {
+    console.log(data);
+  }
 
   return (
-    <form>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl>
         <FormLabel>Email address</FormLabel>
-        <Input
-          isRequired
-          type="email"
-          {...register("email", { required: "Email address is required" })}
-        />
+        <Input placeholder="email" />
         <FormHelperText>We&apos;ll never share your email.</FormHelperText>
 
         {errors && (
@@ -32,6 +34,17 @@ function REForm({ edit = false }) {
             Please provide your real email address
           </FormErrorMessage>
         )}
+
+        <FormControl>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field: { onChange } }) => (
+              <QuillEditor onChange={onChange} />
+            )}
+          />
+        </FormControl>
+
         <Button type="submit">submit</Button>
       </FormControl>
     </form>
