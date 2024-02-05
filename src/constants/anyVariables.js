@@ -3,8 +3,6 @@ export const currentYear = new Date().getFullYear();
 
 // max item 1 page
 export const LIMIT_PER_PAGE = 12;
-// max row in a table
-export const LIMIT_PER_TABLE = 8;
 
 // level access
 const USER_LEVEL = 1;

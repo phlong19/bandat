@@ -33,7 +33,7 @@ function QuillEditor({ onChange, allowImage = true }) {
   const imageHandler = useCallback(() => {
     const quillEditor = quill.current.getEditor();
     const range = quillEditor.getSelection();
-    let url = prompt("img url");
+    let url = prompt("Paste your image url here");
 
     if (url && range) {
       quillEditor.insertEmbed(range.index, "image", url);

@@ -129,3 +129,14 @@ export const areaOptions = [
   { label: "150 - 200m²", value: "150-200" },
   { label: "200 - 250m²", value: "200-250" },
 ];
+
+export const directions = [
+  "Bắc",
+  "Đông Bắc",
+  "Đông",
+  "Đông Nam",
+  "Nam",
+  "Tây Nam",
+  "Tây",
+  "Tây Bắc",
+];

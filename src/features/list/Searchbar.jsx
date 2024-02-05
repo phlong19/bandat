@@ -15,6 +15,8 @@ function Searchbar() {
   const [purType, setPurType] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const arr = purType ? sellSelectOptions : rentSelectOptions;
+
   const { data, isLoading, error } = useSearchbar();
 
   function reset() {
@@ -70,17 +72,11 @@ function Searchbar() {
           }}
         >
           <option value="none">Loại nhà đất</option>
-          {purType
-            ? sellSelectOptions.map((opt) => (
-                <option value={opt.value} key={opt.value}>
-                  {opt.label}
-                </option>
-              ))
-            : rentSelectOptions.map((opt) => (
-                <option value={opt.value} key={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
+          {arr.map((opt) => (
+            <option value={opt.value} key={opt.value}>
+              {opt.label}
+            </option>
+          ))}
         </select>
 
         {/* search with btn */}
