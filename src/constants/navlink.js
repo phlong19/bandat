@@ -18,7 +18,7 @@ export const navLinks = [
         type: "trang-trai-khu-nghi-duong",
       },
       { title: "Bán condotel", type: "condotel" },
-      { title: "Bán kho, nhà xưởng", type: "kho-nha-xuong" },
+      { title: "Bán kho, nhà xưởng", type: "kho-nha-xuong-dat" },
       { title: "Bán loại bất động sản khác", type: "cac-loai-khac" },
     ],
   },
@@ -97,7 +97,7 @@ export const sellSelectOptions = [
   { value: "dat-nen-du-an", label: "Đất nền dự án" },
   { value: "trang-trai-khu-nghi-duong", label: "Trang trại, khu nghỉ dưỡng" },
   { value: "condotel", label: "Condotel" },
-  { value: "kho-nha-xuong", label: "Kho, nhà xưởng" },
+  { label: "Kho, nhà xưởng, đất", value: "kho-nha-xuong-dat" },
   { value: "cac-loai-khac", label: "Loại bất động sản khác" },
 ];
 

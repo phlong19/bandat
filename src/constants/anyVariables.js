@@ -3,6 +3,8 @@ export const currentYear = new Date().getFullYear();
 
 // max item 1 page
 export const LIMIT_PER_PAGE = 12;
+// max files can be uploaded
+export const LIMIT_MEDIA_UPLOAD = 8;
 
 // level access
 const USER_LEVEL = 1;

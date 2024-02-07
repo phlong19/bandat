@@ -1,11 +1,14 @@
 import { Box } from "@chakra-ui/react";
+
 import ChakraBreadcrumb from "../ui/ChakraBreadcrumb";
 import ChakraTable from "../features/table/ChakraTable";
-import { reCaptions, item, LIMIT_PER_PAGE } from "../constants/anyVariables";
-import { data } from "../constants/products";
 import TableRERow from "../features/table/TableRERow";
-import { useAuth } from "../context/UserContext";
 import REForm from "../features/form/REForm";
+
+import { useAuth } from "../context/UserContext";
+import { reCaptions, LIMIT_PER_PAGE } from "../constants/anyVariables";
+
+import { data } from "../constants/products";
 
 function UserDashboard({ form = false }) {
   const page = window.location.pathname.includes("dang-tin")
@@ -31,7 +34,7 @@ function UserDashboard({ form = false }) {
           data={re_data}
           title="Quản lý bài viết"
           render={(item) => (
-            <TableRERow key={item.id} data={item} level={level} />
+            <TableRERow key={Math.random()} data={item} level={level} />
           )}
         />
       ) : (

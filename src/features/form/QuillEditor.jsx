@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import ReactQuill, { Quill } from "react-quill";
+import { useDarkMode } from "../../context/DarkModeContext";
 import "react-quill/dist/quill.snow.css";
 import "quill-paste-smart";
 
@@ -28,6 +29,7 @@ Quill.register(Font, true);
 
 function QuillEditor({ onChange, allowImage = true }) {
   const quill = useRef(null);
+  const { isDarkMode } = useDarkMode();
 
   // image handler
   const imageHandler = useCallback(() => {

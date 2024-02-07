@@ -9,7 +9,6 @@ import {
   NumberDecrementStepper,
   NumberIncrementStepper,
   Input,
-  InputGroup,
   Button,
   Grid,
   Select,
@@ -29,27 +28,36 @@ import {
   rentSelectOptions,
   sellSelectOptions,
 } from "../../constants/navlink";
+import FilesDropzone from "./FilesDropzone";
+import { LIMIT_MEDIA_UPLOAD } from "../../constants/anyVariables";
 
 function REForm({ edit = false }) {
   const [purType, setPurType] = useState(true);
+  const [files, setFiles] = useState([]);
   const arr = purType ? sellSelectOptions : rentSelectOptions;
   const {
     control,
     register,
     formState: { errors, isSubmitting },
     getValues,
+    setValue,
     handleSubmit,
   } = useForm();
 
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data) {
+    console.log({ ...data, purType });
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading size="md" py="18">
+    <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
+      <Heading size="md" pt="18" pb={2}>
         Tạo bài đăng bán bất động sản
       </Heading>
+      <Alert my={2} status="info">
+        <AlertIcon />
+        Vui lòng điền đủ trường có dấu{" "}
+        <span className="ml-1 text-red-600">*</span>
+      </Alert>
       <VStack gap={3}>
         {/* purType & re type */}
         <Grid templateColumns="repeat(2,1fr)" gap={3} w="100%">
@@ -72,7 +80,7 @@ function REForm({ edit = false }) {
           </FormControl>
         </Grid>
         {/* address */}
-        <Grid templateColumns="repeat(3,1fr)" gap={3} w="100%">
+        <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
           <FormControl>
             <FormLabel>Tỉnh, Thành phố</FormLabel>
             <Select>{/* ward */}</Select>
@@ -119,10 +127,6 @@ function REForm({ edit = false }) {
             </NumberInput>
           </FormControl>
         </Grid>
-        <Alert>
-          <AlertIcon />
-          Các thông tin liên quan
-        </Alert>
         {/* other fields */}
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
           <FormControl>
@@ -159,7 +163,7 @@ function REForm({ edit = false }) {
           </FormControl>
         </Grid>
         <Flex w="100%">
-          <Checkbox size="lg">Bất động sản có bao gồm nội thất?</Checkbox>
+          <Checkbox size="md">Bất động sản có bao gồm nội thất?</Checkbox>
         </Flex>
         {/* des */}
         <FormControl>
@@ -173,16 +177,36 @@ function REForm({ edit = false }) {
           />
         </FormControl>
         {/* file input */}
-        <Flex>
-          <FormControl>
-            <FormLabel>hi up file</FormLabel>
-            <InputGroup>
-              <Input type="file" py={1} />
-            </InputGroup>
-            <FormErrorMessage>loi up files</FormErrorMessage>
-          </FormControl>
+        <FormControl isRequired>
+          <FormLabel>Hình ảnh, video bất động sản</FormLabel>
+          <FormHelperText mb={2}>
+            Giới hạn số lượng {LIMIT_MEDIA_UPLOAD} file
+          </FormHelperText>
+          <Controller
+            name="files"
+            control={control}
+            render={({ field: { onChange } }) => (
+              <FilesDropzone
+                files={files}
+                setFiles={setFiles}
+                setValue={setValue}
+                onChange={onChange}
+              />
+            )}
+          />
+        </FormControl>
+
+        <Flex w="100%" justify="flex-end">
+          <Button
+            isDisabled={isSubmitting}
+            right={0}
+            colorScheme="teal"
+            variant="outline"
+            type="submit"
+          >
+            submit
+          </Button>
         </Flex>
-        <Button type="submit">submit</Button>
       </VStack>
     </form>
   );

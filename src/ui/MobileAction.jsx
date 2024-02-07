@@ -1,14 +1,15 @@
-import { FaPencil, FaRightToBracket, FaUserPlus } from "react-icons/fa6";
-import Button from "./Button";
-import DynamicFaIcon from "./DynamicFaIcon";
-import { mobileNavLinks } from "../constants/navlink";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/UserContext";
-import Logout from "../features/auth/Logout";
-import SpinnerFullPage from "./SpinnerFullPage";
-import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
+import DynamicFaIcon from "./DynamicFaIcon";
+import Button from "./Button";
 import Avatar from "./Avatar";
+import SpinnerFullPage from "./SpinnerFullPage";
 import { Flex, Box, Center } from "@chakra-ui/react";
+import { FaPencil, FaRightToBracket, FaUserPlus } from "react-icons/fa6";
+
+import { mobileNavLinks } from "../constants/navlink";
+import Logout from "../features/auth/Logout";
+import { useAuth } from "../context/UserContext";
+import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 
 function MobileAction({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
@@ -53,7 +54,7 @@ function MobileAction({ onClose }) {
         </Flex>
       )}
       <Box>
-        <Center>
+        <Center mt={3}>
           <Button
             variant="light"
             to="/dang-tin"

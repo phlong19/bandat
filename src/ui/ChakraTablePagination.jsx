@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { LIMIT_PER_TABLE } from "../constants/anyVariables";
+import { LIMIT_PER_PAGE } from "../constants/anyVariables";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
 import { Flex, Button, useColorModeValue } from "@chakra-ui/react";
@@ -14,7 +14,7 @@ function ChakraTablePagination() {
   const currentPage = searchParams.get("page")
     ? Number(searchParams.get("page"))
     : 1;
-  const totalPages = Math.ceil(totalItems / LIMIT_PER_TABLE);
+  const totalPages = Math.ceil(totalItems / LIMIT_PER_PAGE);
   let finalDestination;
 
   function handlePagination(to) {
