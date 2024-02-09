@@ -1,9 +1,12 @@
-import QuillEditor from "../features/form/QuillEditor";
+import ChakraTable from "../features/table/ChakraTable";
+import NewsFormModal from "../features/form/NewsFormModal";
 
 function EditorDashboard() {
   return (
     <div>
-      <QuillEditor />
+      <NewsFormModal />
+
+      <ChakraTable  />
     </div>
   );
 }
