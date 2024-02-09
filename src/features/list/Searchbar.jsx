@@ -32,7 +32,7 @@ function Searchbar() {
     document.querySelector("#city").value = "none";
     document.querySelector("#dis").value = "none";
     document.querySelector("#ward").value = "none";
-    document.querySelector("#area").value = "none";
+    document.querySelector("#area").value = "all";
 
     setSearchParams(searchParams);
   }

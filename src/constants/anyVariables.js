@@ -3,7 +3,8 @@ export const currentYear = new Date().getFullYear();
 
 // max item 1 page
 export const LIMIT_PER_PAGE = 12;
-// max files can be uploaded
+// min & max files can be uploaded
+export const BASE_MEDIA_UPLOAD = 5;
 export const LIMIT_MEDIA_UPLOAD = 8;
 
 // level access
@@ -43,3 +44,5 @@ export const reCaptions = [
   "status",
   "dang ngay",
 ];
+
+export const DEFAULT_RE_STATUS = 1;

@@ -3,7 +3,7 @@ import QuillEditor from "../features/form/QuillEditor";
 function EditorDashboard() {
   return (
     <div>
-      <QuillEditor allowImage={false} />
+      <QuillEditor />
     </div>
   );
 }

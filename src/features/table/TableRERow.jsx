@@ -47,7 +47,7 @@ function TableRERow({ data, level }) {
   }
 
   return (
-    <Tr>
+    <Tr className="group">
       <Td width={{ sm: "250px" }} maxWidth={{ sm: "300px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar src={avatar} name={fullName} size="md" me="18px" />
@@ -84,7 +84,7 @@ function TableRERow({ data, level }) {
         <Text noOfLines={2}>{hLine}</Text>
       </Td>
       {/* address */}
-      <Td maxW='250'>
+      <Td maxW="250">
         <Text noOfLines={2}>
           {wardName},{disName}, {cityName}
         </Text>
@@ -106,12 +106,12 @@ function TableRERow({ data, level }) {
       </Td>
       <Td>
         <Text fontSize="md" pb=".5rem">
-          {formatDate(created_at)}
+          {formatDate(created_at, "short")}
         </Text>
       </Td>
       <Td>
         <Menu>
-          <MenuButton>
+          <MenuButton className="invisible rounded-md border border-dark p-1 group-hover:visible dark:border-white">
             <PiDotsSixVerticalBold fontSize={25} />
           </MenuButton>
           <MenuList fontSize="medium">

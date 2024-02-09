@@ -16,6 +16,18 @@
   box-sizing: border-box;
 }
 
+html[data-theme="light"] {
+  --ql-fill-color: black;
+  --ql-bg: #f6f6f6;
+  --ql-color: #06c;
+}
+
+html[data-theme="dark"] {
+  --ql-fill-color: white;
+  --ql-bg: #222;
+  --ql-color: #ffb60a;
+}
+
 body {
   font-size: 14px;
   line-height: 20px;
@@ -42,10 +54,42 @@ li a.active::before {
   width: 100%;
 }
 
+/* border toolbar */
+.ql-toolbar.ql-snow {
+  border-color: inherit;
+}
+
+.ql-snow .ql-fill {
+  fill: var(--ql-fill-color);
+}
+
+.ql-snow .ql-stroke {
+  stroke: var(--ql-fill-color);
+}
+
+.ql-snow .ql-picker {
+  color: var(--ql-fill-color);
+}
+
+.ql-snow .ql-picker-options {
+  background-color: var(--ql-bg);
+}
+
+.ql-snow .ql-tooltip {
+  color: var(--ql-fill-color);
+  background-color: var(--ql-bg);
+  transform: translateX(80px) translateY(10px);
+}
+
+.ql-snow a.ql-action {
+  color: var(--ql-color);
+}
+
 /* default container */
 .ql-container.ql-snow {
   font-family: "Roboto", sans-serif;
   min-height: 100px;
+  border-color: inherit;
 }
 
 .ql-picker.ql-font .ql-picker-label[data-value="Roboto"]::before,

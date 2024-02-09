@@ -3,12 +3,9 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Button,
   Grid,
   Select,
@@ -18,6 +15,8 @@ import {
   AlertIcon,
   Checkbox,
   Flex,
+  Badge,
+  Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -29,7 +28,11 @@ import {
   sellSelectOptions,
 } from "../../constants/navlink";
 import FilesDropzone from "./FilesDropzone";
-import { LIMIT_MEDIA_UPLOAD } from "../../constants/anyVariables";
+import {
+  BASE_MEDIA_UPLOAD,
+  DEFAULT_RE_STATUS,
+  LIMIT_MEDIA_UPLOAD,
+} from "../../constants/anyVariables";
 
 function REForm({ edit = false }) {
   const [purType, setPurType] = useState(true);
@@ -45,14 +48,33 @@ function REForm({ edit = false }) {
   } = useForm();
 
   async function onSubmit(data) {
-    console.log({ ...data, purType });
+    if (!data.files || data?.files.length < BASE_MEDIA_UPLOAD) {
+      // FIX
+    }
+    console.log({ ...data, purType, status: DEFAULT_RE_STATUS });
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
-      <Heading size="md" pt="18" pb={2}>
-        Tạo bài đăng bán bất động sản
-      </Heading>
+      <Flex justify="space-between" align="center" pt="18" pb={2}>
+        <Heading size="md" noOfLines={1}>
+          {!edit ? "Tạo" : "Sửa"} bài đăng bán bất động sản
+        </Heading>
+        <Flex gap={3} align="center">
+          <Text fontSize="sm" fontWeight="700">
+            Trạng thái:
+          </Text>
+          <Badge
+            colorScheme="red"
+            fontSize="sm"
+            p="3px 10px"
+            borderRadius="lg"
+            textTransform="capitalize"
+          >
+            Chưa duyệt
+          </Badge>
+        </Flex>
+      </Flex>
       <Alert my={2} status="info">
         <AlertIcon />
         Vui lòng điền đủ trường có dấu{" "}
@@ -70,7 +92,7 @@ function REForm({ edit = false }) {
           </FormControl>
           <FormControl isRequired>
             <FormLabel>Loại hình</FormLabel>
-            <Select>
+            <Select {...register("reType")}>
               {arr.map((opt) => (
                 <option value={opt.value} key={opt.label}>
                   {opt.label}
@@ -82,7 +104,7 @@ function REForm({ edit = false }) {
         {/* address */}
         <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
           <FormControl>
-            <FormLabel>Tỉnh, Thành phố</FormLabel>
+            <FormLabel noOfLines={1}>Tỉnh, Thành phố</FormLabel>
             <Select>{/* ward */}</Select>
           </FormControl>
           <FormControl>
@@ -97,63 +119,67 @@ function REForm({ edit = false }) {
         {/* address - details */}
         <FormControl isRequired>
           <FormLabel>Địa chỉ cụ thể</FormLabel>
-          <Input type="text" placeholder="Số nhà - Ngõ - Ngách" />
+          <Input
+            type="text"
+            placeholder="Số nhà - Ngõ - Ngách"
+            {...register("address")}
+          />
         </FormControl>
         {/* title */}
         <FormControl isRequired>
           <FormLabel>Tiêu đề</FormLabel>
-          <Input type="text" />
+          <Input type="text" {...register("name")} />
         </FormControl>
         {/* area & price */}
         <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
           <FormControl isRequired>
             <FormLabel>Diện tích</FormLabel>
-            <NumberInput min={1}>
-              <NumberInputField placeholder="m²" />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <InputGroup>
+              <InputLeftAddon>mét</InputLeftAddon>
+              <Input type="number" {...register("area")} />
+            </InputGroup>
           </FormControl>
           <FormControl isRequired>
-            <FormLabel>Giá trị ước tính</FormLabel>
-            <NumberInput min={1}>
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <FormLabel>Giá trị {purType ? "bán" : "thuê / tháng"}</FormLabel>
+            <InputGroup>
+              <InputLeftAddon>{purType ? "tỷ" : "triệu"}</InputLeftAddon>
+              <Input {...register("price")} />
+            </InputGroup>
           </FormControl>
         </Grid>
         {/* other fields */}
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
           <FormControl>
             <FormLabel>Số phòng ngủ</FormLabel>
-            <Input type="number" />
+            <Input type="number" {...register("bed_room")} />
           </FormControl>
           <FormControl>
             <FormLabel>Số phòng vệ sinh</FormLabel>
-            <Input type="number" />
+            <Input type="number" {...register("bath_room")} />
           </FormControl>
           <FormControl>
             <FormLabel>Số lượng tầng</FormLabel>
-            <Input type="number" />
+            <Input type="number" {...register("floor")} />
           </FormControl>
         </Grid>
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
           <FormControl>
-            <FormLabel>Mặt tiền (m)</FormLabel>
-            <Input type="number" placeholder="mét" />
+            <FormLabel>Mặt tiền</FormLabel>
+            <InputGroup>
+              <InputLeftAddon>Mét</InputLeftAddon>
+              <Input type="number" {...register("facade")} />
+            </InputGroup>
           </FormControl>
           <FormControl>
             <FormLabel>Đường vào</FormLabel>
-            <Input type="number" placeholder="mét" />
+            <InputGroup>
+              <InputLeftAddon>Mét</InputLeftAddon>
+              <Input type="number" {...register("entryLength")} />
+            </InputGroup>
           </FormControl>
           <FormControl>
             <FormLabel>Hướng nhà</FormLabel>
-            <Select>
+            <Select {...register("direction")}>
               {directions.map((dir) => (
                 <option value={dir} key={dir}>
                   {dir}
@@ -163,16 +189,18 @@ function REForm({ edit = false }) {
           </FormControl>
         </Grid>
         <Flex w="100%">
-          <Checkbox size="md">Bất động sản có bao gồm nội thất?</Checkbox>
+          <Checkbox size="md" {...register("fur")}>
+            Bất động sản có bao gồm nội thất?
+          </Checkbox>
         </Flex>
         {/* des */}
         <FormControl>
           <FormLabel>Mô tả chi tiết</FormLabel>
           <Controller
-            name="description"
+            name="des"
             control={control}
             render={({ field: { onChange } }) => (
-              <QuillEditor onChange={onChange} />
+              <QuillEditor onChange={onChange} allowImage={false} />
             )}
           />
         </FormControl>
@@ -195,6 +223,13 @@ function REForm({ edit = false }) {
             )}
           />
         </FormControl>
+
+        {/* note */}
+        <Alert status="warning">
+          <AlertIcon />
+          Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các
+          thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D
+        </Alert>
 
         <Flex w="100%" justify="flex-end">
           <Button
