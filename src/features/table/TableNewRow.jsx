@@ -21,7 +21,8 @@ function TableNewRow(data, level) {
   const {
     created_at,
     profile: { fullName, avatar },
-    title,slug,
+    title,
+    slug,
     summary,
     status,
   } = data;
@@ -46,40 +47,20 @@ function TableNewRow(data, level) {
 
       <Td>
         <Badge
-          colorScheme={purType === true ? "blue" : "purple"}
+          colorScheme={status ? "green" : "red"}
           fontSize="sm"
           p="3px 10px"
           borderRadius="lg"
           textTransform="capitalize"
         >
-          {purType ? "Ban" : "Cho thue"}
+          {status ? "Đã duyệt" : "Chưa duyệt"}
         </Badge>
       </Td>
       {/* hline */}
       <Td maxW="250px">
-        <Text noOfLines={2}>{hLine}</Text>
+        <Text noOfLines={2}>{title}</Text>
       </Td>
-      {/* address */}
-      <Td maxW="250">
-        <Text noOfLines={2}>
-          {wardName},{disName}, {cityName}
-        </Text>
-      </Td>
-      {/* reports */}
-      <Td>
-        <Text pl="15px">{report}</Text>
-      </Td>
-      <Td>
-        <Badge
-          fontSize="sm"
-          p="3px 10px"
-          borderRadius="lg"
-          colorScheme={statusBadge}
-          textTransform="capitalize"
-        >
-          {status}
-        </Badge>
-      </Td>
+
       <Td>
         <Text fontSize="md" pb=".5rem">
           {formatDate(created_at, "short")}

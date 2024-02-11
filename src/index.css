@@ -19,13 +19,15 @@
 html[data-theme="light"] {
   --ql-fill-color: black;
   --ql-bg: #f6f6f6;
-  --ql-color: #06c;
+  --ql-color: blue;
+  --ql-color-action: #06c;
 }
 
 html[data-theme="dark"] {
   --ql-fill-color: white;
   --ql-bg: #222;
   --ql-color: #ffb60a;
+  --ql-color-action: #ffb60a;
 }
 
 body {
@@ -52,6 +54,10 @@ input:not(:placeholder-shown) ~ label {
 /* active nav link */
 li a.active::before {
   width: 100%;
+}
+
+a.active button.chakra-button {
+  color: var(--ql-color);
 }
 
 /* border toolbar */

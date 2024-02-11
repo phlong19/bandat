@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
+import NewsFormModal from "../form/NewsFormModal";
 
 function ChakraTable({ title, captions, data, render }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
@@ -33,9 +34,7 @@ function ChakraTable({ title, captions, data, render }) {
             <Button colorScheme="blue" variant="solid">
               some
             </Button>
-            <Button colorScheme="purple" variant="outline">
-              action
-            </Button>
+            <NewsFormModal />
           </Flex>
         </Flex>
       </CardHeader>

@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  areaOptions,
-  rentSelectOptions,
-  sellSelectOptions,
-} from "../../constants/navlink";
+import { areaOptions, navLinks } from "../../constants/navlink";
 import { useSearchbar } from "./useSearchbar";
 import ErrorFallBack from "../../ui/ErrorFallBack";
 
@@ -15,7 +11,7 @@ function Searchbar() {
   const [purType, setPurType] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const arr = purType ? sellSelectOptions : rentSelectOptions;
+  const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
   const { data, isLoading, error } = useSearchbar();
 
@@ -73,8 +69,8 @@ function Searchbar() {
         >
           <option value="none">Loại nhà đất</option>
           {arr.map((opt) => (
-            <option value={opt.value} key={opt.value}>
-              {opt.label}
+            <option value={opt.type} key={opt.type}>
+              {opt.title}
             </option>
           ))}
         </select>

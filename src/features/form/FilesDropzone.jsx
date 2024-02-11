@@ -4,12 +4,15 @@ import { useDropzone } from "react-dropzone";
 import { Image, Button, Text, Flex, Box } from "@chakra-ui/react";
 
 import { useColorModeValue } from "@chakra-ui/react";
-import { LIMIT_MEDIA_UPLOAD } from "../../constants/anyVariables";
+import {
+  LIMIT_IMG_UPLOAD,
+  LIMIT_VID_UPLOAD,
+} from "../../constants/anyVariables";
+
+const limit = LIMIT_IMG_UPLOAD + LIMIT_VID_UPLOAD;
 
 function FilesDropzone({ files, setFiles, setValue, onChange }) {
   const [error, setError] = useState("");
-  const [currentImg, setCurrentImg] = useState(0);
-  const [currentVid, setCurrentVid] = useState(0);
 
   // bg & border color drop & drag
   const bg = useColorModeValue("gray.100", "#1d1d1d");
@@ -17,63 +20,89 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      if (files.length + acceptedFiles.length > LIMIT_MEDIA_UPLOAD) {
+      const temp = files;
+      if (files.images.length + acceptedFiles.length > LIMIT_IMG_UPLOAD) {
         return setError("Vượt quá số lượng giới hạn file tải lên");
       }
-      setFiles((prevFile) => [
-        ...prevFile,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          }),
-        ),
-      ]);
-      setValue("files", [...files, ...acceptedFiles]);
+      acceptedFiles.forEach((file) =>
+        file.type.startsWith("image")
+          ? temp.images.push(file)
+          : temp.videos.push(file),
+      );
+      temp.images.forEach((file) =>
+        Object.assign(file, { preview: URL.createObjectURL(file) }),
+      );
+      temp.videos.forEach((file) =>
+        Object.assign(file, { preview: URL.createObjectURL(file) }),
+      );
+      setFiles(temp);
+      setValue("files", temp);
     },
     [setFiles, setValue, files],
   );
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: onDrop,
-    maxFiles: LIMIT_MEDIA_UPLOAD,
+    maxFiles: limit,
   });
 
   //   create thumbs
-  const thumbs = files.map((file) =>
-    file.type.startsWith("image") ? (
-      <Flex pos="relative" className="group" key={file.path}>
-        <Image src={file.preview} alt="Preview" boxSize="100px" />
-        <Button
-          className="invisible group-hover:visible"
-          size="xs"
-          borderRadius={0}
-          pos="absolute"
-          bottom={0}
-          right={0}
-          title="Loại bỏ file này"
-          colorScheme="red"
-          borderTopLeftRadius={5}
-          onClick={() => {
-            setFiles((prev) => prev.filter((i) => i.preview !== file.preview));
-            setValue("files", files);
-          }}
-        >
-          x
-        </Button>
-      </Flex>
-    ) : (
-      <video
-        style={{ width: 150, height: 100 }}
-        src={file.preview}
-        key={file.path}
-        controls
-      />
-    ),
-  );
+  const thumbsImg = files.images.map((file) => (
+    <Flex pos="relative" className="group" key={file.path}>
+      <Image src={file.preview} alt="Preview" boxSize="100px" />
+      <Button
+        className="invisible group-hover:visible"
+        size="xs"
+        borderRadius={0}
+        pos="absolute"
+        bottom={0}
+        right={0}
+        title="Loại bỏ file này"
+        colorScheme="red"
+        borderTopLeftRadius={5}
+        onClick={() => {
+          setFiles((prev) =>
+            prev.images.filter((i) => i.preview !== file.preview),
+          );
+          setValue("files", files);
+        }}
+      >
+        x
+      </Button>
+    </Flex>
+  ));
+
+  const thumbsVid = files.videos.map((file) => (
+    <Flex pos="relative" className="group" key={file.path}>
+      <video style={{ width: 150, height: 100 }} src={file.preview} controls />
+      <Button
+        className="invisible group-hover:visible"
+        size="xs"
+        borderRadius={0}
+        pos="absolute"
+        bottom={0}
+        right={0}
+        title="Loại bỏ file này"
+        colorScheme="red"
+        borderTopLeftRadius={5}
+        onClick={() => {
+          setFiles((prev) =>
+            prev.videos.filter((i) => i.preview !== file.preview),
+          );
+          setValue("files", files);
+        }}
+      >
+        x
+      </Button>
+    </Flex>
+  ));
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+    return () => {
+      files.images.forEach((file) => URL.revokeObjectURL(file.preview));
+      files.videos.forEach((file) => URL.revokeObjectURL(file.preview));
+    };
   }, [files]);
 
   return (
@@ -104,7 +133,7 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
         )}
       </Box>
       <Flex gap={1} wrap="wrap" my={3}>
-        {thumbs}
+        {thumbsVid} {thumbsImg}
       </Flex>
     </Flex>
   );

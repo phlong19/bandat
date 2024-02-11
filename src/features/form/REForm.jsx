@@ -22,22 +22,20 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import QuillEditor from "./QuillEditor";
 
-import {
-  directions,
-  rentSelectOptions,
-  sellSelectOptions,
-} from "../../constants/navlink";
+import { directions, navLinks } from "../../constants/navlink";
 import FilesDropzone from "./FilesDropzone";
 import {
   BASE_MEDIA_UPLOAD,
   DEFAULT_RE_STATUS,
-  LIMIT_MEDIA_UPLOAD,
+  LIMIT_IMG_UPLOAD,
+  LIMIT_VID_UPLOAD,
 } from "../../constants/anyVariables";
+import ChakraNumberInput from "../../ui/ChakraNumberInput";
 
 function REForm({ edit = false }) {
   const [purType, setPurType] = useState(true);
-  const [files, setFiles] = useState([]);
-  const arr = purType ? sellSelectOptions : rentSelectOptions;
+  const [files, setFiles] = useState({ images: [], videos: [] });
+  const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
   const {
     control,
     register,
@@ -134,48 +132,39 @@ function REForm({ edit = false }) {
         <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
           <FormControl isRequired>
             <FormLabel>Diện tích</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>mét</InputLeftAddon>
-              <Input type="number" {...register("area")} />
-            </InputGroup>
+            <ChakraNumberInput register={register("area")} placeholder="mét" />
           </FormControl>
           <FormControl isRequired>
             <FormLabel>Giá trị {purType ? "bán" : "thuê / tháng"}</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>{purType ? "tỷ" : "triệu"}</InputLeftAddon>
-              <Input {...register("price")} />
-            </InputGroup>
+            <ChakraNumberInput
+              register={register("price")}
+              placeholder={purType ? "tỷ" : "triệu"}
+            />
           </FormControl>
         </Grid>
         {/* other fields */}
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
           <FormControl>
             <FormLabel>Số phòng ngủ</FormLabel>
-            <Input type="number" {...register("bed_room")} />
+            <ChakraNumberInput register={register("bed_room")} />
           </FormControl>
           <FormControl>
             <FormLabel>Số phòng vệ sinh</FormLabel>
-            <Input type="number" {...register("bath_room")} />
+            <ChakraNumberInput register={register("bath_room")} />
           </FormControl>
           <FormControl>
             <FormLabel>Số lượng tầng</FormLabel>
-            <Input type="number" {...register("floor")} />
+            <ChakraNumberInput register={register("floor")} />
           </FormControl>
         </Grid>
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
           <FormControl>
             <FormLabel>Mặt tiền</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>Mét</InputLeftAddon>
-              <Input type="number" {...register("facade")} />
-            </InputGroup>
+            <ChakraNumberInput register={register("facade")} />
           </FormControl>
           <FormControl>
             <FormLabel>Đường vào</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>Mét</InputLeftAddon>
-              <Input type="number" {...register("entryLength")} />
-            </InputGroup>
+            <ChakraNumberInput register={register("entryLength")} />
           </FormControl>
           <FormControl>
             <FormLabel>Hướng nhà</FormLabel>
@@ -208,7 +197,8 @@ function REForm({ edit = false }) {
         <FormControl isRequired>
           <FormLabel>Hình ảnh, video bất động sản</FormLabel>
           <FormHelperText mb={2}>
-            Giới hạn số lượng {LIMIT_MEDIA_UPLOAD} file
+            {files.images?.length || 0}/{LIMIT_IMG_UPLOAD} images -{" "}
+            {files.videos?.length || 0}/{LIMIT_VID_UPLOAD} videos
           </FormHelperText>
           <Controller
             name="files"
