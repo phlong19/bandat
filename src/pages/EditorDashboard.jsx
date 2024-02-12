@@ -1,13 +1,23 @@
 import ChakraTable from "../features/table/ChakraTable";
-import NewsFormModal from "../features/form/NewsFormModal";
-import { reCaptions } from "../constants/anyVariables";
+import TableNewRow from "../features/table/TableNewRow";
+import { useAuth } from "../context/UserContext";
+
+import { news } from "../data/news";
+import { newsCaptions } from "../constants/anyVariables";
 
 function EditorDashboard() {
+  const { level } = useAuth();
+
   return (
     <div>
-      <NewsFormModal />
-
-      {/* <ChakraTable captions={reCaptions} data={} /> */}
+      <ChakraTable
+        data={news}
+        edit
+        captions={newsCaptions}
+        render={(item) => (
+          <TableNewRow data={item} level={level} key={item.id} />
+        )}
+      />
     </div>
   );
 }

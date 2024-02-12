@@ -35,8 +35,8 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
       temp.videos.forEach((file) =>
         Object.assign(file, { preview: URL.createObjectURL(file) }),
       );
-      setFiles(temp);
       setValue("files", temp);
+      setFiles(temp);
     },
     [setFiles, setValue, files],
   );
@@ -47,7 +47,7 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
   });
 
   //   create thumbs
-  const thumbsImg = files.images.map((file) => (
+  const thumbsImg = files.images?.map((file) => (
     <Flex pos="relative" className="group" key={file.path}>
       <Image src={file.preview} alt="Preview" boxSize="100px" />
       <Button
@@ -72,7 +72,7 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
     </Flex>
   ));
 
-  const thumbsVid = files.videos.map((file) => (
+  const thumbsVid = files.videos?.map((file) => (
     <Flex pos="relative" className="group" key={file.path}>
       <video style={{ width: 150, height: 100 }} src={file.preview} controls />
       <Button

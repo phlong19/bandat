@@ -4,8 +4,6 @@ import {
   FormErrorMessage,
   FormHelperText,
   Input,
-  InputGroup,
-  InputLeftAddon,
   Button,
   Grid,
   Select,
@@ -92,8 +90,8 @@ function REForm({ edit = false }) {
             <FormLabel>Loại hình</FormLabel>
             <Select {...register("reType")}>
               {arr.map((opt) => (
-                <option value={opt.value} key={opt.label}>
-                  {opt.label}
+                <option value={opt.type} key={opt.type}>
+                  {opt.title}
                 </option>
               ))}
             </Select>

@@ -17,8 +17,9 @@ import { TbEyeCheck } from "react-icons/tb";
 import { HiOutlineTrash } from "react-icons/hi";
 import { formatDate } from "../../utils/helper";
 
-function TableNewRow(data, level) {
+function TableNewRow({ data, level }) {
   const {
+    id,
     created_at,
     profile: { fullName, avatar },
     title,
@@ -56,11 +57,14 @@ function TableNewRow(data, level) {
           {status ? "Đã duyệt" : "Chưa duyệt"}
         </Badge>
       </Td>
-      {/* hline */}
+      {/* title */}
       <Td maxW="250px">
         <Text noOfLines={2}>{title}</Text>
       </Td>
-
+      {/* summary */}
+      <Td>
+        <Text noOfLines={2}>{summary}</Text>
+      </Td>
       <Td>
         <Text fontSize="md" pb=".5rem">
           {formatDate(created_at, "short")}
@@ -78,7 +82,7 @@ function TableNewRow(data, level) {
                 Duyệt bài nhanh
               </MenuItem>
             )}
-            <MenuItem gap={3} color="green" as={Link} to={`/`}>
+            <MenuItem gap={3} color="green" as={Link} to={`/edit/${slug}`}>
               {/* future: add edit page */}
               <TbEyeCheck fontSize="20" />
               Xem / Sửa

@@ -20,6 +20,7 @@
     "@tanstack/react-query": "^5.17.9",
     "@tanstack/react-query-devtools": "^5.17.9",
     "framer-motion": "^10.18.0",
+    "html-react-parser": "^5.1.2",
     "leaflet": "^1.9.4",
     "quill-paste-smart": "^1.4.12",
     "react": "^18.2.0",

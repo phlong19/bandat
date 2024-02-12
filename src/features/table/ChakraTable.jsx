@@ -16,7 +16,7 @@ import {
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 import NewsFormModal from "../form/NewsFormModal";
 
-function ChakraTable({ title, captions, data, render }) {
+function ChakraTable({ title, captions, data, render, edit = false }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
 
@@ -34,7 +34,8 @@ function ChakraTable({ title, captions, data, render }) {
             <Button colorScheme="blue" variant="solid">
               some
             </Button>
-            <NewsFormModal />
+            {/* for news */}
+            {edit && <NewsFormModal />}
           </Flex>
         </Flex>
       </CardHeader>

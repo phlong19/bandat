@@ -115,6 +115,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+                    
                     {/* admin path */}
                     {/* if anyone can think out a name cooler, powerful than this */}
                     {/* please let me know */}

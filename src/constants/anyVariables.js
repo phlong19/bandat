@@ -48,4 +48,6 @@ export const reCaptions = [
   "dang ngay",
 ];
 
+export const newsCaptions = ["one", "two"];
+
 export const DEFAULT_RE_STATUS = 1;
