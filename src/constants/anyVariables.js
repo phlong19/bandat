@@ -7,8 +7,14 @@ export const LIMIT_PER_PAGE = 12;
 const BASE_MEDIA_UPLOAD = 5;
 const LIMIT_IMG_UPLOAD = 6;
 const LIMIT_VID_UPLOAD = 2;
+const MAX_SIZE_UPLOAD = 5242880;
 
-export { BASE_MEDIA_UPLOAD, LIMIT_IMG_UPLOAD, LIMIT_VID_UPLOAD };
+export {
+  BASE_MEDIA_UPLOAD,
+  LIMIT_IMG_UPLOAD,
+  LIMIT_VID_UPLOAD,
+  MAX_SIZE_UPLOAD,
+};
 
 // level access
 const USER_LEVEL = 1;
@@ -48,6 +54,8 @@ export const reCaptions = [
   "dang ngay",
 ];
 
-export const newsCaptions = ["one", "two"];
-
 export const DEFAULT_RE_STATUS = 1;
+
+export const geoCodeURL = `https://geocode.maps.co/search`;
+
+export const newsCaptions = ["one", "two"];

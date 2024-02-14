@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { Image, Button, Text, Flex, Box } from "@chakra-ui/react";
@@ -7,36 +7,51 @@ import { useColorModeValue } from "@chakra-ui/react";
 import {
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
+  MAX_SIZE_UPLOAD,
 } from "../../constants/anyVariables";
 
 const limit = LIMIT_IMG_UPLOAD + LIMIT_VID_UPLOAD;
 
 function FilesDropzone({ files, setFiles, setValue, onChange }) {
-  const [error, setError] = useState("");
-
+  const [error, setError] = useState(false);
+  let imgLeft = useRef(0);
+  let vidLeft = useRef(0);
   // bg & border color drop & drag
   const bg = useColorModeValue("gray.100", "#1d1d1d");
   const borderColor = useColorModeValue("gray.300", "#ffffff29");
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      const temp = files;
-      if (files.images.length + acceptedFiles.length > LIMIT_IMG_UPLOAD) {
-        return setError("Vượt quá số lượng giới hạn file tải lên");
+      // clear error on new file drop
+      setError(false);
+      imgLeft.current = LIMIT_IMG_UPLOAD - files.images.length;
+      vidLeft.current = LIMIT_VID_UPLOAD - files.videos.length;
+
+      const mapped = acceptedFiles.map((file) => {
+        file.type.startsWith("image") ? imgLeft.current-- : vidLeft.current--;
+        if (imgLeft.current < 0 || vidLeft.current < 0) {
+          return setError("Vượt quá số lượng giới hạn file tải lên");
+        }
+        return Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        });
+      });
+
+      if (imgLeft.current >= 0 && vidLeft.current >= 0) {
+        setFiles((prev) => {
+          const newImgs = [
+            ...prev.images,
+            ...mapped.filter((i) => i.type.startsWith("image")),
+          ];
+          const newVids = [
+            ...prev.videos,
+            ...mapped.filter((i) => i.type.startsWith("video")),
+          ];
+          setValue("files", { images: newImgs, videos: newVids });
+
+          return { images: newImgs, videos: newVids };
+        });
       }
-      acceptedFiles.forEach((file) =>
-        file.type.startsWith("image")
-          ? temp.images.push(file)
-          : temp.videos.push(file),
-      );
-      temp.images.forEach((file) =>
-        Object.assign(file, { preview: URL.createObjectURL(file) }),
-      );
-      temp.videos.forEach((file) =>
-        Object.assign(file, { preview: URL.createObjectURL(file) }),
-      );
-      setValue("files", temp);
-      setFiles(temp);
     },
     [setFiles, setValue, files],
   );
@@ -44,27 +59,40 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: onDrop,
     maxFiles: limit,
+    maxSize: MAX_SIZE_UPLOAD, // 5 mb
+    accept: {
+      "image/png": [],
+      "image/jpg": [],
+      "image/jpeg": [],
+      "video/mp4": [],
+    },
   });
 
   //   create thumbs
-  const thumbsImg = files.images?.map((file) => (
+  const thumbsImg = files.images.map((file) => (
     <Flex pos="relative" className="group" key={file.path}>
       <Image src={file.preview} alt="Preview" boxSize="100px" />
       <Button
         className="invisible group-hover:visible"
         size="xs"
-        borderRadius={0}
         pos="absolute"
-        bottom={0}
-        right={0}
+        top={1}
+        left={1}
+        borderRadius={9999}
         title="Loại bỏ file này"
         colorScheme="red"
-        borderTopLeftRadius={5}
         onClick={() => {
-          setFiles((prev) =>
-            prev.images.filter((i) => i.preview !== file.preview),
-          );
-          setValue("files", files);
+          setFiles((prev) => ({
+            ...prev,
+            images: prev.images.filter((i) => i.preview !== file.preview),
+          }));
+
+          setValue("files", {
+            images: files.images.filter((i) => i.preview !== file.preview),
+            videos: files.videos,
+          });
+          imgLeft.current++;
+          setError(false);
         }}
       >
         x
@@ -72,24 +100,30 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
     </Flex>
   ));
 
-  const thumbsVid = files.videos?.map((file) => (
+  const thumbsVid = files.videos.map((file) => (
     <Flex pos="relative" className="group" key={file.path}>
       <video style={{ width: 150, height: 100 }} src={file.preview} controls />
       <Button
         className="invisible group-hover:visible"
         size="xs"
-        borderRadius={0}
         pos="absolute"
-        bottom={0}
-        right={0}
+        top={1}
+        left={1}
+        borderRadius={9999}
         title="Loại bỏ file này"
         colorScheme="red"
-        borderTopLeftRadius={5}
         onClick={() => {
-          setFiles((prev) =>
-            prev.videos.filter((i) => i.preview !== file.preview),
-          );
-          setValue("files", files);
+          setFiles((prev) => ({
+            ...prev,
+            videos: prev.videos.filter((i) => i.preview !== file.preview),
+          }));
+
+          setValue("files", {
+            images: files.images,
+            videos: files.videos.filter((i) => i.preview !== file.preview),
+          });
+          vidLeft.current++;
+          setError(false);
         }}
       >
         x
@@ -122,7 +156,7 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
         })}
       >
         <input {...getInputProps({ onChange })} />
-        {error.length === 0 ? (
+        {!error ? (
           <Text fontSize="sm" color="gray.500">
             Drag & drop file here, or click to select files
           </Text>

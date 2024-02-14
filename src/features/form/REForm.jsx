@@ -29,25 +29,49 @@ import {
   LIMIT_VID_UPLOAD,
 } from "../../constants/anyVariables";
 import ChakraNumberInput from "../../ui/ChakraNumberInput";
+import { useSearchbar } from "../list/useSearchbar";
+import { useSearchParams } from "react-router-dom";
+import { useCreateRE } from "./useCreateRE";
+import { useAuth } from "../../context/UserContext";
 
 function REForm({ edit = false }) {
-  const [purType, setPurType] = useState(true);
-  const [files, setFiles] = useState({ images: [], videos: [] });
-  const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
   const {
     control,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     getValues,
+    setError,
     setValue,
     handleSubmit,
   } = useForm();
 
-  async function onSubmit(data) {
+  const [purType, setPurType] = useState(true);
+  const [files, setFiles] = useState({ images: [], videos: [] });
+  const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { data, error, isLoading } = useSearchbar();
+
+  // submit & create new re
+  const { isCreating, mutate } = useCreateRE();
+  const { data: authData } = useAuth();
+
+  function onSubmit(data) {
     if (!data.files || data?.files.length < BASE_MEDIA_UPLOAD) {
-      // FIX
+      return setError("files", { type: "required", message: "dmm" });
+    } else if (!data.des) {
+      return setError("des", {
+        type: "required",
+        message: "vui long dien mo ta chi tiet",
+      });
     }
-    console.log({ ...data, purType, status: DEFAULT_RE_STATUS });
+ 
+    mutate({
+      ...data,
+      purType: purType,
+      status: DEFAULT_RE_STATUS,
+      userID: authData.id,
+    });
   }
 
   return (
@@ -101,15 +125,83 @@ function REForm({ edit = false }) {
         <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
           <FormControl>
             <FormLabel noOfLines={1}>Tỉnh, Thành phố</FormLabel>
-            <Select>{/* ward */}</Select>
+            <Select
+              {...register("cityID")}
+              value={
+                data?.city?.filter(
+                  (c) => c.cityID === Number(searchParams.get("city")),
+                )?.[0]?.cityID || "none"
+              }
+              onChange={(e) => {
+                searchParams.set("city", e.target.value);
+                searchParams.delete("dis");
+                searchParams.delete("ward");
+                setSearchParams(searchParams);
+              }}
+              isDisabled={isLoading}
+            >
+              <option value="none">Tỉnh, Thành phố</option>
+              {data?.city.map((item) => (
+                <option value={item.cityID} key={item.cityID}>
+                  {item.cityName}
+                </option>
+              ))}
+            </Select>
           </FormControl>
           <FormControl>
             <FormLabel>Quận, huyện</FormLabel>
-            <Select>{/* ward */}</Select>
+            <Select
+              {...register("disID")}
+              onChange={(e) => {
+                searchParams.set("dis", e.target.value);
+                searchParams.delete("ward");
+                setSearchParams(searchParams);
+              }}
+              value={
+                data?.dis?.filter(
+                  (d) => d.disID === Number(searchParams.get("dis")),
+                )?.[0]?.disID || "none"
+              }
+              isDisabled={isLoading}
+            >
+              {!data?.dis?.length ? (
+                <option value="none">Vui lòng chọn tỉnh thành phố trước</option>
+              ) : (
+                <>
+                  <option value="none">Quận, huyện</option>
+                  {data.dis.map((item) => (
+                    <option value={item.disID} key={item.disID}>
+                      {item.disName}
+                    </option>
+                  ))}
+                </>
+              )}
+            </Select>
           </FormControl>
           <FormControl>
             <FormLabel>Phường, xã</FormLabel>
-            <Select>{/* ward */}</Select>
+            <Select
+              {...register("wardID")}
+              onChange={(e) => {
+                searchParams.set("ward", e.target.value);
+                setSearchParams(searchParams);
+              }}
+              defaultValue="none"
+              isDisabled={isLoading}
+            >
+              {!data?.ward?.length ? (
+                <option value="none">Vui lòng chọn quận huyện trước</option>
+              ) : (
+                <>
+                  <option value="none">Phường, xã</option>
+                  {data.ward.map((item) => (
+                    <option value={item.wardID} key={item.wardID}>
+                      {item.wardName}
+                    </option>
+                  ))}
+                </>
+              )}
+            </Select>
           </FormControl>
         </Grid>
         {/* address - details */}
@@ -181,8 +273,11 @@ function REForm({ edit = false }) {
           </Checkbox>
         </Flex>
         {/* des */}
-        <FormControl>
+        <FormControl isRequired isInvalid={errors.des}>
           <FormLabel>Mô tả chi tiết</FormLabel>
+          {errors.des && (
+            <FormErrorMessage>{errors.des.message}</FormErrorMessage>
+          )}
           <Controller
             name="des"
             control={control}
@@ -192,12 +287,15 @@ function REForm({ edit = false }) {
           />
         </FormControl>
         {/* file input */}
-        <FormControl isRequired>
+        <FormControl isRequired isInvalid={errors.files}>
           <FormLabel>Hình ảnh, video bất động sản</FormLabel>
           <FormHelperText mb={2}>
-            {files.images?.length || 0}/{LIMIT_IMG_UPLOAD} images -{" "}
-            {files.videos?.length || 0}/{LIMIT_VID_UPLOAD} videos
+            {files.images.length}/{LIMIT_IMG_UPLOAD} images -{" "}
+            {files.videos.length}/{LIMIT_VID_UPLOAD} videos
           </FormHelperText>
+          {errors.files && (
+            <FormErrorMessage>{errors.files.message}</FormErrorMessage>
+          )}
           <Controller
             name="files"
             control={control}
@@ -221,7 +319,7 @@ function REForm({ edit = false }) {
 
         <Flex w="100%" justify="flex-end">
           <Button
-            isDisabled={isSubmitting}
+            spinner={isCreating}
             right={0}
             colorScheme="teal"
             variant="outline"

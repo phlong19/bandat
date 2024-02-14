@@ -1,5 +1,5 @@
 import supabase from "./supabase";
-import { LIMIT_PER_PAGE } from "../constants/anyVariables";
+import { LIMIT_PER_PAGE, geoCodeURL } from "../constants/anyVariables";
 
 export async function getHomepage() {
   const { data, error } = await supabase
@@ -106,4 +106,51 @@ export async function getAddress(city, district, ward) {
   }
 
   return data;
+}
+
+export async function createNewREPost(reData) {
+  console.log(reData);
+  const { address, cityID, disID, wardID, reType, userID } = reData;
+  const { data: typeID, error } = await supabase
+    .from("REType")
+    .select("*")
+    .eq("type", reType);
+
+  if (error) {
+    throw new Error("There was an error while fetching data");
+  }
+  console.log(typeID);
+
+  const { city, dis, ward } = await getAddress(cityID, disID, wardID);
+  const fullAddress = `${address} ${ward} ${dis} ${city}`;
+
+  const res = await fetch(
+    geoCodeURL +
+      `?q=${fullAddress}&api_key=${import.meta.env.VITE_GEOCODE_KEY}`,
+  );
+
+  const { lat, lon } = await res.json()[0];
+
+  const { data, error: createError } = await supabase
+    .from("REDirectory")
+    .insert([
+      {
+        ...reData,
+        REType_ID: typeID[0].REType_ID,
+        userID,
+        lat: lat,
+        long: lon,
+      },
+    ])
+    .select()
+    .single();
+
+  if (createError) {
+    throw new Error(createError.message); // for dev
+    // throw new Error("khong the tao bai dang luc nay, vui long thu lai sau");
+  }
+
+  // handle media
+
+  return null;
 }

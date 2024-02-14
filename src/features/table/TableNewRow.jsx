@@ -82,7 +82,7 @@ function TableNewRow({ data, level }) {
                 Duyệt bài nhanh
               </MenuItem>
             )}
-            <MenuItem gap={3} color="green" as={Link} to={`/edit/${slug}`}>
+            <MenuItem gap={3} color="green" as={Link} to={`edit/${slug}`}>
               {/* future: add edit page */}
               <TbEyeCheck fontSize="20" />
               Xem / Sửa
