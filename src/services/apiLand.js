@@ -1,5 +1,8 @@
 import supabase from "./supabase";
+import { v4 } from "uuid";
+
 import { LIMIT_PER_PAGE, geoCodeURL } from "../constants/anyVariables";
+import { getAddress } from "./apiGeneral";
 
 export async function getHomepage() {
   const { data, error } = await supabase
@@ -53,64 +56,11 @@ export async function getList(type, citeria) {
   return data;
 }
 
-const data = {};
-data.city = data.dis = data.ward = [];
-
-export async function getAddress(city, district, ward) {
-  if (!city && !district && !ward) {
-    data.dis = data.ward = [];
-    const { data: city, error } = await supabase
-      .from("CityDirectory")
-      .select("*", { count: "exact" });
-
-    if (error) throw new Error(error.message);
-
-    data.city = city;
-  }
-
-  if (city && !district && !ward) {
-    data.ward = [];
-    const { data: dis, error } = await supabase
-      .from("DistrictDirectory")
-      .select("*", { count: "exact" })
-      .eq("cityID", city);
-
-    if (error) throw new Error(error.message);
-
-    data.dis = dis;
-  }
-
-  if (city && district && !ward) {
-    const { data: ward, error } = await supabase
-      .from("WardDirectory")
-      .select("*", { count: "exact" })
-      .eq("disID", district);
-
-    if (error) throw new Error(error.message);
-
-    data.ward = ward;
-  }
-
-  if (city && district && ward) {
-    const { data: address, error } = await supabase
-      .from("WardDirectory")
-      .select(
-        `*, dis: DistrictDirectory(disName, city: CityDirectory(cityName))`,
-      )
-      .eq("wardID", ward);
-    if (error) throw new Error(error.message);
-
-    data.city = address[0].dis.city.cityName;
-    data.dis = address[0].dis.disName;
-    data.ward = address[0].wardName;
-  }
-
-  return data;
-}
-
-export async function createNewREPost(reData) {
+export async function createNewREPost(newData) {
+  console.log(newData);
+  const { files, docs, reType, ...reData } = newData;
   console.log(reData);
-  const { address, cityID, disID, wardID, reType, userID } = reData;
+  // get re type id, ex: nha-rieng = 1
   const { data: typeID, error } = await supabase
     .from("REType")
     .select("*")
@@ -119,27 +69,35 @@ export async function createNewREPost(reData) {
   if (error) {
     throw new Error("There was an error while fetching data");
   }
-  console.log(typeID);
 
-  const { city, dis, ward } = await getAddress(cityID, disID, wardID);
-  const fullAddress = `${address} ${ward} ${dis} ${city}`;
-
+  // get full address from address and ids
+  const { city, dis, ward } = await getAddress(
+    reData.cityID,
+    reData.disID,
+    reData.wardID,
+  );
+  const fullAddress = `${reData.address} ${ward} ${dis} ${city}`;
   const res = await fetch(
     geoCodeURL +
       `?q=${fullAddress}&api_key=${import.meta.env.VITE_GEOCODE_KEY}`,
   );
+  // destructure lat & long from api results
+  const geo = await res.json();
+  const lat = parseFloat(geo[0].lat);
+  const long = parseFloat(geo[0].lon);
 
-  const { lat, lon } = await res.json()[0];
-
-  const { data, error: createError } = await supabase
+  // post
+  const {
+    data: { id: postID },
+    error: createError,
+  } = await supabase
     .from("REDirectory")
     .insert([
       {
         ...reData,
         REType_ID: typeID[0].REType_ID,
-        userID,
-        lat: lat,
-        long: lon,
+        lat,
+        long,
       },
     ])
     .select()
@@ -150,7 +108,31 @@ export async function createNewREPost(reData) {
     // throw new Error("khong the tao bai dang luc nay, vui long thu lai sau");
   }
 
-  // handle media
+  console.log(docs);
+  console.log(files);
 
+  // handle media
+  files.images.forEach((file) => uploadMedia(file, postID));
+
+  return null;
+}
+
+async function uploadMedia(file, postID) {
+  const fileName = `REDir - ${v4()}${postID}`;
+  const { data: uploadedFile, error: uploadError } = await supabase.storage
+    .from("medias")
+    .upload(fileName, file);
+
+  if (uploadError) {
+    throw new uploadError(error.message);
+  }
+  console.log(uploadedFile);
+  const { data, error } = await supabase
+    .from("REImages")
+    .insert([{ postID, mediaLink:  }])
+    .select()
+    .single();
+
+  console.log(data);
   return null;
 }

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAddress } from "../../services/apiLand";
 import { useSearchParams } from "react-router-dom";
+import { getAddress } from "../../services/apiGeneral";
 
 export function useSearchbar() {
   const [searchParams] = useSearchParams();

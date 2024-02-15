@@ -6,8 +6,9 @@ import { createNewREPost } from "../../services/apiLand";
 export function useCreateRE() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   const { isPending: isCreating, mutate } = useMutation({
-    mutationFn: (reData) =>
+    mutationFn: (reData,) =>
       createNewREPost(reData),
     onSuccess: (data) => {
       toast.success("hi");
@@ -15,6 +16,7 @@ export function useCreateRE() {
       navigate("/quan-ly-bai-viet");
     },
     onError: (err) => {
+      // for dev
       toast.error(err.message);
     },
   });

@@ -1,3 +1,4 @@
+// libs
 import {
   FormControl,
   FormLabel,
@@ -9,8 +10,6 @@ import {
   Select,
   VStack,
   Heading,
-  Alert,
-  AlertIcon,
   Checkbox,
   Flex,
   Badge,
@@ -18,19 +17,25 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import QuillEditor from "./QuillEditor";
+import { toast } from "react-hot-toast";
+import { useSearchParams } from "react-router-dom";
 
-import { directions, navLinks } from "../../constants/navlink";
+// UI
+import QuillEditor from "./QuillEditor";
 import FilesDropzone from "./FilesDropzone";
+import ChakraNumberInput from "../../ui/ChakraNumberInput";
+import ChakraAlert from "../../ui/ChakraAlert";
+import AddressSelect from "./AddressSelect";
+import DocumentCheckBoxes from "./DocumentCheckBoxes";
+
+// others
 import {
   BASE_MEDIA_UPLOAD,
   DEFAULT_RE_STATUS,
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
 } from "../../constants/anyVariables";
-import ChakraNumberInput from "../../ui/ChakraNumberInput";
-import { useSearchbar } from "../list/useSearchbar";
-import { useSearchParams } from "react-router-dom";
+import { directions, navLinks } from "../../constants/navlink";
 import { useCreateRE } from "./useCreateRE";
 import { useAuth } from "../../context/UserContext";
 
@@ -46,17 +51,23 @@ function REForm({ edit = false }) {
   } = useForm();
 
   const [purType, setPurType] = useState(true);
-  const [files, setFiles] = useState({ images: [], videos: [] });
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { data, error, isLoading } = useSearchbar();
+  const [files, setFiles] = useState({ images: [], videos: [] });
+  const [docs, setDocs] = useState([]);
+  const [searchParams] = useSearchParams();
 
   // submit & create new re
   const { isCreating, mutate } = useCreateRE();
   const { data: authData } = useAuth();
 
   function onSubmit(data) {
+    const cityID =
+      searchParams.get("city") !== "none" ? searchParams.get("city") : null;
+    const disID =
+      searchParams.get("dis") !== "none" ? searchParams.get("dis") : null;
+    const wardID =
+      searchParams.get("ward") !== "none" ? searchParams.get("ward") : null;
     if (!data.files || data?.files.length < BASE_MEDIA_UPLOAD) {
       return setError("files", { type: "required", message: "dmm" });
     } else if (!data.des) {
@@ -64,13 +75,19 @@ function REForm({ edit = false }) {
         type: "required",
         message: "vui long dien mo ta chi tiet",
       });
+    } else if (!cityID && !disID && !wardID) {
+      return toast.error("dmm select dia chi");
     }
- 
+
     mutate({
       ...data,
+      cityID,
+      disID,
+      wardID,
       purType: purType,
       status: DEFAULT_RE_STATUS,
       userID: authData.id,
+      docs,
     });
   }
 
@@ -95,12 +112,12 @@ function REForm({ edit = false }) {
           </Badge>
         </Flex>
       </Flex>
-      <Alert my={2} status="info">
-        <AlertIcon />
-        Vui lòng điền đủ trường có dấu{" "}
-        <span className="ml-1 text-red-600">*</span>
-      </Alert>
-      <VStack gap={3}>
+      <ChakraAlert
+        type="info"
+        message={`Vui lòng điền đủ trường có dấu`}
+        html={`<span className="text-red-500 ml-1">*</span>`}
+      />
+      <VStack gap={3} my={3}>
         {/* purType & re type */}
         <Grid templateColumns="repeat(2,1fr)" gap={3} w="100%">
           <FormControl isRequired>
@@ -122,88 +139,7 @@ function REForm({ edit = false }) {
           </FormControl>
         </Grid>
         {/* address */}
-        <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
-          <FormControl>
-            <FormLabel noOfLines={1}>Tỉnh, Thành phố</FormLabel>
-            <Select
-              {...register("cityID")}
-              value={
-                data?.city?.filter(
-                  (c) => c.cityID === Number(searchParams.get("city")),
-                )?.[0]?.cityID || "none"
-              }
-              onChange={(e) => {
-                searchParams.set("city", e.target.value);
-                searchParams.delete("dis");
-                searchParams.delete("ward");
-                setSearchParams(searchParams);
-              }}
-              isDisabled={isLoading}
-            >
-              <option value="none">Tỉnh, Thành phố</option>
-              {data?.city.map((item) => (
-                <option value={item.cityID} key={item.cityID}>
-                  {item.cityName}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Quận, huyện</FormLabel>
-            <Select
-              {...register("disID")}
-              onChange={(e) => {
-                searchParams.set("dis", e.target.value);
-                searchParams.delete("ward");
-                setSearchParams(searchParams);
-              }}
-              value={
-                data?.dis?.filter(
-                  (d) => d.disID === Number(searchParams.get("dis")),
-                )?.[0]?.disID || "none"
-              }
-              isDisabled={isLoading}
-            >
-              {!data?.dis?.length ? (
-                <option value="none">Vui lòng chọn tỉnh thành phố trước</option>
-              ) : (
-                <>
-                  <option value="none">Quận, huyện</option>
-                  {data.dis.map((item) => (
-                    <option value={item.disID} key={item.disID}>
-                      {item.disName}
-                    </option>
-                  ))}
-                </>
-              )}
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Phường, xã</FormLabel>
-            <Select
-              {...register("wardID")}
-              onChange={(e) => {
-                searchParams.set("ward", e.target.value);
-                setSearchParams(searchParams);
-              }}
-              defaultValue="none"
-              isDisabled={isLoading}
-            >
-              {!data?.ward?.length ? (
-                <option value="none">Vui lòng chọn quận huyện trước</option>
-              ) : (
-                <>
-                  <option value="none">Phường, xã</option>
-                  {data.ward.map((item) => (
-                    <option value={item.wardID} key={item.wardID}>
-                      {item.wardName}
-                    </option>
-                  ))}
-                </>
-              )}
-            </Select>
-          </FormControl>
-        </Grid>
+        <AddressSelect />
         {/* address - details */}
         <FormControl isRequired>
           <FormLabel>Địa chỉ cụ thể</FormLabel>
@@ -222,39 +158,56 @@ function REForm({ edit = false }) {
         <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
           <FormControl isRequired>
             <FormLabel>Diện tích</FormLabel>
-            <ChakraNumberInput register={register("area")} placeholder="mét" />
+            <ChakraNumberInput
+              register={register("area", { valueAsNumber: true })}
+              placeholder="mét"
+            />
           </FormControl>
           <FormControl isRequired>
             <FormLabel>Giá trị {purType ? "bán" : "thuê / tháng"}</FormLabel>
             <ChakraNumberInput
-              register={register("price")}
+              register={register("price", { valueAsNumber: true })}
               placeholder={purType ? "tỷ" : "triệu"}
             />
           </FormControl>
         </Grid>
+
+        {/* documents */}
+        <DocumentCheckBoxes setDocs={setDocs} />
+
         {/* other fields */}
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
           <FormControl>
             <FormLabel>Số phòng ngủ</FormLabel>
-            <ChakraNumberInput register={register("bed_room")} />
+            <ChakraNumberInput
+              register={register("bed_room", { valueAsNumber: true })}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Số phòng vệ sinh</FormLabel>
-            <ChakraNumberInput register={register("bath_room")} />
+            <ChakraNumberInput
+              register={register("bath_room", { valueAsNumber: true })}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Số lượng tầng</FormLabel>
-            <ChakraNumberInput register={register("floor")} />
+            <ChakraNumberInput
+              register={register("floor", { valueAsNumber: true })}
+            />
           </FormControl>
         </Grid>
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
           <FormControl>
             <FormLabel>Mặt tiền</FormLabel>
-            <ChakraNumberInput register={register("facade")} />
+            <ChakraNumberInput
+              register={register("facade", { valueAsNumber: true })}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Đường vào</FormLabel>
-            <ChakraNumberInput register={register("entryLength")} />
+            <ChakraNumberInput
+              register={register("entryLength", { valueAsNumber: true })}
+            />
           </FormControl>
           <FormControl>
             <FormLabel>Hướng nhà</FormLabel>
@@ -311,15 +264,16 @@ function REForm({ edit = false }) {
         </FormControl>
 
         {/* note */}
-        <Alert status="warning">
-          <AlertIcon />
-          Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các
-          thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D
-        </Alert>
+        <ChakraAlert
+          type="warning"
+          message="Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các
+          thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D"
+        />
 
         <Flex w="100%" justify="flex-end">
           <Button
-            spinner={isCreating}
+            isLoading={isCreating}
+            loadingText="Submitting"
             right={0}
             colorScheme="teal"
             variant="outline"
