@@ -1,4 +1,4 @@
-import supabase from "./supabase";
+import supabase, { supabaseUrl } from "./supabase";
 import { v4 } from "uuid";
 
 import { LIMIT_PER_PAGE, geoCodeURL } from "../constants/anyVariables";
@@ -109,10 +109,12 @@ export async function createNewREPost(newData) {
   }
 
   console.log(docs);
-  console.log(files);
 
   // handle media
   files.images.forEach((file) => uploadMedia(file, postID));
+  files.videos.forEach((file) => uploadMedia(file, postID));
+
+  docs.forEach((id) => insertLegalDoc(id, postID));
 
   return null;
 }
@@ -126,13 +128,31 @@ async function uploadMedia(file, postID) {
   if (uploadError) {
     throw new uploadError(error.message);
   }
-  console.log(uploadedFile);
-  const { data, error } = await supabase
-    .from("REImages")
-    .insert([{ postID, mediaLink:  }])
-    .select()
-    .single();
+  // insert into re images
+  const { error } = await supabase.from("REImages").insert([
+    {
+      postID,
+      mediaLink: `${supabaseUrl}/storage/v1/object/public/${uploadedFile.fullPath}`,
+    },
+  ]);
 
-  console.log(data);
+  if (error) {
+    throw new Error(error.message); // for dev
+    // throw new Error(`khong the upload file ${file.type}: ${file.name}`);
+  }
+
+  return null;
+}
+
+async function insertLegalDoc(docID, postID) {
+  const { error } = await supabase
+    .from("REDocs")
+    .insert([{ docType: docID, postID }]);
+
+  if (error) {
+    throw new Error(error.message);
+    // throw new Error("khong the them giay to phap ly, vui long thu lai sau");
+  }
+
   return null;
 }

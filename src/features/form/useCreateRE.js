@@ -8,10 +8,9 @@ export function useCreateRE() {
   const navigate = useNavigate();
 
   const { isPending: isCreating, mutate } = useMutation({
-    mutationFn: (reData,) =>
-      createNewREPost(reData),
-    onSuccess: (data) => {
-      toast.success("hi");
+    mutationFn: (reData) => createNewREPost(reData),
+    onSuccess: () => {
+      toast.success("tao bai dang thanh cong, chi con cho duoc duyet thoi :3");
       queryClient.invalidateQueries({ refetchType: "active" });
       navigate("/quan-ly-bai-viet");
     },
