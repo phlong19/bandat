@@ -1,5 +1,4 @@
-import { useState } from "react";
-import slugify from "react-slugify";
+import { Avatar } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
@@ -7,34 +6,23 @@ import { TbBed } from "react-icons/tb";
 import { LiaBathSolid } from "react-icons/lia";
 import { ImStack } from "react-icons/im";
 import { SlLocationPin } from "react-icons/sl";
-import { BiPhoneCall } from "react-icons/bi";
 
-import { Avatar } from "@chakra-ui/react";
-
-import {
-  formatCurrency,
-  formatDate,
-  hiddenLast3PhoneNum,
-  pricePerArea,
-} from "../../utils/helper";
-import { m2 } from "../../constants/anyVariables";
-
-import Button from "../../ui/Button";
 import Bookmark from "../../ui/Bookmark";
 import ItemImages from "../../ui/ItemImages";
+
+import { formatCurrency, formatDate, pricePerArea } from "../../utils/helper";
+import { m2 } from "../../constants/anyVariables";
 import { useMapView } from "../../context/MapViewContext";
 import { useAuth } from "../../context/UserContext";
 
 function ListItem({ data, purType, isPopup = false }) {
   const { mapView } = useMapView();
-  const [hiddenPhoneNum, setHiddenPhoneNum] = useState(false);
   const isLaptop = useMediaQuery({
     query: "(min-width: 1000px)",
   });
 
-  const { isAuthenticated } = useAuth();
-
   const {
+    slug,
     area,
     bath_room,
     bed_room,
@@ -57,7 +45,7 @@ function ListItem({ data, purType, isPopup = false }) {
       }  rounded-lg`}
     >
       {!isPopup && (
-        <Link to={`/nha-dat/${slugify(name)}`}>
+        <Link to={`/nha-dat/${slug}`}>
           {/* images */}
           <div className="relative mx-auto w-full overflow-hidden">
             {/* vip label */}
@@ -70,7 +58,7 @@ function ListItem({ data, purType, isPopup = false }) {
 
       {/* informations */}
       <div className="mt-3">
-        <Link to={`/nha-dat/${slugify(name)}`}>
+        <Link to={`/nha-dat/${slug}`}>
           <h3
             className={`${
               isPopup ? "text-black" : "text-black dark:text-white"
@@ -153,23 +141,7 @@ function ListItem({ data, purType, isPopup = false }) {
                 <p>{formatDate(created_at, "short")}</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              {isAuthenticated && (
-                <Button
-                  onClick={() => setHiddenPhoneNum(true)}
-                  widthBase={false}
-                  basePY={false}
-                  icon={<BiPhoneCall />}
-                >
-                  {hiddenPhoneNum ? (
-                    <a href={`tel:0${phone}`}>0{phone}</a>
-                  ) : (
-                    hiddenLast3PhoneNum(phone)
-                  )}
-                </Button>
-              )}
-              {!isLaptop && <Bookmark />}
-            </div>
+            <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
           </div>
         )}
       </div>

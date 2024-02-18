@@ -24,7 +24,7 @@ function Avatar({ fullName, avatar, onClick, mobile = false }) {
           } absolute bg-white dark:bg-black`}
         ></span>
         <PiSealCheckFill
-          fontSize={!mobile ? 20 : 40}
+          fontSize={!mobile ? 18 : 35}
           className="z-[2] fill-[#00A3C4] dark:fill-[#ECC94B]"
         />
       </AvatarBadge>

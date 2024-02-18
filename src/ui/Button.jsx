@@ -24,7 +24,7 @@ function Button({
       base +
       "text-white bg-primary border border-primary dark:border-secondary dark:bg-secondary dark:text-black",
   };
-  // FIX width to be more re-usable out side action
+  
   if (to) {
     return (
       <NavLink className={variants[variant]} onClick={onClick} to={to}>

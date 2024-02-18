@@ -1,13 +1,15 @@
-import { newsdetails } from "../data/newsdetails";
-import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import { city } from "../data/city";
-import { Link } from "react-router-dom";
-import { news } from "../data/news";
 import { useState } from "react";
-import slugify from "react-slugify";
-import { navLinks } from "../constants/navlink";
+import { Link, useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import slugify from "react-slugify";
+
+import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import BreadCrumb from "../ui/BreadCrumb";
+
+import { navLinks } from "../constants/navlink";
+import { newsdetails } from "../data/newsdetails";
+import { city } from "../data/city";
+import { news } from "../data/news";
 
 function NewDetails() {
   const [show1, setShow1] = useState(false);
@@ -17,6 +19,9 @@ function NewDetails() {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1200px)",
   });
+
+  const { title } = useParams();
+  // fetch single news with slug = title
 
   return (
     <div className="bg-white dark:bg-dark ">

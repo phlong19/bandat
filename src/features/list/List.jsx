@@ -4,20 +4,19 @@ import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import toast from "react-hot-toast";
 
 // UI
+import ListItem from "./ListItem";
+import Searchbar from "../searchbar/Searchbar";
 import Map from "../../ui/Map";
 import SpinnerFullPage from "../../ui/SpinnerFullPage";
 import ErrorFallBack from "../../ui/ErrorFallBack";
-import ListItem from "./ListItem";
 import SkewedToggle from "../../ui/SkewedToggle";
-import Searchbar from "./Searchbar";
+import Pagination from "../../ui/Pagination";
 
 // hooks & helpers & context
 import { useListingPage } from "./useListingPage";
 import { formatNumber } from "../../utils/helper";
 import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
-import Pagination from "../../ui/Pagination";
 import { useMapView } from "../../context/MapViewContext";
-// import { data } from "../../constants/products";
 
 function List({ purType }) {
   const { data, error, isLoading } = useListingPage(purType);

@@ -1,13 +1,15 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+import slugify from "react-slugify";
+
+import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
+import Pagination from "../ui/Pagination";
+import BreadCrumb from "../ui/BreadCrumb";
+
 import { news } from "../data/news";
 import { city } from "../data/city";
 import { navLinks } from "../constants/navlink";
-import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import { Link } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
-import { useState } from "react";
-import Pagination from "../ui/Pagination";
-import slugify from "react-slugify";
-import BreadCrumb from "../ui/BreadCrumb";
 
 function News() {
   const [show1, setShow1] = useState(false);
@@ -18,9 +20,11 @@ function News() {
     query: "(min-width: 1200px)",
   });
 
+  // fetch list news
+
   return (
     <div>
-      <BreadCrumb></BreadCrumb>
+      <BreadCrumb />
       <div className="max-w-full bg-white dark:bg-dark">
         <div className="mx-auto flex max-w-[800px] flex-col items-center bg-white py-10 text-center dark:bg-dark">
           <h1 className="font-lexend text-2xl font-bold md:text-4xl">
@@ -37,7 +41,7 @@ function News() {
         <div className="bg-white px-3.5 dark:bg-dark">
           {news.map((item, i) => (
             <Link to={`/tin-tuc/${slugify(item.title)}`} key={i}>
-              <div className="mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b-[1px] lg:bg-white lg:pb-5 lg:shadow-none ">
+              <div className="mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b lg:bg-white lg:pb-5 lg:shadow-none ">
                 <img
                   src={item.img}
                   className="w-full rounded-t-md lg:h-[150px] lg:w-[260px] lg:rounded-md  "
@@ -53,12 +57,12 @@ function News() {
             </Link>
           ))}
           <div className="flex justify-center">
-            <Pagination></Pagination>
+            <Pagination />
           </div>
         </div>
 
-        <div className=" lg:max-w-[300px] ">
-          <div className=" ">
+        <div className="lg:max-w-[300px] ">
+          <div>
             <div className="rounded-md border-[1px] bg-white p-3 dark:bg-dark">
               <h1 className="text-center text-xl font-bold">Tin nổi bật</h1>
               {news.map((item, i) => (
@@ -73,13 +77,14 @@ function News() {
               ))}
             </div>
             <div className="mt-5">
-              <div className="rounded-md border-[1px] bg-white p-3 dark:bg-dark ">
+              <div className="rounded-md border bg-white p-3 dark:bg-dark">
                 <h1 className="text-center text-lg font-semibold">
                   Thị trường BDS tại 10 tỉnh/thành phố lớn
                 </h1>
+                {/* considering remove in the future */}
                 {city.map((item, i) => (
                   <div key={i} className="flex items-center p-3">
-                    <img src={item.img} className="h-10 w-20 rounded-xl " />
+                    <img src={item.img} className="h-10 w-20 rounded-xl" />
                     <h1 className="pl-3">{item.cityname}</h1>
                   </div>
                 ))}
@@ -110,7 +115,7 @@ function News() {
           <div>
             <button
               onClick={() => setShow1((s) => !s)}
-              className="w-full border-b-[1px] bg-white p-3 text-left dark:bg-dark"
+              className="w-full border-b bg-white p-3 text-left dark:bg-dark"
             >
               <h1 className="flex items-center justify-between text-lg font-semibold">
                 {item1.title}
@@ -130,7 +135,7 @@ function News() {
           <div className="pb-[50px] xl:pb-0">
             <button
               onClick={() => setShow2((s) => !s)}
-              className="w-full border-b-[1px] bg-white p-3 text-left dark:bg-dark"
+              className="w-full border-b bg-white p-3 text-left dark:bg-dark"
             >
               <h1 className="flex items-center justify-between text-lg font-semibold">
                 {item2.title}

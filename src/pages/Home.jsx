@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { homeLinks } from "../constants/navlink";
-import HomePageList from "../features/list/HomePageList";
-import Searchbar from "../features/list/Searchbar";
+import Searchbar from "../features/searchbar/Searchbar";
 
 function Home() {
   return (
-    <div className="lg:mt-[72px] lg:min-h-[calc(100vh-72px)] bg-light px-1 pt-3 text-dark dark:bg-dark dark:text-light">
+    <div className="bg-light px-1 pt-3 text-dark dark:bg-dark dark:text-light lg:mt-[72px] lg:min-h-[calc(100vh-72px)]">
       <ul className="flex w-full items-center justify-center gap-3 xl:hidden">
         {homeLinks.map((link) => (
           <li
@@ -26,10 +25,7 @@ function Home() {
           Bất động sản dành cho bạn
         </h2>
         {/* homepage list */}
-        <HomePageList />
       </div>
-
-      
     </div>
   );
 }

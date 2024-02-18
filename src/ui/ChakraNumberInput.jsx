@@ -4,17 +4,37 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 
-function ChakraNumberInput({ register, placeholder }) {
+function ChakraNumberInput({
+  register,
+  req = false,
+  name,
+  label,
+  error,
+  placeholder,
+}) {
   return (
-    <NumberInput>
-      <NumberInputField {...register} placeholder={placeholder} />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
-      </NumberInputStepper>
-    </NumberInput>
+    <FormControl isRequired={req} isInvalid={error}>
+      <FormLabel>{label}</FormLabel>
+      <NumberInput>
+        <NumberInputField
+          {...register(`${name}`, {
+            required: { value: req, message: "vui long nhap vao" },
+            valueAsNumber: true,
+          })}
+          placeholder={placeholder}
+        />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+      {error && <FormErrorMessage>{error.message}</FormErrorMessage>}
+    </FormControl>
   );
 }
 

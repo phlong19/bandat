@@ -1,13 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { Button, Flex, Box, Center, Grid } from "@chakra-ui/react";
+
+import { FaPencil, FaRightToBracket, FaUserPlus } from "react-icons/fa6";
 import DynamicFaIcon from "./DynamicFaIcon";
-import Button from "./Button";
 import Avatar from "./Avatar";
 import SpinnerFullPage from "./SpinnerFullPage";
-import { Flex, Box, Center } from "@chakra-ui/react";
-import { FaPencil, FaRightToBracket, FaUserPlus } from "react-icons/fa6";
+import Logout from "../features/auth/Logout";
 
 import { mobileNavLinks } from "../constants/navlink";
-import Logout from "../features/auth/Logout";
 import { useAuth } from "../context/UserContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 
@@ -23,14 +23,19 @@ function MobileAction({ onClose }) {
       {!isAuthenticated ? (
         <div className="flex justify-center gap-3">
           <Button
-            icon={<FaRightToBracket />}
-            variant="light"
+            as={Link}
+            leftIcon={<FaRightToBracket />}
             to="dang-nhap"
             onClick={onClose}
           >
             Đăng nhập
           </Button>
-          <Button icon={<FaUserPlus />} to="dang-ky" onClick={onClose}>
+          <Button
+            leftIcon={<FaUserPlus />}
+            as={Link}
+            to="dang-ky"
+            onClick={onClose}
+          >
             Đăng ký
           </Button>
         </div>
@@ -44,27 +49,24 @@ function MobileAction({ onClose }) {
           pb={3}
         >
           <Avatar src={data.avatar} fullName={data.fullName} mobile />
-          {/* fix later */}
-          <Logout />
 
-          {level >= EDITOR_LEVEL && (
-            <Button to="/quan-ly-tin-tuc">Quan ly tin tuc</Button>
-          )}
-          {level >= ADMIN_LEVEL && <Button to="/control">admin panel</Button>}
+          <Flex gap={2}>
+            {level >= EDITOR_LEVEL && (
+              <Button as={Link} to="/quan-ly-tin-tuc" variant='outline' fontWeight={500}>
+                Quan ly tin tuc
+              </Button>
+            )}
+            {level >= ADMIN_LEVEL && (
+              <Button as={Link} to="/control" variant='outline' fontWeight={500}>
+                admin panel
+              </Button>
+            )}
+          </Flex>
+          <Logout />
         </Flex>
       )}
-      <Box>
-        <Center mt={3}>
-          <Button
-            variant="light"
-            to="/dang-tin"
-            icon={<FaPencil />}
-            onClick={onClose}
-          >
-            Đăng tin
-          </Button>
-        </Center>
-      </Box>
+
+      {/* links */}
       <ul className="mt-3">
         {isAuthenticated && (
           <li className="relative w-full overflow-hidden">

@@ -14,17 +14,23 @@ import { PiDotsSixVerticalBold, PiUpload } from "react-icons/pi";
 import { HiOutlineTrash } from "react-icons/hi";
 
 import { formatDate } from "../../utils/helper";
-import { ADMIN_LEVEL } from "../../constants/anyVariables";
+import {
+  ADMIN_LEVEL,
+  DEFAULT_RE_STATUS,
+  SELLING_STATUS,
+  SOLD_STATUS,
+} from "../../constants/anyVariables";
 import { Link } from "react-router-dom";
 import { TbEyeCheck } from "react-icons/tb";
 
 function TableRERow({ data, level }) {
   const {
+    id,
     created_at,
     purType,
     profile: { phone, avatar, fullName },
     report,
-    status,
+    status: { statusID, status },
     city: { cityName },
     dis: { disName },
     ward: { wardName },
@@ -32,14 +38,14 @@ function TableRERow({ data, level }) {
   } = data;
 
   let statusBadge;
-  switch (status) {
-    case "Da duyet":
+  switch (statusID) {
+    case SELLING_STATUS:
       statusBadge = "green";
       break;
-    case "Chua duyet":
+    case DEFAULT_RE_STATUS:
       statusBadge = "red";
       break;
-    case "Da ban":
+    case SOLD_STATUS:
       statusBadge = "orange";
       break;
     default:
@@ -115,7 +121,7 @@ function TableRERow({ data, level }) {
             <PiDotsSixVerticalBold fontSize={25} />
           </MenuButton>
           <MenuList fontSize="medium">
-            {level >= ADMIN_LEVEL && (
+            {level >= ADMIN_LEVEL && statusID === DEFAULT_RE_STATUS && (
               <MenuItem gap={3} color="blue.600">
                 <PiUpload />
                 Duyệt bài nhanh

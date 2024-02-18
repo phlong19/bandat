@@ -43,6 +43,13 @@ const m2 = "/m²";
 
 export { billion, million, m2 };
 
+// title & des length
+const minLength = 60;
+const maxLength = 130;
+const minDesLength = 150;
+const maxDesLength = 500;
+export { minLength, maxLength, minDesLength, maxDesLength };
+
 // table captions
 export const reCaptions = [
   "Name & Phone",
@@ -54,7 +61,11 @@ export const reCaptions = [
   "dang ngay",
 ];
 
-export const DEFAULT_RE_STATUS = 1;
+// hard code re status
+const DEFAULT_RE_STATUS = 1;
+const SELLING_STATUS = 2;
+const SOLD_STATUS = 3;
+export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
 
 export const geoCodeURL = `https://geocode.maps.co/search`;
 

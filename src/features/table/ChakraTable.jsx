@@ -14,9 +14,8 @@ import {
 } from "@chakra-ui/react";
 
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
-import NewsFormModal from "../form/NewsFormModal";
 
-function ChakraTable({ title, captions, data, render, edit = false }) {
+function ChakraTable({ title, captions, data, render, primaryButton }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
 
@@ -34,8 +33,10 @@ function ChakraTable({ title, captions, data, render, edit = false }) {
             <Button colorScheme="blue" variant="solid">
               some
             </Button>
-            {/* for news */}
-            {edit && <NewsFormModal />}
+            {/* for main action */}
+            {/* with post => link to dang-tin */}
+            {/* news / user + profile / docs => modal */}
+            {primaryButton}
           </Flex>
         </Flex>
       </CardHeader>

@@ -1,7 +1,7 @@
 import { ImHome } from "react-icons/im";
 import Button from "./Button";
 
-function ErrorFallBack({home = false}) {
+function ErrorFallBack({ error, resetErrorBoundary, home = false }) {
   return (
     <div
       className={`${
@@ -11,8 +11,9 @@ function ErrorFallBack({home = false}) {
       <h1 className="text-xl font-bold md:text-2xl">
         Arch! Đã có lỗi gì đó xảy ra. Vui lòng thử lại sau. 😥
       </h1>
+      <p>{error.message}</p>
 
-      <Button to="/" icon={<ImHome />}>
+      <Button onClick={resetErrorBoundary} icon={<ImHome />}>
         Trang chủ
       </Button>
     </div>

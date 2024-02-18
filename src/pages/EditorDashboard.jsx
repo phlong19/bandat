@@ -1,9 +1,11 @@
 import ChakraTable from "../features/table/ChakraTable";
 import TableNewRow from "../features/table/TableNewRow";
+import NewsFormModal from "../features/form/NewsFormModal";
+
 import { useAuth } from "../context/UserContext";
+import { newsCaptions } from "../constants/anyVariables";
 
 import { news } from "../data/news";
-import { newsCaptions } from "../constants/anyVariables";
 
 function EditorDashboard() {
   const { level } = useAuth();
@@ -17,6 +19,7 @@ function EditorDashboard() {
         render={(item) => (
           <TableNewRow data={item} level={level} key={item.id} />
         )}
+        primaryButton={<NewsFormModal />}
       />
     </div>
   );

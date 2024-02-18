@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import slugify from "react-slugify";
 
 // UI
 import QuillEditor from "./QuillEditor";
@@ -27,6 +28,7 @@ import ChakraNumberInput from "../../ui/ChakraNumberInput";
 import ChakraAlert from "../../ui/ChakraAlert";
 import AddressSelect from "./AddressSelect";
 import DocumentCheckBoxes from "./DocumentCheckBoxes";
+import NameInput from "./NameInput";
 
 // others
 import {
@@ -34,12 +36,15 @@ import {
   DEFAULT_RE_STATUS,
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
+  maxDesLength,
+  maxLength,
+  minDesLength,
+  minLength,
 } from "../../constants/anyVariables";
 import { directions, navLinks } from "../../constants/navlink";
 import { useCreateRE } from "./useCreateRE";
-import { useAuth } from "../../context/UserContext";
 
-function REForm({ edit = false }) {
+function REForm({ id, edit = false, editData }) {
   const {
     control,
     register,
@@ -59,7 +64,6 @@ function REForm({ edit = false }) {
 
   // submit & create new re
   const { isCreating, mutate } = useCreateRE();
-  const { data: authData } = useAuth();
 
   function onSubmit(data) {
     const cityID =
@@ -68,17 +72,27 @@ function REForm({ edit = false }) {
       searchParams.get("dis") !== "none" ? searchParams.get("dis") : null;
     const wardID =
       searchParams.get("ward") !== "none" ? searchParams.get("ward") : null;
-    if (!data.files || data?.files.length < BASE_MEDIA_UPLOAD) {
-      return setError("files", { type: "required", message: "dmm" });
-    } else if (!data.des) {
+
+    // check address
+    if (!cityID || !disID || !wardID) {
+      return toast.error("dmm select dia chi");
+    }
+    console.log(cityID, disID, wardID);
+    // check description exist
+    if (!data.des) {
       return setError("des", {
         type: "required",
         message: "vui long dien mo ta chi tiet",
       });
-    } else if (!cityID && !disID && !wardID) {
-      return toast.error("dmm select dia chi");
     }
-
+    // check submit data has files? is the number of images enough?
+    if (!data.files || data.files.images.length < BASE_MEDIA_UPLOAD) {
+      return setError("files", {
+        type: "required",
+        message: `so luong anh cung cap it nhat la ${BASE_MEDIA_UPLOAD}`,
+      });
+    }
+    console.log(data, cityID, disID, wardID);
     mutate({
       ...data,
       cityID,
@@ -86,8 +100,9 @@ function REForm({ edit = false }) {
       wardID,
       purType: purType,
       status: DEFAULT_RE_STATUS,
-      userID: authData.id,
+      userID: id,
       docs,
+      slug: slugify(data.name),
     });
   }
 
@@ -102,13 +117,15 @@ function REForm({ edit = false }) {
             Trạng thái:
           </Text>
           <Badge
-            colorScheme="red"
+            colorScheme={
+              editData?.status !== DEFAULT_RE_STATUS ? "red" : "green"
+            }
             fontSize="sm"
             p="3px 10px"
             borderRadius="lg"
             textTransform="capitalize"
           >
-            Chưa duyệt
+            {editData?.status !== DEFAULT_RE_STATUS ? "Chưa duyệt" : "Đã duyệt"}
           </Badge>
         </Flex>
       </Flex>
@@ -150,26 +167,37 @@ function REForm({ edit = false }) {
           />
         </FormControl>
         {/* title */}
-        <FormControl isRequired>
-          <FormLabel>Tiêu đề</FormLabel>
-          <Input type="text" {...register("name")} />
-        </FormControl>
+        <NameInput
+          register={register("name", {
+            required: "ten bai viet la gif?",
+            // dev
+            minLength: { value: 10, message: "viet dai them vao" },
+            maxLength: {
+              value: maxLength,
+              message: "dm vuot qua so ki tu roi",
+            },
+          })}
+          error={errors.name}
+        />
         {/* area & price */}
         <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
-          <FormControl isRequired>
-            <FormLabel>Diện tích</FormLabel>
-            <ChakraNumberInput
-              register={register("area", { valueAsNumber: true })}
-              placeholder="mét"
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Giá trị {purType ? "bán" : "thuê / tháng"}</FormLabel>
-            <ChakraNumberInput
-              register={register("price", { valueAsNumber: true })}
-              placeholder={purType ? "tỷ" : "triệu"}
-            />
-          </FormControl>
+          <ChakraNumberInput
+            register={register}
+            error={errors.area}
+            label="Diện tích"
+            name="area"
+            req={true}
+            placeholder="mét"
+          />
+
+          <ChakraNumberInput
+            register={register}
+            name="price"
+            error={errors.price}
+            label={`Giá trị ${purType ? "bán" : "thuê / tháng"}`}
+            req={true}
+            placeholder={purType ? "tỷ" : "triệu"}
+          />
         </Grid>
 
         {/* documents */}
@@ -177,38 +205,42 @@ function REForm({ edit = false }) {
 
         {/* other fields */}
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-          <FormControl>
-            <FormLabel>Số phòng ngủ</FormLabel>
-            <ChakraNumberInput
-              register={register("bed_room", { valueAsNumber: true })}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Số phòng vệ sinh</FormLabel>
-            <ChakraNumberInput
-              register={register("bath_room", { valueAsNumber: true })}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Số lượng tầng</FormLabel>
-            <ChakraNumberInput
-              register={register("floor", { valueAsNumber: true })}
-            />
-          </FormControl>
+          <ChakraNumberInput
+            register={register}
+            error={errors.bed_room}
+            label="Số phòng ngủ"
+            name="bed_room"
+          />
+
+          <ChakraNumberInput
+            register={register}
+            error={errors.bath_room}
+            label="Số phòng vệ sinh"
+            name="bath_room"
+          />
+
+          <ChakraNumberInput
+            register={register}
+            error={errors.floor}
+            label="Số lượng tầng"
+            name="floor"
+          />
         </Grid>
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-          <FormControl>
-            <FormLabel>Mặt tiền</FormLabel>
-            <ChakraNumberInput
-              register={register("facade", { valueAsNumber: true })}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Đường vào</FormLabel>
-            <ChakraNumberInput
-              register={register("entryLength", { valueAsNumber: true })}
-            />
-          </FormControl>
+          <ChakraNumberInput
+            register={register}
+            name="facade"
+            error={errors.facade}
+            label="Mặt tiền"
+          />
+
+          <ChakraNumberInput
+            register={register}
+            error={errors.entryLength}
+            label="Đường vào"
+            name="entryLength"
+          />
+
           <FormControl>
             <FormLabel>Hướng nhà</FormLabel>
             <Select {...register("direction")}>
@@ -237,6 +269,16 @@ function REForm({ edit = false }) {
             render={({ field: { onChange } }) => (
               <QuillEditor onChange={onChange} allowImage={false} />
             )}
+            rules={{
+              minLength: {
+                value: minDesLength,
+                message: "vui long cung cap them chi tiet va mo ta",
+              },
+              maxLength: {
+                value: maxDesLength,
+                message: "dai the? hoc sinh gioi van quoc gia a",
+              },
+            }}
           />
         </FormControl>
         {/* file input */}
@@ -273,7 +315,7 @@ function REForm({ edit = false }) {
         <Flex w="100%" justify="flex-end">
           <Button
             isLoading={isCreating}
-            loadingText="Submitting"
+            loadingText="Chờ tí"
             right={0}
             colorScheme="teal"
             variant="outline"

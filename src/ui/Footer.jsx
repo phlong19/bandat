@@ -15,7 +15,7 @@ import { currentYear, fb, git, ins, x } from "../constants/anyVariables";
 function Footer() {
   return (
     <footer
-      className={`bg-gray-200  px-4 text-center font-lexend text-dark dark:bg-dark/90 dark:text-light lg:px-8 lg:text-left lg:text-base`}
+      className={`bg-gray-200 px-4 text-center font-lexend text-sm text-dark dark:bg-dark/90 dark:text-light lg:px-8 lg:text-left`}
     >
       <div className="relative mx-auto max-w-[1400px] lg:flex lg:gap-3.5">
         <div className="lg:min-w-[33%] lg:pt-6">
@@ -50,29 +50,29 @@ function Footer() {
           </span>
           <div className="mt-6 border-b border-dark pb-5 text-left text-base dark:border-light lg:border-none">
             <h3>Tải ứng dụng</h3>
-            <ul className="mt-3 flex">
+            <ul className="mt-3 items-center xs:flex">
               <li className="w-1/2 md:w-1/3 lg:w-1/2">
-                <a href="">
+                <a href="#">
                   <img
                     src="./google-play.png"
                     alt="google play"
-                    className="h-8 max-w-36"
+                    className="max-w-48"
                   />
                 </a>
               </li>
               <li className="w-1/2 md:w-1/3 lg:w-1/2">
-                <a href="">
+                <a href="#">
                   <img
                     src="./app_store.png"
                     alt="app store"
-                    className="h-8 max-w-36 dark:contrast-150"
+                    className="max-w-48 dark:contrast-150"
                   />
                 </a>
               </li>
             </ul>
           </div>
           {/* socials media, mobile hidden */}
-          <div className="hidden lg:mt-32 lg:block xl:mt-10">
+          <div className="hidden lg:mt-32 lg:block xl:mt-0">
             <h3 className="text-xl font-bold">Kết nối với chúng tôi qua</h3>
             <ul className="flex gap-3 pt-4 text-4xl text-primary dark:text-secondary">
               <li>
@@ -187,7 +187,7 @@ function Footer() {
             Copyright © 2023 - {currentYear} LandHub.com.vn.
           </p>
         </div>
-        <p className="bg-transparent md:absolute md:right-14 md:-mt-16 lg:bottom-0 lg:left-0 lg:max-w-[1200px]">
+        <p className="bg-transparent md:absolute md:right-14 md:-mt-16 lg:-bottom-2.5 lg:right-0 lg:max-w-[1200px]">
           <a href="http://online.gov.vn/">
             <img
               src="./da-dang-ky-bct.png"

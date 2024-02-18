@@ -1,45 +1,55 @@
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { Box } from "@chakra-ui/react";
 
 import ChakraBreadcrumb from "../ui/ChakraBreadcrumb";
-import ChakraTable from "../features/table/ChakraTable";
-import TableRERow from "../features/table/TableRERow";
 import REForm from "../features/form/REForm";
+import SpinnerFullPage from "../ui/SpinnerFullPage";
 
 import { useAuth } from "../context/UserContext";
-import { reCaptions, LIMIT_PER_PAGE } from "../constants/anyVariables";
-
-import { data } from "../constants/products";
+import UserDashboardTable from "../features/dashboard/UserDashboardTable";
+import { useGetRE } from "../features/form/useGetRE";
+import { useEffect } from "react";
 
 function UserDashboard({ form = false }) {
   const page = window.location.pathname.includes("dang-tin")
     ? "Đăng tin"
     : "Quản lý bài viết";
 
-  const { level } = useAuth();
+  const navigate = useNavigate();
+  const { title } = useParams();
+  const { data, level, isLoading } = useAuth();
+  const { post, isFetching } = useGetRE(title);
+
   // future: get re dir data base on level
   // admin: all posts
   // user: only posts from that user
 
-  const re_data = Array.from({ length: 4 })
-    .map((item) => data)
-    .flat()
-    .slice(0, LIMIT_PER_PAGE);
+  useEffect(() => {
+    if (title && !post && !isFetching) {
+      toast.error("khong tim thay bai viet");
+      navigate("/dang-tin");
+    }
+  }, [post, navigate, isFetching, title]);
+
+  if (isLoading || isFetching) {
+    return <SpinnerFullPage />;
+  }
+
+  // if (!post && title && !isFetching) {
+  //   toast.error("khong tim thay bai viet");
+  //   navigate("/dang-tin");
+  // }
+  console.log(post);
 
   return (
-    <Box gridGap={4} display="grid">
+    <Box h="100%" gap={4} display="flex" flexDirection="column">
       <ChakraBreadcrumb page={page} />
       {!form ? (
-        <ChakraTable
-          captions={reCaptions}
-          data={re_data}
-          title="Quản lý bài viết"
-          render={(item) => (
-            <TableRERow key={Math.random()} data={item} level={level} />
-          )}
-        />
+        <UserDashboardTable id={data.id} level={level} />
       ) : (
         <Box maxWidth="90%" minWidth="85%" mx="auto">
-          <REForm />
+          <REForm id={data.id} edit={Boolean(post)} editData={post} />
         </Box>
       )}
     </Box>

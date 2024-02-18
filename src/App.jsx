@@ -102,6 +102,10 @@ function App() {
                       path="quan-ly-bai-viet"
                       element={<UserDashboard />}
                     />
+                    <Route
+                      path="quan-ly-bai-viet/:title"
+                      element={<UserDashboard form />}
+                    />
 
                     {/* user account management */}
                     <Route path="tai-khoan" element={<AccountManagement />} />
@@ -115,7 +119,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
-                    
+
                     {/* admin path */}
                     {/* if anyone can think out a name cooler, powerful than this */}
                     {/* please let me know */}

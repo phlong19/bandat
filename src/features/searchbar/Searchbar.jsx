@@ -47,9 +47,18 @@ function Searchbar() {
           id="purType"
           defaultValue="none"
           onChange={(e) => {
-            setPurType(e.target.value === "true");
-            searchParams.set("purType", purType);
-            setSearchParams(searchParams);
+            setPurType(() => {
+              if (e.target.value === "none") {
+                searchParams.delete("purType");
+                searchParams.delete("reType");
+              } else {
+                searchParams.set("purType", e.target.value === "true");
+                searchParams.delete("reType");
+              }
+              searchParams.set("reType", "none");
+              setSearchParams(searchParams);
+              return e.target.value === "true";
+            });
           }}
         >
           <option value="none">Loại hình</option>
@@ -60,7 +69,7 @@ function Searchbar() {
         <select
           name="reType"
           id="reType"
-          className="select hidden sm:block md:min-w-36 lg:min-w-60 lg:max-w-60"
+          className="select hidden sm:block sm:min-w-36 lg:min-w-60 lg:max-w-60"
           defaultValue="none"
           onChange={(e) => {
             searchParams.set("reType", e.target.value);

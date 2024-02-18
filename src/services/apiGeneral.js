@@ -1,5 +1,6 @@
 import supabase from "./supabase";
 
+// addresses
 const data = {};
 data.city = data.dis = data.ward = [];
 
@@ -47,14 +48,15 @@ export async function getAddress(city, district, ward) {
       .eq("wardID", ward);
     if (error) throw new Error(error.message);
 
-    data.city.push(address[0].dis.city.cityName);
-    data.dis.push(address[0].dis.disName);
-    data.ward.push(address[0].wardName);
+    data.city = [address[0].dis.city.cityName];
+    data.dis = [address[0].dis.disName];
+    data.ward = [address[0].wardName];
   }
 
   return data;
 }
 
+// documents support
 export async function getDocuments() {
   const { data, error } = await supabase.from("LegalDoc").select("*");
 
@@ -62,4 +64,17 @@ export async function getDocuments() {
     throw new Error(error.message);
   }
   return data;
+}
+
+export async function insertDocument(docID, postID) {
+  const { error } = await supabase
+    .from("REDocs")
+    .insert([{ docType: docID, postID }]);
+
+  if (error) {
+    throw new Error(error.message);
+    // throw new Error("khong the them giay to phap ly, vui long thu lai sau");
+  }
+
+  return null;
 }

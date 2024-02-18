@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Tr,
   Td,
@@ -10,11 +11,12 @@ import {
   MenuButton,
   MenuItem,
 } from "@chakra-ui/react";
+
 import { PiDotsSixVerticalBold, PiUpload } from "react-icons/pi";
-import { Link } from "react-router-dom";
-import { ADMIN_LEVEL } from "../../constants/anyVariables";
 import { TbEyeCheck } from "react-icons/tb";
 import { HiOutlineTrash } from "react-icons/hi";
+
+import { ADMIN_LEVEL } from "../../constants/anyVariables";
 import { formatDate } from "../../utils/helper";
 
 function TableNewRow({ data, level }) {
@@ -27,6 +29,7 @@ function TableNewRow({ data, level }) {
     summary,
     status,
   } = data;
+
   return (
     <Tr className="group">
       <Td width={{ sm: "250px" }} maxWidth={{ sm: "300px" }} pl="0px">
@@ -76,7 +79,7 @@ function TableNewRow({ data, level }) {
             <PiDotsSixVerticalBold fontSize={25} />
           </MenuButton>
           <MenuList fontSize="medium">
-            {level >= ADMIN_LEVEL && (
+            {level >= ADMIN_LEVEL && !status && (
               <MenuItem gap={3} color="blue.600">
                 <PiUpload />
                 Duyệt bài nhanh
