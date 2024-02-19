@@ -20,7 +20,6 @@ function UserDashboard({ form = false }) {
   const { data, level, isLoading } = useAuth();
   const { post, isFetching } = useGetRE(title);
 
-  console.log(title);
   // future: get re dir data base on level
   // admin: all posts
   // user: only posts from that user

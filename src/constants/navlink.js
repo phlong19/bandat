@@ -1,3 +1,5 @@
+import { ADMIN_LEVEL, EDITOR_LEVEL, USER_LEVEL } from "./anyVariables";
+
 export const navLinks = [
   {
     title: "Nhà đất bán",
@@ -49,76 +51,48 @@ export const navLinks = [
   },
 ];
 
-export const mobileNavLinks = [
-  { title: "Tin đăng đã lưu", icon: "RegHeart", to: "tin-da-luu" },
-  { title: "Trang chủ", icon: "House", to: "/" },
-  {
-    title: "Nhà đất bán",
-    icon: "HouseFlag",
-    to: "nha-dat-ban",
-    child_links: [
-      { title: "", icon: "", to: "" },
-      { title: "", icon: "", to: "" },
-    ],
-  },
-  {
-    title: "Nhà đất cho thuê",
-    icon: "BuildingFlag",
-    to: "nha-dat-cho-thue",
-    child_links: [
-      { title: "", icon: "", to: "" },
-      { title: "", icon: "", to: "" },
-    ],
-  },
-  { title: "Dự án", icon: "City", to: "du-an" },
-  { title: "Tin tức", icon: "RegNewspaper", to: "tin-tuc" },
-  // later
-  { title: "Góp ý - Báo lỗi", icon: "RegAddressBook", to: "hom-thu-gop-y" },
-  { title: "Giới thiệu về chúng tôi", icon: "RegAddressBook", to: "danh-ba" },
-  { title: "Liên hệ", icon: "RegAddressBook", to: "danh-ba" },
-  //
-];
+export const mobileNavLinks = {
+  base: [
+    { title: "Đăng tin", icon: "RegPenToSquare", to: "dang-tin" },
+    { title: "Tin đăng đã lưu", icon: "RegHeart", to: "tin-da-luu" },
+    { title: "Trang chủ", icon: "House", to: "/" },
+    { title: "Nhà đất bán", icon: "HouseFlag", to: "nha-dat-ban" },
+    { title: "Nhà đất cho thuê", icon: "BuildingFlag", to: "nha-dat-cho-thue" },
+    { title: "Dự án", icon: "City", to: "du-an" },
+    { title: "Tin tức", icon: "RegNewspaper", to: "tin-tuc" },
+    // later
+    { title: "Góp ý - Báo lỗi", icon: "RegAddressBook", to: "hom-thu-gop-y" },
+    { title: "Giới thiệu về chúng tôi", icon: "RegAddressBook", to: "danh-ba" },
+    { title: "Liên hệ", icon: "RegAddressBook", to: "danh-ba" },
+    //
+  ],
+  authen: [
+    {
+      access: USER_LEVEL,
+      title: "Quản lý tài khoản",
+      icon: "CircleUser",
+      to: "tai-khoan",
+    },
+    {
+      access: EDITOR_LEVEL,
+      title: "Quản lý tin tức",
+      icon: "SquarePollHorizontal",
+      to: "quan-ly-tin-tuc",
+    },
+    {
+      access: ADMIN_LEVEL,
+      title: "Admin Panel",
+      icon: "BookBible",
+      to: "control",
+    },
+  ],
+};
 
 export const homeLinks = [
   { img: "./for_sell.svg", title: "Mua bán", to: "nha-dat-ban" },
   { img: "./for_rent.svg", title: "Cho thuê", to: "nha-dat-cho-thue" },
   { img: "./project.svg", title: "Dự án", to: "du-an" },
 ];
-
-// export const sellSelectOptions = [
-//   { value: "nha-rieng", label: "Nhà riêng" },
-//   { value: "can-ho-chung-cu", label: "Căn hộ chung cư" },
-//   { value: "biet-thu-lien-ke", label: "Nhà biệt thự, liền kề" },
-//   { value: "nha-mat-pho", label: "Nhà mặt phố" },
-//   {
-//     value: "shophouse-nha-pho-thuong-mai",
-//     label: "Shophouse, nhà phố thương mại",
-//   },
-//   { value: "dat-nen-du-an", label: "Đất nền dự án" },
-//   { value: "trang-trai-khu-nghi-duong", label: "Trang trại, khu nghỉ dưỡng" },
-//   { value: "condotel", label: "Condotel" },
-//   { label: "Kho, nhà xưởng, đất", value: "kho-nha-xuong-dat" },
-//   { value: "cac-loai-khac", label: "Loại bất động sản khác" },
-// ];
-
-// export const rentSelectOptions = [
-//   { label: "Nhà riêng", value: "nha-rieng" },
-//   { label: "Căn hộ chung cư", value: "can-ho-chung-cu" },
-//   { label: "Nhà biệt thự, liền kề", value: "biet-thu-lien-ke" },
-//   { label: "Nhà mặt phố", value: "nha-mat-pho" },
-//   {
-//     label: "Shophouse, nhà phố thương mại",
-//     value: "shophouse-nha-pho-thuong-mai",
-//   },
-//   { label: "Nhà trọ, phòng trọ", value: "nha-tro-phong-tro" },
-//   { label: "Văn phòng", value: "van-phong" },
-//   {
-//     label: "Cửa hàng, ki ốt",
-//     value: "cua-hang-ki-ot",
-//   },
-//   { label: "Kho, nhà xưởng, đất", value: "kho-nha-xuong-dat" },
-//   { label: "Loại bất động sản khác", value: "cac-loai-khac" },
-// ];
 
 export const areaOptions = [
   { label: "Dưới 30m²", value: "0-30" },

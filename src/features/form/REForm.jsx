@@ -15,11 +15,14 @@ import {
   Badge,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import slugify from "react-slugify";
+
+// icon
+import { LuChevronsLeft } from "react-icons/lu";
 
 // UI
 import QuillEditor from "./QuillEditor";
@@ -36,6 +39,7 @@ import {
   DEFAULT_RE_STATUS,
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
+  SELLING_STATUS,
   SOLD_STATUS,
   maxDesLength,
   maxLength,
@@ -44,8 +48,11 @@ import {
 } from "../../constants/anyVariables";
 import { directions, navLinks } from "../../constants/navlink";
 import { useCreateRE } from "./useCreateRE";
+import { getStatusBadgeColor } from "../../utils/helper";
+import { useGoBack } from "../../hooks/useGoBack";
 
 function REForm({ id, edit = false, editData }) {
+  const back = useGoBack();
   const {
     control,
     register,
@@ -81,11 +88,7 @@ function REForm({ id, edit = false, editData }) {
   // submit & create new re
   const { isCreating, mutate } = useCreateRE();
 
-  // console.log(editData);
-  const badgeColor =
-    editData?.status.id && editData?.status.id === DEFAULT_RE_STATUS
-      ? "red"
-      : "green";
+  let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   function onSubmit(data) {
     console.log(data, docs, files);
@@ -131,241 +134,251 @@ function REForm({ id, edit = false, editData }) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
-      <Flex justify="space-between" align="center" pt="18" pb={2}>
-        <Heading size="md" noOfLines={1}>
-          {!edit ? "Tạo" : "Sửa"} bài đăng bán bất động sản
-        </Heading>
-        <Flex gap={3} align="center">
-          <Text fontSize="sm" fontWeight="700">
-            Trạng thái:
-          </Text>
-          <Badge
-            colorScheme={badgeColor}
-            fontSize="sm"
-            p="3px 10px"
-            borderRadius="lg"
-            textTransform="capitalize"
-          >
-            {editData?.status.status || "Chưa duyệt"}
-          </Badge>
-        </Flex>
-      </Flex>
-      <ChakraAlert
-        type="info"
-        message={`Vui lòng điền đủ trường có dấu`}
-        html={`<span className="text-red-500 ml-1">*</span>`}
-      />
-      <VStack gap={3} my={3}>
-        {/* purType & re type */}
-        <Grid templateColumns="repeat(2, 1fr)" gap={3} w="100%">
-          <FormControl isRequired>
-            <FormLabel>Dạng bán</FormLabel>
-            <Select
-              onChange={(e) => setPurType(e.target.value === "true")}
-              value={editData?.purType}
+    <>
+      <Button
+        variant="outline"
+        fontWeight={500}
+        leftIcon={<LuChevronsLeft />}
+        onClick={back}
+      >
+        Quay lại
+      </Button>
+      <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
+        <Flex justify="space-between" align="center" pt="18" pb={2}>
+          <Heading size="md" noOfLines={1}>
+            {!edit ? "Tạo" : "Sửa"} bài đăng bán bất động sản
+          </Heading>
+          <Flex gap={3} align="center">
+            <Text fontSize="sm" fontWeight="700">
+              Trạng thái:
+            </Text>
+            <Badge
+              colorScheme={badgeColor}
+              fontSize="sm"
+              p="3px 10px"
+              borderRadius="lg"
+              textTransform="capitalize"
             >
-              <option value="true">Bán</option>
-              <option value="false">Cho thuê</option>
-            </Select>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Loại hình</FormLabel>
-            <Select {...register("reType")} value={editData?.type.type}>
-              {arr.map((opt) => (
-                <option value={opt.type} key={opt.type}>
-                  {opt.title}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        {/* address */}
-        <AddressSelect />
-        {/* address - details */}
-        <FormControl isRequired>
-          <FormLabel>Địa chỉ cụ thể</FormLabel>
-          <Input
-            type="text"
-            placeholder="Số nhà - Ngõ - Ngách"
-            {...register("address")}
-            value={editData?.address}
-          />
-        </FormControl>
-        {/* title */}
-        <NameInput
-          register={register("name", {
-            required: "ten bai viet la gif?",
-            value: editData?.name,
-            // dev
-            minLength: { value: 10, message: "viet dai them vao" },
-            maxLength: {
-              value: maxLength,
-              message: "dm vuot qua so ki tu roi",
-            },
-          })}
-          error={errors.name}
-        />
-        {/* area & price */}
-        <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
-          <ChakraNumberInput
-            register={register}
-            error={errors.area}
-            label="Diện tích"
-            name="area"
-            req={true}
-            placeholder="mét"
-            value={editData?.area}
-          />
-
-          <ChakraNumberInput
-            register={register}
-            name="price"
-            error={errors.price}
-            label={`Giá trị ${purType ? "bán" : "thuê / tháng"}`}
-            req={true}
-            placeholder={purType ? "tỷ" : "triệu"}
-            value={editData?.price}
-          />
-        </Grid>
-
-        {/* documents */}
-        <DocumentCheckBoxes setDocs={setDocs} value={existedDocs} />
-
-        {/* other fields */}
-        <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-          <ChakraNumberInput
-            register={register}
-            error={errors.bed_room}
-            label="Số phòng ngủ"
-            name="bed_room"
-            value={editData?.bed_room}
-          />
-
-          <ChakraNumberInput
-            register={register}
-            error={errors.bath_room}
-            label="Số phòng vệ sinh"
-            name="bath_room"
-            value={editData?.bath_room}
-          />
-
-          <ChakraNumberInput
-            register={register}
-            error={errors.floor}
-            label="Số lượng tầng"
-            name="floor"
-            value={editData?.floor}
-          />
-        </Grid>
-        <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-          <ChakraNumberInput
-            register={register}
-            name="facade"
-            error={errors.facade}
-            label="Mặt tiền"
-            value={editData?.facade}
-          />
-
-          <ChakraNumberInput
-            register={register}
-            error={errors.entryLength}
-            label="Đường vào"
-            name="entryLength"
-            value={editData?.entryLength}
-          />
-
-          <FormControl>
-            <FormLabel>Hướng nhà</FormLabel>
-            <Select {...register("direction")} value={editData?.direction}>
-              {directions.map((dir) => (
-                <option value={dir} key={dir}>
-                  {dir}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Flex w="100%">
-          <Checkbox size="md" {...register("fur")} value={editData?.fur}>
-            Bất động sản có bao gồm nội thất?
-          </Checkbox>
-        </Flex>
-        {/* des */}
-        <FormControl isRequired isInvalid={errors.des}>
-          <FormLabel>Mô tả chi tiết</FormLabel>
-          {errors.des && (
-            <FormErrorMessage>{errors.des.message}</FormErrorMessage>
-          )}
-          <Controller
-            name="des"
-            control={control}
-            render={({ field: { onChange } }) => (
-              <QuillEditor
-                onChange={onChange}
-                allowImage={false}
-                value={editData?.des}
-              />
-            )}
-            rules={{
-              minLength: {
-                value: minDesLength,
-                message: "vui long cung cap them chi tiet va mo ta",
-              },
-              maxLength: {
-                value: maxDesLength,
-                message: "dai the? hoc sinh gioi van quoc gia a",
-              },
-            }}
-          />
-        </FormControl>
-        {/* file input */}
-        <FormControl isRequired isInvalid={errors.files}>
-          <FormLabel>Hình ảnh, video bất động sản</FormLabel>
-          <FormHelperText mb={2}>
-            {files.images.length}/{LIMIT_IMG_UPLOAD} images -{" "}
-            {files.videos.length}/{LIMIT_VID_UPLOAD} videos
-          </FormHelperText>
-          {errors.files && (
-            <FormErrorMessage>{errors.files.message}</FormErrorMessage>
-          )}
-          <Controller
-            name="files"
-            control={control}
-            render={({ field: { onChange } }) => (
-              <FilesDropzone
-                files={files}
-                setFiles={setFiles}
-                setValue={setValue}
-                onChange={onChange}
-              />
-            )}
-          />
-        </FormControl>
-
-        {/* note */}
-        <ChakraAlert
-          type="warning"
-          message="Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các
-          thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D"
-        />
-
-        {editData?.status.id !== SOLD_STATUS && (
-          <Flex w="100%" justify="flex-end">
-            <Button
-              isLoading={isCreating}
-              loadingText="Chờ tí"
-              right={0}
-              colorScheme="teal"
-              variant="outline"
-              type="submit"
-            >
-              submit
-            </Button>
+              {editData?.status.status || "Chưa duyệt"}
+            </Badge>
           </Flex>
-        )}
-      </VStack>
-    </form>
+        </Flex>
+        <ChakraAlert
+          type="info"
+          message={`Vui lòng điền đủ trường có dấu`}
+          html={`<span className="text-red-500 ml-1">*</span>`}
+        />
+        <VStack gap={3} my={3}>
+          {/* purType & re type */}
+          <Grid templateColumns="repeat(2, 1fr)" gap={3} w="100%">
+            <FormControl isRequired>
+              <FormLabel>Dạng bán</FormLabel>
+              <Select
+                onChange={(e) => setPurType(e.target.value === "true")}
+                value={editData?.purType}
+              >
+                <option value="true">Bán</option>
+                <option value="false">Cho thuê</option>
+              </Select>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Loại hình</FormLabel>
+              <Select {...register("reType")} value={editData?.type.type}>
+                {arr.map((opt) => (
+                  <option value={opt.type} key={opt.type}>
+                    {opt.title}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          {/* address */}
+          <AddressSelect />
+          {/* address - details */}
+          <FormControl isRequired>
+            <FormLabel>Địa chỉ cụ thể</FormLabel>
+            <Input
+              type="text"
+              placeholder="Số nhà - Ngõ - Ngách"
+              {...register("address")}
+              value={editData?.address}
+            />
+          </FormControl>
+          {/* title */}
+          <NameInput
+            register={register("name", {
+              required: "ten bai viet la gif?",
+              value: editData?.name,
+              // dev
+              minLength: { value: 10, message: "viet dai them vao" },
+              maxLength: {
+                value: maxLength,
+                message: "dm vuot qua so ki tu roi",
+              },
+            })}
+            error={errors.name}
+          />
+          {/* area & price */}
+          <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
+            <ChakraNumberInput
+              register={register}
+              error={errors.area}
+              label="Diện tích"
+              name="area"
+              req={true}
+              placeholder="mét"
+              value={editData?.area}
+            />
+
+            <ChakraNumberInput
+              register={register}
+              name="price"
+              error={errors.price}
+              label={`Giá trị ${purType ? "bán" : "thuê / tháng"}`}
+              req={true}
+              placeholder={purType ? "tỷ" : "triệu"}
+              value={editData?.price}
+            />
+          </Grid>
+
+          {/* documents */}
+          <DocumentCheckBoxes setDocs={setDocs} value={existedDocs} />
+
+          {/* other fields */}
+          <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
+            <ChakraNumberInput
+              register={register}
+              error={errors.bed_room}
+              label="Số phòng ngủ"
+              name="bed_room"
+              value={editData?.bed_room}
+            />
+
+            <ChakraNumberInput
+              register={register}
+              error={errors.bath_room}
+              label="Số phòng vệ sinh"
+              name="bath_room"
+              value={editData?.bath_room}
+            />
+
+            <ChakraNumberInput
+              register={register}
+              error={errors.floor}
+              label="Số lượng tầng"
+              name="floor"
+              value={editData?.floor}
+            />
+          </Grid>
+          <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
+            <ChakraNumberInput
+              register={register}
+              name="facade"
+              error={errors.facade}
+              label="Mặt tiền"
+              value={editData?.facade}
+            />
+
+            <ChakraNumberInput
+              register={register}
+              error={errors.entryLength}
+              label="Đường vào"
+              name="entryLength"
+              value={editData?.entryLength}
+            />
+
+            <FormControl>
+              <FormLabel>Hướng nhà</FormLabel>
+              <Select {...register("direction")} value={editData?.direction}>
+                {directions.map((dir) => (
+                  <option value={dir} key={dir}>
+                    {dir}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Flex w="100%">
+            <Checkbox size="md" {...register("fur")} value={editData?.fur}>
+              Bất động sản có bao gồm nội thất?
+            </Checkbox>
+          </Flex>
+          {/* des */}
+          <FormControl isRequired isInvalid={errors.des}>
+            <FormLabel>Mô tả chi tiết</FormLabel>
+            {errors.des && (
+              <FormErrorMessage>{errors.des.message}</FormErrorMessage>
+            )}
+            <Controller
+              name="des"
+              control={control}
+              render={({ field: { onChange } }) => (
+                <QuillEditor
+                  onChange={onChange}
+                  allowImage={false}
+                  value={editData?.des}
+                />
+              )}
+              rules={{
+                minLength: {
+                  value: minDesLength,
+                  message: "vui long cung cap them chi tiet va mo ta",
+                },
+                maxLength: {
+                  value: maxDesLength,
+                  message: "dai the? hoc sinh gioi van quoc gia a",
+                },
+              }}
+            />
+          </FormControl>
+          {/* file input */}
+          <FormControl isRequired isInvalid={errors.files}>
+            <FormLabel>Hình ảnh, video bất động sản</FormLabel>
+            <FormHelperText mb={2}>
+              {files.images.length}/{LIMIT_IMG_UPLOAD} images -{" "}
+              {files.videos.length}/{LIMIT_VID_UPLOAD} videos
+            </FormHelperText>
+            {errors.files && (
+              <FormErrorMessage>{errors.files.message}</FormErrorMessage>
+            )}
+            <Controller
+              name="files"
+              control={control}
+              render={({ field: { onChange } }) => (
+                <FilesDropzone
+                  files={files}
+                  setFiles={setFiles}
+                  setValue={setValue}
+                  onChange={onChange}
+                />
+              )}
+            />
+          </FormControl>
+
+          {/* note */}
+          <ChakraAlert
+            type="warning"
+            message="Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các
+          thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D"
+          />
+
+          {editData?.status.id !== SOLD_STATUS && (
+            <Flex w="100%" justify="flex-end">
+              <Button
+                isLoading={isCreating}
+                loadingText="Chờ tí"
+                right={0}
+                colorScheme="teal"
+                variant="outline"
+                type="submit"
+              >
+                submit
+              </Button>
+            </Flex>
+          )}
+        </VStack>
+      </form>
+    </>
   );
 }
 

@@ -1,9 +1,8 @@
 import { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaCircleUser, FaRegHeart } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
-import { GrUserSettings } from "react-icons/gr";
-import { GiQueenCrown } from "react-icons/gi";
+import { BiSolidBible } from "react-icons/bi";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
@@ -81,7 +80,11 @@ function Action({ onClose }) {
         </>
       ) : (
         <div className="flex items-center">
-          <Avatar avatar={data.avatar} fullName={data.fullName} onClick={handleUserToggle} />
+          <Avatar
+            avatar={data.avatar}
+            fullName={data.fullName}
+            onClick={handleUserToggle}
+          />
           {userToggle && (
             <ToggleBox close={() => setUserToggle(false)} type childX={childX}>
               <div className="flex flex-col gap-2">
@@ -90,7 +93,7 @@ function Action({ onClose }) {
                   className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
                 >
                   <span className="text-xl">
-                    <GrUserSettings />
+                    <FaCircleUser />
                   </span>
                   Quản lý tài khoản
                 </NavLink>
@@ -111,7 +114,7 @@ function Action({ onClose }) {
                     className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
                   >
                     <span className="text-xl">
-                      <GiQueenCrown />
+                      <BiSolidBible />
                     </span>
                     Admin Panel
                   </NavLink>

@@ -13,12 +13,10 @@ import {
 import { PiDotsSixVerticalBold, PiUpload } from "react-icons/pi";
 import { HiOutlineTrash } from "react-icons/hi";
 
-import { formatDate } from "../../utils/helper";
+import { formatDate, getStatusBadgeColor } from "../../utils/helper";
 import {
   ADMIN_LEVEL,
   DEFAULT_RE_STATUS,
-  SELLING_STATUS,
-  SOLD_STATUS,
 } from "../../constants/anyVariables";
 import { Link } from "react-router-dom";
 import { TbEyeCheck } from "react-icons/tb";
@@ -39,20 +37,7 @@ function TableRERow({ data, level }) {
     slug,
   } = data;
 
-  let statusBadge;
-  switch (statusID) {
-    case SELLING_STATUS:
-      statusBadge = "green";
-      break;
-    case DEFAULT_RE_STATUS:
-      statusBadge = "red";
-      break;
-    case SOLD_STATUS:
-      statusBadge = "orange";
-      break;
-    default:
-      break;
-  }
+  let statusBadge = getStatusBadgeColor(statusID);
 
   return (
     <Tr className="group">

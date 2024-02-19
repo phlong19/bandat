@@ -1,4 +1,10 @@
-import { billion, million } from "../constants/anyVariables";
+import {
+  DEFAULT_RE_STATUS,
+  SELLING_STATUS,
+  SOLD_STATUS,
+  billion,
+  million,
+} from "../constants/anyVariables";
 
 // calc how much money per m2
 export function pricePerArea(price, area) {
@@ -45,4 +51,26 @@ export function formatNumber(input) {
 // hidden last 3-digit of phone number
 export function hiddenLast3PhoneNum(input) {
   return "0" + input.toString().slice(0, 6) + "***";
+}
+
+// get re status badge color base on status
+export function getStatusBadgeColor(id) {
+  if (!id) return "red";
+
+  let color;
+  switch (id) {
+    case SELLING_STATUS:
+      color = "green";
+      break;
+    case DEFAULT_RE_STATUS:
+      color = "red";
+      break;
+    case SOLD_STATUS:
+      color = "orange";
+      break;
+    default:
+      break;
+  }
+
+  return color;
 }
