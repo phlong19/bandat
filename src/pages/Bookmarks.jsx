@@ -1,5 +1,5 @@
-function BookMarks() {
+function Bookmarks() {
   return <div>hi</div>;
 }
 
-export default BookMarks;
+export default Bookmarks;

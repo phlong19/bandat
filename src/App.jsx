@@ -12,7 +12,7 @@ import News from "./pages/News";
 import NewDetails from "./pages/NewDetails";
 import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
-import BookMarks from "./pages/BookMarks";
+import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -76,7 +76,7 @@ function App() {
                     />
                     <Route path="du-an" element={<Projects />} />
                     <Route path="nha-dat/:land" element={<Details />} />
-                    <Route path="tin-da-luu" element={<BookMarks />} />
+                    <Route path="tin-da-luu" element={<Bookmarks />} />
                     <Route path="tin-tuc" element={<News />} />
                     <Route path="tin-tuc/:title" element={<NewDetails />} />
                     <Route path="danh-ba" element={<Contacts />} />
