@@ -1,10 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { Box } from "@chakra-ui/react";
+import { Box, Center, Spinner } from "@chakra-ui/react";
 
 import ChakraBreadcrumb from "../ui/ChakraBreadcrumb";
 import REForm from "../features/form/REForm";
-import SpinnerFullPage from "../ui/SpinnerFullPage";
 
 import { useAuth } from "../context/UserContext";
 import UserDashboardTable from "../features/dashboard/UserDashboardTable";
@@ -21,6 +20,7 @@ function UserDashboard({ form = false }) {
   const { data, level, isLoading } = useAuth();
   const { post, isFetching } = useGetRE(title);
 
+  console.log(title);
   // future: get re dir data base on level
   // admin: all posts
   // user: only posts from that user
@@ -33,14 +33,12 @@ function UserDashboard({ form = false }) {
   }, [post, navigate, isFetching, title]);
 
   if (isLoading || isFetching) {
-    return <SpinnerFullPage />;
+    return (
+      <Center minH="100%">
+        <Spinner thickness="4px" emptyColor="gray.300" size="lg" speed="0.4s" />
+      </Center>
+    );
   }
-
-  // if (!post && title && !isFetching) {
-  //   toast.error("khong tim thay bai viet");
-  //   navigate("/dang-tin");
-  // }
-  console.log(post);
 
   return (
     <Box h="100%" gap={4} display="flex" flexDirection="column">

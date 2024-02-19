@@ -68,5 +68,6 @@ const SOLD_STATUS = 3;
 export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
 
 export const geoCodeURL = `https://geocode.maps.co/search`;
+export const mapURL = `https://maps.googleapis.com/maps/api/geocode/json`;
 
 export const newsCaptions = ["one", "two"];

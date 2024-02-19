@@ -30,11 +30,13 @@ function TableRERow({ data, level }) {
     purType,
     profile: { phone, avatar, fullName },
     report,
-    status: { statusID, status },
+    postStatus: { id: statusID, status },
+    address,
     city: { cityName },
     dis: { disName },
     ward: { wardName },
-    name: hLine,
+    name,
+    slug,
   } = data;
 
   let statusBadge;
@@ -85,14 +87,14 @@ function TableRERow({ data, level }) {
           {purType ? "Ban" : "Cho thue"}
         </Badge>
       </Td>
-      {/* hline */}
+      {/* name */}
       <Td maxW="250px">
-        <Text noOfLines={2}>{hLine}</Text>
+        <Text noOfLines={2}>{name}</Text>
       </Td>
       {/* address */}
       <Td maxW="250">
         <Text noOfLines={2}>
-          {wardName},{disName}, {cityName}
+          {address}, {wardName}, {disName},{cityName}
         </Text>
       </Td>
       {/* reports */}
@@ -127,7 +129,12 @@ function TableRERow({ data, level }) {
                 Duyệt bài nhanh
               </MenuItem>
             )}
-            <MenuItem gap={3} color="green" as={Link} to={`/`}>
+            <MenuItem
+              gap={3}
+              color="green"
+              as={Link}
+              to={`/quan-ly-bai-viet/${slug}`}
+            >
               {/* future: add edit page */}
               <TbEyeCheck fontSize="20" />
               Xem / Sửa

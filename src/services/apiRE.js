@@ -1,13 +1,13 @@
 import supabase from "./supabase";
 
 import {
+  ADMIN_LEVEL,
   LIMIT_PER_PAGE,
   SELLING_STATUS,
-  geoCodeURL,
   maxLength,
   minLength,
 } from "../constants/anyVariables";
-import { getAddress, insertDocument } from "./apiGeneral";
+import { getAddress, getLatLong, insertDocument } from "./apiGeneral";
 import { uploadMedia } from "./apiMedia";
 
 export async function getList(type, citeria, page) {
@@ -74,10 +74,11 @@ export async function getPost(slug) {
     city: CityDirectory (cityName),
     dis: DistrictDirectory (disName),
     ward: WardDirectory (wardName),
-    images: REMedias(mediaLink),
-    docs: REDocs(docName: LegalDoc(doc_name)),
+    medias: REMedias(id, mediaLink, isImage),
+    docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
     profile: Profile(phone,fullName,avatar),
-    status: REStatus (*)
+    status: REStatus (*),
+    type: REType (type)
   `,
     )
     .limit(1)
@@ -110,19 +111,12 @@ export async function createPost(newData) {
     reData.disID,
     reData.wardID,
   );
-  const fullAddress = `${reData.address} ${ward[0]} ${dis[0]} ${city[0]}`;
-  console.log(city);
-  console.log(dis);
-  console.log(ward);
-  console.log(fullAddress);
-  const res = await fetch(
-    geoCodeURL +
-      `?q=${fullAddress}&api_key=${import.meta.env.VITE_GEOCODE_KEY}`,
-  );
-  // destructure lat & long from api results
-  const geo = await res.json();
-  const lat = parseFloat(geo[0].lat);
-  const long = parseFloat(geo[0].lon);
+
+  const fullAddress = `${
+    reData.address
+  } ${ward.toString()} ${dis.toString()} ${city.toString()}`;
+
+  const { lat, long } = getLatLong(fullAddress);
 
   // post
   const {

@@ -27,7 +27,7 @@ const Font = Quill.import("formats/font");
 Font.whitelist = ["Roboto", "Lexend"];
 Quill.register(Font, true);
 
-function QuillEditor({ onChange, allowImage = true }) {
+function QuillEditor({ onChange, allowImage = true, value }) {
   const quill = useRef(null);
 
   // image handler
@@ -94,6 +94,7 @@ function QuillEditor({ onChange, allowImage = true }) {
       onChange={onChange}
       formats={formats}
       modules={modules}
+      value={value}
     />
   );
 }

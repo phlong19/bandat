@@ -15,7 +15,7 @@ import {
   Badge,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
@@ -36,6 +36,7 @@ import {
   DEFAULT_RE_STATUS,
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
+  SOLD_STATUS,
   maxDesLength,
   maxLength,
   minDesLength,
@@ -58,14 +59,37 @@ function REForm({ id, edit = false, editData }) {
   const [purType, setPurType] = useState(true);
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
-  const [files, setFiles] = useState({ images: [], videos: [] });
-  const [docs, setDocs] = useState([]);
+  const existedImages =
+    editData?.medias.filter((media) => media.isImage === true) || [];
+  const existedVideos =
+    editData?.medias.filter((media) => media.isImage !== true) || [];
+  // console.log(existedImages);
+  // console.log(existedVideos);
+  const [files, setFiles] = useState({
+    images: [...existedImages],
+    videos: [...existedVideos],
+  });
+
+  console.log(files);
+
+  // initial existed docs when edit data
+  const existedDocs = editData?.docs.map((doc) => doc.docName.doc_id) || [];
+  const [docs, setDocs] = useState([...existedDocs]);
+
   const [searchParams] = useSearchParams();
 
   // submit & create new re
   const { isCreating, mutate } = useCreateRE();
 
+  // console.log(editData);
+  const badgeColor =
+    editData?.status.id && editData?.status.id === DEFAULT_RE_STATUS
+      ? "red"
+      : "green";
+
   function onSubmit(data) {
+    console.log(data, docs, files);
+    return false;
     const cityID =
       searchParams.get("city") !== "none" ? searchParams.get("city") : null;
     const disID =
@@ -117,15 +141,13 @@ function REForm({ id, edit = false, editData }) {
             Trạng thái:
           </Text>
           <Badge
-            colorScheme={
-              editData?.status !== DEFAULT_RE_STATUS ? "red" : "green"
-            }
+            colorScheme={badgeColor}
             fontSize="sm"
             p="3px 10px"
             borderRadius="lg"
             textTransform="capitalize"
           >
-            {editData?.status !== DEFAULT_RE_STATUS ? "Chưa duyệt" : "Đã duyệt"}
+            {editData?.status.status || "Chưa duyệt"}
           </Badge>
         </Flex>
       </Flex>
@@ -136,17 +158,20 @@ function REForm({ id, edit = false, editData }) {
       />
       <VStack gap={3} my={3}>
         {/* purType & re type */}
-        <Grid templateColumns="repeat(2,1fr)" gap={3} w="100%">
+        <Grid templateColumns="repeat(2, 1fr)" gap={3} w="100%">
           <FormControl isRequired>
             <FormLabel>Dạng bán</FormLabel>
-            <Select onChange={(e) => setPurType(e.target.value === "true")}>
+            <Select
+              onChange={(e) => setPurType(e.target.value === "true")}
+              value={editData?.purType}
+            >
               <option value="true">Bán</option>
               <option value="false">Cho thuê</option>
             </Select>
           </FormControl>
           <FormControl isRequired>
             <FormLabel>Loại hình</FormLabel>
-            <Select {...register("reType")}>
+            <Select {...register("reType")} value={editData?.type.type}>
               {arr.map((opt) => (
                 <option value={opt.type} key={opt.type}>
                   {opt.title}
@@ -164,12 +189,14 @@ function REForm({ id, edit = false, editData }) {
             type="text"
             placeholder="Số nhà - Ngõ - Ngách"
             {...register("address")}
+            value={editData?.address}
           />
         </FormControl>
         {/* title */}
         <NameInput
           register={register("name", {
             required: "ten bai viet la gif?",
+            value: editData?.name,
             // dev
             minLength: { value: 10, message: "viet dai them vao" },
             maxLength: {
@@ -188,6 +215,7 @@ function REForm({ id, edit = false, editData }) {
             name="area"
             req={true}
             placeholder="mét"
+            value={editData?.area}
           />
 
           <ChakraNumberInput
@@ -197,11 +225,12 @@ function REForm({ id, edit = false, editData }) {
             label={`Giá trị ${purType ? "bán" : "thuê / tháng"}`}
             req={true}
             placeholder={purType ? "tỷ" : "triệu"}
+            value={editData?.price}
           />
         </Grid>
 
         {/* documents */}
-        <DocumentCheckBoxes setDocs={setDocs} />
+        <DocumentCheckBoxes setDocs={setDocs} value={existedDocs} />
 
         {/* other fields */}
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
@@ -210,6 +239,7 @@ function REForm({ id, edit = false, editData }) {
             error={errors.bed_room}
             label="Số phòng ngủ"
             name="bed_room"
+            value={editData?.bed_room}
           />
 
           <ChakraNumberInput
@@ -217,6 +247,7 @@ function REForm({ id, edit = false, editData }) {
             error={errors.bath_room}
             label="Số phòng vệ sinh"
             name="bath_room"
+            value={editData?.bath_room}
           />
 
           <ChakraNumberInput
@@ -224,6 +255,7 @@ function REForm({ id, edit = false, editData }) {
             error={errors.floor}
             label="Số lượng tầng"
             name="floor"
+            value={editData?.floor}
           />
         </Grid>
         <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
@@ -232,6 +264,7 @@ function REForm({ id, edit = false, editData }) {
             name="facade"
             error={errors.facade}
             label="Mặt tiền"
+            value={editData?.facade}
           />
 
           <ChakraNumberInput
@@ -239,11 +272,12 @@ function REForm({ id, edit = false, editData }) {
             error={errors.entryLength}
             label="Đường vào"
             name="entryLength"
+            value={editData?.entryLength}
           />
 
           <FormControl>
             <FormLabel>Hướng nhà</FormLabel>
-            <Select {...register("direction")}>
+            <Select {...register("direction")} value={editData?.direction}>
               {directions.map((dir) => (
                 <option value={dir} key={dir}>
                   {dir}
@@ -253,7 +287,7 @@ function REForm({ id, edit = false, editData }) {
           </FormControl>
         </Grid>
         <Flex w="100%">
-          <Checkbox size="md" {...register("fur")}>
+          <Checkbox size="md" {...register("fur")} value={editData?.fur}>
             Bất động sản có bao gồm nội thất?
           </Checkbox>
         </Flex>
@@ -267,7 +301,11 @@ function REForm({ id, edit = false, editData }) {
             name="des"
             control={control}
             render={({ field: { onChange } }) => (
-              <QuillEditor onChange={onChange} allowImage={false} />
+              <QuillEditor
+                onChange={onChange}
+                allowImage={false}
+                value={editData?.des}
+              />
             )}
             rules={{
               minLength: {
@@ -312,18 +350,20 @@ function REForm({ id, edit = false, editData }) {
           thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D"
         />
 
-        <Flex w="100%" justify="flex-end">
-          <Button
-            isLoading={isCreating}
-            loadingText="Chờ tí"
-            right={0}
-            colorScheme="teal"
-            variant="outline"
-            type="submit"
-          >
-            submit
-          </Button>
-        </Flex>
+        {editData?.status.id !== SOLD_STATUS && (
+          <Flex w="100%" justify="flex-end">
+            <Button
+              isLoading={isCreating}
+              loadingText="Chờ tí"
+              right={0}
+              colorScheme="teal"
+              variant="outline"
+              type="submit"
+            >
+              submit
+            </Button>
+          </Flex>
+        )}
       </VStack>
     </form>
   );

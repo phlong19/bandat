@@ -13,7 +13,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { getDocuments } from "../../services/apiGeneral";
 
-function DocumentCheckBoxes({setDocs}) {
+function DocumentCheckBoxes({ setDocs, value }) {
   const { data, isLoading } = useQuery({
     queryKey: ["legal-docs"],
     queryFn: getDocuments,
@@ -35,7 +35,7 @@ function DocumentCheckBoxes({setDocs}) {
             <Box as="span" flex="1" textAlign="left">
               Chọn giấy tờ pháp lý
             </Box>
-            {!isLoading ? <AccordionIcon /> : <Spinner size='sm' />}
+            {!isLoading ? <AccordionIcon /> : <Spinner size="sm" />}
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4} px={0}>
@@ -46,6 +46,7 @@ function DocumentCheckBoxes({setDocs}) {
                   key={doc.doc_id}
                   onChange={handleChange}
                   value={doc.doc_id}
+                  isChecked={value?.includes(doc.doc_id)}
                 >
                   {doc.doc_name}
                 </Checkbox>

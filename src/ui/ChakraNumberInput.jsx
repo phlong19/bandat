@@ -16,6 +16,7 @@ function ChakraNumberInput({
   label,
   error,
   placeholder,
+  value,
 }) {
   return (
     <FormControl isRequired={req} isInvalid={error}>
@@ -23,6 +24,7 @@ function ChakraNumberInput({
       <NumberInput>
         <NumberInputField
           {...register(`${name}`, {
+            value: value,
             required: { value: req, message: "vui long nhap vao" },
             valueAsNumber: true,
           })}

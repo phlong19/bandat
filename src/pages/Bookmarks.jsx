@@ -1,9 +1,5 @@
 function BookMarks() {
-    return (
-        <div>
-            
-        </div>
-    )
+  return <div>hi</div>;
 }
 
-export default BookMarks
+export default BookMarks;

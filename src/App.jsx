@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
+// https://www.vietiso.com/ho-tro/dieu-khoan-huong-dan/huong-dan-lay-google-maps-api-key-tich-hop-vao-website.html
 // pages
 import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
