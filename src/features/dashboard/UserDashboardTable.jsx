@@ -44,7 +44,7 @@ function UserDashboardTable({ id, level }) {
       data={data}
       title="Quản lý bài viết"
       render={(item) => (
-        <TableRERow key={Math.random()} data={item} level={level} />
+        <TableRERow key={Math.random()} data={item} level={level} userID={id} />
       )}
       primaryButton={
         <Link to="/dang-tin">

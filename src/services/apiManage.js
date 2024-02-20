@@ -25,7 +25,7 @@ export async function getFullREList(userID, page) {
       city: CityDirectory(cityName),
       dis: DistrictDirectory(disName), 
       ward: WardDirectory(wardName),
-      profile: Profile(phone, fullName, avatar),
+      profile: Profile(*),
       postStatus: REStatus(*)
     `,
     )

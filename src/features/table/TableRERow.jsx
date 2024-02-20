@@ -1,3 +1,5 @@
+// libs
+import { Link } from "react-router-dom";
 import {
   Avatar,
   Badge,
@@ -8,25 +10,34 @@ import {
   Flex,
   Td,
   Text,
+  Spinner,
   Tr,
 } from "@chakra-ui/react";
+
+// icons
 import { PiDotsSixVerticalBold, PiUpload } from "react-icons/pi";
 import { HiOutlineTrash } from "react-icons/hi";
+import { TbEyeCheck } from "react-icons/tb";
+import { LiaMoneyBillWaveSolid } from "react-icons/lia";
 
+// others
 import { formatDate, getStatusBadgeColor } from "../../utils/helper";
 import {
   ADMIN_LEVEL,
   DEFAULT_RE_STATUS,
+  SELLING_STATUS,
 } from "../../constants/anyVariables";
-import { Link } from "react-router-dom";
-import { TbEyeCheck } from "react-icons/tb";
 
-function TableRERow({ data, level }) {
+// custom hooks
+import { useApprovePost } from "./useApprovePost";
+import { useMarkSold } from "./useMarkSold";
+
+function TableRERow({ data, level, userID }) {
   const {
     id,
     created_at,
     purType,
-    profile: { phone, avatar, fullName },
+    profile: { id: authorID, phone, avatar, fullName },
     report,
     postStatus: { id: statusID, status },
     address,
@@ -38,6 +49,8 @@ function TableRERow({ data, level }) {
   } = data;
 
   let statusBadge = getStatusBadgeColor(statusID);
+  const { approve, isApproving } = useApprovePost();
+  const { markSold, isMarking } = useMarkSold();
 
   return (
     <Tr className="group">
@@ -87,15 +100,19 @@ function TableRERow({ data, level }) {
         <Text pl="15px">{report}</Text>
       </Td>
       <Td>
-        <Badge
-          fontSize="sm"
-          p="3px 10px"
-          borderRadius="lg"
-          colorScheme={statusBadge}
-          textTransform="capitalize"
-        >
-          {status}
-        </Badge>
+        {isApproving || isMarking ? (
+          <Spinner size="sm" ml={2} mt={1.5} />
+        ) : (
+          <Badge
+            fontSize="sm"
+            p="3px 10px"
+            borderRadius="lg"
+            colorScheme={statusBadge}
+            textTransform="capitalize"
+          >
+            {status}
+          </Badge>
+        )}
       </Td>
       <Td>
         <Text fontSize="md" pb=".5rem">
@@ -108,8 +125,21 @@ function TableRERow({ data, level }) {
             <PiDotsSixVerticalBold fontSize={25} />
           </MenuButton>
           <MenuList fontSize="medium">
+            {/* must be admin or author to mark sold */}
+            {(level >= ADMIN_LEVEL || userID === authorID) &&
+              statusID === SELLING_STATUS && (
+                <MenuItem
+                  gap={3}
+                  color="orange.600"
+                  onClick={() => markSold(id)}
+                >
+                  <LiaMoneyBillWaveSolid />
+                  Đánh dấu đã bán
+                </MenuItem>
+              )}
+            {/* only admin can approve post */}
             {level >= ADMIN_LEVEL && statusID === DEFAULT_RE_STATUS && (
-              <MenuItem gap={3} color="blue.600">
+              <MenuItem gap={3} color="blue.600" onClick={() => approve(id)}>
                 <PiUpload />
                 Duyệt bài nhanh
               </MenuItem>

@@ -6,9 +6,10 @@ const data = {};
 data.city = data.dis = data.ward = [];
 
 export async function getAddress(city, district, ward) {
+  // from scratch
   if (!city && !district && !ward) {
-    data.dis = [];
-    data.ward = [];
+    data.dis = data.ward = [];
+
     const { data: city, error } = await supabase
       .from("CityDirectory")
       .select("*", { count: "exact" });
@@ -57,8 +58,12 @@ export async function getAddress(city, district, ward) {
     data.ward = ward;
   }
 
-  if (city && district && ward) {
-    const { data: address, error } = await supabase
+  return data;
+}
+
+export async function getFullAddress(cityID, disID, wardID, address) {
+  if (cityID && disID && wardID) {
+    const { data, error } = await supabase
       .from("WardDirectory")
       .select(
         `*, dis: DistrictDirectory(disName, city: CityDirectory(cityName))`,
@@ -66,12 +71,14 @@ export async function getAddress(city, district, ward) {
       .eq("wardID", ward);
     if (error) throw new Error(error.message);
 
-    data.city = [address[0].dis.city.cityName];
-    data.dis = [address[0].dis.disName];
-    data.ward = [address[0].wardName];
-  }
+    const city = data[0].dis.city.cityName;
+    const dis = data[0].dis.disName;
+    const ward = data[0].wardName;
 
-  return data;
+    const fullAddress = `${address} ${ward} ${dis} ${city}`;
+
+    return fullAddress;
+  }
 }
 
 export async function getLatLong(address) {
@@ -80,8 +87,8 @@ export async function getLatLong(address) {
   );
 
   const data = await res.json();
+  console.log(data);
   const { location } = data.results[0].geometry;
-
   const lat = parseFloat(location.lat);
   const long = parseFloat(location.lng);
 

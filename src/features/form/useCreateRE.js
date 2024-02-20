@@ -12,7 +12,7 @@ export function useCreateRE() {
     mutationFn: (reData) => createPost(reData),
     onSuccess: () => {
       toast.success("tao bai dang thanh cong, chi con cho duoc duyet thoi :3");
-      queryClient.invalidateQueries({ refetchType: "active" });
+      queryClient.invalidateQueries({ queryKey: ["REList"], exact: true });
       navigate("/quan-ly-bai-viet");
     },
     onError: (err) => {

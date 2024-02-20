@@ -4,10 +4,11 @@ import {
   ADMIN_LEVEL,
   LIMIT_PER_PAGE,
   SELLING_STATUS,
+  SOLD_STATUS,
   maxLength,
   minLength,
 } from "../constants/anyVariables";
-import { getAddress, getLatLong, insertDocument } from "./apiGeneral";
+import { getFullAddress, getLatLong, insertDocument } from "./apiGeneral";
 import { uploadMedia } from "./apiMedia";
 
 export async function getList(type, citeria, page) {
@@ -105,16 +106,12 @@ export async function createPost(newData) {
     throw new Error("There was an error while fetching data");
   }
 
-  // get full address from address and ids
-  const { city, dis, ward } = await getAddress(
+  const fullAddress = await getFullAddress(
     reData.cityID,
     reData.disID,
     reData.wardID,
+    reData.address,
   );
-
-  const fullAddress = `${
-    reData.address
-  } ${ward.toString()} ${dis.toString()} ${city.toString()}`;
 
   const { lat, long } = await getLatLong(fullAddress);
 
@@ -146,6 +143,35 @@ export async function createPost(newData) {
 
   // handle docs
   docs.forEach((id) => insertDocument(id, postID));
+
+  return null;
+}
+
+// approve
+export async function approvePost(postID) {
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .update({ status: 2 })
+    .match({ id: postID });
+// FIX
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+// mark sold
+export async function markSold(id) {
+  const { error } = await supabase
+    .from("REDirectory")
+    .update({ status: SOLD_STATUS })
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return null;
 }
