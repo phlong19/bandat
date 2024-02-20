@@ -25,7 +25,10 @@ function ChakraNumberInput({
         <NumberInputField
           {...register(`${name}`, {
             value: value,
-            required: { value: req, message: "vui long nhap vao" },
+            required: {
+              value: req,
+              message: "khong thay dau sao do a? nhap day du vao",
+            },
             valueAsNumber: true,
           })}
           placeholder={placeholder}

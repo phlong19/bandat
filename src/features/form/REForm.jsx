@@ -15,10 +15,11 @@ import {
   Badge,
   Text,
 } from "@chakra-ui/react";
+import { NumericFormat } from "react-number-format";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import slugify from "react-slugify";
 
 // icon
@@ -39,8 +40,8 @@ import {
   DEFAULT_RE_STATUS,
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
-  SELLING_STATUS,
   SOLD_STATUS,
+  m2,
   maxDesLength,
   maxLength,
   minDesLength,
@@ -48,16 +49,13 @@ import {
 } from "../../constants/anyVariables";
 import { directions, navLinks } from "../../constants/navlink";
 import { useCreateRE } from "./useCreateRE";
-import { getStatusBadgeColor } from "../../utils/helper";
-import { useGoBack } from "../../hooks/useGoBack";
+import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
 
 function REForm({ id, edit = false, editData }) {
-  const back = useGoBack();
   const {
     control,
     register,
     formState: { errors },
-    getValues,
     setError,
     setValue,
     handleSubmit,
@@ -77,8 +75,6 @@ function REForm({ id, edit = false, editData }) {
     videos: [...existedVideos],
   });
 
-  console.log(files);
-
   // initial existed docs when edit data
   const existedDocs = editData?.docs.map((doc) => doc.docName.doc_id) || [];
   const [docs, setDocs] = useState([...existedDocs]);
@@ -91,8 +87,8 @@ function REForm({ id, edit = false, editData }) {
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   function onSubmit(data) {
-    console.log(data, docs, files);
-    return false;
+    // console.log(data, docs, files);
+    // return false;
     const cityID =
       searchParams.get("city") !== "none" ? searchParams.get("city") : null;
     const disID =
@@ -119,9 +115,12 @@ function REForm({ id, edit = false, editData }) {
         message: `so luong anh cung cap it nhat la ${BASE_MEDIA_UPLOAD}`,
       });
     }
-    console.log(data, cityID, disID, wardID);
+
+    // parse price format: ₫5.000.000
+
     mutate({
       ...data,
+      price: parseCurrency(data.price),
       cityID,
       disID,
       wardID,
@@ -135,14 +134,17 @@ function REForm({ id, edit = false, editData }) {
 
   return (
     <>
-      <Button
-        variant="outline"
-        fontWeight={500}
-        leftIcon={<LuChevronsLeft />}
-        onClick={back}
-      >
-        Quay lại
-      </Button>
+      {edit && (
+        <Button
+          variant="outline"
+          fontWeight={500}
+          leftIcon={<LuChevronsLeft />}
+          as={Link}
+          to="/quan-ly-bai-viet"
+        >
+          Quay lại
+        </Button>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
         <Flex justify="space-between" align="center" pt="18" pb={2}>
           <Heading size="md" noOfLines={1}>
@@ -216,6 +218,7 @@ function REForm({ id, edit = false, editData }) {
                 message: "dm vuot qua so ki tu roi",
               },
             })}
+            postId={editData?.id}
             error={errors.name}
           />
           {/* area & price */}
@@ -226,19 +229,35 @@ function REForm({ id, edit = false, editData }) {
               label="Diện tích"
               name="area"
               req={true}
-              placeholder="mét"
+              placeholder={m2.replace("/", "")}
               value={editData?.area}
             />
 
-            <ChakraNumberInput
-              register={register}
-              name="price"
-              error={errors.price}
-              label={`Giá trị ${purType ? "bán" : "thuê / tháng"}`}
-              req={true}
-              placeholder={purType ? "tỷ" : "triệu"}
-              value={editData?.price}
-            />
+            <FormControl isRequired isInvalid={errors.price}>
+              <FormLabel>{`Giá trị ${
+                purType ? "bán" : "thuê / tháng"
+              }`}</FormLabel>
+              <Controller
+                name="price"
+                control={control}
+                rules={{
+                  required: "khong thay dau sao do a?",
+                }}
+                render={({ field: { onChange } }) => (
+                  <Input
+                    as={NumericFormat}
+                    prefix="₫"
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    onChange={onChange}
+                    placeholder={purType ? "tỷ" : "triệu"}
+                  />
+                )}
+              />
+              {errors.price && (
+                <FormErrorMessage>{errors.price.message}</FormErrorMessage>
+              )}
+            </FormControl>
           </Grid>
 
           {/* documents */}
@@ -368,11 +387,12 @@ function REForm({ id, edit = false, editData }) {
                 isLoading={isCreating}
                 loadingText="Chờ tí"
                 right={0}
+                borderWidth={2}
                 colorScheme="teal"
                 variant="outline"
                 type="submit"
               >
-                submit
+                {!edit ? "submit" : "save"}
               </Button>
             </Flex>
           )}

@@ -12,11 +12,11 @@ export function useSearchbar() {
   const ward =
     searchParams.get("ward") !== "none" ? searchParams.get("ward") : null;
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["address", city, dis],
     queryFn: () => getAddress(city, dis, ward),
     staleTime: Infinity,
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading };
 }

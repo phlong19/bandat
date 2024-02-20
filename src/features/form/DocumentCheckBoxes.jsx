@@ -44,9 +44,9 @@ function DocumentCheckBoxes({ setDocs, value }) {
               {data.map((doc) => (
                 <Checkbox
                   key={doc.doc_id}
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e)}
                   value={doc.doc_id}
-                  isChecked={value?.includes(doc.doc_id)}
+                  defaultChecked={value?.includes(doc.doc_id)}
                 >
                   {doc.doc_name}
                 </Checkbox>

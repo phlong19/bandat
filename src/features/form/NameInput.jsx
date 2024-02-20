@@ -14,7 +14,7 @@ import {
 import { checkPost } from "../../services/apiRE";
 import { maxLength, minLength } from "../../constants/anyVariables";
 
-function NameInput({ register, error }) {
+function NameInput({ postId, register, error }) {
   let invalid = false;
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -36,7 +36,7 @@ function NameInput({ register, error }) {
     return () => clearTimeout(timer);
   }, [search, invalid]);
 
-  if (!isLoading && data?.length > 0) {
+  if (!isLoading && data?.length > 0 && data[0].id !== postId) {
     invalid = true;
   }
 

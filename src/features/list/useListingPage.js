@@ -8,10 +8,10 @@ export function useListingPage(purType) {
 
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["listing-page", type],
+  const { data, isLoading } = useQuery({
+    queryKey: ["listing-page", purType, type],
     queryFn: () => getList(purType, type, page),
   });
 
-  return { data, error, isLoading };
+  return { data, isLoading };
 }

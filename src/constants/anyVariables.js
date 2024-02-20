@@ -4,7 +4,7 @@ export const currentYear = new Date().getFullYear();
 // max item 1 page
 export const LIMIT_PER_PAGE = 12;
 // min & max files can be uploaded
-const BASE_MEDIA_UPLOAD = 5;
+const BASE_MEDIA_UPLOAD = 4;
 const LIMIT_IMG_UPLOAD = 6;
 const LIMIT_VID_UPLOAD = 2;
 const MAX_SIZE_UPLOAD = 5242880;
@@ -47,18 +47,18 @@ export { billion, million, m2 };
 const minLength = 60;
 const maxLength = 130;
 const minDesLength = 150;
-const maxDesLength = 500;
+const maxDesLength = 1000;
 export { minLength, maxLength, minDesLength, maxDesLength };
 
 // table captions
 export const reCaptions = [
-  "Name & Phone",
-  "purType",
-  "tieu de",
-  "dia chi",
-  "report",
-  "status",
-  "dang ngay",
+  "Người đăng",
+  "Dạng bán",
+  "Tiêu đề",
+  "Địa chỉ",
+  "Số báo xấu",
+  "Trạng thái",
+  "Ngày đăng",
 ];
 
 // hard code re status

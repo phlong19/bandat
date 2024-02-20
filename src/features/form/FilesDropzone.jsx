@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { v4 } from "uuid";
 
 import { Image, Button, Text, Flex, Box } from "@chakra-ui/react";
 
@@ -34,6 +35,7 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
         }
         return Object.assign(file, {
           preview: URL.createObjectURL(file),
+          id: v4(),
         });
       });
 
@@ -70,8 +72,13 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
 
   //   create thumbs
   const thumbsImg = files.images.map((file) => (
-    <Flex pos="relative" className="group" key={file.path}>
-      <Image src={file.preview} alt="Preview" boxSize="100px" />
+    <Flex pos="relative" className="group" key={file.id}>
+      <Image
+        src={file.preview || file.mediaLink}
+        alt="Preview"
+        boxSize="100px"
+        objectFit="cover"
+      />
       <Button
         className="invisible group-hover:visible"
         size="xs"
@@ -84,11 +91,11 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
         onClick={() => {
           setFiles((prev) => ({
             ...prev,
-            images: prev.images.filter((i) => i.preview !== file.preview),
+            images: prev.images.filter((i) => i.id !== file.id),
           }));
 
           setValue("files", {
-            images: files.images.filter((i) => i.preview !== file.preview),
+            images: files.images.filter((i) => i.id !== file.id),
             videos: files.videos,
           });
           imgLeft.current++;
@@ -101,8 +108,12 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
   ));
 
   const thumbsVid = files.videos.map((file) => (
-    <Flex pos="relative" className="group" key={file.path}>
-      <video style={{ width: 150, height: 100 }} src={file.preview} controls />
+    <Flex pos="relative" className="group" key={file.id}>
+      <video
+        style={{ width: 150, height: 100 }}
+        src={file.preview || file.mediaLink}
+        controls
+      />
       <Button
         className="invisible group-hover:visible"
         size="xs"
@@ -115,12 +126,12 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
         onClick={() => {
           setFiles((prev) => ({
             ...prev,
-            videos: prev.videos.filter((i) => i.preview !== file.preview),
+            videos: prev.videos.filter((i) => i.id !== file.id),
           }));
 
           setValue("files", {
             images: files.images,
-            videos: files.videos.filter((i) => i.preview !== file.preview),
+            videos: files.videos.filter((i) => i.id !== file.id),
           });
           vidLeft.current++;
           setError(false);

@@ -13,7 +13,6 @@ import ItemImages from "../../ui/ItemImages";
 import { formatCurrency, formatDate, pricePerArea } from "../../utils/helper";
 import { m2 } from "../../constants/anyVariables";
 import { useMapView } from "../../context/MapViewContext";
-import { useAuth } from "../../context/UserContext";
 
 function ListItem({ data, purType, isPopup = false }) {
   const { mapView } = useMapView();
@@ -33,7 +32,7 @@ function ListItem({ data, purType, isPopup = false }) {
     images,
     name,
     price,
-    profile: { phone, avatar, fullName },
+    profile: { avatar, fullName },
   } = data;
 
   return (
@@ -69,19 +68,19 @@ function ListItem({ data, purType, isPopup = false }) {
         </Link>
         <div
           className={`${
-            isPopup ? "gap-1" : "gap-3"
+            isPopup ? "gap-1" : "gap-2"
           } flex flex-wrap items-center`}
         >
           <span className="font-bold text-primary dark:text-secondary">
-            {formatCurrency(price)}
+            {formatCurrency(price)} {!purType && "/tháng"}
           </span>
           <span className="font-bold text-primary dark:text-secondary">
-            {area}
+            - {area}
             {m2.replace("/", "")}
           </span>
           <span className="mr-2">
-            {formatCurrency(pricePerArea(price, area))}
-            {purType ? m2 : "/tháng"}
+            {formatCurrency(pricePerArea(purType, price, area))}
+            {purType && m2}
           </span>
           {/* bed | bath | floor */}
           {(!mapView || isPopup || !isLaptop) && (
@@ -129,10 +128,11 @@ function ListItem({ data, purType, isPopup = false }) {
         {/* author */}
         {(!mapView || !isLaptop) && (
           <div className="hidden w-full items-center justify-between xs:flex">
-            <div className="flex h-8 w-[45%] items-center">
+            <div className="flex h-8 items-center gap-2">
               <Avatar
                 src={avatar}
                 name={fullName}
+                size="sm"
                 alt="author avatar"
                 // FIX
               />

@@ -11,37 +11,37 @@ import { getAddress, getLatLong, insertDocument } from "./apiGeneral";
 import { uploadMedia } from "./apiMedia";
 
 export async function getList(type, citeria, page) {
-  const start = (page - 1) * LIMIT_PER_PAGE;
-  const end = start + LIMIT_PER_PAGE - 1;
-
   // query
   // re type
   // area
   // address
 
-  const { data, count, error } = await supabase
+  let query = supabase
     .from("REDirectory")
     .select(
       `*,
-      city: CityDirectory (cityName),
-      dis: DistrictDirectory (disName),
-      ward: WardDirectory (wardName),
-      images: REMedias(mediaLink, isImage)!isImage.is(true),
-      profile: Profile(phone,fullName,avatar)
+    city: CityDirectory (cityName),
+    dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName),
+    images: REMedias(mediaLink, isImage),
+    profile: Profile(fullName,avatar)
     `,
       { count: "exact" },
     )
     .eq("purType", type)
-    .eq("status", SELLING_STATUS)
-    // for pagination
-    .range(start, end);
+    .eq("images.isImage", true);
+  // .eq("status", SELLING_STATUS);
+  // for pagination
+  if (page) {
+    const from = (page - 1) * LIMIT_PER_PAGE;
+    const to = from + LIMIT_PER_PAGE - 1;
+    query = query.range(from, to);
+  }
+  const { data, count, error } = await query;
 
   if (error) throw new Error(error.message);
 
-  // every thing is object =))
-  data.count = count;
-
-  return data;
+  return { data, count };
 }
 
 export async function checkPost(slug) {
@@ -116,7 +116,7 @@ export async function createPost(newData) {
     reData.address
   } ${ward.toString()} ${dis.toString()} ${city.toString()}`;
 
-  const { lat, long } = getLatLong(fullAddress);
+  const { lat, long } = await getLatLong(fullAddress);
 
   // post
   const {

@@ -29,6 +29,7 @@ export async function getFullREList(userID, page) {
       postStatus: REStatus(*)
     `,
     )
+    .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
 

@@ -7,7 +7,8 @@ import {
 } from "../constants/anyVariables";
 
 // calc how much money per m2
-export function pricePerArea(price, area) {
+export function pricePerArea(purType, price, area) {
+  if (!purType) return;
   return Math.ceil(price / area);
 }
 
@@ -43,9 +44,19 @@ export function formatDate(dateString, monthType = "long", withTime = false) {
 
 // format number
 export function formatNumber(input) {
-  const result = input.toLocaleString("vi-VN");
+  return input.toLocaleString("vi-VN");
+}
 
-  return result;
+// parse
+export function parseCurrency(input) {
+  // Remove non-numeric characters and currency symbol
+  const numericString = input.replace(/[^\d]/g, "");
+
+  // Convert the numeric string to a number
+  const numericValue = parseInt(numericString, 10);
+
+  // Return the parsed number
+  return numericValue;
 }
 
 // hidden last 3-digit of phone number

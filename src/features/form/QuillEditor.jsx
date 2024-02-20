@@ -94,7 +94,7 @@ function QuillEditor({ onChange, allowImage = true, value }) {
       onChange={onChange}
       formats={formats}
       modules={modules}
-      value={value}
+      defaultValue={value}
     />
   );
 }

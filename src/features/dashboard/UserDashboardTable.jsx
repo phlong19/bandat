@@ -51,6 +51,7 @@ function UserDashboardTable({ id, level }) {
           <Button>bai viet moi</Button>
         </Link>
       }
+      count={data.length}
     />
   );
 }

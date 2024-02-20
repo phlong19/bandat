@@ -4,8 +4,8 @@ import { useMediaQuery } from "react-responsive";
 import slugify from "react-slugify";
 
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import Pagination from "../ui/Pagination";
 import BreadCrumb from "../ui/BreadCrumb";
+import ChakraTablePagination from "../ui/ChakraTablePagination";
 
 import { news } from "../data/news";
 import { city } from "../data/city";
@@ -57,7 +57,7 @@ function News() {
             </Link>
           ))}
           <div className="flex justify-center">
-            <Pagination />
+            <ChakraTablePagination />
           </div>
         </div>
 

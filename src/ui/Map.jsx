@@ -15,10 +15,7 @@ function Map({ data, purType }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {data.map((item, i) => (
-        <Marker
-          position={i == 0 ? [20.97455, 105.84436] : [21.029779, 105.810692]}
-          key={i}
-        >
+        <Marker position={[item.lat, item.long]} key={i}>
           <Popup>
             <ListItem data={item} purType={purType} mapView={true} isPopup />
           </Popup>
