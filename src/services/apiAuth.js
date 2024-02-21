@@ -1,5 +1,6 @@
 import supabase from "./supabase";
-import { ADMIN_LEVEL, USER_LEVEL } from "../constants/anyVariables";
+import { USER_LEVEL } from "../constants/anyVariables";
+import { error } from "../constants/message";
 
 export async function login({ email, password }) {
   const { data, error: loginError } = await supabase.auth.signInWithPassword({
@@ -7,7 +8,7 @@ export async function login({ email, password }) {
     password,
   });
 
-  if (loginError) throw new Error(loginError.message);
+  if (loginError) throw new Error(error.login);
 
   return data;
 }
@@ -19,11 +20,11 @@ export async function register({ fullName, email, password }) {
       password,
     });
 
-  if (registerError) throw new Error(registerError.message);
+  if (registerError) {
+    console.log(registerError);
+  }
 
-  // insert profile after created user successfully
-  // for development, auto add user level as admin = 3
-  const { data, error } = await supabase
+  const { data, error: profileError } = await supabase
     .from("Profile")
     .insert([
       {
@@ -34,7 +35,9 @@ export async function register({ fullName, email, password }) {
     ])
     .select();
 
-  if (error) throw new Error(error.message);
+  if (profileError) {
+    throw new Error(error.register);
+  }
 
   return data;
 }
@@ -70,6 +73,9 @@ export async function getCurrentUser() {
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();
-
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.log(error);
+  }
+  // interview stories ;))
+  return null;
 }

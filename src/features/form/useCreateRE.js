@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 import { createPost } from "../../services/apiRE";
+import { success } from "../../constants/message";
 
 export function useCreateRE() {
   const queryClient = useQueryClient();
@@ -11,7 +12,7 @@ export function useCreateRE() {
   const { isPending: isCreating, mutate } = useMutation({
     mutationFn: (reData) => createPost(reData),
     onSuccess: () => {
-      toast.success("tao bai dang thanh cong, chi con cho duoc duyet thoi :3");
+      toast.success(success.createPost);
       queryClient.invalidateQueries({ queryKey: ["REList"], exact: true });
       navigate("/quan-ly-bai-viet");
     },

@@ -16,12 +16,12 @@ import { deleteMedia } from "../services/apiMedia";
 function EditorDashboard() {
   const { level } = useAuth();
   const [value, setValue] = useState("");
-
+  // test
   const { mutate, isPending } = useMutation({
     mutationFn: () => deleteMedia(value),
     onSuccess: (data) => {
       console.log(data);
-      toast.success("yay, xoa thanh cong");
+      toast.success("yay, xoa thanh cong, cho nay dang test");
     },
     onError: (err) => {
       toast.error(err.message);

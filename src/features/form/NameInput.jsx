@@ -48,9 +48,7 @@ function NameInput({ postId, register, error }) {
           <Spinner size="xs" ml={2} speed="0.3s" />
         ) : invalid ? (
           <Badge colorScheme="red" borderRadius="sm" textTransform="capitalize">
-            <span className="px-[3px]">
-              đã tồn tại bài viết với tiêu đề này
-            </span>
+            <span className="px-[3px]">Tiêu đề đã tồn tại</span>
           </Badge>
         ) : (
           <Badge
@@ -58,7 +56,7 @@ function NameInput({ postId, register, error }) {
             borderRadius="md"
             textTransform="capitalize"
           >
-            <span className="px-[3px]">tiêu đề ok</span>
+            <span className="px-[3px]">Tiêu đề phù hợp</span>
           </Badge>
         )}
       </Flex>

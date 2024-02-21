@@ -34,7 +34,7 @@ import AddressSelect from "./AddressSelect";
 import DocumentCheckBoxes from "./DocumentCheckBoxes";
 import NameInput from "./NameInput";
 
-// others
+// variables, custom hooks, helper funcs, messages
 import {
   BASE_MEDIA_UPLOAD,
   DEFAULT_RE_STATUS,
@@ -50,6 +50,7 @@ import {
 import { directions, navLinks } from "../../constants/navlink";
 import { useCreateRE } from "./useCreateRE";
 import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
+import { reform } from "../../constants/message";
 
 function REForm({ id, edit = false, editData }) {
   const {
@@ -68,8 +69,7 @@ function REForm({ id, edit = false, editData }) {
     editData?.medias.filter((media) => media.isImage === true) || [];
   const existedVideos =
     editData?.medias.filter((media) => media.isImage !== true) || [];
-  // console.log(existedImages);
-  // console.log(existedVideos);
+
   const [files, setFiles] = useState({
     images: [...existedImages],
     videos: [...existedVideos],
@@ -87,8 +87,6 @@ function REForm({ id, edit = false, editData }) {
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   function onSubmit(data) {
-    // console.log(data, docs, files);
-    // return false;
     const cityID =
       searchParams.get("city") !== "none" ? searchParams.get("city") : null;
     const disID =
@@ -98,25 +96,23 @@ function REForm({ id, edit = false, editData }) {
 
     // check address
     if (!cityID || !disID || !wardID) {
-      return toast.error("dmm select dia chi");
+      return toast.error(reform.missingAddress);
     }
-    console.log(cityID, disID, wardID);
+
     // check description exist
     if (!data.des) {
       return setError("des", {
         type: "required",
-        message: "vui long dien mo ta chi tiet",
+        message: reform.missingDes,
       });
     }
     // check submit data has files? is the number of images enough?
     if (!data.files || data.files.images.length < BASE_MEDIA_UPLOAD) {
       return setError("files", {
         type: "required",
-        message: `so luong anh cung cap it nhat la ${BASE_MEDIA_UPLOAD}`,
+        message: reform.missingImages,
       });
     }
-
-    // parse price format: ₫5.000.000
 
     mutate({
       ...data,
@@ -167,7 +163,7 @@ function REForm({ id, edit = false, editData }) {
         </Flex>
         <ChakraAlert
           type="info"
-          message={`Vui lòng điền đủ trường có dấu`}
+          message={`Vui lòng điền đầy đủ các trường có dấu`}
           html={`<span className="text-red-500 ml-1">*</span>`}
         />
         <VStack gap={3} my={3}>
@@ -209,13 +205,13 @@ function REForm({ id, edit = false, editData }) {
           {/* title */}
           <NameInput
             register={register("name", {
-              required: "ten bai viet la gif?",
+              required: reform.missingName,
               value: editData?.name,
               // dev
-              minLength: { value: 10, message: "viet dai them vao" },
+              minLength: { value: minLength, message: reform.nameTooShort },
               maxLength: {
                 value: maxLength,
-                message: "dm vuot qua so ki tu roi",
+                message: reform.nameTooLong,
               },
             })}
             postId={editData?.id}
@@ -241,7 +237,7 @@ function REForm({ id, edit = false, editData }) {
                 name="price"
                 control={control}
                 rules={{
-                  required: "khong thay dau sao do a?",
+                  required: reform.requiredMessage,
                 }}
                 render={({ field: { onChange } }) => (
                   <Input
@@ -341,11 +337,11 @@ function REForm({ id, edit = false, editData }) {
               rules={{
                 minLength: {
                   value: minDesLength,
-                  message: "vui long cung cap them chi tiet va mo ta",
+                  message: reform.desTooShort,
                 },
                 maxLength: {
                   value: maxDesLength,
-                  message: "dai the? hoc sinh gioi van quoc gia a",
+                  message: reform.desTooLong,
                 },
               }}
             />
@@ -354,7 +350,7 @@ function REForm({ id, edit = false, editData }) {
           <FormControl isRequired isInvalid={errors.files}>
             <FormLabel>Hình ảnh, video bất động sản</FormLabel>
             <FormHelperText mb={2}>
-              {files.images.length}/{LIMIT_IMG_UPLOAD} images -{" "}
+              {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
               {files.videos.length}/{LIMIT_VID_UPLOAD} videos
             </FormHelperText>
             {errors.files && (
@@ -375,24 +371,20 @@ function REForm({ id, edit = false, editData }) {
           </FormControl>
 
           {/* note */}
-          <ChakraAlert
-            type="warning"
-            message="Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các
-          thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D"
-          />
+          <ChakraAlert type="warning" message={reform.note} />
 
           {editData?.status.id !== SOLD_STATUS && (
             <Flex w="100%" justify="flex-end">
               <Button
                 isLoading={isCreating}
-                loadingText="Chờ tí"
+                loadingText={reform.loadingText}
                 right={0}
                 borderWidth={2}
                 colorScheme="teal"
                 variant="outline"
                 type="submit"
               >
-                {!edit ? "submit" : "save"}
+                {!edit ? reform.submit : reform.save}
               </Button>
             </Flex>
           )}

@@ -68,7 +68,7 @@ export async function getFullAddress(cityID, disID, wardID, address) {
       .select(
         `*, dis: DistrictDirectory(disName, city: CityDirectory(cityName))`,
       )
-      .eq("wardID", ward);
+      .eq("wardID", wardID);
     if (error) throw new Error(error.message);
 
     const city = data[0].dis.city.cityName;
@@ -87,7 +87,7 @@ export async function getLatLong(address) {
   );
 
   const data = await res.json();
-  console.log(data);
+
   const { location } = data.results[0].geometry;
   const lat = parseFloat(location.lat);
   const long = parseFloat(location.lng);

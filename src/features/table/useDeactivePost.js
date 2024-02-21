@@ -1,20 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { approvePost } from "../../services/apiRE";
 import { success } from "../../constants/message";
+import { deactivePost } from "../../services/apiRE";
 
-export function useApprovePost() {
+export function useDeactivePost() {
   const queryClient = useQueryClient();
-  const { mutate: approve } = useMutation({
-    mutationFn: (id) => approvePost(id),
+
+  const { mutate: deacive } = useMutation({
+    mutationFn: (id) => deactivePost(id),
     onSuccess: () => {
-      toast.success(success.approvePost);
-      queryClient.invalidateQueries({ refetchType: "active" });
+      toast.success(success.deactivePost);
+      queryClient.invalidateQueries({ queryKey: ["REList"] });
     },
     onError: (err) => {
       toast.error(err.message);
     },
   });
 
-  return { approve };
+  return { deacive };
 }

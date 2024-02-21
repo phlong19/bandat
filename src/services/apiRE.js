@@ -2,6 +2,7 @@ import supabase from "./supabase";
 
 import {
   ADMIN_LEVEL,
+  DEFAULT_RE_STATUS,
   LIMIT_PER_PAGE,
   SELLING_STATUS,
   SOLD_STATUS,
@@ -10,6 +11,7 @@ import {
 } from "../constants/anyVariables";
 import { getFullAddress, getLatLong, insertDocument } from "./apiGeneral";
 import { uploadMedia } from "./apiMedia";
+import { error as errorMessage } from "../constants/message";
 
 export async function getList(type, citeria, page) {
   // query
@@ -30,8 +32,8 @@ export async function getList(type, citeria, page) {
       { count: "exact" },
     )
     .eq("purType", type)
-    .eq("images.isImage", true);
-  // .eq("status", SELLING_STATUS);
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS);
   // for pagination
   if (page) {
     const from = (page - 1) * LIMIT_PER_PAGE;
@@ -93,7 +95,8 @@ export async function getPost(slug) {
   return data;
 }
 
-export async function createPost(newData) {
+// TODO: make func for both create & edit
+export async function createPost(newData, edit) {
   const { files, docs, reType, ...reData } = newData;
 
   // get re type id, ex: nha-rieng = 1
@@ -133,7 +136,7 @@ export async function createPost(newData) {
     .single();
 
   if (createError) {
-    throw new Error(createError.message); // for dev
+    throw new Error("create error" + createError.message); // for dev
     // throw new Error("khong the tao bai dang luc nay, vui long thu lai sau");
   }
 
@@ -151,12 +154,16 @@ export async function createPost(newData) {
 export async function approvePost(postID) {
   const { data, error } = await supabase
     .from("REDirectory")
-    .update({ status: 2 })
-    .match({ id: postID });
-// FIX
+    .update({ status: SELLING_STATUS })
+    .eq("id", postID)
+    .select();
+
   if (error) {
-    console.log(error);
     throw new Error(error.message);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantUpdate);
   }
 
   return data;
@@ -164,17 +171,57 @@ export async function approvePost(postID) {
 
 // mark sold
 export async function markSold(id) {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("REDirectory")
     .update({ status: SOLD_STATUS })
-    .eq("id", id);
+    .eq("id", id)
+    .select();
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error(errorMessage.cantUpdate);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantFindToUpdate);
   }
 
   return null;
 }
 
-// edit
+// deactive
+export async function deactivePost(postID) {
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .update({ status: DEFAULT_RE_STATUS })
+    .eq("id", postID)
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantUpdate);
+  }
+
+  return null;
+}
+
 // delete
+export async function deletePost(postID) {
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .delete()
+    .eq("id", postID)
+    .select();
+
+  if (error) {
+    throw new Error(errorMessage.cantDelete);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantFindToDelete);
+  }
+
+  return null;
+}

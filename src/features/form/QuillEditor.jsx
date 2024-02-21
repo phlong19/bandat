@@ -3,6 +3,7 @@ import ReactQuill, { Quill } from "react-quill";
 
 import "react-quill/dist/quill.snow.css";
 import "quill-paste-smart";
+import { newsForm } from "../../constants/message";
 
 const formats = [
   "header",
@@ -34,7 +35,7 @@ function QuillEditor({ onChange, allowImage = true, value }) {
   const imageHandler = useCallback(() => {
     const quillEditor = quill.current.getEditor();
     const range = quillEditor.getSelection();
-    let url = prompt("Paste your image url here");
+    let url = prompt(newsForm.imgUrl);
 
     if (url && range) {
       quillEditor.insertEmbed(range.index, "image", url);

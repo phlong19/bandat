@@ -1,4 +1,4 @@
-import { EDITOR_LEVEL, LIMIT_PER_PAGE } from "../constants/anyVariables";
+import { ADMIN_LEVEL, LIMIT_PER_PAGE } from "../constants/anyVariables";
 import supabase from "./supabase";
 
 export async function getFullREList(userID, page) {
@@ -33,7 +33,7 @@ export async function getFullREList(userID, page) {
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
 
-  if (level <= EDITOR_LEVEL) {
+  if (level < ADMIN_LEVEL) {
     query = query.eq("userID", id);
   }
 
