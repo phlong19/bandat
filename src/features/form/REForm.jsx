@@ -30,7 +30,7 @@ import QuillEditor from "./QuillEditor";
 import FilesDropzone from "./FilesDropzone";
 import ChakraNumberInput from "../../ui/ChakraNumberInput";
 import ChakraAlert from "../../ui/ChakraAlert";
-import AddressSelect from "./AddressSelect";
+import AddressSelect from "../searchbar/AddressSelect";
 import DocumentCheckBoxes from "./DocumentCheckBoxes";
 import NameInput from "./NameInput";
 

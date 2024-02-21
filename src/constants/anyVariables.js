@@ -54,6 +54,7 @@ export { minLength, maxLength, minDesLength, maxDesLength };
 export const reCaptions = [
   "Người đăng",
   "Dạng bán",
+  "Loại hình",
   "Tiêu đề",
   "Địa chỉ",
   "Số báo xấu",

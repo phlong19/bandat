@@ -9,6 +9,7 @@ export const error = {
   cantFindToUpdate: "khong tim thay post nao ma update",
   cantDelete: "khong the xoa post",
   cantFindToDelete: "khong tim thay post de xoa",
+
 };
 
 export const success = {

@@ -23,11 +23,11 @@ export async function getList(type, citeria, page) {
     .from("REDirectory")
     .select(
       `*,
-    city: CityDirectory (cityName),
-    dis: DistrictDirectory (disName),
-    ward: WardDirectory (wardName),
-    images: REMedias(mediaLink, isImage),
-    profile: Profile(fullName,avatar)
+        city: CityDirectory (cityName),
+        dis: DistrictDirectory (disName),
+        ward: WardDirectory (wardName),
+        images: REMedias(mediaLink, isImage),
+        profile: Profile(fullName,avatar)
     `,
       { count: "exact" },
     )
@@ -61,7 +61,7 @@ export async function checkPost(slug) {
   if (error) {
     throw new Error(error.message);
   }
-
+  console.log(data);
   return data;
 }
 

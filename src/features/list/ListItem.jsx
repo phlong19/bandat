@@ -134,7 +134,7 @@ function ListItem({ data, purType, isPopup = false }) {
                 name={fullName}
                 size="sm"
                 alt="author avatar"
-                // FIX
+                // TODO: layout after remove phone number
               />
               <div>
                 <span className="line-clamp-1 font-semibold">{fullName}</span>

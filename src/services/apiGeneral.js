@@ -6,59 +6,80 @@ const data = {};
 data.city = data.dis = data.ward = [];
 
 export async function getAddress(city, district, ward) {
-  // from scratch
-  if (!city && !district && !ward) {
-    data.dis = data.ward = [];
-
-    const { data: city, error } = await supabase
-      .from("CityDirectory")
-      .select("*", { count: "exact" });
-
-    if (error) throw new Error(error.message);
-
-    data.city = city;
-  }
+  getCity();
 
   if (city && !district && !ward) {
-    data.ward = [];
-    const { data: cityData, errorCity } = await supabase
-      .from("CityDirectory")
-      .select("*");
+    getDis(city);
+  }
 
-    const { data: dis, error } = await supabase
+  if (district && !city && !ward) {
+    const { data, error } = await supabase
       .from("DistrictDirectory")
-      .select("*", { count: "exact" })
-      .eq("cityID", city);
+      .select("*, city: CityDirectory(*)")
+      .limit(1)
+      .eq("disID", district)
+      .single();
 
-    if (error || errorCity)
-      throw new Error("there was an error while fetching");
+    if (error) {
+      throw new Error(error.message);
+    }
 
-    data.city = cityData;
-    data.dis = dis;
+    getDis(data.city.cityID);
   }
 
   if (city && district && !ward) {
-    const { data: cityData, errorCity } = await supabase
-      .from("CityDirectory")
-      .select("*");
-    const { data: dis, errorDis } = await supabase
-      .from("DistrictDirectory")
-      .select("*")
-      .eq("cityID", city);
-    const { data: ward, error } = await supabase
-      .from("WardDirectory")
-      .select("*", { count: "exact" })
-      .eq("disID", district);
-
-    if (error || errorDis || errorCity)
-      throw new Error("there was an error while fetching");
-
-    data.city = cityData;
-    data.dis = dis;
-    data.ward = ward;
+    getWard(district);
   }
 
   return data;
+}
+
+async function getCity() {
+  const { data: cityData, error } = await supabase
+    .from("CityDirectory")
+    .select("*");
+  if (error) {
+    throw new Error(error.message);
+  }
+  data.city = cityData;
+
+  return null;
+}
+
+async function getDis(cityID) {
+  if (!cityID) {
+    return false;
+  }
+
+  const { data: disData, error } = await supabase
+    .from("DistrictDirectory")
+    .select("*")
+    .eq("cityID", cityID);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  data.dis = disData;
+
+  return null;
+}
+
+async function getWard(disID) {
+  if (!disID) {
+    return false;
+  }
+
+  const { data: wardData, error } = await supabase
+    .from("WardDirectory")
+    .select("*")
+    .eq("disID", disID);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  data.ward = wardData;
+
+  return null;
 }
 
 export async function getFullAddress(cityID, disID, wardID, address) {

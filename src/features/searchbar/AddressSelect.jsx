@@ -8,19 +8,17 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { SlRefresh } from "react-icons/sl";
-import { useSearchbar } from "../searchbar/useSearchbar";
+import { useSearchbar } from "./useSearchbar";
 
-function AddressSelect() {
+function AddressSelect({ onReset }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data, isLoading } = useSearchbar();
-
+  // const { data, isLoading } = useSearchbar();
+  const data = { city: [], dis: [], ward: [] };
+  const isLoading = false;
   function handleClick() {
-    searchParams.delete("city");
-    searchParams.delete("dis");
-    searchParams.delete("ward");
-    setSearchParams(searchParams);
+    onReset?.();
   }
-
+  // TODO: fix to internal state
   return (
     <Flex w="100%" gap={1.5}>
       <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
@@ -28,7 +26,7 @@ function AddressSelect() {
           <FormLabel noOfLines={1}>Tỉnh, Thành phố</FormLabel>
           <Select
             value={
-              data?.city?.filter(
+              data?.city.filter(
                 (c) => c.cityID === Number(searchParams.get("city")),
               )?.[0]?.cityID || "none"
             }
@@ -40,9 +38,7 @@ function AddressSelect() {
             }}
             isDisabled={isLoading}
           >
-            <option value="none" key={Math.random()}>
-              ---
-            </option>
+            <option value="none">---</option>
             {data?.city.map((item) => (
               <option value={item.cityID} key={item.cityID}>
                 {item.cityName}
@@ -65,13 +61,11 @@ function AddressSelect() {
             }
             isDisabled={isLoading}
           >
-            {!data?.dis?.length ? (
+            {!data?.dis.length ? (
               <option value="none">Vui lòng chọn tỉnh thành phố trước</option>
             ) : (
               <>
-                <option value="none" key={Math.random()}>
-                  ---
-                </option>
+                <option value="none">---</option>
                 {data.dis.map((item) => (
                   <option value={item.disID} key={item.disID}>
                     {item.disName}
@@ -83,21 +77,21 @@ function AddressSelect() {
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Phường, xã</FormLabel>
+          <p>{data?.dis.length}</p>
           <Select
             onChange={(e) => {
+              // console.log(e);
               searchParams.set("ward", e.target.value);
               setSearchParams(searchParams);
             }}
             defaultValue="none"
             isDisabled={isLoading}
           >
-            {!data?.ward?.length ? (
+            {!data?.ward.length ? (
               <option value="none">Vui lòng chọn quận huyện trước</option>
             ) : (
               <>
-                <option value="none" key={Math.random()}>
-                  ---
-                </option>
+                <option value="none">---</option>
                 {data.ward.map((item) => (
                   <option value={item.wardID} key={item.wardID}>
                     {item.wardName}

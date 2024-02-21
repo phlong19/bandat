@@ -94,16 +94,6 @@ export const homeLinks = [
   { img: "./project.svg", title: "Dự án", to: "du-an" },
 ];
 
-export const areaOptions = [
-  { label: "Dưới 30m²", value: "0-30" },
-  { label: "30 - 50m²", value: "30-50" },
-  { label: "50 - 80m²", value: "50-80" },
-  { label: "80 - 100m²", value: "80-100" },
-  { label: "100 - 150m²", value: "100-150" },
-  { label: "150 - 200m²", value: "150-200" },
-  { label: "200 - 250m²", value: "200-250" },
-];
-
 export const directions = [
   "Bắc",
   "Đông Bắc",

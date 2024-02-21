@@ -26,7 +26,8 @@ export async function getFullREList(userID, page) {
       dis: DistrictDirectory(disName), 
       ward: WardDirectory(wardName),
       profile: Profile(*),
-      postStatus: REStatus(*)
+      postStatus: REStatus(*),
+      type: REType(name)      
     `,
     )
     .order("created_at", { ascending: false })

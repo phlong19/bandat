@@ -24,6 +24,7 @@ function TableRERow({ data, level, userID }) {
     purType,
     profile: { id: authorID, phone, avatar, fullName },
     report,
+    type,
     postStatus: { id: statusID, status },
     address,
     city: { cityName },
@@ -67,6 +68,10 @@ function TableRERow({ data, level, userID }) {
         >
           {purType ? "Bán" : "Cho thuê"}
         </Badge>
+      </Td>
+
+      <Td>
+        <Text fontSize="sm">{type.name}</Text>
       </Td>
       {/* name */}
       <Td maxW="250px">
