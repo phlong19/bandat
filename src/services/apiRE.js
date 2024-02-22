@@ -27,7 +27,8 @@ export async function getList(type, citeria, page) {
         dis: DistrictDirectory (disName),
         ward: WardDirectory (wardName),
         images: REMedias(mediaLink, isImage),
-        profile: Profile(fullName,avatar)
+        profile: Profile(fullName,avatar),
+        type: REType(*)
     `,
       { count: "exact" },
     )
@@ -61,7 +62,7 @@ export async function checkPost(slug) {
   if (error) {
     throw new Error(error.message);
   }
-  console.log(data);
+
   return data;
 }
 

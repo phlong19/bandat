@@ -19,7 +19,7 @@ import { NumericFormat } from "react-number-format";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import slugify from "react-slugify";
 
 // icon
@@ -44,6 +44,7 @@ import {
   m2,
   maxDesLength,
   maxLength,
+  million,
   minDesLength,
   minLength,
 } from "../../constants/anyVariables";
@@ -79,7 +80,10 @@ function REForm({ id, edit = false, editData }) {
   const existedDocs = editData?.docs.map((doc) => doc.docName.doc_id) || [];
   const [docs, setDocs] = useState([...existedDocs]);
 
-  const [searchParams] = useSearchParams();
+  // for address select
+  const [cityID, setCityID] = useState(NaN);
+  const [disID, setDisID] = useState(NaN);
+  const [wardID, setWardID] = useState(NaN);
 
   // submit & create new re
   const { isCreating, mutate } = useCreateRE();
@@ -87,18 +91,12 @@ function REForm({ id, edit = false, editData }) {
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   function onSubmit(data) {
-    const cityID =
-      searchParams.get("city") !== "none" ? searchParams.get("city") : null;
-    const disID =
-      searchParams.get("dis") !== "none" ? searchParams.get("dis") : null;
-    const wardID =
-      searchParams.get("ward") !== "none" ? searchParams.get("ward") : null;
-
+    console.log(cityID, disID, wardID);
     // check address
     if (!cityID || !disID || !wardID) {
       return toast.error(reform.missingAddress);
     }
-
+    // return;
     // check description exist
     if (!data.des) {
       return setError("des", {
@@ -111,6 +109,14 @@ function REForm({ id, edit = false, editData }) {
       return setError("files", {
         type: "required",
         message: reform.missingImages,
+      });
+    }
+
+    // check price
+    if (data.price < million) {
+      return setError("price", {
+        type: "min",
+        message: reform.minPrice,
       });
     }
 
@@ -191,7 +197,15 @@ function REForm({ id, edit = false, editData }) {
             </FormControl>
           </Grid>
           {/* address */}
-          <AddressSelect />
+          <AddressSelect
+            isForm
+            cityID={cityID}
+            disID={disID}
+            wardID={wardID}
+            setCityID={setCityID}
+            setDisID={setDisID}
+            setWardID={setWardID}
+          />
           {/* address - details */}
           <FormControl isRequired>
             <FormLabel>Địa chỉ cụ thể</FormLabel>
@@ -225,7 +239,7 @@ function REForm({ id, edit = false, editData }) {
               label="Diện tích"
               name="area"
               req={true}
-              placeholder={m2.replace("/", "")}
+              placeholder={m2}
               value={editData?.area}
             />
 

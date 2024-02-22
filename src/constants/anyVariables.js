@@ -39,7 +39,7 @@ export { purTypeTrue, purTypeFalse };
 // number & helper
 const billion = 1000000000;
 const million = 1000000;
-const m2 = "/m²";
+const m2 = "m²";
 
 export { billion, million, m2 };
 

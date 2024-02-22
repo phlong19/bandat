@@ -5,6 +5,7 @@ import {
   billion,
   million,
 } from "../constants/anyVariables";
+import { navLinks } from "../constants/navlink";
 
 // calc how much money per m2
 export function pricePerArea(purType, price, area) {
@@ -19,6 +20,9 @@ export function formatCurrency(input) {
   }
   if (Number(input) > million) {
     return round2Digit(input / million) + " triệu";
+  }
+  if (Number(input) < million) {
+    return Math.ceil(input / 1000) + " nghìn";
   }
 }
 
@@ -84,4 +88,23 @@ export function getStatusBadgeColor(id) {
   }
 
   return color;
+}
+
+export function getCoreNameType(name, type) {
+  switch (type) {
+    case "nha-mat-pho":
+      return name.slice(4);
+    case "dat-nen-du-an":
+      return name.slice(4);
+    case "dat-nen-tho-cu":
+      return name.slice(4);
+    case "cac-loai-khac":
+      return name.slice(-4);
+    case "kho-nha-xuong":
+      return "kho xưởng";
+    default:
+      break;
+  }
+
+  return name.split(",")[0];
 }

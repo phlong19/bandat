@@ -32,6 +32,7 @@ function ListItem({ data, purType, isPopup = false }) {
     images,
     name,
     price,
+    type,
     profile: { avatar, fullName },
   } = data;
 
@@ -50,7 +51,12 @@ function ListItem({ data, purType, isPopup = false }) {
             {/* vip label */}
             <div className="absolute"></div>
 
-            <ItemImages images={images} isLaptop={isLaptop} isPopup={isPopup} />
+            <ItemImages
+              images={images}
+              isLaptop={isLaptop}
+              isPopup={isPopup}
+              type={type}
+            />
           </div>
         </Link>
       )}
@@ -76,11 +82,11 @@ function ListItem({ data, purType, isPopup = false }) {
           </span>
           <span className="font-bold text-primary dark:text-secondary">
             - {area}
-            {m2.replace("/", "")}
+            {m2} -
           </span>
           <span className="mr-2">
             {formatCurrency(pricePerArea(purType, price, area))}
-            {purType && m2}
+            {purType && `/${m2}`}
           </span>
           {/* bed | bath | floor */}
           {(!mapView || isPopup || !isLaptop) && (
@@ -127,20 +133,21 @@ function ListItem({ data, purType, isPopup = false }) {
         </div>
         {/* author */}
         {(!mapView || !isLaptop) && (
-          <div className="hidden w-full items-center justify-between xs:flex">
+          <div className="hidden items-center justify-between xs:flex">
             <div className="flex h-8 items-center gap-2">
               <Avatar
                 src={avatar}
                 name={fullName}
                 size="sm"
                 alt="author avatar"
-                // TODO: layout after remove phone number
               />
               <div>
                 <span className="line-clamp-1 font-semibold">{fullName}</span>
                 <p>{formatDate(created_at, "short")}</p>
               </div>
             </div>
+            {/* TODO: styling */}
+            <p className="text-xs font-roboto">what&#39;d we place here?</p>
             <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
           </div>
         )}

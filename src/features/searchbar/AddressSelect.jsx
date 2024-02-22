@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router-dom";
 import {
   FormControl,
   FormLabel,
@@ -10,31 +9,35 @@ import {
 import { SlRefresh } from "react-icons/sl";
 import { useSearchbar } from "./useSearchbar";
 
-function AddressSelect({ onReset }) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  // const { data, isLoading } = useSearchbar();
-  const data = { city: [], dis: [], ward: [] };
-  const isLoading = false;
+function AddressSelect({
+  isForm = false,
+  cityID,
+  disID,
+  wardID,
+  setCityID,
+  setDisID,
+  setWardID,
+}) {
+  const { data, isLoading } = useSearchbar(cityID, disID, wardID);
+
   function handleClick() {
-    onReset?.();
+    setCityID(NaN);
+    setDisID(NaN);
+    setWardID(NaN);
   }
-  // TODO: fix to internal state
+
   return (
     <Flex w="100%" gap={1.5}>
       <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
-        <FormControl isRequired>
-          <FormLabel noOfLines={1}>Tỉnh, Thành phố</FormLabel>
+        <FormControl isRequired={isForm}>
+          <FormLabel>Tỉnh, Thành phố</FormLabel>
+
           <Select
-            value={
-              data?.city.filter(
-                (c) => c.cityID === Number(searchParams.get("city")),
-              )?.[0]?.cityID || "none"
-            }
+            value={cityID || "none"}
             onChange={(e) => {
-              searchParams.set("city", e.target.value);
-              searchParams.delete("dis");
-              searchParams.delete("ward");
-              setSearchParams(searchParams);
+              setCityID(Number(e.target.value));
+              setDisID(NaN);
+              setWardID(NaN);
             }}
             isDisabled={isLoading}
           >
@@ -46,19 +49,14 @@ function AddressSelect({ onReset }) {
             ))}
           </Select>
         </FormControl>
-        <FormControl isRequired>
+        <FormControl isRequired={isForm}>
           <FormLabel>Quận, huyện</FormLabel>
           <Select
             onChange={(e) => {
-              searchParams.set("dis", e.target.value);
-              searchParams.delete("ward");
-              setSearchParams(searchParams);
+              setDisID(Number(e.target.value));
+              setWardID(NaN);
             }}
-            value={
-              data?.dis?.filter(
-                (d) => d.disID === Number(searchParams.get("dis")),
-              )?.[0]?.disID || "none"
-            }
+            value={disID || "none"}
             isDisabled={isLoading}
           >
             {!data?.dis.length ? (
@@ -66,7 +64,7 @@ function AddressSelect({ onReset }) {
             ) : (
               <>
                 <option value="none">---</option>
-                {data.dis.map((item) => (
+                {data?.dis.map((item) => (
                   <option value={item.disID} key={item.disID}>
                     {item.disName}
                   </option>
@@ -75,16 +73,11 @@ function AddressSelect({ onReset }) {
             )}
           </Select>
         </FormControl>
-        <FormControl isRequired>
+        <FormControl isRequired={isForm}>
           <FormLabel>Phường, xã</FormLabel>
-          <p>{data?.dis.length}</p>
           <Select
-            onChange={(e) => {
-              // console.log(e);
-              searchParams.set("ward", e.target.value);
-              setSearchParams(searchParams);
-            }}
-            defaultValue="none"
+            onChange={(e) => setWardID(Number(e.target.value))}
+            value={wardID || "none"}
             isDisabled={isLoading}
           >
             {!data?.ward.length ? (
@@ -92,7 +85,7 @@ function AddressSelect({ onReset }) {
             ) : (
               <>
                 <option value="none">---</option>
-                {data.ward.map((item) => (
+                {data?.ward.map((item) => (
                   <option value={item.wardID} key={item.wardID}>
                     {item.wardName}
                   </option>

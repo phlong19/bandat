@@ -6,29 +6,17 @@ const data = {};
 data.city = data.dis = data.ward = [];
 
 export async function getAddress(city, district, ward) {
-  getCity();
-
-  if (city && !district && !ward) {
-    getDis(city);
+  if (!city && !district && !ward) {
+    data.dis = data.ward = [];
+    await getCity();
   }
-
-  if (district && !city && !ward) {
-    const { data, error } = await supabase
-      .from("DistrictDirectory")
-      .select("*, city: CityDirectory(*)")
-      .limit(1)
-      .eq("disID", district)
-      .single();
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    getDis(data.city.cityID);
+  if (city && !district && !ward) {
+    data.ward = [];
+    await getDis(city);
   }
 
   if (city && district && !ward) {
-    getWard(district);
+    await getWard(district);
   }
 
   return data;

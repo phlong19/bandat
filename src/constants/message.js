@@ -4,12 +4,12 @@ export const error = {
   // auth
   login: "khong the dang nhap luc nay",
   register: "khong the dang ky luc nay",
+  notAuthen:'vui long dang nhap de xem trang',
   // api re
   cantUpdate: "khong the update post",
   cantFindToUpdate: "khong tim thay post nao ma update",
   cantDelete: "khong the xoa post",
   cantFindToDelete: "khong tim thay post de xoa",
-
 };
 
 export const success = {
@@ -34,6 +34,7 @@ export const reform = {
   missingAddress: "thieu dia chi",
   missingDes: "vui long dien mo ta chi tiet",
   missingImages: `so luong anh cung cap it nhat la ${BASE_MEDIA_UPLOAD}`,
+  minPrice: "gia tri bat dong san qua nho",
 
   // form errors
   missingName: "ten bai viet la gif?",

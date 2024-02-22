@@ -5,7 +5,6 @@ import { Flex, Input, Select } from "@chakra-ui/react";
 
 import AddressSelect from "./AddressSelect";
 import Button from "../../ui/Button";
-import { TbRefresh } from "react-icons/tb";
 
 import { navLinks } from "../../constants/navlink";
 
@@ -13,6 +12,10 @@ function Searchbar() {
   const [purType, setPurType] = useState(true);
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
+
+  const [cityID, setCityID] = useState(NaN);
+  const [disID, setDisID] = useState(NaN);
+  const [wardID, setWardID] = useState(NaN);
 
   const {
     formState: { errors },
@@ -24,7 +27,7 @@ function Searchbar() {
   function onSubmit(data) {
     console.log(data);
   }
-  // TODO: styling and fix the damn select address
+  // TODO: styling
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -49,7 +52,14 @@ function Searchbar() {
         <Button>search</Button>
       </Flex>
 
-      <AddressSelect onReset={reset} />
+      <AddressSelect
+        cityID={cityID}
+        disID={disID}
+        wardID={wardID}
+        setCityID={setCityID}
+        setDisID={setDisID}
+        setWardID={setWardID}
+      />
     </form>
   );
 }

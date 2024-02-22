@@ -12,7 +12,6 @@ export function useLogout() {
     mutationFn: logoutAPI,
     onSettled: () => {
       queryClient.setQueryData(["user"], null);
-      // TODO: add remove auth token in local storage
       toast.success(success.logout);
       navigate("/dang-nhap", { replace: true });
     },

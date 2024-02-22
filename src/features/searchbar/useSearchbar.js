@@ -1,16 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
 import { getAddress } from "../../services/apiGeneral";
 
-export function useSearchbar() {
-  const [searchParams] = useSearchParams();
-
-  const city =
-    searchParams.get("city") !== "none" ? searchParams.get("city") : null;
-  const dis =
-    searchParams.get("dis") !== "none" ? searchParams.get("dis") : null;
-  const ward =
-    searchParams.get("ward") !== "none" ? searchParams.get("ward") : null;
+export function useSearchbar(cityID, disID, wardID) {
+  const city = cityID ? cityID : null;
+  const dis = disID ? disID : null;
+  const ward = wardID ? wardID : null;
 
   const { data, isLoading } = useQuery({
     queryKey: ["address", city, dis],

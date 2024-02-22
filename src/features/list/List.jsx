@@ -73,9 +73,9 @@ function List({ purType }) {
             mapView ? "overflow-y-auto" : ""
           }`}
         >
-          {/* <div className="pt-4">
+          <div className="pt-4">
             <Searchbar />
-          </div> */}
+          </div>
 
           <h2 className="pb-4 pt-3 font-lexend text-xl font-medium xl:text-2xl">
             {`${purType ? "Mua bán" : "Cho thuê"} nhà đất trên toàn quốc`}
