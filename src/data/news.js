@@ -1,105 +1,35 @@
 export const news = [
   {
-    title:
-      "Chính Sách Tốt Nhất Thị Trường Công Bố Tại Sự Kiện Mở Bán Happy One Central",
+    id: 1,
+    created_at: "2024-02-11T04:27:28.854666+00:00",
+    title: "tips mua ban nha voi voucher shopee",
     summary:
-      "Chủ đầu tư dự án “căn hộ tốt nhất Bình Dương” Happy One Central đã chính thức công bố loạt chính sách chưa tiền lệ ngay tại sự kiện mở bán ngày 07/01 vừa ppppp ppppp ppppppp pppppp pppppppp ppppp ppppppppp pppppp ppppppppp pppppppppp pppp",
-    date: "10/01/2024 08:00",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
+      "here is a summary in text format to display with title everywhere",
+    status: true,
+    profile: {
+      fullName: "duy phan",
+      avatar: "none",
+    },
+    userID: "b72b2f07-06b1-4287-90bb-924c811a80c0",
+    content:
+      "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p><p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>\t\t\t\t<ol>\n\t\t\t\t   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>\n\t\t\t\t   <li>Aliquam tincidunt mauris eu risus.</li>\n\t\t\t\t   <li>Vestibulum auctor dapibus neque.</li>\n\t\t\t\t</ol>\n\t\t\t\t\t\t ",
+    slug: "tips-mua-ban-nha-voi-voucher-shopee",
   },
+
   {
-    title:
-      "Lộ Diện Khu Vực Sẽ Hưởng Lợi Lớn Khi Thành Phố Phía Tây Thủ Đô Hình Thành",
+    id: 2,
+    created_at: "2024-02-11T04:27:28.854666+00:00",
+    title: "tips mua ban nha voi voucher shopee",
     summary:
-      "Trong 5 năm tới sự phát triển của thị trường bất động sản Hà Nội sẽ lấy phía Tây là trọng điểm, khi thành phố phía Tây dần hình thành sẽ tạo bước ppppppp ppppppppppppp ppppppppppp ppppppppppppp ppppppppp pppppppppppppppppp pppppppppppp",
-    date: "10/01/2024 08:00",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
+      "here is a summary in text format to display with title everywhere",
+    status: true,
+    profile: {
+      fullName: "duy phan",
+      avatar: "none",
+    },
+    userID: "b72b2f07-06b1-4287-90bb-924c811a80c0",
+    content:
+      "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p><p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>\t\t\t\t<ol>\n\t\t\t\t   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>\n\t\t\t\t   <li>Aliquam tincidunt mauris eu risus.</li>\n\t\t\t\t   <li>Vestibulum auctor dapibus neque.</li>\n\t\t\t\t</ol>\n\t\t\t\t\t\t ",
+    slug: "tips-mua-ban-nha-voi-voucher-shopee",
   },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồng",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồng",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồng",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồng",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồng",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồng",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồng",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồnggg bla blo mnvnf dưindi",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồnggg bla blo mnvnf dưindi",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024: Nhiều Kế Hoạch Mới Đang Vào Guồnggg bla blo mnvnf dưindi",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  {
-    title: "Bất Động Sản 2024",
-    summary:
-      "Thị trường bất động sản 2024 dự báo sẽ chuyển mình với bức tranh “ấm” hơn, nhiều doanh nghiệp đặt ra chiến lượt phát triển mới ppppppp pppppppp ppppppppp ppppppppppppp pppppp ppppp pppppppppppppp pppppp ppppppppp ppppppppppppp ppppp ppppppppp pppppppppp ppppppp pppppppppp",
-    date: "09/01/2024 08:11",
-    img: "https://img.iproperty.com.my/angel/520x300-crop/wp-content/uploads/sites/7/2024/01/1.jpg",
-  },
-  
-  
 ];
-// code xong ông shift alt f đẻ nó format code cungxg như cái class tailwind cho nó về đúng thứ tự, format cũng đẹp hơn nữa

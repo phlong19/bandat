@@ -6,7 +6,7 @@ import { useMapView } from "../context/MapViewContext";
 function Bookmark() {
   const { mapView } = useMapView();
   const [hover, setHover] = useState(false);
-  // FIX ADD BOOKMARK TO LOCAL STORAGE
+  // TODO: ADD BOOKMARK TO LOCAL STORAGE
 
   function handleClick(e) {
     e.preventDefault();
@@ -20,12 +20,10 @@ function Bookmark() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={handleClick}
-      className={`${
-        !mapView ? "p-2.5" : "p-1.5"
-      } group rounded-md border border-light bg-prim-light dark:border-dark dark:bg-sec-light lg:border-0`}
+      className={`${!mapView ? "p-2.5" : "p-1.5"} rounded-md bg-light`}
     >
-      <span className="text-xl text-black transition-colors duration-300 group-hover:fill-red-500 group-hover:text-red-500">
-        {hover ? <FaHeart /> : <FaRegHeart />}
+      <span className="text-xl text-black">
+        {hover ? <FaHeart className="fill-red-500" /> : <FaRegHeart />}
       </span>
     </button>
   );

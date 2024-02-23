@@ -1,9 +1,5 @@
-function BookMarks() {
-    return (
-        <div>
-            
-        </div>
-    )
+function Bookmarks() {
+  return <div>hi</div>;
 }
 
-export default BookMarks
+export default Bookmarks;

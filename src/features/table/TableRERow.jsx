@@ -1,53 +1,43 @@
+// libs
 import {
   Avatar,
   Badge,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
   Flex,
   Td,
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { PiDotsSixVerticalBold, PiUpload } from "react-icons/pi";
-import { HiOutlineTrash } from "react-icons/hi";
 
-import { formatDate } from "../../utils/helper";
-import { ADMIN_LEVEL } from "../../constants/anyVariables";
-import { Link } from "react-router-dom";
-import { TbEyeCheck } from "react-icons/tb";
+// icons + ui
+import MenuActionRE from "./MenuActionRE";
+import { PiDotsSixVerticalBold } from "react-icons/pi";
 
-function TableRERow({ data, level }) {
+// others
+import { formatDate, getStatusBadgeColor } from "../../utils/helper";
+
+function TableRERow({ data, level, userID }) {
   const {
+    id,
     created_at,
     purType,
-    profile: { phone, avatar, fullName },
+    profile: { id: authorID, phone, avatar, fullName },
     report,
-    status,
+    type,
+    postStatus: { id: statusID, status },
+    address,
     city: { cityName },
     dis: { disName },
     ward: { wardName },
-    name: hLine,
+    name,
+    slug,
   } = data;
 
-  let statusBadge;
-  switch (status) {
-    case "Da duyet":
-      statusBadge = "green";
-      break;
-    case "Chua duyet":
-      statusBadge = "red";
-      break;
-    case "Da ban":
-      statusBadge = "orange";
-      break;
-    default:
-      break;
-  }
+  let statusBadge = getStatusBadgeColor(statusID);
 
   return (
-    <Tr>
+    <Tr className="group">
       <Td width={{ sm: "250px" }} maxWidth={{ sm: "300px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar src={avatar} name={fullName} size="md" me="18px" />
@@ -76,17 +66,21 @@ function TableRERow({ data, level }) {
           borderRadius="lg"
           textTransform="capitalize"
         >
-          {purType ? "Ban" : "Cho thue"}
+          {purType ? "Bán" : "Cho thuê"}
         </Badge>
       </Td>
-      {/* hline */}
+
+      <Td>
+        <Text fontSize="sm">{type.name}</Text>
+      </Td>
+      {/* name */}
       <Td maxW="250px">
-        <Text noOfLines={2}>{hLine}</Text>
+        <Text noOfLines={2}>{name}</Text>
       </Td>
       {/* address */}
-      <Td maxW='250'>
+      <Td maxW="250">
         <Text noOfLines={2}>
-          {wardName},{disName}, {cityName}
+          {address}, {wardName}, {disName},{cityName}
         </Text>
       </Td>
       {/* reports */}
@@ -106,31 +100,22 @@ function TableRERow({ data, level }) {
       </Td>
       <Td>
         <Text fontSize="md" pb=".5rem">
-          {formatDate(created_at)}
+          {formatDate(created_at, "short")}
         </Text>
       </Td>
       <Td>
         <Menu>
-          <MenuButton>
+          <MenuButton className="invisible rounded-md border border-dark p-1 group-hover:visible dark:border-white">
             <PiDotsSixVerticalBold fontSize={25} />
           </MenuButton>
-          <MenuList fontSize="medium">
-            {level >= ADMIN_LEVEL && (
-              <MenuItem gap={3} color="blue.600">
-                <PiUpload />
-                Duyệt bài nhanh
-              </MenuItem>
-            )}
-            <MenuItem gap={3} color="green" as={Link} to={`/`}>
-              {/* future: add edit page */}
-              <TbEyeCheck fontSize="20" />
-              Xem / Sửa
-            </MenuItem>
-            <MenuItem gap={3} color="red">
-              <HiOutlineTrash />
-              Xóa
-            </MenuItem>
-          </MenuList>
+          <MenuActionRE
+            authorID={authorID}
+            postID={id}
+            slug={slug}
+            statusID={statusID}
+            userID={userID}
+            level={level}
+          />
         </Menu>
       </Td>
     </Tr>

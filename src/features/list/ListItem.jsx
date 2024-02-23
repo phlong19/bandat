@@ -1,5 +1,4 @@
-import { useState } from "react";
-import slugify from "react-slugify";
+import { Avatar } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
@@ -7,34 +6,22 @@ import { TbBed } from "react-icons/tb";
 import { LiaBathSolid } from "react-icons/lia";
 import { ImStack } from "react-icons/im";
 import { SlLocationPin } from "react-icons/sl";
-import { BiPhoneCall } from "react-icons/bi";
 
-import { Avatar } from "@chakra-ui/react";
-
-import {
-  formatCurrency,
-  formatDate,
-  hiddenLast3PhoneNum,
-  pricePerArea,
-} from "../../utils/helper";
-import { m2 } from "../../constants/anyVariables";
-
-import Button from "../../ui/Button";
 import Bookmark from "../../ui/Bookmark";
 import ItemImages from "../../ui/ItemImages";
+
+import { formatCurrency, formatDate, pricePerArea } from "../../utils/helper";
+import { m2 } from "../../constants/anyVariables";
 import { useMapView } from "../../context/MapViewContext";
-import { useAuth } from "../../context/UserContext";
 
 function ListItem({ data, purType, isPopup = false }) {
   const { mapView } = useMapView();
-  const [hiddenPhoneNum, setHiddenPhoneNum] = useState(false);
   const isLaptop = useMediaQuery({
     query: "(min-width: 1000px)",
   });
 
-  const { isAuthenticated } = useAuth();
-
   const {
+    slug,
     area,
     bath_room,
     bed_room,
@@ -45,7 +32,8 @@ function ListItem({ data, purType, isPopup = false }) {
     images,
     name,
     price,
-    profile: { phone, avatar, fullName },
+    type,
+    profile: { avatar, fullName },
   } = data;
 
   return (
@@ -57,20 +45,25 @@ function ListItem({ data, purType, isPopup = false }) {
       }  rounded-lg`}
     >
       {!isPopup && (
-        <Link to={`/nha-dat/${slugify(name)}`}>
+        <Link to={`/nha-dat/${slug}`}>
           {/* images */}
           <div className="relative mx-auto w-full overflow-hidden">
             {/* vip label */}
             <div className="absolute"></div>
 
-            <ItemImages images={images} isLaptop={isLaptop} isPopup={isPopup} />
+            <ItemImages
+              images={images}
+              isLaptop={isLaptop}
+              isPopup={isPopup}
+              type={type}
+            />
           </div>
         </Link>
       )}
 
       {/* informations */}
       <div className="mt-3">
-        <Link to={`/nha-dat/${slugify(name)}`}>
+        <Link to={`/nha-dat/${slug}`}>
           <h3
             className={`${
               isPopup ? "text-black" : "text-black dark:text-white"
@@ -81,19 +74,19 @@ function ListItem({ data, purType, isPopup = false }) {
         </Link>
         <div
           className={`${
-            isPopup ? "gap-1" : "gap-3"
+            isPopup ? "gap-1" : "gap-2"
           } flex flex-wrap items-center`}
         >
           <span className="font-bold text-primary dark:text-secondary">
-            {formatCurrency(price)}
+            {formatCurrency(price)} {!purType && "/tháng"}
           </span>
           <span className="font-bold text-primary dark:text-secondary">
-            {area}
-            {m2.replace("/", "")}
+            - {area}
+            {m2} -
           </span>
           <span className="mr-2">
-            {formatCurrency(pricePerArea(price, area))}
-            {purType ? m2 : "/tháng"}
+            {formatCurrency(pricePerArea(purType, price, area))}
+            {purType && `/${m2}`}
           </span>
           {/* bed | bath | floor */}
           {(!mapView || isPopup || !isLaptop) && (
@@ -140,36 +133,22 @@ function ListItem({ data, purType, isPopup = false }) {
         </div>
         {/* author */}
         {(!mapView || !isLaptop) && (
-          <div className="hidden w-full items-center justify-between xs:flex">
-            <div className="flex h-8 w-[45%] items-center">
+          <div className="hidden items-center justify-between xs:flex">
+            <div className="flex h-8 items-center gap-2">
               <Avatar
                 src={avatar}
                 name={fullName}
+                size="sm"
                 alt="author avatar"
-                // FIX
               />
               <div>
                 <span className="line-clamp-1 font-semibold">{fullName}</span>
                 <p>{formatDate(created_at, "short")}</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              {isAuthenticated && (
-                <Button
-                  onClick={() => setHiddenPhoneNum(true)}
-                  widthBase={false}
-                  basePY={false}
-                  icon={<BiPhoneCall />}
-                >
-                  {hiddenPhoneNum ? (
-                    <a href={`tel:0${phone}`}>0{phone}</a>
-                  ) : (
-                    hiddenLast3PhoneNum(phone)
-                  )}
-                </Button>
-              )}
-              {!isLaptop && <Bookmark />}
-            </div>
+            {/* TODO: styling */}
+            <p className="text-xs font-roboto">what&#39;d we place here?</p>
+            <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
           </div>
         )}
       </div>

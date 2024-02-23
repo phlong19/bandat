@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
+// https://www.vietiso.com/ho-tro/dieu-khoan-huong-dan/huong-dan-lay-google-maps-api-key-tich-hop-vao-website.html
 // pages
 import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
@@ -12,7 +12,7 @@ import News from "./pages/News";
 import NewDetails from "./pages/NewDetails";
 import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
-import BookMarks from "./pages/BookMarks";
+import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -76,7 +76,7 @@ function App() {
                     />
                     <Route path="du-an" element={<Projects />} />
                     <Route path="nha-dat/:land" element={<Details />} />
-                    <Route path="tin-da-luu" element={<BookMarks />} />
+                    <Route path="tin-da-luu" element={<Bookmarks />} />
                     <Route path="tin-tuc" element={<News />} />
                     <Route path="tin-tuc/:title" element={<NewDetails />} />
                     <Route path="danh-ba" element={<Contacts />} />
@@ -102,6 +102,10 @@ function App() {
                       path="quan-ly-bai-viet"
                       element={<UserDashboard />}
                     />
+                    <Route
+                      path="quan-ly-bai-viet/:title"
+                      element={<UserDashboard form />}
+                    />
 
                     {/* user account management */}
                     <Route path="tai-khoan" element={<AccountManagement />} />
@@ -115,6 +119,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+
                     {/* admin path */}
                     {/* if anyone can think out a name cooler, powerful than this */}
                     {/* please let me know */}

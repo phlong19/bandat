@@ -2,6 +2,9 @@ import { extendTheme, defineStyle, defineStyleConfig } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import { menuTheme } from "./menu";
 import { cardTheme } from "./card";
+import { inputTheme } from "./input";
+import { selectTheme } from "./select";
+import { checkboxTheme } from "./checkbox";
 
 const colors = {
   primary: "#1a237e",
@@ -38,6 +41,9 @@ export const theme = extendTheme({
     Menu: menuTheme,
     Button: buttonTheme,
     Card: cardTheme,
+    Input: inputTheme,
+    Select: selectTheme,
+    Checkbox: checkboxTheme,
   },
   font: {
     lexend: `'Lexend, sans-serif'`,

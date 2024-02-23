@@ -15,7 +15,7 @@ import {
 
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
-function ChakraTable({ title, captions, data, render }) {
+function ChakraTable({ title, captions, data, render, primaryButton, count }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
 
@@ -28,14 +28,15 @@ function ChakraTable({ title, captions, data, render }) {
           </Text>
           <Flex gap={2}>
             <Button colorScheme="teal" variant="ghost">
-              here{" "}
+              random
             </Button>
             <Button colorScheme="blue" variant="solid">
-              some
+              random
             </Button>
-            <Button colorScheme="purple" variant="outline">
-              action
-            </Button>
+            {/* for main action */}
+            {/* with post => link to dang-tin */}
+            {/* news / user + profile / docs => modal */}
+            {primaryButton}
           </Flex>
         </Flex>
       </CardHeader>
@@ -45,7 +46,13 @@ function ChakraTable({ title, captions, data, render }) {
             <Tr my=".8rem" pl="0px" color="gray.400">
               {captions.map((caption, i) => {
                 return (
-                  <Th color="gray.400" key={i} ps={i === 0 ? "0px" : null}>
+                  <Th
+                    color="gray.400"
+                    textTransform="capitalize"
+                    fontSize="small"
+                    key={i}
+                    ps={i === 0 ? "0px" : null}
+                  >
                     {caption}
                   </Th>
                 );
@@ -55,7 +62,7 @@ function ChakraTable({ title, captions, data, render }) {
           <Tbody>{data.map(render)}</Tbody>
         </Table>
       </CardBody>
-      <ChakraTablePagination />
+      <ChakraTablePagination count={count} />
     </Card>
   );
 }

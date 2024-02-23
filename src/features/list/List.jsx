@@ -1,26 +1,23 @@
 // libs
 import React, { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import toast from "react-hot-toast";
 
 // UI
+import ListItem from "./ListItem";
+import Searchbar from "../searchbar/Searchbar";
 import Map from "../../ui/Map";
 import SpinnerFullPage from "../../ui/SpinnerFullPage";
-import ErrorFallBack from "../../ui/ErrorFallBack";
-import ListItem from "./ListItem";
 import SkewedToggle from "../../ui/SkewedToggle";
-import Searchbar from "./Searchbar";
+import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
 // hooks & helpers & context
 import { useListingPage } from "./useListingPage";
 import { formatNumber } from "../../utils/helper";
 import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
-import Pagination from "../../ui/Pagination";
 import { useMapView } from "../../context/MapViewContext";
-// import { data } from "../../constants/products";
 
 function List({ purType }) {
-  const { data, error, isLoading } = useListingPage(purType);
+  const { data, isLoading } = useListingPage(purType);
   const { mapView } = useMapView();
 
   const listAnimationControl = useAnimation();
@@ -31,7 +28,7 @@ function List({ purType }) {
     const pageTitle = purType ? purTypeTrue : purTypeFalse;
     document.title = pageTitle;
   }, [purType]);
-
+  // TODO: fix exit animation
   useEffect(() => {
     if (mapView) {
       // if true, animate the map sliding in and the list shrinking
@@ -64,12 +61,7 @@ function List({ purType }) {
     return <SpinnerFullPage />;
   }
 
-  if (error) {
-    toast.error(error.message);
-    return <ErrorFallBack />;
-  }
-
-  // console.log(data);
+  const list = data.data || [];
 
   return (
     <div className="relative h-full justify-center px-2.5 sm:px-5 lg:flex lg:gap-2">
@@ -77,7 +69,9 @@ function List({ purType }) {
       <AnimatePresence presenceAffectsLayout>
         <motion.div
           animate={listAnimationControl}
-          className={`z-10 h-full w-full ${mapView ? "overflow-y-auto" : ""}`}
+          className={`z-10 h-full min-h-[90dvh] w-full ${
+            mapView ? "overflow-y-auto" : ""
+          }`}
         >
           <div className="pt-4">
             <Searchbar />
@@ -89,7 +83,7 @@ function List({ purType }) {
           <div className="flex items-center justify-between">
             {/* counter */}
             <span className="inline-block text-base lg:text-lg">
-              Có <span>{formatNumber(data.length)}</span> bất động sản.
+              Có <span>{formatNumber(list.length)}</span> bất động sản.
             </span>
 
             {/* toggle grid & map views */}
@@ -110,7 +104,7 @@ function List({ purType }) {
             {/* for development */}
             {Array.from({ length: 4 }).map((dt, i) => (
               <React.Fragment key={i}>
-                {data.map((item) => (
+                {list.map((item) => (
                   <ListItem
                     key={item.id}
                     data={item}
@@ -122,7 +116,7 @@ function List({ purType }) {
             ))}
           </div>
           {/* total count later */}
-          <Pagination count={data.count} />
+          <ChakraTablePagination count={data.count} />
         </motion.div>
 
         {/* map, mobile hidden */}
@@ -132,7 +126,7 @@ function List({ purType }) {
             initial={{ x: "100%", width: 0, opacity: 0 }}
             animate={mapAnimationControl}
           >
-            <Map data={data} purType={purType} />
+            <Map data={list} purType={purType} />
           </motion.div>
         )}
       </AnimatePresence>

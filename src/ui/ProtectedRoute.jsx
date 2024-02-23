@@ -6,6 +6,7 @@ import { LuShieldAlert } from "react-icons/lu";
 import SpinnerFullPage from "./SpinnerFullPage";
 
 import { useAuth } from "../context/UserContext";
+import { error as errorMessage } from "../constants/message";
 
 function ProtectedRoute({ children, accessLevel }) {
   const { data, level, isAuthenticated, isLoading } = useAuth();
@@ -14,7 +15,7 @@ function ProtectedRoute({ children, accessLevel }) {
   useEffect(() => {
     if (!isLoading) {
       if (!isAuthenticated || !data) {
-        toast.error("Vui lòng đăng nhập để xem trang", {
+        toast.error(errorMessage.notAuthen, {
           icon: (
             <span className="text-2xl text-yellow-500">
               <LuShieldAlert />
