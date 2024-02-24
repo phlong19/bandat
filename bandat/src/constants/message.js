@@ -37,7 +37,7 @@ export const reform = {
   minPrice: "Giá trị bất động sản quá nhỏ",
 
   // form errors
-  missingName: "ten bai viet la gif?",
+  missingName: "Chưa nhập tiêu đề",
   nameTooShort: "Chưa đủ 60 kí tự",
   nameTooLong: "Vượt quá số kí tự",
   desTooShort: "Vui lòng điền chi tiết mô tả ít nhất 150 kí tự",
