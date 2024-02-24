@@ -40,7 +40,7 @@ export const reform = {
   missingName: "Chưa nhập tiêu đề",
   nameTooShort: "Chưa đủ 60 kí tự",
   nameTooLong: "Vượt quá số kí tự",
-  desTooShort: "Vui lòng điền chi tiết mô tả ít nhất 150 kí tự",
+  desTooShort: "Vui lòng điền chi tiết mô tả ",
   desTooLong: "Vượt quá số kí tự",
 
   // alert
