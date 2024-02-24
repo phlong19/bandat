@@ -1,3 +1,4 @@
+import { error as errorMessage } from "../constants/message";
 import { mapURL } from "../constants/anyVariables";
 import supabase from "./supabase";
 
@@ -10,6 +11,7 @@ export async function getAddress(city, district, ward) {
     data.dis = data.ward = [];
     await getCity();
   }
+
   if (city && !district && !ward) {
     data.ward = [];
     await getDis(city);
@@ -96,6 +98,10 @@ export async function getLatLong(address) {
   );
 
   const data = await res.json();
+
+  if (data.results.length < 1) {
+    throw new Error(errorMessage.apiGG);
+  }
 
   const { location } = data.results[0].geometry;
   const lat = parseFloat(location.lat);

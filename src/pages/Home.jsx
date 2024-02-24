@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
-import { homeLinks } from "../constants/navlink";
+import { useMediaQuery } from "react-responsive";
+
 import Searchbar from "../features/searchbar/Searchbar";
 
+import { homeLinks } from "../constants/navlink";
+
 function Home() {
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1200px)",
+  });
+
   return (
     <div className="bg-light px-1 pt-3 text-dark dark:bg-dark dark:text-light lg:mt-[72px] lg:min-h-[calc(100vh-72px)]">
       <ul className="flex w-full items-center justify-center gap-3 xl:hidden">
@@ -18,9 +25,9 @@ function Home() {
           </li>
         ))}
       </ul>
-      {/* content */}
+
       <div className="mt-4">
-        <Searchbar />
+        {isDesktop && <Searchbar />}
         <h2 className="pb-4 pt-6 font-lexend text-xl font-medium">
           Bất động sản dành cho bạn
         </h2>

@@ -1,5 +1,5 @@
 // libs
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 
 // UI
@@ -101,18 +101,13 @@ function List({ purType }) {
                 : "mx-auto max-w-[1400px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-6"
             } mt-3 space-y-4 lg:grid lg:space-y-0`}
           >
-            {/* for development */}
-            {Array.from({ length: 4 }).map((dt, i) => (
-              <React.Fragment key={i}>
-                {list.map((item) => (
-                  <ListItem
-                    key={item.id}
-                    data={item}
-                    purType={purType}
-                    mapView={mapView}
-                  />
-                ))}
-              </React.Fragment>
+            {list.map((item) => (
+              <ListItem
+                key={item.id}
+                data={item}
+                purType={purType}
+                mapView={mapView}
+              />
             ))}
           </div>
           {/* total count later */}

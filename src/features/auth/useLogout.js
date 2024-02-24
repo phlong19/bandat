@@ -14,6 +14,7 @@ export function useLogout() {
       queryClient.setQueryData(["user"], null);
       toast.success(success.logout);
       navigate("/dang-nhap", { replace: true });
+      queryClient.invalidateQueries();
     },
   });
 

@@ -5,7 +5,6 @@ import {
   billion,
   million,
 } from "../constants/anyVariables";
-import { navLinks } from "../constants/navlink";
 
 // calc how much money per m2
 export function pricePerArea(purType, price, area) {
@@ -15,7 +14,7 @@ export function pricePerArea(purType, price, area) {
 
 // 1.000.000.000 => 1 billion
 export function formatCurrency(input) {
-  if (Number(input) > billion) {
+  if (Number(input) >= billion) {
     return round2Digit(input / billion) + " tỷ";
   }
   if (Number(input) > million) {

@@ -1,15 +1,37 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Flex, Input, Select } from "@chakra-ui/react";
+import {
+  FaFilterCircleDollar,
+  FaMagnifyingGlassArrowRight,
+} from "react-icons/fa6";
+
+import {
+  Flex,
+  Input,
+  Select,
+  Box,
+  useColorModeValue,
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionIcon,
+  AccordionPanel,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 
 import AddressSelect from "./AddressSelect";
 import Button from "../../ui/Button";
 
+import { useMapView } from "../../context/MapViewContext";
 import { navLinks } from "../../constants/navlink";
+import ChakraSlider from "./ChakraSlider";
 
 function Searchbar() {
   const [purType, setPurType] = useState(true);
+  const { mapView } = useMapView();
+  const bg = useColorModeValue("white", "dark");
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
@@ -27,39 +49,107 @@ function Searchbar() {
   function onSubmit(data) {
     console.log(data);
   }
-  // TODO: styling
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* purType */}
-      <Select onChange={(e) => setPurType(e.target.value === "true")}>
-        <option value="none">--</option>
-        <option value="true">Bán</option>
-        <option value="false">Cho thuê</option>
-      </Select>
-      {/* re type */}
-      <Select {...register("reType")}>
-        <option value="none"></option>
-        {arr.map((opt) => (
-          <option value={opt.type} key={opt.type}>
-            {opt.title}
-          </option>
-        ))}
-      </Select>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={`${
+        mapView ? "w-full" : "max-w-[80%]"
+      } mx-auto flex items-center`}
+    >
+      <Accordion allowMultiple bg={bg} boxShadow="sm" borderLeftRadius="lg">
+        <AccordionItem border="none">
+          <AccordionButton minW="150px" gap={2.5} justifyContent="center">
+            <FaFilterCircleDollar />
+            <span>Lọc</span>
+          </AccordionButton>
+          <AccordionPanel
+            borderRadius="md"
+            position="absolute"
+            bg={bg}
+            zIndex={999}
+            boxShadow="lg"
+            width={mapView ? "40%" : "75%"}
+          >
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left">
+                    Địa chỉ
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel id="hi" pb={4} maxW="100%">
+                <AddressSelect
+                  cityID={cityID}
+                  disID={disID}
+                  wardID={wardID}
+                  setCityID={setCityID}
+                  setDisID={setDisID}
+                  setWardID={setWardID}
+                />
+              </AccordionPanel>
+            </AccordionItem>
 
-      <Flex>
-        <Input {...register("query")} />
-        <Button>search</Button>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left">
+                    Các thông tin khác
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel
+                pb={4}
+                gap={4}
+                alignItems="baseline"
+                display="flex"
+              >
+                <FormControl>
+                  <FormLabel>Dạng bán</FormLabel>
+                  <Select
+                    onChange={(e) => setPurType(e.target.value === "true")}
+                  >
+                    <option value="true">Bán</option>
+                    <option value="false">Cho thuê</option>
+                  </Select>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Loại hình</FormLabel>
+                  <Select {...register("reType")}>
+                    {arr.map((opt) => (
+                      <option value={opt.type} key={opt.type}>
+                        {opt.title}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Diện tích</FormLabel>
+                  <ChakraSlider />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Giá</FormLabel>
+                  <ChakraSlider />
+                </FormControl>
+              </AccordionPanel>
+            </AccordionItem>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+
+      <Flex w="100%" gap="1px" align="center">
+        <Input {...register("query")} borderLeftRadius="none" />
+
+        <Button widthBase={false} icon={<FaMagnifyingGlassArrowRight />}>
+          search
+        </Button>
       </Flex>
-
-      <AddressSelect
-        cityID={cityID}
-        disID={disID}
-        wardID={wardID}
-        setCityID={setCityID}
-        setDisID={setDisID}
-        setWardID={setWardID}
-      />
     </form>
   );
 }

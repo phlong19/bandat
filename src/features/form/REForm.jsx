@@ -16,7 +16,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { NumericFormat } from "react-number-format";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -52,16 +52,25 @@ import { directions, navLinks } from "../../constants/navlink";
 import { useCreateRE } from "./useCreateRE";
 import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
 import { reform } from "../../constants/message";
+import { useUpdateRE } from "./useUpdateRE";
 
-function REForm({ id, edit = false, editData }) {
+function REForm({ id, edit = false, editData, check }) {
   const {
     control,
     register,
+    reset,
     formState: { errors },
     setError,
     setValue,
     handleSubmit,
   } = useForm();
+
+  // reset the form on navigate
+  useEffect(() => {
+    if (check) {
+      reset();
+    }
+  }, [check, reset]);
 
   const [purType, setPurType] = useState(true);
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
@@ -85,13 +94,13 @@ function REForm({ id, edit = false, editData }) {
   const [disID, setDisID] = useState(NaN);
   const [wardID, setWardID] = useState(NaN);
 
-  // submit & create new re
-  const { isCreating, mutate } = useCreateRE();
+  // custom hooks
+  const { isCreating, create } = useCreateRE();
+  const { update, isUpdating } = useUpdateRE();
 
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   function onSubmit(data) {
-    console.log(cityID, disID, wardID);
     // check address
     if (!cityID || !disID || !wardID) {
       return toast.error(reform.missingAddress);
@@ -112,26 +121,32 @@ function REForm({ id, edit = false, editData }) {
       });
     }
 
+    // parse the price and check
+    const priceNum = parseCurrency(data.price);
     // check price
-    if (data.price < million) {
+    if (priceNum < million) {
       return setError("price", {
         type: "min",
         message: reform.minPrice,
       });
     }
 
-    mutate({
-      ...data,
-      price: parseCurrency(data.price),
-      cityID,
-      disID,
-      wardID,
-      purType: purType,
-      status: DEFAULT_RE_STATUS,
-      userID: id,
-      docs,
-      slug: slugify(data.name),
-    });
+    if (!edit) {
+      create({
+        ...data,
+        price: priceNum,
+        cityID,
+        disID,
+        wardID,
+        purType: purType,
+        status: DEFAULT_RE_STATUS,
+        userID: id,
+        docs,
+        slug: slugify(data.name),
+      });
+    } else {
+      update(data);
+    }
   }
 
   return (
@@ -199,9 +214,9 @@ function REForm({ id, edit = false, editData }) {
           {/* address */}
           <AddressSelect
             isForm
-            cityID={cityID}
-            disID={disID}
-            wardID={wardID}
+            cityID={cityID || editData?.cityID}
+            disID={disID || editData?.disID}
+            wardID={wardID || editData?.wardID}
             setCityID={setCityID}
             setDisID={setDisID}
             setWardID={setWardID}
@@ -221,7 +236,6 @@ function REForm({ id, edit = false, editData }) {
             register={register("name", {
               required: reform.missingName,
               value: editData?.name,
-              // dev
               minLength: { value: minLength, message: reform.nameTooShort },
               maxLength: {
                 value: maxLength,
@@ -260,7 +274,6 @@ function REForm({ id, edit = false, editData }) {
                     thousandSeparator="."
                     decimalSeparator=","
                     onChange={onChange}
-                    placeholder={purType ? "tỷ" : "triệu"}
                   />
                 )}
               />
@@ -388,10 +401,11 @@ function REForm({ id, edit = false, editData }) {
           <ChakraAlert type="warning" message={reform.note} />
 
           {editData?.status.id !== SOLD_STATUS && (
-            <Flex w="100%" justify="flex-end">
+            <Flex w="100%" justify="flex-end" align="center" gap={2}>
+              <Button onClick={reset}>reset</Button>
               <Button
                 isLoading={isCreating}
-                loadingText={reform.loadingText}
+                loadingText={!edit ? reform.creating : reform.saving}
                 right={0}
                 borderWidth={2}
                 colorScheme="teal"

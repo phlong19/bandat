@@ -71,7 +71,7 @@ function MenuActionRE({ userID, authorID, statusID, postID, slug, level }) {
           action="Xóa"
           icon={<HiOutlineTrash />}
           onAction={() => {
-            deletePost(postID);
+            deletePost(postID, level, userID);
           }}
           warning
         />

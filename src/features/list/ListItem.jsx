@@ -4,7 +4,6 @@ import { useMediaQuery } from "react-responsive";
 
 import { TbBed } from "react-icons/tb";
 import { LiaBathSolid } from "react-icons/lia";
-import { ImStack } from "react-icons/im";
 import { SlLocationPin } from "react-icons/sl";
 
 import Bookmark from "../../ui/Bookmark";
@@ -28,7 +27,6 @@ function ListItem({ data, purType, isPopup = false }) {
     city: { cityName },
     created_at,
     dis: { disName },
-    floor,
     images,
     name,
     price,
@@ -88,7 +86,7 @@ function ListItem({ data, purType, isPopup = false }) {
             {formatCurrency(pricePerArea(purType, price, area))}
             {purType && `/${m2}`}
           </span>
-          {/* bed | bath | floor */}
+          {/* bed & bath */}
           {(!mapView || isPopup || !isLaptop) && (
             <div className="flex gap-2.5">
               {bed_room && (
@@ -104,18 +102,6 @@ function ListItem({ data, purType, isPopup = false }) {
                   {bath_room}
                   <span className="mb-1 text-2xl">
                     <LiaBathSolid />
-                  </span>
-                </span>
-              )}
-              {floor && (
-                <span
-                  className={`${
-                    !isLaptop || isPopup ? "flex" : "hidden"
-                  } items-center gap-1.5`}
-                >
-                  {floor}
-                  <span className="mb-1 text-2xl">
-                    <ImStack />
                   </span>
                 </span>
               )}
@@ -147,7 +133,7 @@ function ListItem({ data, purType, isPopup = false }) {
               </div>
             </div>
             {/* TODO: styling */}
-            <p className="text-xs font-roboto">what&#39;d we place here?</p>
+            <p className="font-roboto text-xs">what&#39;d we place here?</p>
             <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
           </div>
         )}
