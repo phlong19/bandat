@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { Box, Center, Spinner } from "@chakra-ui/react";
@@ -15,11 +14,9 @@ function UserDashboard({ form = false }) {
   const page = window.location.pathname.includes("dang-tin")
     ? "Đăng tin"
     : "Quản lý bài viết";
-  let check = page.includes("tin");
 
   const { title } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { data, level, isLoading } = useAuth();
   let { post, isFetching } = useGetRE(title);
 
@@ -29,10 +26,6 @@ function UserDashboard({ form = false }) {
       navigate("/dang-tin");
     }
   }, [post, navigate, isFetching, title]);
-
-  if (check) {
-    queryClient.removeQueries({ queryKey: ["singleRE"] });
-  }
 
   if (isLoading || isFetching) {
     return (
@@ -53,7 +46,7 @@ function UserDashboard({ form = false }) {
             id={data.id}
             edit={Boolean(post)}
             editData={post}
-            check={check}
+            key={post?.id || "new"}
           />
         </Box>
       )}

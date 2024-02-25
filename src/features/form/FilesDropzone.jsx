@@ -2,14 +2,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { v4 } from "uuid";
 
-import { Image, Button, Text, Flex, Box } from "@chakra-ui/react";
+import {
+  Image,
+  Button,
+  Text,
+  Flex,
+  Box,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
-import { useColorModeValue } from "@chakra-ui/react";
 import {
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
   MAX_SIZE_UPLOAD,
 } from "../../constants/anyVariables";
+import { reform } from "../../constants/message";
 
 const limit = LIMIT_IMG_UPLOAD + LIMIT_VID_UPLOAD;
 
@@ -31,7 +38,7 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
       const mapped = acceptedFiles.map((file) => {
         file.type.startsWith("image") ? imgLeft.current-- : vidLeft.current--;
         if (imgLeft.current < 0 || vidLeft.current < 0) {
-          return setError("Vượt quá số lượng giới hạn file tải lên");
+          return setError(reform.overFile);
         }
         return Object.assign(file, {
           preview: URL.createObjectURL(file),
@@ -169,7 +176,7 @@ function FilesDropzone({ files, setFiles, setValue, onChange }) {
         <input {...getInputProps({ onChange })} />
         {!error ? (
           <Text fontSize="sm" color="gray.500">
-            Drag & drop file here, or click to select files
+            {reform.helperMedia}
           </Text>
         ) : (
           <Text fontSize="sm" color="red.500">

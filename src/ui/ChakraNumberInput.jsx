@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
+import { reform } from "../constants/message";
 
 function ChakraNumberInput({
   register,
@@ -21,13 +22,12 @@ function ChakraNumberInput({
   return (
     <FormControl isRequired={req} isInvalid={error}>
       <FormLabel>{label}</FormLabel>
-      <NumberInput>
+      <NumberInput min={0} defaultValue={value}>
         <NumberInputField
           {...register(`${name}`, {
-            value: value,
             required: {
               value: req,
-              message: "khong thay dau sao do a? nhap day du vao",
+              message: reform.requiredMessage,
             },
             valueAsNumber: true,
           })}

@@ -1,4 +1,10 @@
 // libs
+import { useState } from "react";
+import { NumericFormat } from "react-number-format";
+import { useForm, Controller } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
+import slugify from "react-slugify";
 import {
   FormControl,
   FormLabel,
@@ -15,12 +21,6 @@ import {
   Badge,
   Text,
 } from "@chakra-ui/react";
-import { NumericFormat } from "react-number-format";
-import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
-import slugify from "react-slugify";
 
 // icon
 import { LuChevronsLeft } from "react-icons/lu";
@@ -49,12 +49,12 @@ import {
   minLength,
 } from "../../constants/anyVariables";
 import { directions, navLinks } from "../../constants/navlink";
-import { useCreateRE } from "./useCreateRE";
 import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
 import { reform } from "../../constants/message";
+import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 
-function REForm({ id, edit = false, editData, check }) {
+function REForm({ id, edit = false, editData }) {
   const {
     control,
     register,
@@ -64,13 +64,6 @@ function REForm({ id, edit = false, editData, check }) {
     setValue,
     handleSubmit,
   } = useForm();
-
-  // reset the form on navigate
-  useEffect(() => {
-    if (check) {
-      reset();
-    }
-  }, [check, reset]);
 
   const [purType, setPurType] = useState(true);
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
@@ -274,6 +267,7 @@ function REForm({ id, edit = false, editData, check }) {
                     thousandSeparator="."
                     decimalSeparator=","
                     onChange={onChange}
+                    defaultValue={editData?.price}
                   />
                 )}
               />
@@ -404,7 +398,7 @@ function REForm({ id, edit = false, editData, check }) {
             <Flex w="100%" justify="flex-end" align="center" gap={2}>
               <Button onClick={reset}>reset</Button>
               <Button
-                isLoading={isCreating}
+                isLoading={isCreating || isUpdating}
                 loadingText={!edit ? reform.creating : reform.saving}
                 right={0}
                 borderWidth={2}

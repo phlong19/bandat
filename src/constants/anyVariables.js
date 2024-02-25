@@ -71,4 +71,10 @@ export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
 export const geoCodeURL = `https://geocode.maps.co/search`;
 export const mapURL = `https://maps.googleapis.com/maps/api/geocode/json`;
 
-export const newsCaptions = ["one", "two"];
+export const newsCaptions = [
+  "Người đăng",
+  "Trạng thái",
+  "Tiêu đề",
+  "Tóm tắt",
+  "Ngày đăng",
+];
