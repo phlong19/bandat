@@ -9,28 +9,32 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-function ChakraSlider() {
-  const [sliderValue, setSliderValue] = useState(5);
+function ChakraSlider({ value, sliderValue, setSliderValue }) {
   const [showTooltip, setShowTooltip] = useState(false);
+
   return (
     <Slider
       id="slider"
-      defaultValue={5}
+      defaultValue={0}
       min={0}
-      max={100}
+      max={value}
       colorScheme="teal"
       onChange={(v) => setSliderValue(v)}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      <SliderMark value={25} mt="1" ml="-2.5" fontSize="sm">
-        25%
+      <SliderMark value={0} mt="1" ml="-2.5" fontSize="sm">
+        0
       </SliderMark>
-      <SliderMark value={50} mt="1" ml="-2.5" fontSize="sm">
-        50%
+
+      <SliderMark value={value / 4} mt="1" ml="-2.5" fontSize="sm">
+        {value / 4}
       </SliderMark>
-      <SliderMark value={75} mt="1" ml="-2.5" fontSize="sm">
-        75%
+      <SliderMark value={value / 2} mt="1" ml="-2.5" fontSize="sm">
+        {value / 2}
+      </SliderMark>
+      <SliderMark value={(value * 4) / 5} mt="1" ml="-2.5" fontSize="sm">
+        {(value * 2) / 3}
       </SliderMark>
       <SliderTrack>
         <SliderFilledTrack />
@@ -41,7 +45,7 @@ function ChakraSlider() {
         color="white"
         placement="top"
         isOpen={showTooltip}
-        label={`${sliderValue}%`}
+        label={sliderValue}
       >
         <SliderThumb />
       </Tooltip>

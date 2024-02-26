@@ -106,3 +106,5 @@ export const directions = [
   "Tây",
   "Tây Bắc",
 ];
+
+export const prices = [{ label: "Dưới 500 triệu", value: "0-500" }];

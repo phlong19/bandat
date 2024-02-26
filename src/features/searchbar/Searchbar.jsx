@@ -18,6 +18,7 @@ import {
   AccordionIcon,
   AccordionPanel,
   FormControl,
+  Button as ChakraButton,
   FormLabel,
 } from "@chakra-ui/react";
 
@@ -27,8 +28,10 @@ import Button from "../../ui/Button";
 import { useMapView } from "../../context/MapViewContext";
 import { navLinks } from "../../constants/navlink";
 import ChakraSlider from "./ChakraSlider";
+import { SlRefresh } from "react-icons/sl";
 
 function Searchbar() {
+  const [sliderValue, setSliderValue] = useState(0);
   const [purType, setPurType] = useState(true);
   const { mapView } = useMapView();
   const bg = useColorModeValue("white", "dark");
@@ -103,11 +106,11 @@ function Searchbar() {
               </h2>
               <AccordionPanel
                 pb={4}
-                gap={4}
+                gap={3.5}
                 alignItems="baseline"
                 display="flex"
               >
-                <FormControl>
+                <FormControl maxW="150px">
                   <FormLabel>Dạng bán</FormLabel>
                   <Select
                     onChange={(e) => setPurType(e.target.value === "true")}
@@ -128,15 +131,24 @@ function Searchbar() {
                   </Select>
                 </FormControl>
 
-                <FormControl>
+                <FormControl ml={2}>
                   <FormLabel>Diện tích</FormLabel>
-                  <ChakraSlider />
+                  <ChakraSlider
+                    setSliderValue={setSliderValue}
+                    sliderValue={sliderValue}
+                    value={300}
+                  />
                 </FormControl>
 
                 <FormControl>
                   <FormLabel>Giá</FormLabel>
-                  <ChakraSlider />
+                  <Select>{}</Select>
+                  <input type="text" hidden />
                 </FormControl>
+
+                <ChakraButton variant="outline" alignSelf="center">
+                  <SlRefresh fontSize="65px" />
+                </ChakraButton>
               </AccordionPanel>
             </AccordionItem>
           </AccordionPanel>
