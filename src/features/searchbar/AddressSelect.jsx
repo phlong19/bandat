@@ -18,12 +18,13 @@ function AddressSelect({
   setDisID,
   setWardID,
 }) {
-  const { data, isLoading } = useSearchbar(cityID, disID, wardID);
+  const { data, isLoading, refetch } = useSearchbar(cityID, disID, wardID);
 
   function handleClick() {
     setCityID(NaN);
     setDisID(NaN);
     setWardID(NaN);
+    refetch({ cancelRefetch: false });
   }
 
   return (

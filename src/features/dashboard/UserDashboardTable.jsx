@@ -5,17 +5,14 @@ import { Center, Spinner, Button } from "@chakra-ui/react";
 import ChakraTable from "../table/ChakraTable";
 import TableRERow from "../table/TableRERow";
 
-import { getFullREList } from "../../services/apiManage";
 import { reCaptions } from "../../constants/anyVariables";
 import EmptyTable from "../../ui/EmptyTable";
+import { useGetFullList } from "./useGetFullList";
 
 function UserDashboardTable({ id, level }) {
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get("page") ? Number(searchParams.get(page)) : 1;
-  const { data, isLoading } = useQuery({
-    queryKey: ["REList"],
-    queryFn: () => getFullREList(id, page),
-  });
+  const { reList, isLoading } = useGetFullList(id);
+
+  const { data, count } = reList;
 
   if (isLoading) {
     return (
@@ -51,7 +48,7 @@ function UserDashboardTable({ id, level }) {
           <Button>bai viet moi</Button>
         </Link>
       }
-      count={data.length}
+      count={count}
     />
   );
 }

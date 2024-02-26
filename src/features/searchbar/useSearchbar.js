@@ -6,11 +6,11 @@ export function useSearchbar(cityID, disID, wardID) {
   const dis = disID ? disID : null;
   const ward = wardID ? wardID : null;
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["address", city, dis],
     queryFn: () => getAddress(city, dis, ward),
-    staleTime: Infinity,
+    // staleTime: Infinity,
   });
 
-  return { data, isLoading };
+  return { data, isLoading, refetch };
 }

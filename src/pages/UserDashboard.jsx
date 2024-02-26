@@ -11,7 +11,7 @@ import { useGetRE } from "../features/form/useGetRE";
 import { useAuth } from "../context/UserContext";
 
 function UserDashboard({ form = false }) {
-  const page = window.location.pathname.includes("dang-tin")
+  const activePage = window.location.pathname.includes("dang-tin")
     ? "Đăng tin"
     : "Quản lý bài viết";
 
@@ -37,7 +37,7 @@ function UserDashboard({ form = false }) {
 
   return (
     <Box h="100%" gap={4} display="flex" flexDirection="column">
-      <ChakraBreadcrumb page={page} />
+      <ChakraBreadcrumb page={activePage} />
       {!form ? (
         <UserDashboardTable id={data.id} level={level} />
       ) : (

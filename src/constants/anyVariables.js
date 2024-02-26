@@ -44,10 +44,10 @@ const m2 = "m²";
 export { billion, million, m2 };
 
 // title & des length
-const minLength = 60;
+const minLength = 40;
 const maxLength = 130;
 const minDesLength = 150;
-const maxDesLength = 1000;
+const maxDesLength = 2000;
 export { minLength, maxLength, minDesLength, maxDesLength };
 
 // table captions

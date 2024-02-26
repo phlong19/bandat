@@ -18,7 +18,7 @@ import {
   AccordionIcon,
   AccordionPanel,
   FormControl,
-  Button as ChakraButton,
+  IconButton,
   FormLabel,
 } from "@chakra-ui/react";
 
@@ -26,15 +26,16 @@ import AddressSelect from "./AddressSelect";
 import Button from "../../ui/Button";
 
 import { useMapView } from "../../context/MapViewContext";
-import { navLinks } from "../../constants/navlink";
+import { navLinks, prices } from "../../constants/navlink";
 import ChakraSlider from "./ChakraSlider";
 import { SlRefresh } from "react-icons/sl";
+import { m2 } from "../../constants/anyVariables";
 
 function Searchbar() {
+  const { mapView } = useMapView();
   const [sliderValue, setSliderValue] = useState(0);
   const [purType, setPurType] = useState(true);
-  const { mapView } = useMapView();
-  const bg = useColorModeValue("white", "dark");
+  const bg = useColorModeValue("white", "#2b2b2b");
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
@@ -42,12 +43,14 @@ function Searchbar() {
   const [disID, setDisID] = useState(NaN);
   const [wardID, setWardID] = useState(NaN);
 
-  const {
-    formState: { errors },
-    register,
-    reset,
-    handleSubmit,
-  } = useForm();
+  const { register, reset, handleSubmit } = useForm();
+
+  function handleReset(e) {
+    e.preventDefault();
+    setSliderValue(0);
+    setPurType(true);
+    reset();
+  }
 
   function onSubmit(data) {
     console.log(data);
@@ -60,7 +63,13 @@ function Searchbar() {
         mapView ? "w-full" : "max-w-[80%]"
       } mx-auto flex items-center`}
     >
-      <Accordion allowMultiple bg={bg} boxShadow="sm" borderLeftRadius="lg">
+      <Accordion
+        allowMultiple
+        bg={bg}
+        defaultIndex={[1]}
+        boxShadow="sm"
+        borderLeftRadius="lg"
+      >
         <AccordionItem border="none">
           <AccordionButton minW="150px" gap={2.5} justifyContent="center">
             <FaFilterCircleDollar />
@@ -74,27 +83,6 @@ function Searchbar() {
             boxShadow="lg"
             width={mapView ? "40%" : "75%"}
           >
-            <AccordionItem>
-              <h2>
-                <AccordionButton>
-                  <Box as="span" flex="1" textAlign="left">
-                    Địa chỉ
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel id="hi" pb={4} maxW="100%">
-                <AddressSelect
-                  cityID={cityID}
-                  disID={disID}
-                  wardID={wardID}
-                  setCityID={setCityID}
-                  setDisID={setDisID}
-                  setWardID={setWardID}
-                />
-              </AccordionPanel>
-            </AccordionItem>
-
             <AccordionItem>
               <h2>
                 <AccordionButton>
@@ -132,7 +120,9 @@ function Searchbar() {
                 </FormControl>
 
                 <FormControl ml={2}>
-                  <FormLabel>Diện tích</FormLabel>
+                  <FormLabel>
+                    Diện tích (<span className="text-xs">{m2}</span>)
+                  </FormLabel>
                   <ChakraSlider
                     setSliderValue={setSliderValue}
                     sliderValue={sliderValue}
@@ -142,20 +132,50 @@ function Searchbar() {
 
                 <FormControl>
                   <FormLabel>Giá</FormLabel>
-                  <Select>{}</Select>
+                  <Select {...register("price")}>
+                    {prices.map((item) => (
+                      <option value={item.value} key={item.label}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </Select>
                   <input type="text" hidden />
                 </FormControl>
 
-                <ChakraButton variant="outline" alignSelf="center">
-                  <SlRefresh fontSize="65px" />
-                </ChakraButton>
+                <IconButton
+                  icon={<SlRefresh />}
+                  alignSelf="end"
+                  type="reset"
+                  onClick={handleReset}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left">
+                    Địa chỉ
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel id="hi" pb={4} maxW="100%">
+                <AddressSelect
+                  cityID={cityID}
+                  disID={disID}
+                  wardID={wardID}
+                  setCityID={setCityID}
+                  setDisID={setDisID}
+                  setWardID={setWardID}
+                />
               </AccordionPanel>
             </AccordionItem>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
 
-      <Flex w="100%" gap="1px" align="center">
+      <Flex w="100%" gap="2px" align="center">
         <Input {...register("query")} borderLeftRadius="none" />
 
         <Button widthBase={false} icon={<FaMagnifyingGlassArrowRight />}>

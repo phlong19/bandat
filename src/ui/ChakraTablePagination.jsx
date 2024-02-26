@@ -8,9 +8,7 @@ function ChakraTablePagination({ count }) {
   const currentPageColor = useColorModeValue("blue", "yellow");
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = searchParams.get("page")
-    ? Number(searchParams.get("page"))
-    : 1;
+  const currentPage = Number(searchParams.get("page")) || 1;
   const totalPages = Math.ceil(count / LIMIT_PER_PAGE);
 
   let finalDestination;

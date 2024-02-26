@@ -107,4 +107,13 @@ export const directions = [
   "Tây Bắc",
 ];
 
-export const prices = [{ label: "Dưới 500 triệu", value: "0-500" }];
+export const prices = [
+  { label: "Tất cả khoảng giá", value: "0" },
+  { label: "Dưới 500 triệu", value: "500" },
+  { label: "500 - 1 tỷ", value: "500-1" },
+  { label: "1 - 5 tỷ", value: "1-5" },
+  { label: "5 - 10 tỷ", value: "5-10" },
+  { label: "10 - 30 tỷ", value: "10-30" },
+  { label: "30 - 60 tỷ", value: "30-60" },
+  { label: "Trên 60 tỷ", value: "60" },
+];

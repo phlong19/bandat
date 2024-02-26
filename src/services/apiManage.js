@@ -3,7 +3,7 @@ import supabase from "./supabase";
 
 export async function getFullREList(userID, page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
-  const end = start + LIMIT_PER_PAGE;
+  const end = start + LIMIT_PER_PAGE - 1;
 
   const { data: profile, error: getProfileError } = await supabase
     .from("Profile")
@@ -29,6 +29,7 @@ export async function getFullREList(userID, page) {
       postStatus: REStatus(*),
       type: REType(name)      
     `,
+      { count: "exact" },
     )
     .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
@@ -38,11 +39,11 @@ export async function getFullREList(userID, page) {
     query = query.eq("userID", id);
   }
 
-  const { data, error } = await query;
+  const { data, count, error } = await query;
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return { data, count };
 }

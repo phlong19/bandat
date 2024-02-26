@@ -3,22 +3,27 @@ import { mapURL } from "../constants/anyVariables";
 import supabase from "./supabase";
 
 // addresses
-const data = {};
-data.city = data.dis = data.ward = [];
 
 export async function getAddress(city, district, ward) {
+  const data = {
+    city: [],
+    dis: [],
+    ward: [],
+  };
+
   if (!city && !district && !ward) {
-    data.dis = data.ward = [];
-    await getCity();
+    data.city = await getCity();
   }
 
   if (city && !district && !ward) {
-    data.ward = [];
-    await getDis(city);
+    data.city = await getCity();
+    data.dis = await getDis(city);
   }
 
   if (city && district && !ward) {
-    await getWard(district);
+    data.city = await getCity();
+    data.dis = await getDis(city);
+    data.ward = await getWard(district);
   }
 
   return data;
@@ -31,9 +36,8 @@ async function getCity() {
   if (error) {
     throw new Error(error.message);
   }
-  data.city = cityData;
 
-  return null;
+  return cityData;
 }
 
 async function getDis(cityID) {
@@ -49,9 +53,8 @@ async function getDis(cityID) {
   if (error) {
     throw new Error(error.message);
   }
-  data.dis = disData;
 
-  return null;
+  return disData;
 }
 
 async function getWard(disID) {
@@ -67,9 +70,8 @@ async function getWard(disID) {
   if (error) {
     throw new Error(error.message);
   }
-  data.ward = wardData;
 
-  return null;
+  return wardData;
 }
 
 export async function getFullAddress(cityID, disID, wardID, address) {
@@ -92,6 +94,7 @@ export async function getFullAddress(cityID, disID, wardID, address) {
   }
 }
 
+// google api
 export async function getLatLong(address) {
   const res = await fetch(
     mapURL + `?address=${address}&key=${import.meta.env.VITE_MAP_KEY}`,
