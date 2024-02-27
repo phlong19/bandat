@@ -38,7 +38,7 @@ function ListItem({ data, purType, isPopup = false }) {
     <div
       className={`${
         !isPopup
-          ? "mt-2 bg-white p-1 shadow-sm shadow-prim-light dark:bg-black/20 dark:shadow-sec-light md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
+          ? "mt-2 bg-white p-1 dark:bg-[#202020] md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
           : "min-w-[160px] p-[2px] text-black lg:w-full"
       }  rounded-lg`}
     >
@@ -46,9 +46,6 @@ function ListItem({ data, purType, isPopup = false }) {
         <Link to={`/nha-dat/${slug}`}>
           {/* images */}
           <div className="relative mx-auto w-full overflow-hidden">
-            {/* vip label */}
-            <div className="absolute"></div>
-
             <ItemImages
               images={images}
               isLaptop={isLaptop}
@@ -75,14 +72,14 @@ function ListItem({ data, purType, isPopup = false }) {
             isPopup ? "gap-1" : "gap-2"
           } flex flex-wrap items-center`}
         >
-          <span className="font-bold text-primary dark:text-secondary">
+          <span>
             {formatCurrency(price)} {!purType && "/tháng"}
           </span>
-          <span className="font-bold text-primary dark:text-secondary">
+          <span>
             - {area}
             {m2} -
           </span>
-          <span className="mr-2">
+          <span className="mr-2 font-semibold text-primary dark:text-secondary">
             {formatCurrency(pricePerArea(purType, price, area))}
             {purType && `/${m2}`}
           </span>
@@ -92,7 +89,7 @@ function ListItem({ data, purType, isPopup = false }) {
               {bed_room && (
                 <span className="flex items-center gap-1.5">
                   {bed_room}
-                  <span className="text-[26px]">
+                  <span className="text-xl">
                     <TbBed />
                   </span>
                 </span>
@@ -100,7 +97,7 @@ function ListItem({ data, purType, isPopup = false }) {
               {bath_room && (
                 <span className="flex items-center gap-1.5">
                   {bath_room}
-                  <span className="mb-1 text-2xl">
+                  <span className="mb-1 text-xl">
                     <LiaBathSolid />
                   </span>
                 </span>
@@ -133,7 +130,6 @@ function ListItem({ data, purType, isPopup = false }) {
               </div>
             </div>
             {/* TODO: styling */}
-            <p className="font-roboto text-xs">what&#39;d we place here?</p>
             <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
           </div>
         )}

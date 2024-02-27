@@ -3,8 +3,7 @@ import { mapURL } from "../constants/anyVariables";
 import supabase from "./supabase";
 
 // addresses
-
-export async function getAddress(city, district, ward) {
+export async function getAddress(city, district, ward, edit) {
   const data = {
     city: [],
     dis: [],
@@ -21,6 +20,13 @@ export async function getAddress(city, district, ward) {
   }
 
   if (city && district && !ward) {
+    data.city = await getCity();
+    data.dis = await getDis(city);
+    data.ward = await getWard(district);
+  }
+
+  // for edit
+  if (city && district && ward && edit) {
     data.city = await getCity();
     data.dis = await getDis(city);
     data.ward = await getWard(district);

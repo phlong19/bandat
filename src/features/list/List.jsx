@@ -1,13 +1,13 @@
 // libs
 import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { Switch } from "@chakra-ui/react";
 
 // UI
 import ListItem from "./ListItem";
 import Searchbar from "../searchbar/Searchbar";
 import Map from "../../ui/Map";
 import SpinnerFullPage from "../../ui/SpinnerFullPage";
-import SkewedToggle from "../../ui/SkewedToggle";
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
 // hooks & helpers & context
@@ -18,7 +18,7 @@ import { useMapView } from "../../context/MapViewContext";
 
 function List({ purType }) {
   const { data, isLoading } = useListingPage(purType);
-  const { mapView } = useMapView();
+  const { mapView, setMapView } = useMapView();
 
   const listAnimationControl = useAnimation();
   const mapAnimationControl = useAnimation();
@@ -89,7 +89,7 @@ function List({ purType }) {
             {/* toggle grid & map views */}
             <div className="hidden items-center gap-2 lg:flex">
               <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
-              <SkewedToggle />
+              <Switch onChange={() => setMapView((s) => !s)} />
             </div>
           </div>
 

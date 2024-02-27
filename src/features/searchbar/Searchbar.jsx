@@ -35,7 +35,7 @@ function Searchbar() {
   const { mapView } = useMapView();
   const [sliderValue, setSliderValue] = useState(0);
   const [purType, setPurType] = useState(true);
-  const bg = useColorModeValue("white", "#2b2b2b");
+  const bg = useColorModeValue("white", "#222");
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
@@ -53,7 +53,8 @@ function Searchbar() {
   }
 
   function onSubmit(data) {
-    console.log(data);
+    const fullData = { ...data, area: sliderValue };
+    console.log(fullData);
   }
 
   return (
@@ -69,6 +70,7 @@ function Searchbar() {
         defaultIndex={[1]}
         boxShadow="sm"
         borderLeftRadius="lg"
+        zIndex={999}
       >
         <AccordionItem border="none">
           <AccordionButton minW="150px" gap={2.5} justifyContent="center">
@@ -79,9 +81,8 @@ function Searchbar() {
             borderRadius="md"
             position="absolute"
             bg={bg}
-            zIndex={999}
             boxShadow="lg"
-            width={mapView ? "40%" : "75%"}
+            width={mapView ? "55%" : "75%"}
           >
             <AccordionItem>
               <h2>
@@ -103,6 +104,7 @@ function Searchbar() {
                   <Select
                     onChange={(e) => setPurType(e.target.value === "true")}
                   >
+                    <option value="all">Tất cả</option>
                     <option value="true">Bán</option>
                     <option value="false">Cho thuê</option>
                   </Select>
@@ -111,6 +113,7 @@ function Searchbar() {
                 <FormControl>
                   <FormLabel>Loại hình</FormLabel>
                   <Select {...register("reType")}>
+                    <option value="all">Tất cả</option>
                     {arr.map((opt) => (
                       <option value={opt.type} key={opt.type}>
                         {opt.title}

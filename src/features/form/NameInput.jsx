@@ -20,7 +20,7 @@ function NameInput({ postId, register, error }) {
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["query-title"],
+    queryKey: ["query-post-name"],
     queryFn: () => checkPost(debouncedSearch),
     enabled: search.length >= minLength,
   });

@@ -159,8 +159,6 @@ export async function createPost(newData) {
 export async function updatePost(postID, newData) {
   const { files, docs, reType, ...reData } = newData;
 
-  
-
   return null;
 }
 
