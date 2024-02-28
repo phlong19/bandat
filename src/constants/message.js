@@ -43,9 +43,12 @@ export const reform = {
   desTooShort: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
   desTooLong: "Vượt quá số kí tự cho phép",
 
+  // title helper
+  noPhone: "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
+
   // media
-  overFile:"Vượt quá số lượng giới hạn file tải lên",
-  helperMedia:'Drag & drop file here, or click to select files',
+  overFile: "Vượt quá số lượng giới hạn file tải lên",
+  helperMedia: "Drag & drop file here, or click to select files",
 
   // alert
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",

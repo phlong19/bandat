@@ -62,7 +62,7 @@ export const reCaptions = [
   "Ngày đăng",
 ];
 
-// hard code re status
+// hardcode re status
 const DEFAULT_RE_STATUS = 1;
 const SELLING_STATUS = 2;
 const SOLD_STATUS = 3;
@@ -78,3 +78,5 @@ export const newsCaptions = [
   "Tóm tắt",
   "Ngày đăng",
 ];
+
+export const maxAreaSearch = 300;

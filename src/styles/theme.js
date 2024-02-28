@@ -5,17 +5,18 @@ import { cardTheme } from "./card";
 import { inputTheme } from "./input";
 import { selectTheme } from "./select";
 import { checkboxTheme } from "./checkbox";
+import { popoverTheme } from "./popover";
 
 const colors = {
   // primary: "#1a237e",
   primary: "#3949AB",
-
   "prim-light": "#babff1",
   secondary: "#FFCC80",
   // secondary: "#ffb60a",
   "sec-light": "#ffe5a7",
   light: "#f6f6f6",
   dark: "#2b2b2b",
+  darker: "#202020",
 };
 
 const pagi = defineStyle({
@@ -47,6 +48,7 @@ export const theme = extendTheme({
     Input: inputTheme,
     Select: selectTheme,
     Checkbox: checkboxTheme,
+    Popover: popoverTheme,
   },
   font: {
     lexend: `'Lexend, sans-serif'`,

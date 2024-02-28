@@ -42,6 +42,7 @@ function ItemImages({ images, isLaptop, isPopup, type }) {
           variant="solid"
           px={1.5}
           py={0.5}
+          fontWeight={400}
           fontSize="xs"
           borderRadius="md"
           textTransform="capitalize"

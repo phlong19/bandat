@@ -288,6 +288,7 @@ function REForm({ id, edit = false, editData }) {
               label="Số phòng ngủ"
               name="bed_room"
               value={editData?.bed_room}
+              req
             />
 
             <ChakraNumberInput
@@ -296,6 +297,7 @@ function REForm({ id, edit = false, editData }) {
               label="Số phòng vệ sinh"
               name="bath_room"
               value={editData?.bath_room}
+              req
             />
 
             <ChakraNumberInput

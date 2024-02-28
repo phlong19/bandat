@@ -5,6 +5,7 @@ import {
   FaFilterCircleDollar,
   FaMagnifyingGlassArrowRight,
 } from "react-icons/fa6";
+import { SlRefresh } from "react-icons/sl";
 
 import {
   Flex,
@@ -24,16 +25,15 @@ import {
 
 import AddressSelect from "./AddressSelect";
 import Button from "../../ui/Button";
+import ChakraRangeSlider from "./ChakraRangeSlider";
 
 import { useMapView } from "../../context/MapViewContext";
 import { navLinks, prices } from "../../constants/navlink";
-import ChakraSlider from "./ChakraSlider";
-import { SlRefresh } from "react-icons/sl";
-import { m2 } from "../../constants/anyVariables";
+import { m2, maxAreaSearch } from "../../constants/anyVariables";
 
 function Searchbar() {
   const { mapView } = useMapView();
-  const [sliderValue, setSliderValue] = useState(0);
+  const [rangeValue, setRangeValue] = useState([0, maxAreaSearch]);
   const [purType, setPurType] = useState(true);
   const bg = useColorModeValue("white", "#222");
 
@@ -47,13 +47,13 @@ function Searchbar() {
 
   function handleReset(e) {
     e.preventDefault();
-    setSliderValue(0);
+    setRangeValue((prev) => [0, maxAreaSearch]);
     setPurType(true);
     reset();
   }
 
   function onSubmit(data) {
-    const fullData = { ...data, area: sliderValue };
+    const fullData = { ...data, area: rangeValue };
     console.log(fullData);
   }
 
@@ -124,12 +124,15 @@ function Searchbar() {
 
                 <FormControl ml={2}>
                   <FormLabel>
-                    Diện tích (<span className="text-xs">{m2}</span>)
+                    <span className="mr-1.5">Diện tích:</span>
+                    <span className="text-primary dark:text-secondary">
+                      {rangeValue[0]} - {rangeValue[1]}{" "}
+                      <span className="text-xs">{m2}</span>
+                    </span>
                   </FormLabel>
-                  <ChakraSlider
-                    setSliderValue={setSliderValue}
-                    sliderValue={sliderValue}
-                    value={300}
+                  <ChakraRangeSlider
+                    setRangeValue={setRangeValue}
+                    rangeValue={rangeValue}
                   />
                 </FormControl>
 
