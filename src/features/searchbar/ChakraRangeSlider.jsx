@@ -21,6 +21,7 @@ function ChakraRangeSlider({ rangeValue, setRangeValue }) {
       min={0}
       max={maxAreaSearch}
       colorScheme={scheme}
+      value={rangeValue}
       onChange={(v) => setRangeValue(v)}
     >
       <RangeSliderTrack>
@@ -28,10 +29,10 @@ function ChakraRangeSlider({ rangeValue, setRangeValue }) {
       </RangeSliderTrack>
 
       <Tooltip label={rangeValue[0]} bg={toolTipBg} color={color} hasArrow>
-        <RangeSliderThumb index={0} />
+        <RangeSliderThumb index={0} key={Math.random()} />
       </Tooltip>
       <Tooltip label={rangeValue[1]} bg={toolTipBg} color={color} hasArrow>
-        <RangeSliderThumb index={1} />
+        <RangeSliderThumb index={1} key={rangeValue[1]} />
       </Tooltip>
     </RangeSlider>
   );

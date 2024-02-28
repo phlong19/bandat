@@ -6,6 +6,7 @@ import { inputTheme } from "./input";
 import { selectTheme } from "./select";
 import { checkboxTheme } from "./checkbox";
 import { popoverTheme } from "./popover";
+import { numberInputTheme } from "./numberInput";
 
 const colors = {
   // primary: "#1a237e",
@@ -49,6 +50,7 @@ export const theme = extendTheme({
     Select: selectTheme,
     Checkbox: checkboxTheme,
     Popover: popoverTheme,
+    NumberInput: numberInputTheme,
   },
   font: {
     lexend: `'Lexend, sans-serif'`,

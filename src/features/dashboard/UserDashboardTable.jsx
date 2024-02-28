@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Center, Spinner, Button } from "@chakra-ui/react";
 
 import ChakraTable from "../table/ChakraTable";
