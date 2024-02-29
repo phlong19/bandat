@@ -90,12 +90,6 @@ export const mobileNavLinks = {
   ],
 };
 
-export const homeLinks = [
-  { img: "./for_sell.svg", title: "Mua bán", to: "nha-dat-ban" },
-  { img: "./for_rent.svg", title: "Cho thuê", to: "nha-dat-cho-thue" },
-  { img: "./project.svg", title: "Dự án", to: "du-an" },
-];
-
 export const directions = [
   "Bắc",
   "Đông Bắc",

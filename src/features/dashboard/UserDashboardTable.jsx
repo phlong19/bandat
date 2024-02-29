@@ -9,9 +9,7 @@ import EmptyTable from "../../ui/EmptyTable";
 import { useGetFullList } from "./useGetFullList";
 
 function UserDashboardTable({ id, level }) {
-  const { reList, isLoading } = useGetFullList(id);
-
-  const { data, count } = reList;
+  const { reList, count, isLoading } = useGetFullList(id);
 
   if (isLoading) {
     return (
@@ -21,7 +19,7 @@ function UserDashboardTable({ id, level }) {
     );
   }
 
-  if (data.length < 1) {
+  if (reList.length < 1) {
     return (
       <EmptyTable message="ban chua dang bai viet moi nao, khong co dat de ban a? ban nha di">
         <Link to="/dang-tin">
@@ -37,7 +35,7 @@ function UserDashboardTable({ id, level }) {
   return (
     <ChakraTable
       captions={reCaptions}
-      data={data}
+      data={reList}
       title="Quản lý bài viết"
       render={(item) => (
         <TableRERow key={Math.random()} data={item} level={level} userID={id} />

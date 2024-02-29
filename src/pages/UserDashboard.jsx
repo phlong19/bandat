@@ -18,7 +18,7 @@ function UserDashboard({ form = false }) {
   const { title } = useParams();
   const navigate = useNavigate();
   const { data, level, isLoading } = useAuth();
-  let { post, isFetching } = useGetRE(title);
+  let { post, isFetching } = useGetRE(title, level, data.id);
 
   useEffect(() => {
     if (title && !post && !isFetching) {

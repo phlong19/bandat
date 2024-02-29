@@ -70,12 +70,12 @@ export async function checkPost(slug) {
   return data;
 }
 
-export async function getPost(slug) {
+export async function getPost(slug, level, userID) {
   if (!slug || slug < minLength || slug > maxLength) {
     return null;
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("REDirectory")
     .select(
       `*,
@@ -90,8 +90,13 @@ export async function getPost(slug) {
   `,
     )
     .limit(1)
-    .eq("slug", slug)
-    .single();
+    .eq("slug", slug);
+
+  if (level < ADMIN_LEVEL) {
+    query = query.eq("userID", userID);
+  }
+
+  const { data, error } = await query.single();
 
   if (error) {
     throw new Error(errorMessage.fetchError);
@@ -156,9 +161,9 @@ export async function createPost(newData) {
 }
 
 // update
-export async function updatePost(postID, newData) {
-  const { files, docs, reType, ...reData } = newData;
-
+export async function updatePost(userID, newData) {
+  const { postID, files, docs, reType, ...reData } = newData;
+  // here
   return null;
 }
 

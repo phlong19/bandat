@@ -29,7 +29,6 @@ function List({ purType }) {
     document.title = pageTitle;
   }, [purType]);
 
-  // TODO: fix exit animation
   useEffect(() => {
     if (mapView) {
       // if true, animate the map sliding in and the list shrinking
@@ -115,15 +114,13 @@ function List({ purType }) {
               />
             ))}
           </motion.div>
-          {/* total count later */}
           <ChakraTablePagination count={data.count} />
         </motion.div>
 
         {/* map, mobile hidden */}
-
         <motion.div
           key="map"
-          initial={{ x: "100%", width: 0, opacity: 0 }}
+          initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
           animate={mapAnimationControl}
         >
           <Map data={list} purType={purType} />

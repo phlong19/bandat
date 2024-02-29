@@ -12,6 +12,7 @@ import {
   Input,
   Select,
   Box,
+  Button,
   useColorModeValue,
   Accordion,
   AccordionButton,
@@ -24,18 +25,19 @@ import {
 } from "@chakra-ui/react";
 
 import AddressSelect from "./AddressSelect";
-import Button from "../../ui/Button";
 import ChakraRangeSlider from "./ChakraRangeSlider";
 
 import { useMapView } from "../../context/MapViewContext";
 import { navLinks, prices } from "../../constants/navlink";
 import { m2, maxAreaSearch } from "../../constants/anyVariables";
 
-function Searchbar() {
+function Searchbar({ home = false }) {
   const { mapView } = useMapView();
   const [rangeValue, setRangeValue] = useState([0, maxAreaSearch]);
   const [purType, setPurType] = useState(true);
   const bg = useColorModeValue("white", "#222");
+  const bgBtn = useColorModeValue("primary", "secondary");
+  const color = useColorModeValue("white", "black");
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
@@ -47,7 +49,7 @@ function Searchbar() {
 
   function handleReset(e) {
     e.preventDefault();
-    setRangeValue((prev) => [0, maxAreaSearch]);
+    setRangeValue([0, maxAreaSearch]);
     setPurType(true);
     reset();
   }
@@ -60,8 +62,8 @@ function Searchbar() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`${
-        mapView ? "w-full" : "max-w-[80%]"
+      className={`${mapView ? "w-full" : "max-w-[95%] md:max-w-[80%]"} ${
+        home && "max-w-full"
       } mx-auto flex items-center`}
     >
       <Accordion
@@ -71,18 +73,24 @@ function Searchbar() {
         boxShadow="sm"
         borderLeftRadius="lg"
         zIndex={999}
+        alignSelf="stretch"
       >
-        <AccordionItem border="none">
-          <AccordionButton minW="150px" gap={2.5} justifyContent="center">
+        <AccordionItem border="none" className="mt-1.5 md:mt-0">
+          <AccordionButton
+            mt="3px"
+            className="max-w-28 md:max-w-36"
+            gap={2.5}
+            justifyContent="center"
+          >
             <FaFilterCircleDollar />
-            <span>Lọc</span>
+            <span className="hidden text-sm sm:block">Lọc</span>
           </AccordionButton>
           <AccordionPanel
             borderRadius="md"
             position="absolute"
             bg={bg}
             boxShadow="lg"
-            width={mapView ? "55%" : "75%"}
+            width={mapView ? "65%" : "75%"}
           >
             <AccordionItem>
               <h2>
@@ -94,10 +102,11 @@ function Searchbar() {
                 </AccordionButton>
               </h2>
               <AccordionPanel
+                px={0}
                 pb={4}
-                gap={3.5}
+                gap={2}
                 alignItems="baseline"
-                display="flex"
+                className="sm:flex"
               >
                 <FormControl maxW="150px">
                   <FormLabel>Dạng bán</FormLabel>
@@ -184,8 +193,13 @@ function Searchbar() {
       <Flex w="100%" gap="2px" align="center">
         <Input {...register("query")} borderLeftRadius="none" />
 
-        <Button widthBase={false} icon={<FaMagnifyingGlassArrowRight />}>
-          search
+        <Button bg={bgBtn} color={color} _hover={{ opacity: 0.85 }} gap={1.5}>
+          <div>
+            <FaMagnifyingGlassArrowRight />
+          </div>
+          <span className="invisible text-sm font-normal sm:visible">
+            Tìm kiếm
+          </span>
         </Button>
       </Flex>
     </form>

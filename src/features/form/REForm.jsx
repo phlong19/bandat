@@ -89,7 +89,7 @@ function REForm({ id, edit = false, editData }) {
 
   // custom hooks
   const { isCreating, create } = useCreateRE();
-  const { update, isUpdating } = useUpdateRE();
+  const { update, isUpdating } = useUpdateRE(id);
 
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
@@ -131,14 +131,26 @@ function REForm({ id, edit = false, editData }) {
         cityID,
         disID,
         wardID,
-        purType: purType,
+        purType,
         status: DEFAULT_RE_STATUS,
         userID: id,
         docs,
         slug: slugify(data.name),
       });
     } else {
-      update(data);
+      update({
+        userID: id,
+        data,
+        postID: editData.id,
+        price: priceNum,
+        cityID,
+        disID,
+        wardID,
+        purType,
+        status: DEFAULT_RE_STATUS,
+        docs,
+       slug:slugify(data.name)
+      });
     }
   }
 
@@ -394,7 +406,7 @@ function REForm({ id, edit = false, editData }) {
           </FormControl>
 
           {/* note */}
-          <ChakraAlert type="warning" message={reform.note} />
+          {edit && <ChakraAlert type="warning" message={reform.note} />}
 
           {editData?.status.id !== SOLD_STATUS && (
             <Flex w="100%" justify="flex-end" align="center" gap={2}>

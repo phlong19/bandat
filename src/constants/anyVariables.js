@@ -5,7 +5,7 @@ export const currentYear = new Date().getFullYear();
 export const LIMIT_PER_PAGE = 12;
 // min & max files can be uploaded
 const BASE_MEDIA_UPLOAD = 4;
-const LIMIT_IMG_UPLOAD = 6;
+const LIMIT_IMG_UPLOAD = 8;
 const LIMIT_VID_UPLOAD = 2;
 const MAX_SIZE_UPLOAD = 5242880;
 

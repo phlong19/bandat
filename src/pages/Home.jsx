@@ -1,39 +1,68 @@
-import { Link } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { TypeAnimation } from "react-type-animation";
+import { Flex, Box, Heading } from "@chakra-ui/react";
 
 import Searchbar from "../features/searchbar/Searchbar";
 
-import { homeLinks } from "../constants/navlink";
+import { homeText } from "../constants/message";
+
+const sources = ["stock.mp4", "stock2.mp4"];
 
 function Home() {
-  const isDesktop = useMediaQuery({
-    query: "(min-width: 1200px)",
-  });
+  const [currentVid, setCurrentVid] = useState(sources[0]);
+  const [exit, setExit] = useState(false);
+
+  function handleChangeVid() {
+    setExit(true);
+    setTimeout(() => {
+      setCurrentVid((prev) => (prev === sources[0] ? sources[1] : sources[0]));
+      setExit(false);
+    }, 500);
+  }
+
+  const videoVariants = {
+    enter: { opacity: 0 },
+    center: { opacity: 1 },
+    exit: { opacity: 0 },
+  };
 
   return (
-    <div className="bg-light px-1 pt-3 text-dark dark:bg-dark dark:text-light lg:mt-[72px] lg:min-h-[calc(100vh-72px)]">
-      <ul className="flex w-full items-center justify-center gap-3 xl:hidden">
-        {homeLinks.map((link) => (
-          <li
-            key={link.title}
-            className="h-[85px] w-1/3 rounded-lg border border-light text-center text-base shadow shadow-dark dark:border-dark dark:shadow-light"
-          >
-            <Link to={link.to}>
-              <img src={link.img} alt={link.title} className="mx-auto pb-1.5" />
-              <span>{link.title}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-4">
-        {isDesktop && <Searchbar />}
-        <h2 className="pb-4 pt-6 font-lexend text-xl font-medium">
-          Bất động sản dành cho bạn
-        </h2>
-        {/* homepage list */}
-      </div>
-    </div>
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      position="relative"
+      height="70vh"
+      width="100%"
+    >
+      {/* background */}
+      <motion.video
+        key={currentVid}
+        src={currentVid}
+        autoPlay
+        muted
+        initial="enter"
+        animate={exit ? "exit" : "center"}
+        variants={videoVariants}
+        transition={{ duration: 0.5 }}
+        onEnded={handleChangeVid}
+        className="absolute h-full w-full object-cover"
+      />
+      <Box position="absolute" bg="whiteAlpha.900" rounded="lg" p={5} w="60%">
+        <Box textAlign="center" mb={10}>
+          <Heading size="3xl" color="dark">
+            <TypeAnimation
+              sequence={homeText}
+              deletionSpeed={70}
+              speed={{ type: "keyStrokeDelayInMs", value: 100 }}
+              repeat={Infinity}
+              wrapper="div"
+            />
+          </Heading>
+        </Box>
+        <Searchbar home />
+      </Box>
+    </Flex>
   );
 }
 

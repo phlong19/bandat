@@ -1,17 +1,16 @@
 import { NavLink } from "react-router-dom";
-import { FaCircleUser, FaRegHeart } from "react-icons/fa6";
+import { FaCircleUser } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
 import { BiSolidBible } from "react-icons/bi";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
 import SpinnerFullPage from "./SpinnerFullPage";
-import Avatar from "./Avatar";
-
+import ChakraPopover from "./ChakraPopover";
 import Logout from "../features/auth/Logout";
+
 import { useAuth } from "../context/UserContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
-import ChakraPopover from "./ChakraPopover";
 
 function Action({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();

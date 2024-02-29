@@ -1,4 +1,22 @@
-import { BASE_MEDIA_UPLOAD, minDesLength, minLength } from "./anyVariables";
+import {
+  BASE_MEDIA_UPLOAD,
+  maxDesLength,
+  maxLength,
+  minDesLength,
+  minLength,
+} from "./anyVariables";
+
+// do not remove 1200 => wait time for changing text
+export const homeText = [
+  "Find your dream house",
+  1200,
+  "We cook food",
+  1200,
+  "This is Landhub",
+  1200,
+  "Learning chemistry",
+  1200,
+];
 
 export const error = {
   // auth
@@ -39,12 +57,13 @@ export const reform = {
   // form errors
   missingName: "Chưa nhập tiêu đề",
   nameTooShort: `Chưa đủ ${minLength} kí tự`,
-  nameTooLong: "Vượt quá số kí tự cho phép",
+  nameTooLong: `Vượt quá ${maxLength} kí tự cho phép`,
   desTooShort: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
-  desTooLong: "Vượt quá số kí tự cho phép",
+  desTooLong: `Vượt quá ${maxDesLength} kí tự cho phép`,
 
   // title helper
-  noPhone: "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
+  noPhone:
+    "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
 
   // media
   overFile: "Vượt quá số lượng giới hạn file tải lên",

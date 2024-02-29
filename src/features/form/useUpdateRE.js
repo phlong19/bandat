@@ -9,7 +9,8 @@ export function useUpdateRE() {
   const navigate = useNavigate();
 
   const { mutate: update, isPending: isUpdating } = useMutation({
-    mutationFn: (data) => updatePost(data),
+    mutationFn: ({ data, userID }) => updatePost(data, userID),
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["REList"] }),
         toast.success(success.updatePost),
