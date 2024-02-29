@@ -54,7 +54,7 @@ import { reform } from "../../constants/message";
 import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 
-function REForm({ id, edit = false, editData }) {
+function REForm({ userID, edit = false, editData }) {
   const {
     control,
     register,
@@ -89,7 +89,7 @@ function REForm({ id, edit = false, editData }) {
 
   // custom hooks
   const { isCreating, create } = useCreateRE();
-  const { update, isUpdating } = useUpdateRE(id);
+  const { update, isUpdating } = useUpdateRE();
 
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
@@ -133,13 +133,13 @@ function REForm({ id, edit = false, editData }) {
         wardID,
         purType,
         status: DEFAULT_RE_STATUS,
-        userID: id,
+        userID,
         docs,
         slug: slugify(data.name),
       });
     } else {
       update({
-        userID: id,
+        userID,
         data,
         postID: editData.id,
         price: priceNum,
@@ -149,7 +149,7 @@ function REForm({ id, edit = false, editData }) {
         purType,
         status: DEFAULT_RE_STATUS,
         docs,
-       slug:slugify(data.name)
+        slug: slugify(data.name),
       });
     }
   }

@@ -1,6 +1,6 @@
-import { error as errorMessage } from "../constants/message";
-import { mapURL } from "../constants/anyVariables";
 import supabase from "./supabase";
+import { error as errorMessage } from "../constants/message";
+import { questURL } from "../constants/anyVariables";
 
 // addresses
 export async function getAddress(city, district, ward, edit) {
@@ -100,21 +100,21 @@ export async function getFullAddress(cityID, disID, wardID, address) {
   }
 }
 
-// google api
+// geocoding api
 export async function getLatLong(address) {
-  const res = await fetch(
-    mapURL + `?address=${address}&key=${import.meta.env.VITE_MAP_KEY}`,
-  );
+  const res = await fetch(questURL + `&location=${address}`);
+
+  if (!res.ok) {
+    throw new Error(errorMessage.fetchError);
+  }
 
   const data = await res.json();
 
-  if (data.results.length < 1) {
-    throw new Error(errorMessage.apiGG);
+  if (!data || data.results.length < 1) {
+    throw new Error(errorMessage.apiGeocoding);
   }
 
-  const { location } = data.results[0].geometry;
-  const lat = parseFloat(location.lat);
-  const long = parseFloat(location.lng);
+  const { lat, lng: long } = data.results[0].locations[0].latLng;
 
   return { lat, long };
 }

@@ -43,7 +43,7 @@ function UserDashboard({ form = false }) {
       ) : (
         <Box maxWidth="85%" minWidth="85%" mx="auto">
           <REForm
-            id={data.id}
+            userID={data.id}
             edit={Boolean(post)}
             editData={post}
             key={post?.id || "new"}

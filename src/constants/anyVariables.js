@@ -68,8 +68,9 @@ const SELLING_STATUS = 2;
 const SOLD_STATUS = 3;
 export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
 
-export const geoCodeURL = `https://geocode.maps.co/search`;
-export const mapURL = `https://maps.googleapis.com/maps/api/geocode/json`;
+export const questURL = `https://www.mapquestapi.com/geocoding/v1/address?key=${
+  import.meta.env.VITE_QUEST_KEY
+}`;
 
 export const newsCaptions = [
   "Người đăng",

@@ -7,7 +7,7 @@ import Searchbar from "../features/searchbar/Searchbar";
 
 import { homeText } from "../constants/message";
 
-const sources = ["stock.mp4", "stock2.mp4"];
+const sources = ["stock.mp4", "stock2.mp4", "stock3.mp4"];
 
 function Home() {
   const [currentVid, setCurrentVid] = useState(sources[0]);
@@ -16,7 +16,13 @@ function Home() {
   function handleChangeVid() {
     setExit(true);
     setTimeout(() => {
-      setCurrentVid((prev) => (prev === sources[0] ? sources[1] : sources[0]));
+      setCurrentVid((prev) => {
+        const index = sources.findIndex((s) => s === prev);
+        if (index > 1) {
+          return sources[0];
+        }
+        return sources[index + 1];
+      });
       setExit(false);
     }, 500);
   }
@@ -46,14 +52,21 @@ function Home() {
         variants={videoVariants}
         transition={{ duration: 0.5 }}
         onEnded={handleChangeVid}
-        className="absolute h-full w-full object-cover"
+        className="absolute h-full w-full object-cover blur-sm"
       />
-      <Box position="absolute" bg="whiteAlpha.900" rounded="lg" p={5} w="60%">
-        <Box textAlign="center" mb={10}>
-          <Heading size="3xl" color="dark">
+
+      <Box
+        position="absolute"
+        bg="whiteAlpha.800"
+        rounded="lg"
+        p={5}
+        w={{ base: "80%", lg: "60%" }}
+      >
+        <Box textAlign="center" mb={{ base: 5, lg: 10 }}>
+          <Heading size={{ base: "xl", lg: "2xl" }} color="dark">
             <TypeAnimation
               sequence={homeText}
-              deletionSpeed={70}
+              deletionSpeed={60}
               speed={{ type: "keyStrokeDelayInMs", value: 100 }}
               repeat={Infinity}
               wrapper="div"

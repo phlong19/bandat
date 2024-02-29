@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMediaQuery } from "react-responsive";
 
 import {
   FaFilterCircleDollar,
@@ -31,10 +32,14 @@ import { useMapView } from "../../context/MapViewContext";
 import { navLinks, prices } from "../../constants/navlink";
 import { m2, maxAreaSearch } from "../../constants/anyVariables";
 
-function Searchbar({ home = false }) {
+function Searchbar() {
   const { mapView } = useMapView();
   const [rangeValue, setRangeValue] = useState([0, maxAreaSearch]);
   const [purType, setPurType] = useState(true);
+  const isTablet = useMediaQuery({
+    query: "(min-width: 640px)",
+  });
+
   const bg = useColorModeValue("white", "#222");
   const bgBtn = useColorModeValue("primary", "secondary");
   const color = useColorModeValue("white", "black");
@@ -62,8 +67,8 @@ function Searchbar({ home = false }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`${mapView ? "w-full" : "max-w-[95%] md:max-w-[80%]"} ${
-        home && "max-w-full"
+      className={`${
+        mapView ? "w-full" : "max-w-[95%] md:max-w-[80%]"
       } mx-auto flex items-center`}
     >
       <Accordion
@@ -154,7 +159,6 @@ function Searchbar({ home = false }) {
                       </option>
                     ))}
                   </Select>
-                  <input type="text" hidden />
                 </FormControl>
 
                 <IconButton
@@ -192,15 +196,23 @@ function Searchbar({ home = false }) {
 
       <Flex w="100%" gap="2px" align="center">
         <Input {...register("query")} borderLeftRadius="none" />
-
-        <Button bg={bgBtn} color={color} _hover={{ opacity: 0.85 }} gap={1.5}>
-          <div>
-            <FaMagnifyingGlassArrowRight />
-          </div>
-          <span className="invisible text-sm font-normal sm:visible">
+        {!isTablet ? (
+          <IconButton
+            bg={bgBtn}
+            color={color}
+            icon={<FaMagnifyingGlassArrowRight />}
+          />
+        ) : (
+          <Button
+            bg={bgBtn}
+            color={color}
+            _hover={{ opacity: 0.85 }}
+            px={{ sm: 8 }}
+            gap={1.5}
+          >
             Tìm kiếm
-          </span>
-        </Button>
+          </Button>
+        )}
       </Flex>
     </form>
   );

@@ -6,16 +6,16 @@ import {
   minLength,
 } from "./anyVariables";
 
-// do not remove 1200 => wait time for changing text
+// nen de may cau
 export const homeText = [
   "Find your dream house",
-  1200,
-  "We cook food",
-  1200,
-  "This is Landhub",
-  1200,
+  1000,
+  "Find your real home",
+  1000,
+  "Find your nhà ở",
+  1000,
   "Learning chemistry",
-  1200,
+  1000,
 ];
 
 export const error = {
@@ -28,6 +28,8 @@ export const error = {
   cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật",
   cantDelete: "Không thể xoá bài đăng",
   cantFindToDelete: "Không tìm thấy bài đăng để xoá",
+  apiGeocoding: "khong the tim thay dia chi, vui long cung cap cu the hon ?",
+  fetchError: "da xay ra loi trong khi lay du lieu, vui long thu lai",
 };
 
 export const success = {
@@ -38,6 +40,7 @@ export const success = {
   logout: "Đăng xuất thành công",
 
   // api re
+  // @minhduc3107 chăm chút câu cú tí ông ạ, thử gpt xem sao :D
   createPost: "Tạo bài đăng thành công, đợi admin duyệt bài",
   approvePost: "Duyệt bài thành công",
   markSold: "Đánh dấu đã bán thành công",
