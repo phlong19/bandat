@@ -77,6 +77,7 @@ function NewsFormModal() {
               <Button colorScheme="blue" mr={3} onClick={onClose}>
                 Close
               </Button>
+              {/* dialog here */}
               <Button variant="ghost">Secondary Action</Button>
             </Flex>
           </ModalFooter>

@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import {
   FormControl,
   FormLabel,
@@ -18,12 +19,19 @@ function AddressSelect({
   setDisID,
   setWardID,
 }) {
-  const { data, isLoading } = useSearchbar(cityID, disID, wardID);
+  const title = useParams();
+  const { data, isLoading, refetch } = useSearchbar(
+    cityID,
+    disID,
+    wardID,
+    Boolean(title),
+  );
 
   function handleClick() {
     setCityID(NaN);
     setDisID(NaN);
     setWardID(NaN);
+    refetch({ cancelRefetch: false });
   }
 
   return (

@@ -6,10 +6,13 @@ export default {
     extend: {
       colors: {
         light: "#f6f6f6",
-        dark: "#222",
-        primary: "#1a237e",
+        dark: "#2b2b2b",
+        darker: "#202020",
+        primary: "#3949AB",
+        // primary: "#1a237e",
         "prim-light": "#babff1",
-        secondary: "#ffb60a",
+        secondary: "#FFCC80",
+        // secondary: "#ffb60a",
         "sec-light": "#ffe5a7",
       },
       fontFamily: {

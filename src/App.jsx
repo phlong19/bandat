@@ -3,8 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-// https://www.vietiso.com/ho-tro/dieu-khoan-huong-dan/huong-dan-lay-google-maps-api-key-tich-hop-vao-website.html
-// pages
+
 import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
 import Details from "./pages/Details";
@@ -148,8 +147,9 @@ function App() {
             toastOptions={{
               position: "top-right",
               duration: 3500,
+              style: { padding: "16px 24px" },
               className:
-                "md:font-base py-4 px-6 max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
+                "md:font-base max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
               success: {
                 duration: 3000,
               },

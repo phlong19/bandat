@@ -37,7 +37,7 @@ function RegisterForm() {
           hookForm={{
             ...register("fullName", {
               required: "ten may la gi",
-              minLength: 8,
+              minLength: { message: "deo du 8 ky tu", value: 8 },
             }),
           }}
           errors={errors}
@@ -70,7 +70,10 @@ function RegisterForm() {
           id="password"
           type="password"
           hookForm={{
-            ...register("password", { required: "nhap cmm mat khau vao" }),
+            ...register("password", {
+              required: "nhap cmm mat khau vao",
+              minLength: { message: "kh du 8", value: 8 },
+            }),
           }}
           errors={errors}
         />
@@ -83,6 +86,7 @@ function RegisterForm() {
           hookForm={{
             ...register("confirmPassword", {
               required: "dm kh xac nhan mk ak",
+              minLength: { message: "kh du 8", value: 8 },
               validate: (value) => {
                 return (
                   value === getValues("password") || "Password does not match"

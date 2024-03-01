@@ -1,18 +1,18 @@
 import { Avatar } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import { formatDistanceToNow } from "date-fns";
+import { vi } from "date-fns/locale/vi";
 
-import { TbBed } from "react-icons/tb";
-import { LiaBathSolid } from "react-icons/lia";
-import { ImStack } from "react-icons/im";
 import { SlLocationPin } from "react-icons/sl";
 
 import Bookmark from "../../ui/Bookmark";
 import ItemImages from "../../ui/ItemImages";
+import InformationStack from "./InformationStack";
 
-import { formatCurrency, formatDate, pricePerArea } from "../../utils/helper";
-import { m2 } from "../../constants/anyVariables";
+import { formatCurrency, pricePerArea } from "../../utils/helper";
 import { useMapView } from "../../context/MapViewContext";
+import { m2 } from "../../constants/anyVariables";
 
 function ListItem({ data, purType, isPopup = false }) {
   const { mapView } = useMapView();
@@ -23,24 +23,27 @@ function ListItem({ data, purType, isPopup = false }) {
   const {
     slug,
     area,
-    bath_room,
-    bed_room,
     city: { cityName },
     created_at,
     dis: { disName },
-    floor,
     images,
     name,
     price,
     type,
     profile: { avatar, fullName },
+    ...addData
   } = data;
+
+  const formattedDate = formatDistanceToNow(new Date(created_at), {
+    locale: vi,
+    addSuffix: true,
+  });
 
   return (
     <div
       className={`${
         !isPopup
-          ? "mt-2 bg-white p-1 shadow-sm shadow-prim-light dark:bg-black/20 dark:shadow-sec-light md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
+          ? "dark:bg-darker mt-2 bg-white p-1 md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
           : "min-w-[160px] p-[2px] text-black lg:w-full"
       }  rounded-lg`}
     >
@@ -48,9 +51,6 @@ function ListItem({ data, purType, isPopup = false }) {
         <Link to={`/nha-dat/${slug}`}>
           {/* images */}
           <div className="relative mx-auto w-full overflow-hidden">
-            {/* vip label */}
-            <div className="absolute"></div>
-
             <ItemImages
               images={images}
               isLaptop={isLaptop}
@@ -72,59 +72,19 @@ function ListItem({ data, purType, isPopup = false }) {
             {name}
           </h3>
         </Link>
-        <div
-          className={`${
-            isPopup ? "gap-1" : "gap-2"
-          } flex flex-wrap items-center`}
-        >
-          <span className="font-bold text-primary dark:text-secondary">
-            {formatCurrency(price)} {!purType && "/tháng"}
-          </span>
-          <span className="font-bold text-primary dark:text-secondary">
-            - {area}
-            {m2} -
-          </span>
-          <span className="mr-2">
-            {formatCurrency(pricePerArea(purType, price, area))}
-            {purType && `/${m2}`}
-          </span>
-          {/* bed | bath | floor */}
-          {(!mapView || isPopup || !isLaptop) && (
-            <div className="flex gap-2.5">
-              {bed_room && (
-                <span className="flex items-center gap-1.5">
-                  {bed_room}
-                  <span className="text-[26px]">
-                    <TbBed />
-                  </span>
-                </span>
-              )}
-              {bath_room && (
-                <span className="flex items-center gap-1.5">
-                  {bath_room}
-                  <span className="mb-1 text-2xl">
-                    <LiaBathSolid />
-                  </span>
-                </span>
-              )}
-              {floor && (
-                <span
-                  className={`${
-                    !isLaptop || isPopup ? "flex" : "hidden"
-                  } items-center gap-1.5`}
-                >
-                  {floor}
-                  <span className="mb-1 text-2xl">
-                    <ImStack />
-                  </span>
-                </span>
-              )}
-            </div>
-          )}
-        </div>
+        {/* money */}
+
+        {/* bed & bath & floor */}
+        <InformationStack
+          data={addData}
+          area={area}
+          isLaptop={isLaptop}
+          isPopup={isPopup}
+        />
+
         {/* address */}
-        <div className="mb-4 mt-1 flex gap-1">
-          <span className="text-lg">
+        <div className="my-2 flex gap-1">
+          <span className="text-base">
             <SlLocationPin />
           </span>
           <span>
@@ -133,21 +93,37 @@ function ListItem({ data, purType, isPopup = false }) {
         </div>
         {/* author */}
         {(!mapView || !isLaptop) && (
-          <div className="hidden items-center justify-between xs:flex">
-            <div className="flex h-8 items-center gap-2">
+          <div className="mt-auto hidden items-center xs:flex">
+            <div className="flex h-8 max-w-full items-center gap-2 lg:max-w-[35%] lg:gap-1.5 xl:max-w-[45%] xl:gap-2">
               <Avatar
                 src={avatar}
                 name={fullName}
-                size="sm"
+                size="xs"
                 alt="author avatar"
               />
               <div>
-                <span className="line-clamp-1 font-semibold">{fullName}</span>
-                <p>{formatDate(created_at, "short")}</p>
+                <span className="line-clamp-1 text-xs font-semibold">
+                  {fullName}
+                </span>
+                <p className="text-xs">{formattedDate}</p>
               </div>
             </div>
-            {/* TODO: styling */}
-            <p className="text-xs font-roboto">what&#39;d we place here?</p>
+
+            <div
+              className={`${
+                isPopup ? "gap-1 text-sm" : "gap-2"
+              } ml-auto flex items-center font-semibold text-primary dark:text-secondary`}
+            >
+              <span>
+                {formatCurrency(price)} {!purType && "/ tháng"}
+              </span>
+              -
+              <span className="mr-2 font-semibold text-primary dark:text-secondary">
+                {formatCurrency(pricePerArea(purType, price, area))}
+                {purType && `/${m2}`}
+              </span>
+            </div>
+
             <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
           </div>
         )}

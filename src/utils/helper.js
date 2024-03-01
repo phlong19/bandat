@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import {
   DEFAULT_RE_STATUS,
   SELLING_STATUS,
@@ -5,7 +6,6 @@ import {
   billion,
   million,
 } from "../constants/anyVariables";
-import { navLinks } from "../constants/navlink";
 
 // calc how much money per m2
 export function pricePerArea(purType, price, area) {
@@ -15,7 +15,7 @@ export function pricePerArea(purType, price, area) {
 
 // 1.000.000.000 => 1 billion
 export function formatCurrency(input) {
-  if (Number(input) > billion) {
+  if (Number(input) >= billion) {
     return round2Digit(input / billion) + " tỷ";
   }
   if (Number(input) > million) {
@@ -26,24 +26,14 @@ export function formatCurrency(input) {
   }
 }
 
+// round the price
 function round2Digit(num) {
   return parseFloat(Number(num).toFixed(2));
 }
 
-// date format: 2024-01-15T07:16:46.580913+00:00 => 15 tháng 1, 2024
-// default month is "long"
-export function formatDate(dateString, monthType = "long", withTime = false) {
-  const options = {
-    month: monthType,
-    year: "numeric",
-    day: "numeric",
-  };
-  if (withTime) {
-    options.hour = "2-digit";
-    options.minute = "2-digit";
-  }
-  const date = new Date(dateString).toLocaleDateString("vi-VN", options);
-  return date;
+// date format
+export function formatDate(date, formatString = "dd/MM/yyyy") {
+  return format(new Date(date), formatString);
 }
 
 // format number
@@ -53,6 +43,9 @@ export function formatNumber(input) {
 
 // parse
 export function parseCurrency(input) {
+  if (typeof input === "number") {
+    return input;
+  }
   // Remove non-numeric characters and currency symbol
   const numericString = input.replace(/[^\d]/g, "");
 

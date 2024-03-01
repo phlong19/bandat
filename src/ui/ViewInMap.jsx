@@ -21,10 +21,10 @@ function ViewInMap() {
       onClick={handleClick}
       className={`${
         !mapView ? "p-2.5" : "p-1.5"
-      } group rounded-md border border-light bg-prim-light dark:border-dark dark:bg-sec-light lg:border-0`}
+      } group rounded-md border border-light bg-white dark:border-dark lg:border-0`}
     >
-      <span className="text-xl text-black transition-colors duration-300 group-hover:fill-green-600 group-hover:text-green-600">
-        {hover ? <FaMap /> : <FaRegMap />}
+      <span className="text-xl text-black">
+        {hover ? <FaMap className="fill-blue-500" /> : <FaRegMap />}
       </span>
     </button>
   );

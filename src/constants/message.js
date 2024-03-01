@@ -1,55 +1,87 @@
-import { BASE_MEDIA_UPLOAD } from "./anyVariables";
+import {
+  BASE_MEDIA_UPLOAD,
+  maxDesLength,
+  maxLength,
+  minDesLength,
+  minLength,
+} from "./anyVariables";
+
+// nen de may cau
+export const homeText = [
+  "Find your dream house",
+  1000,
+  "Find your real home",
+  1000,
+  "Find your nhà ở",
+  1000,
+  "Learning chemistry",
+  1000,
+];
 
 export const error = {
   // auth
-  login: "khong the dang nhap luc nay",
-  register: "khong the dang ky luc nay",
-  notAuthen:'vui long dang nhap de xem trang',
+  login: "Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại",
+  register: "Không thể đăng ký",
+  notAuthen: "Vui lòng đăng nhập để truy cập",
   // api re
-  cantUpdate: "khong the update post",
-  cantFindToUpdate: "khong tim thay post nao ma update",
-  cantDelete: "khong the xoa post",
-  cantFindToDelete: "khong tim thay post de xoa",
+  cantCreate:'khong the tao bai dang luc nay, vui long thu lai sau',
+  cantUpdate: "Không thể cập nhật bài đăng",
+  cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật",
+  cantDelete: "Không thể xoá bài đăng",
+  cantFindToDelete: "Không tìm thấy bài đăng để xoá",
+  apiGeocoding: "khong the tim thay dia chi, vui long cung cap cu the hon ?",
+  fetchError: "da xay ra loi trong khi lay du lieu, vui long thu lai",
 };
 
 export const success = {
   // auth
   signup:
     "Your account has been created successfully. Please check for email verification",
-  login: "dang nhap thanh cong",
-  logout: "dang xuat thanh cong",
+  login: "Đăng nhập thành công",
+  logout: "Đăng xuất thành công",
 
   // api re
-  createPost: "tao bai dang thanh cong, chi con cho duoc duyet thoi :3",
-  approvePost: "duyet bai thanh cong",
-  markSold: "danh dau la da ban thanh cong",
-  deactivePost: "go bai thanh cong",
-  deletePost: "xoa bai thanh cong",
+  createPost: "Tạo bài đăng thành công, đợi admin duyệt bài",
+  updatePost: "sua bai dang thanh cong",
+  approvePost: "Duyệt bài thành công",
+  markSold: "Đánh dấu đã bán thành công",
+  deactivePost: "Gỡ bài thành công",
+  deletePost: "Xoá bài thành công",
 };
 
 export const reform = {
   // general
-  requiredMessage: "khong thay dau sao do a?",
+  requiredMessage: "Vui lòng điền đầy đủ các trường có dấu *",
   // submit errors
-  missingAddress: "thieu dia chi",
-  missingDes: "vui long dien mo ta chi tiet",
-  missingImages: `so luong anh cung cap it nhat la ${BASE_MEDIA_UPLOAD}`,
-  minPrice: "gia tri bat dong san qua nho",
+  missingAddress: "Chưa chọn địa chỉ",
+  missingDes: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
+  missingImages: `Số lượng ảnh cung cấp ít nhất là ${BASE_MEDIA_UPLOAD}`,
+  minPrice: "Giá trị bất động sản quá nhỏ",
 
   // form errors
-  missingName: "ten bai viet la gif?",
-  nameTooShort: "viet dai them vao",
-  nameTooLong: "dm vuot qua so ki tu roi",
-  desTooShort: "vui long cung cap them chi tiet va mo ta",
-  desTooLong: "dai the? hoc sinh gioi van quoc gia a",
+  missingName: "Chưa nhập tiêu đề",
+  nameTooShort: `Chưa đủ ${minLength} kí tự`,
+  nameTooLong: `Vượt quá ${maxLength} kí tự cho phép`,
+  desTooShort: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
+  desTooLong: `Vượt quá ${maxDesLength} kí tự cho phép`,
+
+  // helpers
+  noPhone:
+    "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
+  requiredDocs: "vui long pick it nhat 1",
+
+  // media
+  overFile: "Vượt quá số lượng giới hạn file tải lên",
+  helperMedia: "Drag & drop file here, or click to select files",
 
   // alert
-  note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị :D",
+  note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",
 
   // button submit
   submit: "submit",
   save: "save",
-  loadingText: "Chờ tí",
+  creating: "Đang tạo",
+  saving: "Đang lưu",
 };
 
 export const newsForm = {

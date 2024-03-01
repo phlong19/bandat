@@ -5,7 +5,7 @@ export const currentYear = new Date().getFullYear();
 export const LIMIT_PER_PAGE = 12;
 // min & max files can be uploaded
 const BASE_MEDIA_UPLOAD = 4;
-const LIMIT_IMG_UPLOAD = 6;
+const LIMIT_IMG_UPLOAD = 8;
 const LIMIT_VID_UPLOAD = 2;
 const MAX_SIZE_UPLOAD = 5242880;
 
@@ -44,10 +44,10 @@ const m2 = "m²";
 export { billion, million, m2 };
 
 // title & des length
-const minLength = 60;
+const minLength = 40;
 const maxLength = 130;
 const minDesLength = 150;
-const maxDesLength = 1000;
+const maxDesLength = 2000;
 export { minLength, maxLength, minDesLength, maxDesLength };
 
 // table captions
@@ -62,13 +62,22 @@ export const reCaptions = [
   "Ngày đăng",
 ];
 
-// hard code re status
+// hardcode re status
 const DEFAULT_RE_STATUS = 1;
 const SELLING_STATUS = 2;
 const SOLD_STATUS = 3;
 export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
 
-export const geoCodeURL = `https://geocode.maps.co/search`;
-export const mapURL = `https://maps.googleapis.com/maps/api/geocode/json`;
+export const questURL = `https://www.mapquestapi.com/geocoding/v1/address?key=${
+  import.meta.env.VITE_QUEST_KEY
+}`;
 
-export const newsCaptions = ["one", "two"];
+export const newsCaptions = [
+  "Người đăng",
+  "Trạng thái",
+  "Tiêu đề",
+  "Tóm tắt",
+  "Ngày đăng",
+];
+
+export const maxAreaSearch = 300;

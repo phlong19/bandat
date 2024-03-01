@@ -90,12 +90,6 @@ export const mobileNavLinks = {
   ],
 };
 
-export const homeLinks = [
-  { img: "./for_sell.svg", title: "Mua bán", to: "nha-dat-ban" },
-  { img: "./for_rent.svg", title: "Cho thuê", to: "nha-dat-cho-thue" },
-  { img: "./project.svg", title: "Dự án", to: "du-an" },
-];
-
 export const directions = [
   "Bắc",
   "Đông Bắc",
@@ -105,4 +99,15 @@ export const directions = [
   "Tây Nam",
   "Tây",
   "Tây Bắc",
+];
+
+export const prices = [
+  { label: "Tất cả khoảng giá", value: "0" },
+  { label: "Dưới 500 triệu", value: "500" },
+  { label: "500 - 1 tỷ", value: "500-1" },
+  { label: "1 - 5 tỷ", value: "1-5" },
+  { label: "5 - 10 tỷ", value: "5-10" },
+  { label: "10 - 30 tỷ", value: "10-30" },
+  { label: "30 - 60 tỷ", value: "30-60" },
+  { label: "Trên 60 tỷ", value: "60" },
 ];

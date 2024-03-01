@@ -10,7 +10,7 @@ export function useMarkSold() {
     mutationFn: (id) => markSoldAPI(id),
     onSuccess: () => {
       toast.success(success.markSold);
-      queryClient.invalidateQueries({ queryKey: ["REList"], exact: true });
+      queryClient.invalidateQueries({ queryKey: ["REList"] });
     },
     onError: (err) => {
       toast.error(err.message);

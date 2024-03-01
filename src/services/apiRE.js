@@ -1,5 +1,4 @@
 import supabase from "./supabase";
-
 import {
   ADMIN_LEVEL,
   DEFAULT_RE_STATUS,
@@ -34,7 +33,8 @@ export async function getList(type, citeria, page) {
     )
     .eq("purType", type)
     .eq("images.isImage", true)
-    .eq("status", SELLING_STATUS);
+    .eq("status", SELLING_STATUS)
+    .order("created_at", { ascending: false });
   // for pagination
   if (page) {
     const from = (page - 1) * LIMIT_PER_PAGE;
@@ -43,8 +43,10 @@ export async function getList(type, citeria, page) {
   }
   const { data, count, error } = await query;
 
-  if (error) throw new Error(error.message);
-
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
   return { data, count };
 }
 
@@ -60,18 +62,19 @@ export async function checkPost(slug) {
     .eq("slug", slug);
 
   if (error) {
-    throw new Error(error.message);
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
   }
 
   return data;
 }
 
-export async function getPost(slug) {
+export async function getPost(slug, level, userID) {
   if (!slug || slug < minLength || slug > maxLength) {
     return null;
   }
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("REDirectory")
     .select(
       `*,
@@ -86,18 +89,23 @@ export async function getPost(slug) {
   `,
     )
     .limit(1)
-    .eq("slug", slug)
-    .single();
+    .eq("slug", slug);
+
+  if (level < ADMIN_LEVEL) {
+    query = query.eq("userID", userID);
+  }
+
+  const { data, error } = await query.single();
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error(errorMessage.fetchError);
   }
 
   return data;
 }
 
-// TODO: make func for both create & edit
-export async function createPost(newData, edit) {
+// create
+export async function createPost(newData) {
   const { files, docs, reType, ...reData } = newData;
 
   // get re type id, ex: nha-rieng = 1
@@ -107,7 +115,7 @@ export async function createPost(newData, edit) {
     .eq("type", reType);
 
   if (error) {
-    throw new Error("There was an error while fetching data");
+    throw new Error(errorMessage.fetchError);
   }
 
   const fullAddress = await getFullAddress(
@@ -137,8 +145,8 @@ export async function createPost(newData, edit) {
     .single();
 
   if (createError) {
-    throw new Error("create error" + createError.message); // for dev
-    // throw new Error("khong the tao bai dang luc nay, vui long thu lai sau");
+    console.log(createError);
+    throw new Error(errorMessage.cantCreate);
   }
 
   // handle media
@@ -149,6 +157,32 @@ export async function createPost(newData, edit) {
   docs.forEach((id) => insertDocument(id, postID));
 
   return null;
+}
+
+// update
+export async function updatePost(newData) {
+  const {
+    postID,
+    files,
+    newDocs,
+    deleteDocs,
+    deleteMedias,
+    newMedias,
+    reType,
+    ...reData
+  } = newData;
+
+  // update post
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .update()
+    .eq("id", postID);
+
+  if (error) {
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
 }
 
 // approve
@@ -209,12 +243,13 @@ export async function deactivePost(postID) {
 }
 
 // delete
-export async function deletePost(postID) {
-  const { data, error } = await supabase
-    .from("REDirectory")
-    .delete()
-    .eq("id", postID)
-    .select();
+export async function deletePost(postID, level, userID) {
+  let query = supabase.from("REDirectory").delete().eq("id", postID);
+
+  if (level < ADMIN_LEVEL) {
+    query = query.eq("userID", userID);
+  }
+  const { data, error } = await query.select();
 
   if (error) {
     throw new Error(errorMessage.cantDelete);

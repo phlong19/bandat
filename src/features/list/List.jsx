@@ -1,13 +1,13 @@
 // libs
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { Switch } from "@chakra-ui/react";
 
 // UI
 import ListItem from "./ListItem";
 import Searchbar from "../searchbar/Searchbar";
 import Map from "../../ui/Map";
 import SpinnerFullPage from "../../ui/SpinnerFullPage";
-import SkewedToggle from "../../ui/SkewedToggle";
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
 // hooks & helpers & context
@@ -18,7 +18,7 @@ import { useMapView } from "../../context/MapViewContext";
 
 function List({ purType }) {
   const { data, isLoading } = useListingPage(purType);
-  const { mapView } = useMapView();
+  const { mapView, setMapView } = useMapView();
 
   const listAnimationControl = useAnimation();
   const mapAnimationControl = useAnimation();
@@ -28,32 +28,37 @@ function List({ purType }) {
     const pageTitle = purType ? purTypeTrue : purTypeFalse;
     document.title = pageTitle;
   }, [purType]);
-  // TODO: fix exit animation
+
   useEffect(() => {
     if (mapView) {
       // if true, animate the map sliding in and the list shrinking
       mapAnimationControl.start({
+        display: "block",
         x: "0%",
         width: "46%",
         opacity: 1,
         transition: { duration: 0.5 },
       });
       listAnimationControl.start({
-        width: "80%",
+        width: "70%",
         transition: { duration: 0.5 },
       });
     } else {
       // if false, animate the map sliding out and the list expanding
-      mapAnimationControl.start({
-        x: "100%",
-        opacity: 0,
-        transition: { duration: 0.5 },
-      });
-      listAnimationControl
-        .start({ width: "100%", transition: { duration: 0.5 } })
-        .then(() => {
-          mapAnimationControl.set({ width: 0 });
-        });
+      Promise.all([
+        mapAnimationControl.start({
+          x: "100%",
+          width: 0,
+          opacity: 0,
+          transition: { duration: 0.5 },
+        }),
+        listAnimationControl
+          .start({
+            width: "100%",
+            transition: { duration: 0.5 },
+          })
+          .then(() => mapAnimationControl.set({ display: "none" })),
+      ]);
     }
   }, [mapView, mapAnimationControl, listAnimationControl]);
 
@@ -64,8 +69,7 @@ function List({ purType }) {
   const list = data.data || [];
 
   return (
-    <div className="relative h-full justify-center px-2.5 sm:px-5 lg:flex lg:gap-2">
-      {/* main content */}
+    <div className="relative h-full min-h-[80%] justify-center px-2.5 sm:px-4 lg:flex lg:gap-2">
       <AnimatePresence presenceAffectsLayout>
         <motion.div
           animate={listAnimationControl}
@@ -89,46 +93,38 @@ function List({ purType }) {
             {/* toggle grid & map views */}
             <div className="hidden items-center gap-2 lg:flex">
               <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
-              <SkewedToggle />
+              <Switch onChange={() => setMapView((s) => !s)} />
             </div>
           </div>
 
           {/* RE list */}
-          <div
+          <motion.div
             className={`${
               mapView
                 ? "lg:grid-cols-2 lg:gap-2 xl:grid-cols-3 xl:gap-2.5 3xl:grid-cols-4"
-                : "mx-auto max-w-[1400px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-6"
+                : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-5"
             } mt-3 space-y-4 lg:grid lg:space-y-0`}
           >
-            {/* for development */}
-            {Array.from({ length: 4 }).map((dt, i) => (
-              <React.Fragment key={i}>
-                {list.map((item) => (
-                  <ListItem
-                    key={item.id}
-                    data={item}
-                    purType={purType}
-                    mapView={mapView}
-                  />
-                ))}
-              </React.Fragment>
+            {list.map((item) => (
+              <ListItem
+                key={item.id}
+                data={item}
+                purType={purType}
+                mapView={mapView}
+              />
             ))}
-          </div>
-          {/* total count later */}
+          </motion.div>
           <ChakraTablePagination count={data.count} />
         </motion.div>
 
         {/* map, mobile hidden */}
-        {mapView && (
-          <motion.div
-            key="map"
-            initial={{ x: "100%", width: 0, opacity: 0 }}
-            animate={mapAnimationControl}
-          >
-            <Map data={list} purType={purType} />
-          </motion.div>
-        )}
+        <motion.div
+          key="map"
+          initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
+          animate={mapAnimationControl}
+        >
+          <Map data={list} purType={purType} />
+        </motion.div>
       </AnimatePresence>
     </div>
   );

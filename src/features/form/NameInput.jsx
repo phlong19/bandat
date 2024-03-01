@@ -5,6 +5,7 @@ import {
   Input,
   FormControl,
   FormLabel,
+  FormHelperText,
   FormErrorMessage,
   Badge,
   Flex,
@@ -13,6 +14,7 @@ import {
 
 import { checkPost } from "../../services/apiRE";
 import { maxLength, minLength } from "../../constants/anyVariables";
+import { reform } from "../../constants/message";
 
 function NameInput({ postId, register, error }) {
   let invalid = false;
@@ -20,7 +22,7 @@ function NameInput({ postId, register, error }) {
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["query", search],
+    queryKey: ["query-post-name"],
     queryFn: () => checkPost(debouncedSearch),
     enabled: search.length >= minLength,
   });
@@ -60,6 +62,7 @@ function NameInput({ postId, register, error }) {
           </Badge>
         )}
       </Flex>
+      <FormHelperText mb={2}>{reform.noPhone}</FormHelperText>
       <Input
         type="text"
         {...register}

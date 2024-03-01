@@ -1,22 +1,35 @@
-import { mapURL } from "../constants/anyVariables";
 import supabase from "./supabase";
+import { error as errorMessage } from "../constants/message";
+import { questURL } from "../constants/anyVariables";
 
 // addresses
-const data = {};
-data.city = data.dis = data.ward = [];
+export async function getAddress(city, district, ward, edit) {
+  const data = {
+    city: [],
+    dis: [],
+    ward: [],
+  };
 
-export async function getAddress(city, district, ward) {
   if (!city && !district && !ward) {
-    data.dis = data.ward = [];
-    await getCity();
+    data.city = await getCity();
   }
+
   if (city && !district && !ward) {
-    data.ward = [];
-    await getDis(city);
+    data.city = await getCity();
+    data.dis = await getDis(city);
   }
 
   if (city && district && !ward) {
-    await getWard(district);
+    data.city = await getCity();
+    data.dis = await getDis(city);
+    data.ward = await getWard(district);
+  }
+
+  // for edit
+  if (city && district && ward && edit) {
+    data.city = await getCity();
+    data.dis = await getDis(city);
+    data.ward = await getWard(district);
   }
 
   return data;
@@ -29,9 +42,8 @@ async function getCity() {
   if (error) {
     throw new Error(error.message);
   }
-  data.city = cityData;
 
-  return null;
+  return cityData;
 }
 
 async function getDis(cityID) {
@@ -47,9 +59,8 @@ async function getDis(cityID) {
   if (error) {
     throw new Error(error.message);
   }
-  data.dis = disData;
 
-  return null;
+  return disData;
 }
 
 async function getWard(disID) {
@@ -65,9 +76,8 @@ async function getWard(disID) {
   if (error) {
     throw new Error(error.message);
   }
-  data.ward = wardData;
 
-  return null;
+  return wardData;
 }
 
 export async function getFullAddress(cityID, disID, wardID, address) {
@@ -90,16 +100,21 @@ export async function getFullAddress(cityID, disID, wardID, address) {
   }
 }
 
+// geocoding api
 export async function getLatLong(address) {
-  const res = await fetch(
-    mapURL + `?address=${address}&key=${import.meta.env.VITE_MAP_KEY}`,
-  );
+  const res = await fetch(questURL + `&location=${address}`);
+
+  if (!res.ok) {
+    throw new Error(errorMessage.fetchError);
+  }
 
   const data = await res.json();
 
-  const { location } = data.results[0].geometry;
-  const lat = parseFloat(location.lat);
-  const long = parseFloat(location.lng);
+  if (!data || data.results.length < 1) {
+    throw new Error(errorMessage.apiGeocoding);
+  }
+
+  const { lat, lng: long } = data.results[0].locations[0].latLng;
 
   return { lat, long };
 }

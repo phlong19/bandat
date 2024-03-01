@@ -1,20 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-
-import { createPost } from "../../services/apiRE";
+import { updatePost } from "../../services/apiRE";
 import { success } from "../../constants/message";
 
-export function useCreateRE() {
+export function useUpdateRE() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { isPending: isCreating, mutate: create } = useMutation({
-    mutationFn: (reData) => createPost(reData),
+  const { mutate: update, isPending: isUpdating } = useMutation({
+    mutationFn: ({ userID, ...data }) => updatePost(data, userID),
+
     onSuccess: () => {
-      toast.success(success.createPost);
-      queryClient.invalidateQueries({ queryKey: ["REList"] });
-      navigate("/quan-ly-bai-viet");
+      queryClient.invalidateQueries({ queryKey: ["REList"] }),
+        toast.success(success.updatePost),
+        navigate("/quan-ly-bai-viet");
     },
     onError: (err) => {
       console.log(err);
@@ -22,5 +22,5 @@ export function useCreateRE() {
     },
   });
 
-  return { isCreating, create };
+  return { update, isUpdating };
 }
