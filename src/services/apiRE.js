@@ -1,5 +1,4 @@
 import supabase from "./supabase";
-
 import {
   ADMIN_LEVEL,
   DEFAULT_RE_STATUS,
@@ -147,7 +146,7 @@ export async function createPost(newData) {
 
   if (createError) {
     console.log(createError);
-    throw new Error("khong the tao bai dang luc nay, vui long thu lai sau");
+    throw new Error(errorMessage.cantCreate);
   }
 
   // handle media
@@ -161,10 +160,29 @@ export async function createPost(newData) {
 }
 
 // update
-export async function updatePost(userID, newData) {
-  const { postID, files, docs, reType, ...reData } = newData;
-  // here
-  return null;
+export async function updatePost(newData) {
+  const {
+    postID,
+    files,
+    newDocs,
+    deleteDocs,
+    deleteMedias,
+    newMedias,
+    reType,
+    ...reData
+  } = newData;
+
+  // update post
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .update()
+    .eq("id", postID);
+
+  if (error) {
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
 }
 
 // approve

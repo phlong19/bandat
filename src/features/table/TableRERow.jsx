@@ -100,7 +100,7 @@ function TableRERow({ data, level, userID }) {
       </Td>
       <Td>
         <Text fontSize="md" pb=".5rem">
-          {formatDate(created_at, "short")}
+          {formatDate(created_at)}
         </Text>
       </Td>
       <Td>

@@ -9,7 +9,7 @@ export function useApprovePost() {
     mutationFn: (id) => approvePost(id),
     onSuccess: () => {
       toast.success(success.approvePost);
-      queryClient.invalidateQueries({ refetchType: "active" });
+      queryClient.invalidateQueries({ queryKey: ["REList"] });
     },
     onError: (err) => {
       toast.error(err.message);

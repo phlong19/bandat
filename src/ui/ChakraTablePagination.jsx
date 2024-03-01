@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { LIMIT_PER_PAGE } from "../constants/anyVariables";
-import { FaAngleDoubleLeft } from "react-icons/fa";
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
 import { Flex, Button, useColorModeValue } from "@chakra-ui/react";
 
@@ -71,11 +71,7 @@ function ChakraTablePagination({ count }) {
           {currentPage - 1}
         </Button>
       )}
-      <Button
-        colorScheme={currentPageColor}
-        isDisabled={true}
-        cursor="not-allowed"
-      >
+      <Button colorScheme={currentPageColor} isDisabled={true}>
         {currentPage}
       </Button>
       {currentPage !== totalPages && (
@@ -94,6 +90,13 @@ function ChakraTablePagination({ count }) {
           {totalPages}
         </Button>
       )}
+      <Button
+        variant={currentPage !== totalPages ? "pagi" : ""}
+        isDisabled={currentPage === totalPages}
+        onClick={() => handlePagination("next")}
+      >
+        <FaAngleDoubleRight />
+      </Button>
     </Flex>
   );
 }

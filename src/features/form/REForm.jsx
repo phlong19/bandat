@@ -1,9 +1,8 @@
 // libs
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
 import slugify from "react-slugify";
 import {
   FormControl,
@@ -22,9 +21,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-// icon
-import { LuChevronsLeft } from "react-icons/lu";
-
 // UI
 import QuillEditor from "./QuillEditor";
 import FilesDropzone from "./FilesDropzone";
@@ -33,6 +29,7 @@ import ChakraAlert from "../../ui/ChakraAlert";
 import AddressSelect from "../searchbar/AddressSelect";
 import DocumentCheckBoxes from "./DocumentCheckBoxes";
 import NameInput from "./NameInput";
+import GoBackButton from "../../ui/GoBackButton";
 
 // variables, custom hooks, helper funcs, messages
 import {
@@ -55,6 +52,42 @@ import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 
 function REForm({ userID, edit = false, editData }) {
+  // other states and derived states goes here
+  const [purType, setPurType] = useState(true);
+  const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
+  let badgeColor = getStatusBadgeColor(editData?.status.id);
+
+  // track new added & deleted medias & docs
+  const addImagesRef = useRef([]);
+  const addVideosRef = useRef([]);
+  const deleteMediasRef = useRef([]);
+  const deleteDocsRef = useRef([]);
+  const addDocsRef = useRef([]);
+
+  // load existed medias and docs
+  const existedImages =
+    editData?.medias.filter((media) => media.isImage === true) || [];
+  const existedVideos =
+    editData?.medias.filter((media) => media.isImage !== true) || [];
+  const existedDocs = editData?.docs || [];
+
+  // medias & docs state
+  const [files, setFiles] = useState({
+    images: [...existedImages],
+    videos: [...existedVideos],
+  });
+  const [docs, setDocs] = useState([...existedDocs]);
+
+  // for address select
+  const [cityID, setCityID] = useState(editData?.cityID || NaN);
+  const [disID, setDisID] = useState(editData?.disID || NaN);
+  const [wardID, setWardID] = useState(editData?.wardID || NaN);
+
+  // custom hooks
+  const { isCreating, create } = useCreateRE();
+  const { update, isUpdating } = useUpdateRE();
+
+  // initialize form, load values if editing
   const {
     control,
     register,
@@ -63,42 +96,26 @@ function REForm({ userID, edit = false, editData }) {
     setError,
     setValue,
     handleSubmit,
-  } = useForm();
-
-  const [purType, setPurType] = useState(true);
-  const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
-
-  const existedImages =
-    editData?.medias.filter((media) => media.isImage === true) || [];
-  const existedVideos =
-    editData?.medias.filter((media) => media.isImage !== true) || [];
-
-  const [files, setFiles] = useState({
-    images: [...existedImages],
-    videos: [...existedVideos],
+  } = useForm({
+    defaultValues: {
+      price: editData?.price,
+      des: editData?.des,
+      files: {
+        images: existedImages,
+        videos: existedVideos,
+      },
+    },
   });
-
-  // initial existed docs when edit data
-  const existedDocs = editData?.docs.map((doc) => doc.docName.doc_id) || [];
-  const [docs, setDocs] = useState([...existedDocs]);
-
-  // for address select
-  const [cityID, setCityID] = useState(NaN);
-  const [disID, setDisID] = useState(NaN);
-  const [wardID, setWardID] = useState(NaN);
-
-  // custom hooks
-  const { isCreating, create } = useCreateRE();
-  const { update, isUpdating } = useUpdateRE();
-
-  let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   function onSubmit(data) {
     // check address
     if (!cityID || !disID || !wardID) {
       return toast.error(reform.missingAddress);
     }
-    // return;
+    // check docs
+    if (docs.length < 1) {
+      return toast.error(reform.requiredDocs);
+    }
     // check description exist
     if (!data.des) {
       return setError("des", {
@@ -139,8 +156,8 @@ function REForm({ userID, edit = false, editData }) {
       });
     } else {
       update({
+        ...data,
         userID,
-        data,
         postID: editData.id,
         price: priceNum,
         cityID,
@@ -148,25 +165,23 @@ function REForm({ userID, edit = false, editData }) {
         wardID,
         purType,
         status: DEFAULT_RE_STATUS,
-        docs,
         slug: slugify(data.name),
+        // docs
+        newDocs: addDocsRef.current,
+        deleteDocs: deleteDocsRef.current,
+        // medias
+        deleteMedias: deleteMediasRef.current,
+        newMedias: {
+          images: addImagesRef.current,
+          videos: addVideosRef.current,
+        },
       });
     }
   }
 
   return (
     <>
-      {edit && (
-        <Button
-          variant="outline"
-          fontWeight={500}
-          leftIcon={<LuChevronsLeft />}
-          as={Link}
-          to="/quan-ly-bai-viet"
-        >
-          Quay lại
-        </Button>
-      )}
+      {edit && <GoBackButton />}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
         <Flex justify="space-between" align="center" pt="18" pb={2}>
           <Heading size="md" noOfLines={1}>
@@ -219,9 +234,9 @@ function REForm({ userID, edit = false, editData }) {
           {/* address */}
           <AddressSelect
             isForm
-            cityID={cityID || editData?.cityID}
-            disID={disID || editData?.disID}
-            wardID={wardID || editData?.wardID}
+            cityID={cityID}
+            disID={disID}
+            wardID={wardID}
             setCityID={setCityID}
             setDisID={setDisID}
             setWardID={setWardID}
@@ -290,7 +305,13 @@ function REForm({ userID, edit = false, editData }) {
           </Grid>
 
           {/* documents */}
-          <DocumentCheckBoxes setDocs={setDocs} value={existedDocs} />
+          <DocumentCheckBoxes
+            setDocs={setDocs}
+            value={existedDocs}
+            deleteDocsRef={deleteDocsRef}
+            addDocsRef={addDocsRef}
+            edit={edit}
+          />
 
           {/* other fields */}
           <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
@@ -400,6 +421,9 @@ function REForm({ userID, edit = false, editData }) {
                   setFiles={setFiles}
                   setValue={setValue}
                   onChange={onChange}
+                  addImagesRef={addImagesRef}
+                  addVideosRef={addVideosRef}
+                  deleteMediasRef={deleteMediasRef}
                 />
               )}
             />

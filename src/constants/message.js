@@ -24,6 +24,7 @@ export const error = {
   register: "Không thể đăng ký",
   notAuthen: "Vui lòng đăng nhập để truy cập",
   // api re
+  cantCreate:'khong the tao bai dang luc nay, vui long thu lai sau',
   cantUpdate: "Không thể cập nhật bài đăng",
   cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật",
   cantDelete: "Không thể xoá bài đăng",
@@ -40,8 +41,8 @@ export const success = {
   logout: "Đăng xuất thành công",
 
   // api re
-  // @minhduc3107 chăm chút câu cú tí ông ạ, thử gpt xem sao :D
   createPost: "Tạo bài đăng thành công, đợi admin duyệt bài",
+  updatePost: "sua bai dang thanh cong",
   approvePost: "Duyệt bài thành công",
   markSold: "Đánh dấu đã bán thành công",
   deactivePost: "Gỡ bài thành công",
@@ -64,9 +65,10 @@ export const reform = {
   desTooShort: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
   desTooLong: `Vượt quá ${maxDesLength} kí tự cho phép`,
 
-  // title helper
+  // helpers
   noPhone:
     "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
+  requiredDocs: "vui long pick it nhat 1",
 
   // media
   overFile: "Vượt quá số lượng giới hạn file tải lên",

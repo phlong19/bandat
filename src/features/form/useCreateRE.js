@@ -13,7 +13,7 @@ export function useCreateRE() {
     mutationFn: (reData) => createPost(reData),
     onSuccess: () => {
       toast.success(success.createPost);
-      queryClient.invalidateQueries({ queryKey: ["REList"], exact: true });
+      queryClient.invalidateQueries({ queryKey: ["REList"] });
       navigate("/quan-ly-bai-viet");
     },
     onError: (err) => {

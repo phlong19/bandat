@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import {
   DEFAULT_RE_STATUS,
   SELLING_STATUS,
@@ -25,24 +26,14 @@ export function formatCurrency(input) {
   }
 }
 
+// round the price
 function round2Digit(num) {
   return parseFloat(Number(num).toFixed(2));
 }
 
-// date format: 2024-01-15T07:16:46.580913+00:00 => 15 tháng 1, 2024
-// default month is "long"
-export function formatDate(dateString, monthType = "long", withTime = false) {
-  const options = {
-    month: monthType,
-    year: "numeric",
-    day: "numeric",
-  };
-  if (withTime) {
-    options.hour = "2-digit";
-    options.minute = "2-digit";
-  }
-  const date = new Date(dateString).toLocaleDateString("vi-VN", options);
-  return date;
+// date format
+export function formatDate(date, formatString = "dd/MM/yyyy") {
+  return format(new Date(date), formatString);
 }
 
 // format number
@@ -52,6 +43,9 @@ export function formatNumber(input) {
 
 // parse
 export function parseCurrency(input) {
+  if (typeof input === "number") {
+    return input;
+  }
   // Remove non-numeric characters and currency symbol
   const numericString = input.replace(/[^\d]/g, "");
 
