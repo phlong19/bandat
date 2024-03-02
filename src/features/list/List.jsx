@@ -110,12 +110,7 @@ function List({ purType }) {
             } mt-3 space-y-4 lg:grid lg:space-y-0`}
           >
             {list.map((item) => (
-              <ListItem
-                key={item.id}
-                data={item}
-                purType={purType}
-                mapView={mapView}
-              />
+              <ListItem key={item.id} data={item} purType={purType} />
             ))}
           </motion.div>
           <ChakraTablePagination count={data.count} />

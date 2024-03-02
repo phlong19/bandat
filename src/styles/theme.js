@@ -62,8 +62,9 @@ export const theme = extendTheme({
       body: {
         fontFamily: `"Lexend", sans-serif`,
         color: mode("black", "white")(props),
-        bg: mode("white", "dark")(props),
+        bg: mode("white", "darker")(props),
         lineHeight: "base",
+        colorScheme: "green",
       },
     }),
   },

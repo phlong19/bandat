@@ -21,6 +21,7 @@ function ListItem({ data, purType, isPopup = false }) {
   });
 
   const {
+    id,
     slug,
     area,
     city: { cityName },
@@ -56,6 +57,7 @@ function ListItem({ data, purType, isPopup = false }) {
               isLaptop={isLaptop}
               isPopup={isPopup}
               type={type}
+              postID={id}
             />
           </div>
         </Link>
@@ -117,7 +119,7 @@ function ListItem({ data, purType, isPopup = false }) {
               <span>
                 {formatCurrency(price)} {!purType && "/ tháng"}
               </span>
-              -
+              {purType && "-"}
               <span className="mr-2 font-semibold text-primary dark:text-secondary">
                 {formatCurrency(pricePerArea(purType, price, area))}
                 {purType && `/${m2}`}

@@ -1,11 +1,10 @@
 import { Badge, useColorModeValue } from "@chakra-ui/react";
 import { IoImagesOutline } from "react-icons/io5";
 import Bookmark from "./Bookmark";
-import ViewInMap from "./ViewInMap";
 import { useMapView } from "../context/MapViewContext";
 import { getCoreNameType } from "../utils/helper";
 
-function ItemImages({ images, isLaptop, isPopup, type }) {
+function ItemImages({ images, isLaptop, isPopup, type, postID }) {
   const { mapView } = useMapView();
   const badge = useColorModeValue("primary", "secondary");
   const color = useColorModeValue("white", "black");
@@ -55,7 +54,7 @@ function ItemImages({ images, isLaptop, isPopup, type }) {
           <div>
             <Bookmark />
           </div>
-          <div>{mapView && <ViewInMap />}</div>
+          <div>{mapView && <span id={`viewInMap${postID}`}></span>}</div>
         </div>
       )}
     </div>

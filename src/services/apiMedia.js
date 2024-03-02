@@ -57,7 +57,7 @@ export async function deleteMedia(file, edit = false) {
     .remove([fileName]);
 
   console.error(error);
-  console.log("deleted: " + data);
+  console.log("deleted: " + data[0].name);
 
   return null;
 }

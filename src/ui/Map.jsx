@@ -1,11 +1,24 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import ListItem from "../features/list/ListItem";
+import { createPortal } from "react-dom";
+import ViewInMap from "./ViewInMap";
+import { useMapView } from "../context/MapViewContext";
 
 function Map({ data, purType }) {
+  const { mapView } = useMapView();
   const mapRef = useRef(null);
+  const [wait, setWait] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setWait(mapView);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [mapView]);
 
   return (
     <MapContainer
@@ -30,6 +43,19 @@ function Map({ data, purType }) {
             click: () => setSelectedMarker(item.id),
           }}
         >
+          {mapView &&
+            wait &&
+            createPortal(
+              <ViewInMap
+                location={[item.lat, item.long]}
+                onClick={() => {
+                  setSelectedMarker(item.id);
+                  // flyTo([lat,long],zoom)
+                  mapRef.current.flyTo([item.lat, item.long], 13);
+                }}
+              />,
+              document.querySelector(`#viewInMap${item.id}`),
+            )}
           <Popup>
             <ListItem data={item} purType={purType} mapView={true} isPopup />
           </Popup>

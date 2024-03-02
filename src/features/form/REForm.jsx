@@ -362,7 +362,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
 
             <FormControl>
               <FormLabel>Hướng nhà</FormLabel>
-              <Select {...register("direction")} value={editData?.direction}>
+              <Select {...register("direction")} defaultValue={editData?.direction}>
                 {directions.map((dir) => (
                   <option value={dir} key={dir}>
                     {dir}

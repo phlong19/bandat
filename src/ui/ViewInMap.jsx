@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { FaMap, FaRegMap } from "react-icons/fa6";
-import { toast } from "react-hot-toast";
 import { useMapView } from "../context/MapViewContext";
 
-function ViewInMap() {
+function ViewInMap({ postID, onClick }) {
   const { mapView } = useMapView();
   const [hover, setHover] = useState(false);
 
   function handleClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    toast.error("khong the chi den vi tri chinh xac, vi da lam dau =))");
+    onClick();
   }
 
   return (
@@ -18,6 +17,7 @@ function ViewInMap() {
       title="Xem trên map"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      id={`viewInMap${postID}`}
       onClick={handleClick}
       className={`${
         !mapView ? "p-2.5" : "p-1.5"
