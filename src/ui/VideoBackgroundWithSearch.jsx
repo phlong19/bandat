@@ -38,7 +38,7 @@ function VideoBackgroundWithSearch() {
       justifyContent="center"
       alignItems="center"
       position="relative"
-      height="70vh"
+      height="100vh"
       width="100%"
     >
       {/* background */}
@@ -52,18 +52,18 @@ function VideoBackgroundWithSearch() {
         variants={videoVariants}
         transition={{ duration: 0.5 }}
         onEnded={handleChangeVid}
-        className="absolute h-full w-full object-cover blur-sm"
+        className="absolute h-full w-full object-cover blur-[10px]"
       />
 
       <Box
         position="absolute"
-        bg="whiteAlpha.800"
+        bg="whiteAlpha.700"
         rounded="lg"
         p={5}
         w={{ base: "80%", lg: "60%" }}
       >
         <Box textAlign="center" mb={{ base: 5, lg: 10 }}>
-          <Heading size={{ base: "xl", lg: "2xl" }} color="dark">
+          <Heading size={{ base: "lg", sm: "xl", lg: "2xl" }} color="dark">
             <TypeAnimation
               sequence={homeText}
               deletionSpeed={60}

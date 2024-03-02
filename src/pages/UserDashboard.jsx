@@ -20,12 +20,19 @@ function UserDashboard({ form = false }) {
   const { data, level, isLoading } = useAuth();
   let { post, isFetching } = useGetRE(title, level, data.id);
 
+  // change page title
+  useEffect(() => {
+    document.title = activePage;
+  }, [activePage]);
+
   useEffect(() => {
     if (title && !post && !isFetching) {
       toast.error("khong tim thay bai viet");
       navigate("/dang-tin");
+    } else if (post) {
+      document.title = "Chi tiết bài viết " + post.name;
     }
-  }, [post, navigate, isFetching, title]);
+  }, [post, navigate, isFetching, title, activePage]);
 
   if (isLoading || isFetching) {
     return (
@@ -43,6 +50,7 @@ function UserDashboard({ form = false }) {
       ) : (
         <Box maxWidth="85%" minWidth="85%" mx="auto">
           <REForm
+            currentUserLevel={level}
             userID={data.id}
             edit={Boolean(post)}
             editData={post}

@@ -43,7 +43,7 @@ function ListItem({ data, purType, isPopup = false }) {
     <div
       className={`${
         !isPopup
-          ? "dark:bg-darker mt-2 bg-white p-1 md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
+          ? "mt-2 bg-white p-1 dark:bg-darker md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
           : "min-w-[160px] p-[2px] text-black lg:w-full"
       }  rounded-lg`}
     >
@@ -125,6 +125,22 @@ function ListItem({ data, purType, isPopup = false }) {
             </div>
 
             <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
+          </div>
+        )}
+        {isPopup && (
+          <div
+            className={`${
+              isPopup ? "gap-1 text-sm" : "gap-2"
+            } ml-auto flex items-center font-semibold text-primary dark:text-secondary`}
+          >
+            <span>
+              {formatCurrency(price)} {!purType && "/ tháng"}
+            </span>
+            {purType && "-"}
+            <span className="mr-2 font-semibold text-primary dark:text-secondary">
+              {formatCurrency(pricePerArea(purType, price, area))}
+              {purType && `/${m2}`}
+            </span>
           </div>
         )}
       </div>

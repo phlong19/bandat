@@ -195,7 +195,7 @@ function Searchbar() {
       </Accordion>
 
       <Flex w="100%" gap="2px" align="center">
-        <Input {...register("query")} borderLeftRadius="none" />
+        <Input {...register("query")} borderLeftRadius="none" textColor='darker' />
         {!isTablet ? (
           <IconButton
             bg={bgBtn}
@@ -206,8 +206,9 @@ function Searchbar() {
           <Button
             bg={bgBtn}
             color={color}
-            _hover={{ opacity: 0.85 }}
-            px={{ sm: 8 }}
+            transitionDuration='300ms'
+            _hover={{ opacity: 0.9 }}
+            px={{ sm: 5 }}
             gap={1.5}
           >
             Tìm kiếm

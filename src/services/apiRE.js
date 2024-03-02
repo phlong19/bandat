@@ -8,8 +8,13 @@ import {
   maxLength,
   minLength,
 } from "../constants/anyVariables";
-import { getFullAddress, getLatLong, insertDocument } from "./apiGeneral";
-import { uploadMedia } from "./apiMedia";
+import {
+  deleteDocument,
+  getFullAddress,
+  getLatLong,
+  insertDocument,
+} from "./apiGeneral";
+import { deleteMedia, uploadMedia } from "./apiMedia";
 import { error as errorMessage } from "../constants/message";
 
 export async function getList(type, citeria, page) {
@@ -112,7 +117,8 @@ export async function createPost(newData) {
   const { data: typeID, error } = await supabase
     .from("REType")
     .select("*")
-    .eq("type", reType);
+    .eq("type", reType)
+    .single();
 
   if (error) {
     throw new Error(errorMessage.fetchError);
@@ -136,7 +142,7 @@ export async function createPost(newData) {
     .insert([
       {
         ...reData,
-        REType_ID: typeID[0].REType_ID,
+        REType_ID: typeID.REType_ID,
         lat,
         long,
       },
@@ -154,7 +160,7 @@ export async function createPost(newData) {
   files.videos.forEach((file) => uploadMedia(file, postID));
 
   // handle docs
-  docs.forEach((id) => insertDocument(id, postID));
+  docs.forEach(async (id) => await insertDocument(id, postID));
 
   return null;
 }
@@ -162,27 +168,84 @@ export async function createPost(newData) {
 // update
 export async function updatePost(newData) {
   const {
+    level,
+    userID,
+    authorID,
     postID,
-    files,
     newDocs,
     deleteDocs,
     deleteMedias,
     newMedias,
     reType,
+    files: _,
     ...reData
   } = newData;
+
+  // check authorization
+  // if not admin AND not author => cook
+  if (level < ADMIN_LEVEL && userID !== authorID) {
+    throw new Error(errorMessage.notAuthor);
+  }
+
+  const { data: typeID, error: typeIDError } = await supabase
+    .from("REType")
+    .select("*")
+    .eq("type", reType)
+    .single();
+
+  if (typeIDError) {
+    console.log(typeIDError);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  // update address and lat long no it change or not
+  const fullAddress = await getFullAddress(
+    reData.cityID,
+    reData.disID,
+    reData.wardID,
+    reData.address,
+  );
+  const { lat, long } = await getLatLong(fullAddress);
 
   // update post
   const { data, error } = await supabase
     .from("REDirectory")
-    .update()
-    .eq("id", postID);
+    .update({
+      ...reData,
+      userID: authorID,
+      REType_ID: typeID.REType_ID,
+      lat,
+      long,
+    })
+    .eq("id", postID)
+    .select();
 
   if (error) {
-    throw new Error(errorMessage.fetchError);
+    throw new Error(errorMessage.cantUpdate);
   }
 
-  return data;
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantFindToUpdate);
+  }
+
+  // handle new medias
+  newMedias.images.forEach(async (file) => await uploadMedia(file, postID));
+  newMedias.videos.forEach(async (file) => await uploadMedia(file, postID));
+
+  // handle delete old medias
+  if (deleteMedias.length > 0) {
+    deleteMedias.forEach(async (file) =>
+      deleteMedia(file, true).then(() =>
+        console.log("Delete media successfully"),
+      ),
+    );
+  }
+
+  // handle new docs
+  deleteDocs.forEach(async (doc) => await deleteDocument(doc.id));
+  newDocs.forEach(async (id) => await insertDocument(id, postID));
+
+  return null;
 }
 
 // approve

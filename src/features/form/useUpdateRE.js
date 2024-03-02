@@ -9,12 +9,15 @@ export function useUpdateRE() {
   const navigate = useNavigate();
 
   const { mutate: update, isPending: isUpdating } = useMutation({
-    mutationFn: ({ userID, ...data }) => updatePost(data, userID),
+    mutationFn: (data) => updatePost(data),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["REList"] }),
-        toast.success(success.updatePost),
-        navigate("/quan-ly-bai-viet");
+      // set null for the just updated post
+      queryClient.removeQueries({ queryKey: ["RE-details"] });
+      // must set exact
+      queryClient.invalidateQueries({ queryKey: ["REList"], exact: true });
+      toast.success(success.updatePost);
+      navigate("/quan-ly-bai-viet");
     },
     onError: (err) => {
       console.log(err);

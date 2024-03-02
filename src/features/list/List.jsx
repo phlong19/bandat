@@ -93,7 +93,11 @@ function List({ purType }) {
             {/* toggle grid & map views */}
             <div className="hidden items-center gap-2 lg:flex">
               <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
-              <Switch onChange={() => setMapView((s) => !s)} />
+              <Switch
+                onChange={() => setMapView((s) => !s)}
+                checked={mapView}
+                key={purType}
+              />
             </div>
           </div>
 

@@ -26,8 +26,8 @@ html[data-theme="light"] {
 html[data-theme="dark"] {
   --ql-fill-color: white;
   --ql-bg: #222;
-  --ql-color: #ffb60a;
-  --ql-color-action: #ffb60a;
+  --ql-color: #FFCC80;
+  --ql-color-action: #FFCC80;
 }
 
 body {
