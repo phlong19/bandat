@@ -57,7 +57,7 @@ export const reCaptions = [
   "Loại hình",
   "Tiêu đề",
   "Địa chỉ",
-  "Số báo xấu",
+  "Báo xấu",
   "Trạng thái",
   "Ngày đăng",
 ];

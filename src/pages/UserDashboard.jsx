@@ -37,13 +37,13 @@ function UserDashboard({ form = false }) {
   if (isLoading || isFetching) {
     return (
       <Center minH="100%">
-        <Spinner thickness="4px" emptyColor="gray.300" size="lg" speed="0.4s" />
+        <Spinner thickness="4px" size="lg" speed="0.4s" />
       </Center>
     );
   }
 
   return (
-    <Box h="100%" gap={4} display="flex" flexDirection="column">
+    <Box gap={4} display="flex" flexDirection="column">
       <ChakraBreadcrumb page={activePage} />
       {!form ? (
         <UserDashboardTable id={data.id} level={level} />

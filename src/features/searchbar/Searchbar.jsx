@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
 
-import {
-  FaFilterCircleDollar,
-  FaMagnifyingGlassArrowRight,
-} from "react-icons/fa6";
+import { FaFilterCircleDollar } from "react-icons/fa6";
+import { BiSearchAlt } from "react-icons/bi";
 import { SlRefresh } from "react-icons/sl";
 
 import {
   Flex,
+  InputGroup,
   Input,
+  InputRightElement,
   Select,
   Box,
   Button,
@@ -40,7 +40,8 @@ function Searchbar() {
     query: "(min-width: 640px)",
   });
 
-  const bg = useColorModeValue("white", "#222");
+  const bg = useColorModeValue("darker", "white");
+  const bgAcc = useColorModeValue("white", "darker");
   const bgBtn = useColorModeValue("primary", "secondary");
   const color = useColorModeValue("white", "black");
 
@@ -83,7 +84,7 @@ function Searchbar() {
         <AccordionItem border="none" className="mt-1.5 md:mt-0">
           <AccordionButton
             mt="3px"
-            className="max-w-28 md:max-w-36"
+            className="max-w-28 text-white dark:text-dark md:max-w-36"
             gap={2.5}
             justifyContent="center"
           >
@@ -93,7 +94,7 @@ function Searchbar() {
           <AccordionPanel
             borderRadius="md"
             position="absolute"
-            bg={bg}
+            bg={bgAcc}
             boxShadow="lg"
             width={mapView ? "65%" : "75%"}
           >
@@ -118,7 +119,6 @@ function Searchbar() {
                   <Select
                     onChange={(e) => setPurType(e.target.value === "true")}
                   >
-                    <option value="all">Tất cả</option>
                     <option value="true">Bán</option>
                     <option value="false">Cho thuê</option>
                   </Select>
@@ -127,7 +127,6 @@ function Searchbar() {
                 <FormControl>
                   <FormLabel>Loại hình</FormLabel>
                   <Select {...register("reType")}>
-                    <option value="all">Tất cả</option>
                     {arr.map((opt) => (
                       <option value={opt.type} key={opt.type}>
                         {opt.title}
@@ -136,7 +135,7 @@ function Searchbar() {
                   </Select>
                 </FormControl>
 
-                <FormControl ml={2}>
+                <FormControl mx={2}>
                   <FormLabel>
                     <span className="mr-1.5">Diện tích:</span>
                     <span className="text-primary dark:text-secondary">
@@ -195,25 +194,30 @@ function Searchbar() {
       </Accordion>
 
       <Flex w="100%" gap="2px" align="center">
-        <Input {...register("query")} borderLeftRadius="none" textColor='darker' />
-        {!isTablet ? (
-          <IconButton
-            bg={bgBtn}
-            color={color}
-            icon={<FaMagnifyingGlassArrowRight />}
+        <InputGroup>
+          <Input
+            {...register("query")}
+            borderLeftRadius="none"
+            textColor="darker"
+            pr={120}
           />
-        ) : (
-          <Button
-            bg={bgBtn}
-            color={color}
-            transitionDuration='300ms'
-            _hover={{ opacity: 0.9 }}
-            px={{ sm: 5 }}
-            gap={1.5}
-          >
-            Tìm kiếm
-          </Button>
-        )}
+          <InputRightElement width="fit-content">
+            {!isTablet ? (
+              <IconButton bg={bgBtn} color={color} icon={<BiSearchAlt />} />
+            ) : (
+              <Button
+                bg={bgBtn}
+                color={color}
+                transitionDuration="300ms"
+                _hover={{ opacity: 0.9 }}
+                px={{ sm: 5 }}
+                gap={1.5}
+              >
+                Tìm kiếm
+              </Button>
+            )}
+          </InputRightElement>
+        </InputGroup>
       </Flex>
     </form>
   );

@@ -10,10 +10,14 @@ import {
   Tr,
   Th,
   Tbody,
+  Input,
+  InputGroup,
+  InputRightElement,
   useColorModeValue,
 } from "@chakra-ui/react";
 
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
+import { BiSearchAlt } from "react-icons/bi";
 
 function ChakraTable({ title, captions, data, render, primaryButton, count }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
@@ -27,11 +31,20 @@ function ChakraTable({ title, captions, data, render, primaryButton, count }) {
             {title}
           </Text>
           <Flex gap={2}>
+            {/* side actions */}
+            <InputGroup>
+              <Input placeholder="search" />
+              <InputRightElement>
+                <Button p={0}>
+                  <BiSearchAlt />
+                </Button>
+              </InputRightElement>
+            </InputGroup>
             <Button colorScheme="teal" variant="ghost">
-              random
+              filter
             </Button>
             <Button colorScheme="blue" variant="solid">
-              random
+              sort
             </Button>
             {/* for main action */}
             {/* with post => link to dang-tin */}

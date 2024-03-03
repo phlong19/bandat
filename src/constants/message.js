@@ -93,5 +93,20 @@ export const reform = {
 };
 
 export const newsForm = {
+  // form errors
+
+  // submit errors
+
+  // dialog
+  dialogTitle: "Discard Changes?",
+  dialogMessage:
+    "Are you sure you want to discard? You will lose everything you're entered so far if you leave now",
+  // content
   imgUrl: "Paste your image url here",
+
+  // actions
+  submit: "submit",
+  save: "save",
+  creating: "Đang tạo",
+  saving: "Đang lưu",
 };
