@@ -1,9 +1,15 @@
 import {
   BASE_MEDIA_UPLOAD,
+  maxContent,
   maxDesLength,
   maxLength,
+  maxSummary,
+  maxTitle,
+  minContent,
   minDesLength,
   minLength,
+  minSummary,
+  minTitle,
 } from "./anyVariables";
 
 // nen de may cau
@@ -19,6 +25,8 @@ export const homeText = [
 ];
 
 export const error = {
+  // general
+  fetchError: "da xay ra loi trong khi lay du lieu, vui long thu lai",
   // auth
   login: "Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại",
   register: "Không thể đăng ký",
@@ -31,11 +39,13 @@ export const error = {
   cantDelete: "Không thể xoá bài đăng",
   cantFindToDelete: "Không tìm thấy bài đăng để xoá",
   apiGeocoding: "khong the tim thay dia chi, vui long cung cap cu the hon ?",
-  // general
-  fetchError: "da xay ra loi trong khi lay du lieu, vui long thu lai",
+  // api news
+  cantCreateNews: "khong the tao bai viet tin tuc",
+
   // medias
   mediaUpload: `khong the upload file `,
   cantDeleteMedia: "xay ra loi khi xoa file, vui long thu lai",
+  uploadFailed: "qua trinh tai len file xay ra loi, vui long blabla",
   // docs
   cantInsertDocs: "khong the them giay to phap ly, vui long thu lai sau",
   cantDeleteDocs: "khong the xoa docs, vui long thu lai",
@@ -55,6 +65,9 @@ export const success = {
   markSold: "Đánh dấu đã bán thành công",
   deactivePost: "Gỡ bài thành công",
   deletePost: "Xoá bài thành công",
+
+  // api news
+  createNews: "tao bai viet tin tuc thanh cong",
 };
 
 export const reform = {
@@ -93,7 +106,20 @@ export const reform = {
 };
 
 export const newsForm = {
+  // table has no news
+  empty: "khong co bai viet tin tuc nao o day",
+  // general
+  requiredMessage: "Vui lòng điền đầy đủ các trường có dấu *",
+
   // form errors
+  minTitle: `tieu de it nhat ${minTitle}`,
+  maxTitle: `tieu de nhieu nhat ${maxTitle}`,
+  minSummary: `tom tat it nhat ${minSummary}`,
+  maxSummary: `tom tat nhieu nhat ${maxSummary}`,
+  minContent: `noi dung it nhat ${minContent}`,
+  maxContent: `noi dung nhieu nhat ${maxContent}`,
+  overFile: "chi chap nhan 1 file thumbnail",
+  helperMedia: "Drag & drop file here, or click to select files",
 
   // submit errors
 

@@ -39,7 +39,7 @@ function UserDashboardTable({ id, level }) {
       )}
       primaryButton={
         <Link to="/dang-tin">
-          <Button>bai viet moi</Button>
+          <Button>Tạo bài đăng</Button>
         </Link>
       }
       count={count}

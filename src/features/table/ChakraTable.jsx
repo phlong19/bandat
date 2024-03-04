@@ -18,13 +18,22 @@ import {
 
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 import { BiSearchAlt } from "react-icons/bi";
+import { newsForm } from "../../constants/message";
 
-function ChakraTable({ title, captions, data, render, primaryButton, count }) {
+function ChakraTable({
+  title,
+  captions,
+  data,
+  render,
+  primaryButton,
+  count,
+  news = false,
+}) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
 
   return (
-    <Card overflowX={{ sm: "scroll", xl: "hidden" }} bg={tableMode}>
+    <Card overflowX={{ sm: "auto", xl: "hidden" }} bg={tableMode}>
       <CardHeader pt="25" pl="25">
         <Flex justify="space-between">
           <Text fontSize="xl" color={modeBaseColor} fontWeight="bold">
@@ -43,7 +52,7 @@ function ChakraTable({ title, captions, data, render, primaryButton, count }) {
             <Button colorScheme="teal" variant="ghost">
               filter
             </Button>
-            <Button colorScheme="blue" variant="solid">
+            <Button colorScheme="blue" variant="ghost">
               sort
             </Button>
             {/* for main action */}
@@ -72,7 +81,9 @@ function ChakraTable({ title, captions, data, render, primaryButton, count }) {
               })}
             </Tr>
           </Thead>
-          <Tbody>{data.map(render)}</Tbody>
+          <Tbody>
+            {!news ? data.map(render) : <Text>{newsForm.empty}</Text>}
+          </Tbody>
         </Table>
       </CardBody>
       <ChakraTablePagination count={count} />

@@ -74,7 +74,7 @@ export async function checkPost(slug) {
   return data;
 }
 
-export async function getPost(slug, level, userID) {
+export async function getSinglePost(slug) {
   if (!slug || slug < minLength || slug > maxLength) {
     return null;
   }
@@ -95,10 +95,6 @@ export async function getPost(slug, level, userID) {
     )
     .limit(1)
     .eq("slug", slug);
-
-  if (level < ADMIN_LEVEL) {
-    query = query.eq("userID", userID);
-  }
 
   const { data, error } = await query.single();
 

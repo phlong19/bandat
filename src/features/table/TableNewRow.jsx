@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Tr,
   Td,
@@ -19,11 +18,11 @@ import { HiOutlineTrash } from "react-icons/hi";
 import { ADMIN_LEVEL } from "../../constants/anyVariables";
 import { formatDate } from "../../utils/helper";
 
-function TableNewRow({ data, level }) {
+function TableNewRow({ data, level, setSlug }) {
   const {
     id,
     created_at,
-    profile: { fullName, avatar },
+    author: { fullName, avatar },
     title,
     slug,
     summary,
@@ -85,8 +84,7 @@ function TableNewRow({ data, level }) {
                 Duyệt bài nhanh
               </MenuItem>
             )}
-            <MenuItem gap={3} color="green" as={Link} to={`edit/${slug}`}>
-              {/* future: add edit page */}
+            <MenuItem gap={3} color="green" onClick={() => setSlug(slug)}>
               <TbEyeCheck fontSize="20" />
               Xem / Sửa
             </MenuItem>
