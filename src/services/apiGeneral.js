@@ -124,7 +124,8 @@ export async function getDocuments() {
   const { data, error } = await supabase.from("LegalDoc").select("*");
 
   if (error) {
-    throw new Error(error.message);
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
   }
   return data;
 }
@@ -135,8 +136,19 @@ export async function insertDocument(docID, postID) {
     .insert([{ docType: docID, postID }]);
 
   if (error) {
-    throw new Error(error.message);
-    // throw new Error("khong the them giay to phap ly, vui long thu lai sau");
+    console.log(error);
+    throw new Error(errorMessage.cantInsertDocs);
+  }
+
+  return null;
+}
+
+export async function deleteDocument(docID) {
+  const { error } = await supabase.from("REDocs").delete().eq("id", docID);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantDeleteDocs);
   }
 
   return null;

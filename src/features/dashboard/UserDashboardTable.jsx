@@ -13,7 +13,7 @@ function UserDashboardTable({ id, level }) {
 
   if (isLoading) {
     return (
-      <Center minH="80%">
+      <Center minH="80dvh">
         <Spinner size="lg" thickness="4px" />
       </Center>
     );
@@ -24,9 +24,6 @@ function UserDashboardTable({ id, level }) {
       <EmptyTable message="ban chua dang bai viet moi nao, khong co dat de ban a? ban nha di">
         <Link to="/dang-tin">
           <Button>bai viet moi</Button>
-        </Link>
-        <Link to="/quan-ly-bai-viet/form-control-sample-usage-for-a-radio-or-checkbox-group">
-          test
         </Link>
       </EmptyTable>
     );

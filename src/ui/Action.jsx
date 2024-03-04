@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FaCircleUser } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
 import { BiSolidBible } from "react-icons/bi";
+import { RiListSettingsLine } from "react-icons/ri";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
@@ -39,6 +40,15 @@ function Action({ onClose }) {
         <div className="flex items-center">
           <ChakraPopover title="Tài khoản" avatar data={data}>
             <div className="flex flex-col gap-2">
+              <NavLink
+                to="/quan-ly-bai-viet"
+                className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+              >
+                <span className="text-xl">
+                  <RiListSettingsLine />
+                </span>
+                Quản lý bài viết
+              </NavLink>
               <NavLink
                 to="/tai-khoan"
                 className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"

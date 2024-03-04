@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { Flex, Box, Heading } from "@chakra-ui/react";
+import { Flex, Box, Heading, useColorModeValue } from "@chakra-ui/react";
 
 import Searchbar from "../features/searchbar/Searchbar";
 
@@ -12,6 +12,7 @@ const sources = ["stock.mp4", "stock2.mp4", "stock3.mp4"];
 function VideoBackgroundWithSearch() {
   const [currentVid, setCurrentVid] = useState(sources[0]);
   const [exit, setExit] = useState(false);
+  const bg = useColorModeValue("whiteAlpha.700", "blackAlpha.600");
 
   function handleChangeVid() {
     setExit(true);
@@ -38,7 +39,7 @@ function VideoBackgroundWithSearch() {
       justifyContent="center"
       alignItems="center"
       position="relative"
-      height="70vh"
+      height="100vh"
       width="100%"
     >
       {/* background */}
@@ -52,18 +53,18 @@ function VideoBackgroundWithSearch() {
         variants={videoVariants}
         transition={{ duration: 0.5 }}
         onEnded={handleChangeVid}
-        className="absolute h-full w-full object-cover blur-sm"
+        className="absolute h-full w-full object-cover blur-[10px]"
       />
 
       <Box
         position="absolute"
-        bg="whiteAlpha.800"
+        bg={bg}
         rounded="lg"
         p={5}
         w={{ base: "80%", lg: "60%" }}
       >
         <Box textAlign="center" mb={{ base: 5, lg: 10 }}>
-          <Heading size={{ base: "xl", lg: "2xl" }} color="dark">
+          <Heading size={{ base: "lg", sm: "xl", lg: "2xl" }} color>
             <TypeAnimation
               sequence={homeText}
               deletionSpeed={60}

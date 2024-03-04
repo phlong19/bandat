@@ -51,7 +51,7 @@ import { reform } from "../../constants/message";
 import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 
-function REForm({ userID, edit = false, editData }) {
+function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
   const [purType, setPurType] = useState(true);
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
@@ -98,6 +98,7 @@ function REForm({ userID, edit = false, editData }) {
     handleSubmit,
   } = useForm({
     defaultValues: {
+      address: editData?.address,
       price: editData?.price,
       des: editData?.des,
       files: {
@@ -157,7 +158,9 @@ function REForm({ userID, edit = false, editData }) {
     } else {
       update({
         ...data,
+        level: currentUserLevel,
         userID,
+        authorID: editData?.userID,
         postID: editData.id,
         price: priceNum,
         cityID,
@@ -248,7 +251,6 @@ function REForm({ userID, edit = false, editData }) {
               type="text"
               placeholder="Số nhà - Ngõ - Ngách"
               {...register("address")}
-              value={editData?.address}
             />
           </FormControl>
           {/* title */}
@@ -360,7 +362,7 @@ function REForm({ userID, edit = false, editData }) {
 
             <FormControl>
               <FormLabel>Hướng nhà</FormLabel>
-              <Select {...register("direction")} value={editData?.direction}>
+              <Select {...register("direction")} defaultValue={editData?.direction}>
                 {directions.map((dir) => (
                   <option value={dir} key={dir}>
                     {dir}
@@ -370,7 +372,7 @@ function REForm({ userID, edit = false, editData }) {
             </FormControl>
           </Grid>
           <Flex w="100%">
-            <Checkbox size="md" {...register("fur")} value={editData?.fur}>
+            <Checkbox size="md" {...register("fur")} defaultChecked={editData?.fur}>
               Bất động sản có bao gồm nội thất?
             </Checkbox>
           </Flex>

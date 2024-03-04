@@ -23,14 +23,22 @@ export const error = {
   login: "Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại",
   register: "Không thể đăng ký",
   notAuthen: "Vui lòng đăng nhập để truy cập",
+  notAuthor: "khong co quyen de thuc hien thao tac nay",
   // api re
-  cantCreate:'khong the tao bai dang luc nay, vui long thu lai sau',
+  cantCreate: "khong the tao bai dang luc nay, vui long thu lai sau",
   cantUpdate: "Không thể cập nhật bài đăng",
   cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật",
   cantDelete: "Không thể xoá bài đăng",
   cantFindToDelete: "Không tìm thấy bài đăng để xoá",
   apiGeocoding: "khong the tim thay dia chi, vui long cung cap cu the hon ?",
+  // general
   fetchError: "da xay ra loi trong khi lay du lieu, vui long thu lai",
+  // medias
+  mediaUpload: `khong the upload file `,
+  cantDeleteMedia: "xay ra loi khi xoa file, vui long thu lai",
+  // docs
+  cantInsertDocs: "khong the them giay to phap ly, vui long thu lai sau",
+  cantDeleteDocs: "khong the xoa docs, vui long thu lai",
 };
 
 export const success = {
@@ -85,5 +93,20 @@ export const reform = {
 };
 
 export const newsForm = {
+  // form errors
+
+  // submit errors
+
+  // dialog
+  dialogTitle: "Discard Changes?",
+  dialogMessage:
+    "Are you sure you want to discard? You will lose everything you're entered so far if you leave now",
+  // content
   imgUrl: "Paste your image url here",
+
+  // actions
+  submit: "submit",
+  save: "save",
+  creating: "Đang tạo",
+  saving: "Đang lưu",
 };
