@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Button,
+  VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
@@ -19,14 +20,13 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
   const limit = useRef(1);
   const bg = useColorModeValue("gray.100", "#1d1d1d");
   const borderColor = useColorModeValue("gray.300", "#ffffff29");
-
+console.log(files);
   // onDrop callback
   const onDrop = useCallback(
     (acceptedFiles) => {
       setError(false);
 
       limit.current = 1 - files.length;
-
       const mapped = acceptedFiles.map((file) => {
         limit.current--;
         if (limit.current < 0) {
@@ -47,14 +47,24 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
     [files, setFiles, setValue],
   );
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { fileRejections, getRootProps, getInputProps } = useDropzone({
     accept: {
-      "image/*": [],
+      "image/png": [],
+      "image/jpg": [],
+      "image/jpeg": [],
     },
     maxSize: MAX_SIZE_THUMBNAIL,
     maxFiles: LIMIT,
     onDrop: onDrop,
   });
+
+  useEffect(() => {
+    if (fileRejections.length > 0) {
+      setError(
+        `Không chấp nhận file với định dạng ${fileRejections[0].file.type}`,
+      );
+    }
+  }, [fileRejections]);
 
   // delete current thumb
   function handleDelete() {
@@ -110,15 +120,16 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
         })}
       >
         <input {...getInputProps({ onChange })} />
-        {!error ? (
-          <Text fontSize="sm" color="gray.500">
-            {newsForm.helperMedia}
-          </Text>
-        ) : (
-          <Text fontSize="sm" color="red.500">
-            {error}
-          </Text>
-        )}
+        <VStack fontSize="sm" color="gray.500">
+          {!error ? (
+            <Text>{newsForm.helperMedia}</Text>
+          ) : (
+            <Text fontSize="sm" color="red.500">
+              {error}
+            </Text>
+          )}
+          <Text>{newsForm.acceptFiles}</Text>
+        </VStack>
       </Box>
       <Flex gap={1} wrap="wrap" my={3}>
         {thumbnail}

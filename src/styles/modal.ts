@@ -13,6 +13,11 @@ const baseStyle = definePartsStyle({
   },
 });
 
+const sizes = {
+  six: definePartsStyle({ dialog: { maxW: "var(--chakra-sizes-6xl)" } }),
+};
+
 export const modalTheme = defineMultiStyleConfig({
   baseStyle,
+  sizes,
 });

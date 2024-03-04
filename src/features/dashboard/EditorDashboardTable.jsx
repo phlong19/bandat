@@ -1,6 +1,11 @@
 import { useState } from "react";
-import { useDisclosure } from "@chakra-ui/react";
-import { Center, Spinner } from "@chakra-ui/react";
+import {
+  useDisclosure,
+  ModalOverlay,
+  Modal,
+  ModalBody,
+  Spinner,
+} from "@chakra-ui/react";
 
 import NewsFormModal from "../form/news/NewsFormModal";
 import ChakraTable from "../table/ChakraTable";
@@ -16,14 +21,6 @@ function EditorDashboardTable({ data, count, level }) {
 
   const { data: newData, isLoading } = useGetSingleNews(slug);
 
-  if (isLoading) {
-    return (
-      <Center minH="80dvh">
-        <Spinner size="lg" thickness="4px" />
-      </Center>
-    );
-  }
-
   return (
     <ChakraTable
       data={data}
@@ -37,14 +34,23 @@ function EditorDashboardTable({ data, count, level }) {
         />
       )}
       primaryButton={
-        <NewsFormModal
-          editData={newData}
-          edit={Boolean(slug)}
-          isOpen={isOpen || Boolean(slug)}
-          onOpen={onOpen}
-          onClose={onClose}
-          setSlug={setSlug}
-        />
+        isLoading ? (
+          <Modal size="full">
+            <ModalOverlay />
+            <ModalBody>
+              <Spinner />
+            </ModalBody>
+          </Modal>
+        ) : (
+          <NewsFormModal
+            editData={newData}
+            edit={Boolean(slug)}
+            isOpen={isOpen || Boolean(slug)}
+            onOpen={onOpen}
+            onClose={onClose}
+            setSlug={setSlug}
+          />
+        )
       }
       title="Quản lý tin tức"
       count={count}

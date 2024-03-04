@@ -94,7 +94,7 @@ export const reform = {
   // media
   overFile: "Vượt quá số lượng giới hạn file tải lên",
   helperMedia: "Drag & drop file here, or click to select files",
-
+  acceptMedias: "chi chap nhan dinh dang png, jpg, jpeg hoac mp4",
   // alert
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",
 
@@ -104,6 +104,8 @@ export const reform = {
   creating: "Đang tạo",
   saving: "Đang lưu",
 };
+
+export const acceptFiles = "chi chap nhan dinh dang png, jpg, jpeg";
 
 export const newsForm = {
   // table has no news
@@ -118,8 +120,11 @@ export const newsForm = {
   maxSummary: `tom tat nhieu nhat ${maxSummary}`,
   minContent: `noi dung it nhat ${minContent}`,
   maxContent: `noi dung nhieu nhat ${maxContent}`,
+
+  // thumbnail
   overFile: "chi chap nhan 1 file thumbnail",
   helperMedia: "Drag & drop file here, or click to select files",
+  acceptFiles: "chi chap nhan dinh dang png, jpg, jpeg",
 
   // submit errors
 
@@ -129,7 +134,6 @@ export const newsForm = {
     "Are you sure you want to discard? You will lose everything you're entered so far if you leave now",
   // content
   imgUrl: "Paste your image url here",
-
   // actions
   submit: "submit",
   save: "save",

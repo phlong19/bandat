@@ -52,7 +52,7 @@ export async function getNew(slug) {
 export async function createNew(formData) {
   const { files, ...newsData } = formData;
 
-  const fileName = `News - ${v4()}${data.id}`;
+  const fileName = `News - ${v4()}`;
 
   const { data, error: uploadError } = await supabase.storage
     .from("news")

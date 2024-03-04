@@ -6,23 +6,26 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   Button,
   useDisclosure,
   Flex,
   Text,
+  Textarea,
   Badge,
   Input,
   FormControl,
   VStack,
   FormLabel,
+  FormHelperText,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import QuillEditor from "../QuillEditor";
 import { useForm, Controller } from "react-hook-form";
 import ChakraModalDialog from "../../../ui/ChakraModalDialog";
 import ThumbnailDropzone from "./ThumbnailDropzone";
-import { newsForm } from "../../../constants/message";
+import { acceptFiles, newsForm } from "../../../constants/message";
 import { useCreateNews } from "./useCreateNews";
+import { useAuth } from "../../../context/UserContext";
 import {
   maxContent,
   maxSummary,
@@ -40,6 +43,9 @@ function NewsFormModal({
   onClose,
   setSlug,
 }) {
+  const {
+    data: { id },
+  } = useAuth();
   const [files, setFiles] = useState([]);
   let badgeColor = editData?.status ? "green" : "red";
 
@@ -64,12 +70,12 @@ function NewsFormModal({
     },
   });
 
-  const { create, isCreating } = useCreateNews();
+  const { create, isCreating } = useCreateNews(onClose);
 
   function onSubmit(data) {
     console.log(data);
     if (!edit) {
-      // create()
+      create({ ...data, userID: id, status: false });
     }
   }
 
@@ -80,30 +86,21 @@ function NewsFormModal({
         px="2rem"
         colorScheme="green"
         variant="outline"
-        fontWeight={400}
+        borderWidth={2}
       >
         Viết bài
       </Button>
 
       <Modal
         isOpen={isOpen}
-        size="full"
+        size="six"
         closeOnEsc={false}
         closeOnOverlayClick={false}
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader pb={1}>
+          <ModalHeader pb={1} display="flex" justifyContent="space-between">
             {`${!edit ? "Tạo" : "Sửa"} bài viết tin tức`}
-          </ModalHeader>
-          <ModalCloseButton onClick={onOpenDialog} />
-
-          <ChakraModalDialog
-            isOpen={isOpenDialog}
-            onCloseDialog={onCloseDialog}
-            onClose={onClose}
-          />
-          <ModalBody px={12}>
             <Flex gap={3} my={2} align="center">
               <Text fontSize="sm" fontWeight="700">
                 Trạng thái:
@@ -118,13 +115,21 @@ function NewsFormModal({
                 {editData?.status ? "Đã duyệt" : "Chưa duyệt"}
               </Badge>
             </Flex>
+          </ModalHeader>
 
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="mx-auto max-w-[1500px]"
-            >
+          <ChakraModalDialog
+            isOpen={isOpenDialog}
+            onCloseDialog={onCloseDialog}
+            onClose={() => {
+              setValue("files", []);
+              setFiles([]);
+              onClose();
+            }}
+          />
+          <ModalBody px={7}>
+            <form onSubmit={handleSubmit(onSubmit)} id="form">
               <VStack gap={3} w="100%">
-                <FormControl isRequired>
+                <FormControl isRequired isInvalid={errors.title}>
                   <FormLabel>Tiêu đề</FormLabel>
                   <Input
                     {...register("title", {
@@ -139,10 +144,13 @@ function NewsFormModal({
                       },
                     })}
                   />
+                  {errors.title && (
+                    <FormErrorMessage>{errors.title.message}</FormErrorMessage>
+                  )}
                 </FormControl>
-                <FormControl isRequired>
+                <FormControl isRequired isInvalid={errors.summary}>
                   <FormLabel>Tóm tắt</FormLabel>
-                  <Input
+                  <Textarea
                     {...register("summary", {
                       required: newsForm.requiredMessage,
                       minLength: {
@@ -155,9 +163,19 @@ function NewsFormModal({
                       },
                     })}
                   />
+                  {errors.summary && (
+                    <FormErrorMessage>
+                      {errors.summary.message}
+                    </FormErrorMessage>
+                  )}
                 </FormControl>
-                <FormControl isRequired>
+                <FormControl isRequired isInvalid={errors.content}>
                   <FormLabel>Nội dung bài</FormLabel>
+                  {errors.content && (
+                    <FormErrorMessage mb={2}>
+                      {errors.content.message}
+                    </FormErrorMessage>
+                  )}
                   <Controller
                     name="content"
                     control={control}
@@ -182,8 +200,14 @@ function NewsFormModal({
                 </FormControl>
 
                 {/* thumbnail */}
-                <FormControl isRequired>
+                <FormControl isRequired isInvalid={errors.files}>
                   <FormLabel>Thumbnail</FormLabel>
+                  <FormHelperText mb={2}>{acceptFiles}</FormHelperText>
+                  {errors.files && (
+                    <FormErrorMessage mb={2}>
+                      {errors.files.message}
+                    </FormErrorMessage>
+                  )}
                   <Controller
                     name="files"
                     control={control}
@@ -201,9 +225,9 @@ function NewsFormModal({
             </form>
           </ModalBody>
 
-          <ModalFooter justifyContent="end" mr={12}>
-            <Flex justify={"flex-end"} align="center" gap={3}>
-              <Button colorScheme="blue" mr={3} onClick={onOpenDialog}>
+          <ModalFooter justifyContent="end">
+            <Flex justify="flex-end" align="center" gap={3}>
+              <Button colorScheme="blue" variant="ghost" onClick={onOpenDialog}>
                 Close
               </Button>
               <ChakraModalDialog
@@ -211,8 +235,10 @@ function NewsFormModal({
                 onCloseDialog={onCloseDialog}
                 onClose={onClose}
                 setSlug={setSlug}
+                // fix clear img on close
               />
               <Button
+                form="form"
                 // isLoading={isCreating || isUpdating}
                 isLoading={isCreating}
                 loadingText={!edit ? newsForm.creating : newsForm.saving}
