@@ -110,7 +110,7 @@ export async function createPost(newData) {
   const { files, docs, reType, ...reData } = newData;
 
   // get re type id, ex: nha-rieng = 1
-  const { data: typeID, error } = await supabase
+  const { data: REType, error } = await supabase
     .from("REType")
     .select("*")
     .eq("type", reType)
@@ -119,6 +119,8 @@ export async function createPost(newData) {
   if (error) {
     throw new Error(errorMessage.fetchError);
   }
+
+  const { REType_ID: typeID } = REType;
 
   const fullAddress = await getFullAddress(
     reData.cityID,
@@ -130,15 +132,12 @@ export async function createPost(newData) {
   const { lat, long } = await getLatLong(fullAddress);
 
   // post
-  const {
-    data: { id: postID },
-    error: createError,
-  } = await supabase
+  const { data, error: createError } = await supabase
     .from("REDirectory")
     .insert([
       {
         ...reData,
-        REType_ID: typeID.REType_ID,
+        REType_ID: typeID,
         lat,
         long,
       },
@@ -150,6 +149,8 @@ export async function createPost(newData) {
     console.log(createError);
     throw new Error(errorMessage.cantCreate);
   }
+
+  const { id: postID } = data;
 
   // handle media
   files.images.forEach((file) => uploadMedia(file, postID));
