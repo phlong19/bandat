@@ -23,7 +23,7 @@ function Action({ onClose }) {
   }
 
   return (
-    <div className="flex items-center justify-stretch gap-5">
+    <div className="flex items-center justify-stretch">
       <ChakraPopover title="Tin đã lưu">
         <p>hi</p>
       </ChakraPopover>
@@ -31,10 +31,10 @@ function Action({ onClose }) {
       <ToggleTheme />
       {!isAuthenticated ? (
         <>
-          <Button to={"dang-nhap"} onClick={onClose} variant="light">
+          <Button to="dang-nhap" onClick={onClose} variant="light">
             Đăng nhập
           </Button>
-          <Button to={"dang-ky"} onClick={onClose} variant="light">
+          <Button to="dang-ky" onClick={onClose} variant="light">
             Đăng ký
           </Button>
         </>

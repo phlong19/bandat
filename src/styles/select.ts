@@ -11,6 +11,10 @@ const baseStyle = definePartsStyle({
         borderColor: "secondary",
         boxShadow: "0 0 0 1px var(--chakra-colors-secondary)",
       },
+      _light: {
+        borderColor: "primary",
+        boxShadow: "0 0 0 1px var(--chakra-colors-primary)",
+      },
     },
   },
 });

@@ -6,8 +6,12 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 const baseStyle = definePartsStyle({
   field: {
-    _dark: {
-      _focus: {
+    _focus: {
+      _light: {
+        borderColor: "primary    ",
+        boxShadow: "0 0 0 1px var(--chakra-colors-primary)",
+      },
+      _dark: {
         borderColor: "secondary",
         boxShadow: "0 0 0 1px var(--chakra-colors-secondary)",
       },

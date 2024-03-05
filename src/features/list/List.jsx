@@ -17,7 +17,7 @@ import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
 import { useMapView } from "../../context/MapViewContext";
 
 function List({ purType }) {
-  const { data, isLoading } = useListingPage(purType);
+  const { data, count, isLoading } = useListingPage(purType);
   const { mapView, setMapView } = useMapView();
 
   const listAnimationControl = useAnimation();
@@ -66,8 +66,6 @@ function List({ purType }) {
     return <SpinnerFullPage />;
   }
 
-  const list = data.data || [];
-
   return (
     <div className="relative h-full min-h-[80%] justify-center px-2.5 sm:px-4 lg:flex lg:gap-2">
       <AnimatePresence presenceAffectsLayout>
@@ -87,7 +85,7 @@ function List({ purType }) {
           <div className="flex items-center justify-between">
             {/* counter */}
             <span className="inline-block text-base lg:text-lg">
-              Có <span>{formatNumber(list.length)}</span> bất động sản.
+              Có <span>{formatNumber(count)}</span> bất động sản.
             </span>
 
             {/* toggle grid & map views */}
@@ -109,11 +107,11 @@ function List({ purType }) {
                 : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-5"
             } mt-3 space-y-4 lg:grid lg:space-y-0`}
           >
-            {list.map((item) => (
+            {data.map((item) => (
               <ListItem key={item.id} data={item} purType={purType} />
             ))}
           </motion.div>
-          <ChakraTablePagination count={data.count} />
+          <ChakraTablePagination count={count} />
         </motion.div>
 
         {/* map, mobile hidden */}
@@ -122,7 +120,7 @@ function List({ purType }) {
           initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
           animate={mapAnimationControl}
         >
-          <Map data={list} purType={purType} />
+          <Map data={data} purType={purType} />
         </motion.div>
       </AnimatePresence>
     </div>

@@ -18,12 +18,14 @@ import { deleteMedia, uploadMedia } from "./apiMedia";
 import { error as errorMessage } from "../constants/message";
 
 export async function getList(type, citeria, page) {
+  const from = (page - 1) * LIMIT_PER_PAGE;
+  const to = from + LIMIT_PER_PAGE - 1;
   // query
   // re type
   // area
   // address
 
-  let query = supabase
+  const { data, count, error } = await supabase
     .from("REDirectory")
     .select(
       `*,
@@ -39,19 +41,15 @@ export async function getList(type, citeria, page) {
     .eq("purType", type)
     .eq("images.isImage", true)
     .eq("status", SELLING_STATUS)
-    .order("created_at", { ascending: false });
-  // for pagination
-  if (page) {
-    const from = (page - 1) * LIMIT_PER_PAGE;
-    const to = from + LIMIT_PER_PAGE - 1;
-    query = query.range(from, to);
-  }
-  const { data, count, error } = await query;
+    .order("created_at", { ascending: false })
+    .limit(LIMIT_PER_PAGE)
+    .range(from, to);
 
   if (error) {
     console.log(error);
     throw new Error(errorMessage.fetchError);
   }
+
   return { data, count };
 }
 

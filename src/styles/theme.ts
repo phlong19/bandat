@@ -15,7 +15,7 @@ import { numberInputTheme } from "./numberInput";
 import { modalTheme } from "./modal";
 
 const colors = {
-  primary: "#31572C",
+  primary: "#79B473",
   "prim-light": "#babff1",
   secondary: "#79B473",
   "sec-light": "#ffe5a7",
