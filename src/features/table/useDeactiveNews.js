@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { success } from "../../constants/message";
-import { deactivePost } from "../../services/apiRE";
+import { deactiveNews } from "../../services/apiNews";
 
-export function useDeactivePost() {
+export function useDeactiveNews() {
   const queryClient = useQueryClient();
 
   const { mutate: deactive } = useMutation({
-    mutationFn: (id) => deactivePost(id),
+    mutationFn: (id) => deactiveNews(id),
     onSuccess: () => {
-      toast.success(success.deactivePost);
-      queryClient.invalidateQueries({ queryKey: ["REList"] });
+      toast.success(success.deactiveNews);
+      queryClient.invalidateQueries({ queryKey: ["NewsList"] });
     },
     onError: (err) => {
       toast.error(err.message);

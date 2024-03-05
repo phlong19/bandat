@@ -20,7 +20,7 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
   const limit = useRef(1);
   const bg = useColorModeValue("gray.100", "#1d1d1d");
   const borderColor = useColorModeValue("gray.300", "#ffffff29");
-console.log(files);
+ 
   // onDrop callback
   const onDrop = useCallback(
     (acceptedFiles) => {
@@ -77,7 +77,7 @@ console.log(files);
   const thumbnail = files.length > 0 && (
     <Flex className="group" pos="relative">
       <Image
-        src={files[0]?.preview || files[0]?.mediaLink}
+        src={files?.[0]?.preview || files?.[0]}
         alt="Preview"
         boxSize="160px"
         objectFit="cover"

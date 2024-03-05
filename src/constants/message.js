@@ -12,7 +12,6 @@ import {
   minTitle,
 } from "./anyVariables";
 
-// nen de may cau
 export const homeText = [
   "Find your dream house",
   1000,
@@ -24,6 +23,9 @@ export const homeText = [
   1000,
 ];
 
+export const emptyREList =
+  "ban chua dang bai viet moi nao, khong co dat de ban a? ban nha di";
+
 export const error = {
   // general
   fetchError: "da xay ra loi trong khi lay du lieu, vui long thu lai",
@@ -34,13 +36,14 @@ export const error = {
   notAuthor: "khong co quyen de thuc hien thao tac nay",
   // api re
   cantCreate: "khong the tao bai dang luc nay, vui long thu lai sau",
-  cantUpdate: "Không thể cập nhật bài đăng",
-  cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật",
-  cantDelete: "Không thể xoá bài đăng",
-  cantFindToDelete: "Không tìm thấy bài đăng để xoá",
+  cantUpdate: "Không thể cập nhật bài đăng,vui long",
+  cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật, vui long",
+  cantDelete: "Không thể xoá bài đăng, vui long",
+  cantFindToDelete: "Không tìm thấy bài đăng để xoá, vui long",
   apiGeocoding: "khong the tim thay dia chi, vui long cung cap cu the hon ?",
-  // api news
+  // api news, re-use some of api re
   cantCreateNews: "khong the tao bai viet tin tuc",
+  newsExisted: "da ton tai bai viet voi tieu de nay?",
 
   // medias
   mediaUpload: `khong the upload file `,
@@ -68,6 +71,10 @@ export const success = {
 
   // api news
   createNews: "tao bai viet tin tuc thanh cong",
+  updateNews: "cap nhat ok kh loi gi",
+  approveNews: "duyet bai viet tin tuc thanh cong",
+  deleteNews: "xoa bai ok",
+  deactiveNews: "go tin tuc ok",
 };
 
 export const reform = {
@@ -105,8 +112,6 @@ export const reform = {
   saving: "Đang lưu",
 };
 
-export const acceptFiles = "chi chap nhan dinh dang png, jpg, jpeg";
-
 export const newsForm = {
   // table has no news
   empty: "khong co bai viet tin tuc nao o day",
@@ -127,6 +132,7 @@ export const newsForm = {
   acceptFiles: "chi chap nhan dinh dang png, jpg, jpeg",
 
   // submit errors
+  missingThumb: "thieu thumbnail",
 
   // dialog
   dialogTitle: "Discard Changes?",

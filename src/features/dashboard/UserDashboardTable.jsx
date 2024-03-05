@@ -7,6 +7,7 @@ import TableRERow from "../table/TableRERow";
 import { reCaptions } from "../../constants/anyVariables";
 import EmptyTable from "../../ui/EmptyTable";
 import { useGetFullList } from "./useGetFullList";
+import { emptyREList } from "../../constants/message";
 
 function UserDashboardTable({ id, level }) {
   const { reList, count, isLoading } = useGetFullList(id);
@@ -21,9 +22,9 @@ function UserDashboardTable({ id, level }) {
 
   if (reList.length < 1) {
     return (
-      <EmptyTable message="ban chua dang bai viet moi nao, khong co dat de ban a? ban nha di">
+      <EmptyTable message={emptyREList}>
         <Link to="/dang-tin">
-          <Button>bai viet moi</Button>
+          <Button>Tạo bài đăng</Button>
         </Link>
       </EmptyTable>
     );
@@ -35,7 +36,7 @@ function UserDashboardTable({ id, level }) {
       data={reList}
       title="Quản lý bài viết"
       render={(item) => (
-        <TableRERow key={Math.random()} data={item} level={level} userID={id} />
+        <TableRERow key={item.id} data={item} level={level} userID={id} />
       )}
       primaryButton={
         <Link to="/dang-tin">

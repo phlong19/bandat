@@ -16,15 +16,16 @@ import {
   FormControl,
   VStack,
   FormLabel,
-  FormHelperText,
   FormErrorMessage,
 } from "@chakra-ui/react";
+import slugify from "react-slugify";
 import QuillEditor from "../QuillEditor";
 import { useForm, Controller } from "react-hook-form";
 import ChakraModalDialog from "../../../ui/ChakraModalDialog";
 import ThumbnailDropzone from "./ThumbnailDropzone";
-import { acceptFiles, newsForm } from "../../../constants/message";
+import { newsForm } from "../../../constants/message";
 import { useCreateNews } from "./useCreateNews";
+import { useUpdateNews } from "./useUpdateNews";
 import { useAuth } from "../../../context/UserContext";
 import {
   maxContent,
@@ -45,9 +46,13 @@ function NewsFormModal({
 }) {
   const {
     data: { id },
+    level,
   } = useAuth();
-  const [files, setFiles] = useState([]);
   let badgeColor = editData?.status ? "green" : "red";
+
+  // load thumbnail when edit
+  const existedFiles = editData?.thumbnail ? [editData.thumbnail] : [];
+  const [files, setFiles] = useState([...existedFiles]);
 
   // dialog inside form
   const {
@@ -61,21 +66,50 @@ function NewsFormModal({
     register,
     formState: { errors },
     setValue,
+    setError,
     handleSubmit,
   } = useForm({
     defaultValues: {
       title: editData?.title,
       summary: editData?.summary,
       content: editData?.content,
+      files: [...existedFiles],
     },
   });
 
-  const { create, isCreating } = useCreateNews(onClose);
+  const { create, isCreating } = useCreateNews(handleClose);
+  const { update, isUpdating } = useUpdateNews(handleClose);
+
+  function handleClose() {
+    setSlug("");
+    setValue("files", []);
+    setFiles([]);
+    onClose();
+  }
 
   function onSubmit(data) {
-    console.log(data);
+    if (!data?.files || data.files.length < 1) {
+      return setError("files", {
+        type: "required",
+        message: newsForm.missingThumb,
+      });
+    }
+
     if (!edit) {
-      create({ ...data, userID: id, status: false });
+      create({ ...data, userID: id, status: false, slug: slugify(data.title) });
+    } else {
+      update({
+        ...data,
+        postID: editData.id,
+        // author & current editing user
+        authorID: editData.userID,
+        userID: id,
+        level,
+        // old thumb
+        oldFiles: existedFiles,
+        status: false,
+        slug: slugify(data.title),
+      });
     }
   }
 
@@ -117,15 +151,6 @@ function NewsFormModal({
             </Flex>
           </ModalHeader>
 
-          <ChakraModalDialog
-            isOpen={isOpenDialog}
-            onCloseDialog={onCloseDialog}
-            onClose={() => {
-              setValue("files", []);
-              setFiles([]);
-              onClose();
-            }}
-          />
           <ModalBody px={7}>
             <form onSubmit={handleSubmit(onSubmit)} id="form">
               <VStack gap={3} w="100%">
@@ -202,7 +227,6 @@ function NewsFormModal({
                 {/* thumbnail */}
                 <FormControl isRequired isInvalid={errors.files}>
                   <FormLabel>Thumbnail</FormLabel>
-                  <FormHelperText mb={2}>{acceptFiles}</FormHelperText>
                   {errors.files && (
                     <FormErrorMessage mb={2}>
                       {errors.files.message}
@@ -233,14 +257,11 @@ function NewsFormModal({
               <ChakraModalDialog
                 isOpen={isOpenDialog}
                 onCloseDialog={onCloseDialog}
-                onClose={onClose}
-                setSlug={setSlug}
-                // fix clear img on close
+                onClose={handleClose}
               />
               <Button
                 form="form"
-                // isLoading={isCreating || isUpdating}
-                isLoading={isCreating}
+                isLoading={isCreating || isUpdating}
                 loadingText={!edit ? newsForm.creating : newsForm.saving}
                 right={0}
                 borderWidth={2}

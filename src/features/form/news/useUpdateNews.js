@@ -1,17 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { createNew } from "../../../services/apiNews";
+import { updateNews } from "../../../services/apiNews";
 import { success } from "../../../constants/message";
 
-export function useCreateNews(onClose) {
+export function useUpdateNews(onClose) {
   const queryClient = useQueryClient();
 
-  const { mutate: create, isPending: isCreating } = useMutation({
-    mutationFn: (data) => createNew(data),
+  const { mutate: update, isPending: isUpdating } = useMutation({
+    mutationFn: (data) => updateNews(data),
     onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ["SingleNews"] });
       queryClient.invalidateQueries({ queryKey: ["NewsList"] });
-      toast.success(success.createNews);
-      onClose()
+      toast.success(success.updateNews);
+      onClose();
     },
     onError: (err) => {
       console.log(err);
@@ -19,5 +20,5 @@ export function useCreateNews(onClose) {
     },
   });
 
-  return { create, isCreating };
+  return { update, isUpdating };
 }

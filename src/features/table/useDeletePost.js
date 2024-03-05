@@ -7,7 +7,7 @@ export function useDeletePost() {
   const queryClient = useQueryClient();
 
   const { mutate: deletePost } = useMutation({
-    mutationFn: (id) => deleteAPI(id),
+    mutationFn: (postID, level, userID) => deleteAPI(postID, level, userID),
     onSuccess: () => {
       toast.success(success.deletePost);
       queryClient.invalidateQueries({ queryKey: ["REList"] });

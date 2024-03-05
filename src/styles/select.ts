@@ -9,7 +9,7 @@ const baseStyle = definePartsStyle({
     _focus: {
       _dark: {
         borderColor: "secondary",
-        boxShadow: "0 0 0 1px #ffe5a7",
+        boxShadow: "0 0 0 1px var(--chakra-colors-secondary)",
       },
     },
   },

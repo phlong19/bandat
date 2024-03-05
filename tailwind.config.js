@@ -8,11 +8,9 @@ export default {
         light: "#f6f6f6",
         dark: "#2b2b2b",
         darker: "#202020",
-        primary: "#3949AB",
-        // primary: "#1a237e",
+        primary: "#31572C",
+        secondary: "#79B473",
         "prim-light": "#babff1",
-        secondary: "#FFCC80",
-        // secondary: "#ffb60a",
         "sec-light": "#ffe5a7",
       },
       fontFamily: {

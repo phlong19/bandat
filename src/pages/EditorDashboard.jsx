@@ -7,7 +7,6 @@ import { useGetFullNewsList } from "../features/dashboard/useGetFullNewsList";
 function EditorDashboard() {
   const {
     data: { id },
-    level,
   } = useAuth();
   const { data, count, isLoading } = useGetFullNewsList(id);
 
@@ -19,7 +18,7 @@ function EditorDashboard() {
     );
   }
 
-  return <EditorDashboardTable data={data} level={level} count={count} />;
+  return <EditorDashboardTable data={data} count={count} />;
 }
 
 export default EditorDashboard;

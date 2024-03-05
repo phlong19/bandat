@@ -11,23 +11,39 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 
-import { PiDotsSixVerticalBold, PiUpload } from "react-icons/pi";
+import ChakraMenuItemDialog from "../../ui/ChakraMenuItemDialog";
+import { PiDotsSixVerticalBold, PiDownload, PiUpload } from "react-icons/pi";
 import { TbEyeCheck } from "react-icons/tb";
 import { HiOutlineTrash } from "react-icons/hi";
 
 import { ADMIN_LEVEL } from "../../constants/anyVariables";
 import { formatDate } from "../../utils/helper";
 
-function TableNewRow({ data, level, setSlug }) {
+import { useApproveNews } from "./useApproveNews";
+import { useDeactiveNews } from "./useDeactiveNews";
+import { useDeleteNews } from "./useDeleteNews";
+import { useAuth } from "../../context/UserContext";
+
+function TableNewRow({ data, setSlug }) {
+  const {
+    data: { id: userID },
+    level,
+  } = useAuth();
+
   const {
     id,
     created_at,
+    userID: authorID,
     author: { fullName, avatar },
     title,
     slug,
     summary,
     status,
   } = data;
+
+  const { approved } = useApproveNews();
+  const { deactive } = useDeactiveNews();
+  const { deleted } = useDeleteNews();
 
   return (
     <Tr className="group">
@@ -79,19 +95,34 @@ function TableNewRow({ data, level, setSlug }) {
           </MenuButton>
           <MenuList fontSize="medium">
             {level >= ADMIN_LEVEL && !status && (
-              <MenuItem gap={3} color="blue.600">
-                <PiUpload />
-                Duyệt bài nhanh
-              </MenuItem>
+              <ChakraMenuItemDialog
+                color="blue.600"
+                action="Duyệt bài nhanh"
+                icon={<PiUpload />}
+                onAction={() => approved(id)}
+              />
+            )}
+            {/* must be admin or author to de-active news */}
+            {(level >= ADMIN_LEVEL || userID === authorID) && status && (
+              <ChakraMenuItemDialog
+                color="red.600"
+                action="Gỡ bài viết"
+                icon={<PiDownload />}
+                onAction={() => deactive(id)}
+                warning
+              />
             )}
             <MenuItem gap={3} color="green" onClick={() => setSlug(slug)}>
               <TbEyeCheck fontSize="20" />
               Xem / Sửa
             </MenuItem>
-            <MenuItem gap={3} color="red">
-              <HiOutlineTrash />
-              Xóa
-            </MenuItem>
+            <ChakraMenuItemDialog
+              color="red"
+              action="Xóa"
+              warning
+              icon={<HiOutlineTrash />}
+              onAction={() => deleted(id, level, userID)}
+            />
           </MenuList>
         </Menu>
       </Td>

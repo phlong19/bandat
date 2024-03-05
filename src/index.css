@@ -26,8 +26,8 @@ html[data-theme="light"] {
 html[data-theme="dark"] {
   --ql-fill-color: white;
   --ql-bg: #222;
-  --ql-color: #FFCC80;
-  --ql-color-action: #FFCC80;
+  --ql-color: #ffcc80;
+  --ql-color-action: #ffcc80;
 }
 
 body {
@@ -40,6 +40,9 @@ body {
 @layer components {
   .nav-link {
     @apply relative text-sm font-medium tracking-wide before:absolute before:-bottom-1 before:left-0 before:h-[2px] before:w-0 before:origin-left before:rounded before:bg-primary before:transition-all before:duration-500 before:ease-out before:content-[''] hover:before:w-full dark:before:bg-secondary sm:text-base;
+  }
+  .user-item {
+    @apply flex items-center justify-start gap-2 font-lexend text-base font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary;
   }
   .select {
     @apply relative m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded border border-solid border-prim-light bg-light bg-clip-padding px-3 py-1 text-base font-normal leading-[1.6] text-black outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-black focus:shadow-prim-light focus:outline-none dark:border-sec-light dark:bg-dark dark:text-white dark:placeholder:text-white dark:focus:border-secondary focus:dark:text-white dark:focus:shadow-sec-light;

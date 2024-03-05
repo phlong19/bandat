@@ -51,15 +51,19 @@ function FilesDropzone({
       vidLeft.current++;
     }
 
+    // if delete existed media
     if (!file?.isNew) {
       deleteMediasRef.current.push(file);
     }
 
-    const imgIndex = addImagesRef.current.findIndex((i) => i.id === file.id);
-    addImagesRef.current.splice(imgIndex, 1);
-    const vidIndex = addVideosRef.current.findIndex((i) => i.id === file.id);
-    addVideosRef.current.splice(vidIndex, 1);
-
+    // if delete just uploaded media
+    if(file?.isNew){
+      const imgIndex = addImagesRef.current.findIndex((i) => i.id === file.id);
+      addImagesRef.current.splice(imgIndex, 1);
+      const vidIndex = addVideosRef.current.findIndex((i) => i.id === file.id);
+      addVideosRef.current.splice(vidIndex, 1);
+    }
+      
     setError(false);
   }
 

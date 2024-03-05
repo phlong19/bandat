@@ -1,19 +1,20 @@
-import { Link } from "react-router-dom";
-import { Button, Flex } from "@chakra-ui/react";
+import { Link, NavLink } from "react-router-dom";
+import { Button, Flex, Text } from "@chakra-ui/react";
 
-import { FaRightToBracket, FaUserPlus } from "react-icons/fa6";
+import { FaDoorOpen, FaRightToBracket, FaUserPlus } from "react-icons/fa6";
 import Avatar from "./Avatar";
 import SpinnerFullPage from "./SpinnerFullPage";
-import Logout from "../features/auth/Logout";
 import MobileActionItem from "./MobileActionItem";
 
 import { mobileNavLinks } from "../constants/navlink";
 import { useAuth } from "../context/UserContext";
+import { useLogout } from "../features/auth/useLogout";
 
 const { base, authen } = mobileNavLinks;
 
 function MobileAction({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
+  const { logout } = useLogout();
 
   if (isLoading) {
     return <SpinnerFullPage />;
@@ -52,7 +53,7 @@ function MobileAction({ onClose }) {
           pb={3}
         >
           <Avatar src={data.avatar} fullName={data.fullName} mobile />
-          <Logout />
+          <Text mt={2}>{data.fullName}</Text>
         </Flex>
       )}
 
@@ -79,6 +80,17 @@ function MobileAction({ onClose }) {
             />
           </li>
         ))}
+        <li>
+          <NavLink
+            className="flex items-center gap-4 py-3 pl-4"
+            onClick={logout}
+          >
+            <span>
+              <FaDoorOpen className="text-xl" />
+            </span>
+            Đăng xuất
+          </NavLink>
+        </li>
       </ul>
     </div>
   );

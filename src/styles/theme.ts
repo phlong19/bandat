@@ -1,4 +1,9 @@
-import { extendTheme, defineStyle, defineStyleConfig } from "@chakra-ui/react";
+import {
+  extendTheme,
+  defineStyle,
+  defineStyleConfig,
+  withDefaultColorScheme,
+} from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import { menuTheme } from "./menu";
 import { cardTheme } from "./card";
@@ -10,11 +15,9 @@ import { numberInputTheme } from "./numberInput";
 import { modalTheme } from "./modal";
 
 const colors = {
-  // primary: "#1a237e",
-  primary: "#3949AB",
+  primary: "#31572C",
   "prim-light": "#babff1",
-  secondary: "#FFCC80",
-  // secondary: "#ffb60a",
+  secondary: "#79B473",
   "sec-light": "#ffe5a7",
   light: "#f6f6f6",
   dark: "#2b2b2b",
@@ -66,7 +69,6 @@ export const theme = extendTheme({
         color: mode("black", "white")(props),
         bg: mode("white", "darker")(props),
         lineHeight: "base",
-        colorScheme: "green",
       },
     }),
   },

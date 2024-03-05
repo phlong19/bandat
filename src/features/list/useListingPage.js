@@ -9,7 +9,7 @@ export function useListingPage(purType) {
   const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["listing-page", purType, type],
+    queryKey: ["REList-user", purType, type],
     queryFn: () => getList(purType, type, page),
   });
 

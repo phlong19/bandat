@@ -12,7 +12,7 @@ function MobileActionItem({ to, title, onClose, icon }) {
           : "flex items-center gap-4 py-3 pl-4"
       }
     >
-      <span className="text-2xl">
+      <span className="text-xl">
         <DynamicFaIcon name={icon} />
       </span>
       <span>{title}</span>

@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { newsForm } from "../constants/message";
 
-function ChakraModalDialog({ isOpen, onClose, onCloseDialog, setSlug }) {
+function ChakraModalDialog({ isOpen, onClose, onCloseDialog }) {
   const cancelRef = useRef();
   const queryClient = useQueryClient();
 
@@ -25,7 +25,6 @@ function ChakraModalDialog({ isOpen, onClose, onCloseDialog, setSlug }) {
       isCentered
     >
       <AlertDialogOverlay />
-
       <AlertDialogContent>
         <AlertDialogHeader>{newsForm.dialogTitle}</AlertDialogHeader>
         <AlertDialogCloseButton />
@@ -38,7 +37,6 @@ function ChakraModalDialog({ isOpen, onClose, onCloseDialog, setSlug }) {
             colorScheme="red"
             ml={3}
             onClick={() => {
-              setSlug("");
               queryClient.removeQueries({ queryKey: ["SingleNews"] });
               onCloseDialog();
               onClose();

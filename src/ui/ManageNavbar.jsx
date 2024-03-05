@@ -68,7 +68,7 @@ function ManageNavbar() {
           <Button
             variant="fill"
             size="sm"
-            fontSize="20"
+            fontSize="16"
             onClick={toggleDarkMode}
           >
             {isDarkMode ? <BsMoonStars /> : <BsSun />}

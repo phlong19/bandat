@@ -5,11 +5,11 @@ import slugify from "react-slugify";
 
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import BreadCrumb from "../ui/BreadCrumb";
+import GoBackButton from "../ui/GoBackButton";
 
 import { navLinks } from "../constants/navlink";
 import { newsdetails } from "../data/newsdetails";
 import { city } from "../data/city";
-import { news } from "../data/news";
 
 function NewDetails() {
   const [show1, setShow1] = useState(false);
@@ -26,6 +26,7 @@ function NewDetails() {
   return (
     <div className="bg-white dark:bg-dark ">
       <BreadCrumb Hline={newsdetails.at(0).Hline}></BreadCrumb>
+      <GoBackButton />
       <div className="mt-5">
         {newsdetails.map((item, i) => (
           <div key={i} className="text-center font-lexend text-3xl font-bold ">

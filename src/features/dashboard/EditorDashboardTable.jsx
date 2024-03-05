@@ -14,7 +14,7 @@ import TableNewRow from "../table/TableNewRow";
 import { newsCaptions } from "../../constants/anyVariables";
 import { useGetSingleNews } from "./useGetSingleNews";
 
-function EditorDashboardTable({ data, count, level }) {
+function EditorDashboardTable({ data, count }) {
   const [slug, setSlug] = useState("");
   // form modal
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,12 +26,7 @@ function EditorDashboardTable({ data, count, level }) {
       data={data}
       captions={newsCaptions}
       render={(item) => (
-        <TableNewRow
-          data={item}
-          level={level}
-          key={item.id}
-          setSlug={setSlug}
-        />
+        <TableNewRow data={item} key={item.id} setSlug={setSlug} />
       )}
       primaryButton={
         isLoading ? (
@@ -49,6 +44,7 @@ function EditorDashboardTable({ data, count, level }) {
             onOpen={onOpen}
             onClose={onClose}
             setSlug={setSlug}
+            key={newData?.id || "new"}
           />
         )
       }
