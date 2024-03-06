@@ -9,7 +9,7 @@ function MobileActionItem({ to, title, onClose, icon }) {
       className={({ isActive }) =>
         isActive
           ? "flex items-center gap-4 py-3 pl-4 text-primary dark:text-secondary"
-          : "flex items-center gap-4 py-3 pl-4"
+          : "flex items-center gap-4 py-3 pl-4 transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
       }
     >
       <span className="text-xl">

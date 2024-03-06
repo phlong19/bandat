@@ -75,7 +75,7 @@ function List({ purType }) {
             mapView ? "overflow-y-auto" : ""
           }`}
         >
-          <div className="pt-4">
+          <div className="pt-4 md:pt-8">
             <Searchbar />
           </div>
 
@@ -95,6 +95,7 @@ function List({ purType }) {
                 onChange={() => setMapView((s) => !s)}
                 checked={mapView}
                 key={purType}
+                colorScheme="green"
               />
             </div>
           </div>

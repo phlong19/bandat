@@ -15,7 +15,7 @@ function UserDashboardTable({ id, level }) {
   if (isLoading) {
     return (
       <Center minH="80dvh">
-        <Spinner size="lg" thickness="4px" />
+        <Spinner />
       </Center>
     );
   }
@@ -40,7 +40,7 @@ function UserDashboardTable({ id, level }) {
       )}
       primaryButton={
         <Link to="/dang-tin">
-          <Button>Tạo bài đăng</Button>
+          <Button variant='outline' colorScheme="green" borderWidth={2}>Tạo bài đăng</Button>
         </Link>
       }
       count={count}

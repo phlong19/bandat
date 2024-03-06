@@ -40,10 +40,10 @@ function Searchbar() {
     query: "(min-width: 640px)",
   });
 
-  const bg = useColorModeValue("darker", "white");
+  const bg = useColorModeValue("white", "black");
   const bgAcc = useColorModeValue("white", "darker");
   const bgBtn = useColorModeValue("primary", "secondary");
-  const color = useColorModeValue("white", "black");
+  const color = useColorModeValue("darker", "light");
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
@@ -84,7 +84,7 @@ function Searchbar() {
         <AccordionItem border="none" className="mt-1.5 md:mt-0">
           <AccordionButton
             mt="3px"
-            className="max-w-28 text-white dark:text-dark md:max-w-36"
+            className="max-w-28 text-dark dark:text-white md:max-w-36"
             gap={2.5}
             justifyContent="center"
           >
@@ -206,10 +206,14 @@ function Searchbar() {
               <IconButton bg={bgBtn} color={color} icon={<BiSearchAlt />} />
             ) : (
               <Button
-                bg={bgBtn}
+                fontSize="sm"
+                bg={bg}
                 color={color}
+                _hover={{
+                  _dark: { bg: "sec-light", color: "dark" },
+                  _light: { bg: "prim-light", color: "darker" },
+                }}
                 transitionDuration="300ms"
-                _hover={{ opacity: 0.9 }}
                 px={{ sm: 5 }}
                 gap={1.5}
               >

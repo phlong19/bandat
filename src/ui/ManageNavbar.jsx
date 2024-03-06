@@ -8,6 +8,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import { HiOutlineCog8Tooth } from "react-icons/hi2";
@@ -24,6 +25,7 @@ function ManageNavbar() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { data } = useAuth();
   const { logout } = useLogout();
+  const bg = useColorModeValue("white", "dark");
 
   return (
     <Flex
@@ -31,6 +33,7 @@ function ManageNavbar() {
       direction="column"
       align="center"
       boxShadow="2xl"
+      bg={bg}
     >
       <ManageLinks isDarkMode={isDarkMode} level={data.level} />
       <Flex

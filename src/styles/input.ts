@@ -8,7 +8,7 @@ const baseStyle = definePartsStyle({
   field: {
     _focus: {
       _light: {
-        borderColor: "primary    ",
+        borderColor: "primary",
         boxShadow: "0 0 0 1px var(--chakra-colors-primary)",
       },
       _dark: {

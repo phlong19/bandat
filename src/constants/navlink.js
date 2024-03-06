@@ -63,10 +63,10 @@ export const mobileNavLinks = {
     { title: "Dự án", icon: "City", to: "du-an" },
     { title: "Tin tức", icon: "Newspaper", to: "tin-tuc" },
     // later
-    { title: "Góp ý - Báo lỗi", icon: "AddressBook", to: "hom-thu-gop-y" },
-    { title: "Giới thiệu về chúng tôi", icon: "AddressBook", to: "danh-ba" },
-    { title: "Liên hệ", icon: "AddressBook", to: "danh-ba" },
-    //
+    { title: "Góp ý - Báo lỗi", icon: "EnvelopeCircleCheck", to: "hom-thu-gop-y" },
+    { title: "Giới thiệu về chúng tôi", icon: "UsersLine", to: "danh-ba" },
+    { title: "Liên hệ", icon: "Headset", to: "danh-ba" },
+    // TODO
   ],
   authen: [
     {

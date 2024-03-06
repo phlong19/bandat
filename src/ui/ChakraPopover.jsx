@@ -20,7 +20,7 @@ function ChakraPopover({
   lazy = false,
 }) {
   const CustomButton = forwardRef((props, ref) => (
-    <Button {...props} ref={ref} variant="ghost">
+    <Button {...props} ref={ref} variant="ghost" colorScheme="green" fontSize='14'>
       <FaRegHeart />
     </Button>
   ));

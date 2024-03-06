@@ -20,7 +20,7 @@ function Bookmark() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={handleClick}
-      className={`${!mapView ? "p-2.5" : "p-1.5"} rounded-md bg-light`}
+      className={`${!mapView ? "p-2" : "p-1.5"} rounded-md bg-light`}
     >
       <span className="text-xl text-black">
         {hover ? <FaHeart className="fill-red-500" /> : <FaRegHeart />}

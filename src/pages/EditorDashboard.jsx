@@ -13,7 +13,7 @@ function EditorDashboard() {
   if (isLoading) {
     return (
       <Center minH="80dvh">
-        <Spinner size="lg" thickness="4px" />
+        <Spinner />
       </Center>
     );
   }

@@ -19,7 +19,7 @@ function MobileNav() {
     <div
       className={`${show && "fixed inset-0 z-30 backdrop-blur-sm"} text-end`}
     >
-      <button className="h-16 text-3xl" onClick={() => setShow(true)}>
+      <button className="h-16 text-2xl" onClick={() => setShow(true)}>
         <FaBars />
       </button>
 
@@ -40,7 +40,7 @@ function MobileNav() {
               <span className="-mr-11 mt-1">
                 <ToggleTheme />
               </span>
-              <button className="mr-2 h-16 text-3xl" onClick={close}>
+              <button className="mr-2 h-16 text-2xl" onClick={close}>
                 <FaXmark />
               </button>
             </div>

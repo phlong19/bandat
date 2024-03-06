@@ -82,7 +82,7 @@ function MobileAction({ onClose }) {
         ))}
         <li>
           <NavLink
-            className="flex items-center gap-4 py-3 pl-4"
+            className="flex items-center gap-4 py-3 pl-4 transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
             onClick={logout}
           >
             <span>

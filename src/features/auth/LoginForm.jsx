@@ -25,8 +25,8 @@ function LoginForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="relative mx-auto w-72 space-y-7 py-3 pt-10 text-center"
       >
-        <h2 className="pb-3 font-lexend text-3xl font-medium text-primary dark:text-secondary">
-          Đăng nhap
+        <h2 className="pb-3 font-lexend text-xl font-medium text-primary dark:text-secondary">
+          Đăng nhập
         </h2>
         <FormInput
           label="Email"

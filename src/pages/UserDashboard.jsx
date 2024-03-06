@@ -9,6 +9,7 @@ import UserDashboardTable from "../features/dashboard/UserDashboardTable";
 
 import { useGetRE } from "../features/form/useGetRE";
 import { useAuth } from "../context/UserContext";
+import SkeletonREForm from "../ui/SkeletonREForm";
 
 function UserDashboard({ form = false }) {
   const activePage = window.location.pathname.includes("dang-tin")
@@ -34,12 +35,17 @@ function UserDashboard({ form = false }) {
     }
   }, [post, navigate, isFetching, title, activePage]);
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <Center minH="100%">
-        <Spinner thickness="4px" size="lg" speed="0.4s" />
+        <Spinner speed="0.4s" />
       </Center>
     );
+  }
+
+  // isFetching => loading existed post (edit)
+  if (isFetching) {
+    return <SkeletonREForm activePage={activePage} />;
   }
 
   return (

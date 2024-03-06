@@ -10,6 +10,7 @@ export function useUser() {
 
   return {
     email: data?.possibleUser.email,
+    user: data?.possibleUser,
     data: data?.profile?.[0],
     isLoading,
     isAuthenticated: data?.possibleUser?.role === "authenticated",

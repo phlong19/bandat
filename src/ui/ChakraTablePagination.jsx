@@ -2,11 +2,9 @@ import { useSearchParams } from "react-router-dom";
 import { LIMIT_PER_PAGE } from "../constants/anyVariables";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
-import { Flex, Button, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 
 function ChakraTablePagination({ count }) {
-  const currentPageColor = useColorModeValue("blue", "yellow");
-
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
   const totalPages = Math.ceil(count / LIMIT_PER_PAGE);
@@ -71,7 +69,7 @@ function ChakraTablePagination({ count }) {
           {currentPage - 1}
         </Button>
       )}
-      <Button colorScheme={currentPageColor} isDisabled={true}>
+      <Button colorScheme="green" fontSize="sm">
         {currentPage}
       </Button>
       {currentPage !== totalPages && (

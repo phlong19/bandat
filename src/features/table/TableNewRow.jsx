@@ -49,10 +49,10 @@ function TableNewRow({ data, setSlug }) {
     <Tr className="group">
       <Td width={{ sm: "250px" }} maxWidth={{ sm: "300px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar src={avatar} name={fullName} size="md" me="18px" />
+          <Avatar src={avatar} name={fullName} me="18px" />
           <Flex direction="column">
             <Text
-              fontSize="md"
+              fontSize="sm"
               fontWeight="600"
               noOfLines={1}
               minWidth="100%"
@@ -67,7 +67,7 @@ function TableNewRow({ data, setSlug }) {
       <Td>
         <Badge
           colorScheme={status ? "green" : "red"}
-          fontSize="sm"
+          fontSize="xs"
           p="3px 10px"
           borderRadius="lg"
           textTransform="capitalize"
@@ -84,14 +84,14 @@ function TableNewRow({ data, setSlug }) {
         <Text noOfLines={2}>{summary}</Text>
       </Td>
       <Td>
-        <Text fontSize="md" pb=".5rem">
+        <Text pb=".5rem">
           {formatDate(created_at)}
         </Text>
       </Td>
       <Td>
         <Menu>
           <MenuButton className="invisible rounded-md border border-dark p-1 group-hover:visible dark:border-white">
-            <PiDotsSixVerticalBold fontSize={25} />
+            <PiDotsSixVerticalBold fontSize={18} />
           </MenuButton>
           <MenuList fontSize="medium">
             {level >= ADMIN_LEVEL && !status && (

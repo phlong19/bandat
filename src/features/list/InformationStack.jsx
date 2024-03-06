@@ -12,7 +12,7 @@ function InformationStack({ isLaptop, isPopup, data, area }) {
   return (
     <>
       {(!mapView || isPopup || !isLaptop) && (
-        <div className="flex gap-2.5">
+        <div className="my-1 flex gap-2.5">
           <ItemTagInformation value={area + m2} icon={PiFrameCornersLight} />
           {bed_room > 0 && <ItemTagInformation value={bed_room} icon={TbBed} />}
           {bath_room > 0 && (

@@ -8,10 +8,10 @@ export default {
         light: "#f6f6f6",
         dark: "#2b2b2b",
         darker: "#202020",
-        primary: "#79B473",
+        primary: "#52AA5E",
         secondary: "#79B473",
-        "prim-light": "#babff1",
-        "sec-light": "#ffe5a7",
+        "prim-light": "#D6EBD9",
+        "sec-light": "#D9E9D8",
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],

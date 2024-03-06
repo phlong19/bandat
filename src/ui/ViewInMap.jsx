@@ -24,7 +24,7 @@ function ViewInMap({ postID, onClick }) {
       } group rounded-md border border-light bg-white dark:border-dark lg:border-0`}
     >
       <span className="text-xl text-black">
-        {hover ? <FaMap className="fill-blue-500" /> : <FaRegMap />}
+        {hover ? <FaMap className="fill-secondary" /> : <FaRegMap />}
       </span>
     </button>
   );

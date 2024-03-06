@@ -16,18 +16,28 @@
   box-sizing: border-box;
 }
 
+:root {
+  --primary: #52aa5e;
+  --secondary: #79b473;
+  --dark: #222;
+  --darker: #202020;
+  --light: #f6f6f6;
+  --white: white;
+  --black: black;
+}
+
 html[data-theme="light"] {
-  --ql-fill-color: black;
+  --ql-fill-color: #202020;
   --ql-bg: #f6f6f6;
-  --ql-color: blue;
-  --ql-color-action: #06c;
+  --ql-color: #52aa5e;
+  --ql-color-action: #52aa5e;
 }
 
 html[data-theme="dark"] {
   --ql-fill-color: white;
   --ql-bg: #222;
-  --ql-color: #ffcc80;
-  --ql-color-action: #ffcc80;
+  --ql-color: #79b473;
+  --ql-color-action: #79b473;
 }
 
 body {
@@ -43,9 +53,6 @@ body {
   }
   .user-item {
     @apply flex items-center justify-start gap-2 font-lexend text-base font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary;
-  }
-  .select {
-    @apply relative m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded border border-solid border-prim-light bg-light bg-clip-padding px-3 py-1 text-base font-normal leading-[1.6] text-black outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-black focus:shadow-prim-light focus:outline-none dark:border-sec-light dark:bg-dark dark:text-white dark:placeholder:text-white dark:focus:border-secondary focus:dark:text-white dark:focus:shadow-sec-light;
   }
 }
 

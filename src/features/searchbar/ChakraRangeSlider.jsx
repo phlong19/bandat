@@ -10,7 +10,6 @@ import { maxAreaSearch } from "../../constants/anyVariables";
 
 function ChakraRangeSlider({ rangeValue, setRangeValue }) {
   const toolTipBg = useColorModeValue("primary", "secondary");
-  const scheme = useColorModeValue("blue", "yellow");
   const color = useColorModeValue("white", "black");
 
   return (
@@ -21,7 +20,7 @@ function ChakraRangeSlider({ rangeValue, setRangeValue }) {
       min={0}
       value={rangeValue}
       max={maxAreaSearch}
-      colorScheme={scheme}
+      colorScheme='green'
       onChange={(v) => setRangeValue(v)}
     >
       <RangeSliderTrack>
