@@ -12,10 +12,11 @@ function Map({ data, purType }) {
   const [wait, setWait] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(0);
 
+  // TODO: fix pagination with map open error
   useEffect(() => {
     const timer = setTimeout(() => {
       setWait(mapView);
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [mapView]);

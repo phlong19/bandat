@@ -40,10 +40,10 @@ function Searchbar() {
     query: "(min-width: 640px)",
   });
 
-  const bg = useColorModeValue("white", "black");
+  const bg = useColorModeValue("white", "darker");
   const bgAcc = useColorModeValue("white", "darker");
   const bgBtn = useColorModeValue("primary", "secondary");
-  const color = useColorModeValue("darker", "light");
+  const color = useColorModeValue("darker", "white");
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
@@ -210,7 +210,7 @@ function Searchbar() {
                 bg={bg}
                 color={color}
                 _hover={{
-                  _dark: { bg: "sec-light", color: "dark" },
+                  _dark: { bg: "secondary", color: "darker" },
                   _light: { bg: "prim-light", color: "darker" },
                 }}
                 transitionDuration="300ms"
