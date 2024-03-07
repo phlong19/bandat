@@ -6,7 +6,7 @@ function GoBackButton() {
   const back = useGoBack();
   return (
     <Button
-      variant="outline"
+      variant="outline" size='sm'
       fontWeight={500}
       leftIcon={<LuChevronsLeft />}
       onClick={back}

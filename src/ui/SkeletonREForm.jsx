@@ -5,7 +5,7 @@ function SkeletonREForm({ activePage }) {
   return (
     <>
       <ChakraBreadcrumb page={activePage} />
-      <Box gap={12} display="flex" flexDir="column" w="100%">
+      <Box gap={12} display="flex" flexDir="column" w="85%" mx="auto">
         <Skeleton h={16} mt={14} />
 
         <VStack gap={10} my={2}>

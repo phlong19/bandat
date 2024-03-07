@@ -48,8 +48,10 @@ import {
 import { directions, navLinks } from "../../constants/navlink";
 import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
 import { reform } from "../../constants/message";
+
 import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
+import FormActions from "./FormActions";
 
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
@@ -91,7 +93,6 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
   const {
     control,
     register,
-    reset,
     formState: { errors },
     setError,
     setValue,
@@ -362,7 +363,10 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
 
             <FormControl>
               <FormLabel>Hướng nhà</FormLabel>
-              <Select {...register("direction")} defaultValue={editData?.direction}>
+              <Select
+                {...register("direction")}
+                defaultValue={editData?.direction}
+              >
                 {directions.map((dir) => (
                   <option value={dir} key={dir}>
                     {dir}
@@ -372,7 +376,11 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             </FormControl>
           </Grid>
           <Flex w="100%">
-            <Checkbox size="md" {...register("fur")} defaultChecked={editData?.fur}>
+            <Checkbox
+              size="md"
+              {...register("fur")}
+              defaultChecked={editData?.fur}
+            >
               Bất động sản có bao gồm nội thất?
             </Checkbox>
           </Flex>
@@ -435,14 +443,21 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           {edit && <ChakraAlert type="warning" message={reform.note} />}
 
           {editData?.status.id !== SOLD_STATUS && (
-            <Flex w="100%" justify="flex-end" align="center" gap={2}>
-              <Button onClick={reset}>reset</Button>
+            <Flex w="100%" justify="space-between" align="center">
+              {edit && (
+                <FormActions
+                  authorID={editData.profile.id}
+                  postID={editData.id}
+                  statusID={editData.status.id}
+                  userID={userID}
+                  level={currentUserLevel}
+                />
+              )}
               <Button
                 isLoading={isCreating || isUpdating}
                 loadingText={!edit ? reform.creating : reform.saving}
-                right={0}
                 borderWidth={2}
-                colorScheme="teal"
+                colorScheme="green"
                 variant="outline"
                 type="submit"
               >

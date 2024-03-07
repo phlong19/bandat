@@ -16,7 +16,7 @@ function Map({ data, purType }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setWait(mapView);
-    }, 1000);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, [mapView]);
