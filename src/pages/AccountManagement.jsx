@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 import { useAuth } from "../context/UserContext";
 import {
   Box,
-  Badge,
   Flex,
   Button,
   Center,
@@ -15,33 +14,37 @@ import {
   Heading,
   CardBody,
   Text,
+  Input,
   useColorModeValue,
   Accordion,
   AccordionItem,
+  FormControl,
+  FormLabel,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  useDisclosure,
 } from "@chakra-ui/react";
 import ChakraBreadcrumb from "../ui/ChakraBreadcrumb";
 import AddressSelect from "../features/searchbar/AddressSelect";
-import Avatar from "../ui/Avatar";
 
-import { BiEditAlt, BiSave } from "react-icons/bi";
-import { MdOutlineLockReset } from "react-icons/md";
-import { PiIdentificationBadgeLight } from "react-icons/pi";
-import { CgArrowsExchange } from "react-icons/cg";
-
-import { getFullAddress } from "../services/apiGeneral";
-import { EDITOR_LEVEL } from "../constants/anyVariables";
+import { BiSave } from "react-icons/bi";
 import ModalAvatar from "../features/account/ModalAvatar";
 import ModalPassword from "../features/account/ModalPassword";
 import ModalEmail from "../features/account/ModalEmail";
 import ModalUsername from "../features/account/ModalUsername";
-import ModalAdress from "../features/account/ModalAdress";
+
+import { useUpdateAddress } from "../features/account/useUpdateAddress";
+import { useForm } from "react-hook-form";
+import { account } from "../constants/message";
 
 function AccountManagement() {
   const { data, email, user, level, isLoading } = useAuth();
+  const { handleSubmit, register } = useForm({
+    defaultValues: {
+      address: data?.address,
+    },
+  });
+  const { updateAdd, isUpdatingAdd } = useUpdateAddress();
 
   // chakra
   const bg = useColorModeValue("light", "dark");
@@ -51,6 +54,14 @@ function AccountManagement() {
   const [cityID, setCityID] = useState(data?.cityID || NaN);
   const [disID, setDisID] = useState(data?.disID || NaN);
   const [wardID, setWardID] = useState(data?.wardID || NaN);
+
+  // submit address
+  function onSubmit(data) {
+    if (!cityID && !disID && !wardID) {
+      return toast.error(account.missingAddress);
+    }
+    updateAdd({ userID: user.id, cityID, disID, wardID, ...data });
+  }
 
   if (isLoading) {
     return (
@@ -73,22 +84,75 @@ function AccountManagement() {
         <CardBody pt={3}>
           <Stack divider={<StackDivider />} spacing="4">
             {/* avatar */}
-            <ModalAvatar
-              data={data}
-              level={level}
-              cityID={cityID}
-              disID={disID}
-              wardID={wardID}
-              color={color}
-            />
+            <ModalAvatar data={data} level={level} color={color} id={user.id} />
             {/* email */}
             <ModalEmail color={color} email={email} isConfirmed={isConfirmed} />
             {/* password */}
             <ModalPassword color={color} />
             {/* username */}
-            <ModalUsername />
+            <ModalUsername color={color} name={data.fullName} />
             {/* address */}
-            <ModalAdress />
+            <Flex align="center" justify="space-between">
+              <Accordion allowToggle w="100%">
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton pl={0} justifyContent="space-between">
+                      <Box>
+                        <Heading
+                          size="xs"
+                          textAlign="left"
+                          textTransform="capitalize"
+                        >
+                          Địa chỉ
+                        </Heading>
+                        <Text pt="2" fontSize="xs" color={color}>
+                          Địa chỉ hiển thị với người dùng khác.
+                        </Text>
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+
+                  <AccordionPanel px={0} pb={0} pt={4}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <AddressSelect
+                        cityID={cityID}
+                        disID={disID}
+                        wardID={wardID}
+                        setCityID={setCityID}
+                        setDisID={setDisID}
+                        setWardID={setWardID}
+                      />
+                      <FormControl mt={3}>
+                        <FormLabel fontSize="sm">
+                          (Tùy chọn) Địa chỉ cụ thể
+                        </FormLabel>
+                        <Input
+                          fontSize="sm"
+                          w={{ lg: "30%" }}
+                          placeholder="Số nhà, ngõ ngách, thôn xóm"
+                          {...register("address")}
+                        />
+                      </FormControl>
+                      <Box w="100%" textAlign="end" mt={4}>
+                        <Button
+                          size="xs"
+                          fontWeight="400"
+                          colorScheme="green"
+                          variant="outline"
+                          borderWidth={1.5}
+                          rightIcon={<BiSave />}
+                          type="submit"
+                          isLoading={isUpdatingAdd}
+                        >
+                          Lưu
+                        </Button>
+                      </Box>
+                    </form>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+            </Flex>
           </Stack>
         </CardBody>
       </Card>

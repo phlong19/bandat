@@ -10,13 +10,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
-import { newsForm } from "../../../constants/message";
-import { MAX_SIZE_UPLOAD } from "../../../constants/anyVariables";
+import { account, newsForm } from "../../constants/message";
+import { MAX_SIZE_AVATAR } from "../../constants/anyVariables";
 
 const LIMIT = 1;
 const accepted = ["image/png", "image/jpg", "image/jpeg"];
 
-function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
+function AvatarDropzone({ onChange, files, setFiles, setValue }) {
   const [error, setError] = useState(false);
   const limit = useRef(1);
   const bg = useColorModeValue("gray.100", "#1d1d1d");
@@ -36,7 +36,6 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
         return Object.assign(file, {
           preview: URL.createObjectURL(file),
           id: v4(),
-          isNew: true,
         });
       });
 
@@ -54,7 +53,7 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
       "image/jpg": [],
       "image/jpeg": [],
     },
-    maxSize: MAX_SIZE_UPLOAD,
+    maxSize: MAX_SIZE_AVATAR,
     maxFiles: LIMIT,
     onDrop: onDrop,
   });
@@ -84,7 +83,7 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
       <ChakraImage
         src={files?.[0]?.preview || files?.[0]}
         alt="Preview"
-        boxSize="160px"
+        boxSize="130px"
         objectFit="cover"
         onLoad={() => URL.revokeObjectURL(files[0].preview)}
       />
@@ -128,13 +127,13 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
         <input {...getInputProps({ onChange })} />
         <VStack fontSize="sm" color="gray.500">
           {!error ? (
-            <Text>{newsForm.helperMedia}</Text>
+            <Text>{account.helperMedia}</Text>
           ) : (
             <Text fontSize="sm" color="red.500">
               {error}
             </Text>
           )}
-          <Text>{newsForm.acceptFiles}</Text>
+          <Text>{account.acceptFiles}</Text>
         </VStack>
       </Box>
       <Flex gap={1} wrap="wrap" my={3}>
@@ -144,37 +143,4 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
   );
 }
 
-export default ThumbnailDropzone;
-
-// // validator
-// function ratioValidator(file) {
-//   if (Number(file.width / file.height) !== ratio) {
-//     return {
-//       code: "small",
-//       message: newsForm.ratio,
-//     };
-//   }
-//   return null;
-// }
-
-// getFilesFromEvent: async (event) => {
-//   const files = event.target.files || event.dataTransfer.files;
-//   const promises = [];
-//   for (let index = 0; index < files.length; index++) {
-//     const file = files[index];
-//     const promise = new Promise((resolve) => {
-//       const image = new Image();
-//       let url;
-//       image.onload = function () {
-//         file.width = image.width;
-//         file.height = image.height;
-//         resolve(file);
-//       };
-//       url = URL.createObjectURL(file);
-//       image.src = url;
-//     });
-//     promises.push(promise);
-//   }
-//   return await Promise.all(promises);
-// },
-// validator: ratioValidator,
+export default AvatarDropzone;

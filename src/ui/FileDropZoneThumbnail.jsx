@@ -9,6 +9,7 @@ function FileDropZoneThumbnail({ isImage = false, file, onClick }) {
           alt="Preview"
           boxSize="100px"
           objectFit="cover"
+          onLoad={() => URL.revokeObjectURL(file.preview)}
         />
       ) : (
         <video

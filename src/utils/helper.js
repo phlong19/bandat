@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { vi } from "date-fns/locale";
 import {
   DEFAULT_RE_STATUS,
   SELLING_STATUS,
@@ -33,7 +34,7 @@ function round2Digit(num) {
 
 // date format
 export function formatDate(date, formatString = "dd/MM/yyyy") {
-  return format(new Date(date), formatString);
+  return format(new Date(date), formatString, { locale: vi });
 }
 
 // format number

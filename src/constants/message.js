@@ -46,7 +46,6 @@ export const error = {
   newsExisted: "da ton tai bai viet voi tieu de nay?",
 
   // medias
-  mediaUpload: `khong the upload file `,
   cantDeleteMedia: "xay ra loi khi xoa file, vui long thu lai",
   uploadFailed: "qua trinh tai len file xay ra loi, vui long blabla",
   // docs
@@ -75,6 +74,10 @@ export const success = {
   approveNews: "duyet bai viet tin tuc thanh cong",
   deleteNews: "xoa bai ok",
   deactiveNews: "go tin tuc ok",
+
+  // api account
+  updateAddress: "cap nhat dia chi ok",
+  updateAvatar: "cap nhat avatar / anh dai dien xong",
 };
 
 export const reform = {
@@ -130,6 +133,7 @@ export const newsForm = {
   overFile: "chi chap nhan 1 file thumbnail",
   helperMedia: "Drag & drop file here, or click to select files",
   acceptFiles: "chi chap nhan dinh dang png, jpg, jpeg",
+  ratio: "ti le anh yeu cau la 16 / 9",
 
   // submit errors
   missingThumb: "thieu thumbnail",
@@ -145,4 +149,14 @@ export const newsForm = {
   save: "save",
   creating: "Đang tạo",
   saving: "Đang lưu",
+};
+
+// account
+export const account = {
+  cantUpdate: "khong the update thong tin tai khoan, vui long...",
+  helperMedia: "Drag & drop file here, or click to select files",
+  missingAddress: "neu da dien vui long dien du dia chi",
+
+  overFile: "1 account nhieu avatar?",
+  acceptFiles: "chi chap nhan dinh dang png, jpg, jpeg",
 };

@@ -29,7 +29,7 @@ function ModalUsername({ color, name }) {
             Tên hiển thị trong bài đăng và với người dùng khác.
           </Text>
         </Box>
-        <Flex gap={12}>
+        <Flex gap='5rem'>
           <Text>{name}</Text>
           <Button
             size="xs"
