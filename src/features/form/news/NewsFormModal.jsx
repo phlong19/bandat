@@ -35,6 +35,7 @@ import {
   minSummary,
   minTitle,
 } from "../../../constants/anyVariables";
+import NewsActions from "./NewsActions";
 
 function NewsFormModal({
   edit = false,
@@ -249,10 +250,20 @@ function NewsFormModal({
             </form>
           </ModalBody>
 
-          <ModalFooter justifyContent="end">
+          <ModalFooter justifyContent={edit ? `space-between` : "end"}>
+            {edit && (
+              <NewsActions
+                authorID={editData.userID}
+                id={editData.id}
+                level={level}
+                status={editData.status}
+                userID={id}
+                setSlug={setSlug}
+              />
+            )}
             <Flex justify="flex-end" align="center" gap={3}>
               <Button colorScheme="blue" variant="ghost" onClick={onOpenDialog}>
-                Close
+                Đóng
               </Button>
               <ChakraModalDialog
                 isOpen={isOpenDialog}

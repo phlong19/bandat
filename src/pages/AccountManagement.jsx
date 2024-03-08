@@ -36,6 +36,7 @@ import ModalUsername from "../features/account/ModalUsername";
 import { useUpdateAddress } from "../features/account/useUpdateAddress";
 import { useForm } from "react-hook-form";
 import { account } from "../constants/message";
+import OtherInformations from "../features/account/OtherInformations";
 
 function AccountManagement() {
   const { data, email, user, level, isLoading } = useAuth();
@@ -45,6 +46,8 @@ function AccountManagement() {
     },
   });
   const { updateAdd, isUpdatingAdd } = useUpdateAddress();
+  // userID
+  const id = user?.id;
 
   // chakra
   const bg = useColorModeValue("light", "dark");
@@ -60,7 +63,7 @@ function AccountManagement() {
     if (!cityID && !disID && !wardID) {
       return toast.error(account.missingAddress);
     }
-    updateAdd({ userID: user.id, cityID, disID, wardID, ...data });
+    updateAdd({ userID: id, cityID, disID, wardID, ...data });
   }
 
   if (isLoading) {
@@ -84,13 +87,18 @@ function AccountManagement() {
         <CardBody pt={3}>
           <Stack divider={<StackDivider />} spacing="4">
             {/* avatar */}
-            <ModalAvatar data={data} level={level} color={color} id={user.id} />
+            <ModalAvatar data={data} level={level} color={color} id={id} />
             {/* email */}
-            <ModalEmail color={color} email={email} isConfirmed={isConfirmed} />
+            <ModalEmail
+              color={color}
+              email={email}
+              isConfirmed={isConfirmed}
+              id={id}
+            />
             {/* password */}
-            <ModalPassword color={color} />
+            <ModalPassword color={color} id={id} />
             {/* username */}
-            <ModalUsername color={color} name={data.fullName} />
+            <ModalUsername color={color} name={data.fullName} id={id} />
             {/* address */}
             <Flex align="center" justify="space-between">
               <Accordion allowToggle w="100%">
@@ -153,6 +161,7 @@ function AccountManagement() {
                 </AccordionItem>
               </Accordion>
             </Flex>
+            <OtherInformations data={data} color={color} id={id} />
           </Stack>
         </CardBody>
       </Card>

@@ -11,13 +11,24 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-function ChakraFormDialog({ action, color, onAction, warning = false }) {
+function ChakraFormDialog({
+  action,
+  color,
+  onAction,
+  warning = false,
+  isLoading,
+}) {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const ref = useRef();
 
   return (
     <>
-      <Button colorScheme={color.split(".")[0]} onClick={onOpen}>
+      <Button
+        colorScheme={color.split(".")[0]}
+        onClick={onOpen}
+        isLoading={isLoading}
+        loadingText="Vui lòng chờ"
+      >
         {action}
       </Button>
       <AlertDialog

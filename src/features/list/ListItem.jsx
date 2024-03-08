@@ -44,9 +44,9 @@ function ListItem({ data, purType, isPopup = false }) {
     <div
       className={`${
         !isPopup
-          ? "mt-2 bg-white p-1 dark:bg-darker md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
+          ? "mt-2 border-2 bg-white p-1 transition-colors duration-200 hover:border-primary dark:bg-darker md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
           : "min-w-[160px] p-[2px] text-black lg:w-full"
-      } group rounded-lg transition-colors duration-200 border-2 hover:border-primary`}
+      } group rounded-lg`}
     >
       {!isPopup && (
         <Link to={`/nha-dat/${slug}`}>
@@ -68,8 +68,10 @@ function ListItem({ data, purType, isPopup = false }) {
         <Link to={`/nha-dat/${slug}`}>
           <h3
             className={`${
-              isPopup ? "text-black" : "text-black dark:text-white"
-            } mb-1 line-clamp-2 text-ellipsis whitespace-normal break-words text-sm capitalize group-hover:text-primary dark:group-hover:text-secondary`}
+              isPopup
+                ? "text-black"
+                : "text-black group-hover:text-primary dark:text-white dark:group-hover:text-secondary"
+            } mb-1 line-clamp-2 text-ellipsis whitespace-normal break-words text-sm capitalize `}
           >
             {name}
           </h3>

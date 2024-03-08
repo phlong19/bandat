@@ -6,7 +6,7 @@ import { deactiveNews } from "../../services/apiNews";
 export function useDeactiveNews() {
   const queryClient = useQueryClient();
 
-  const { mutate: deactive } = useMutation({
+  const { mutate: deactive, isPending: isDeactiving } = useMutation({
     mutationFn: (id) => deactiveNews(id),
     onSuccess: () => {
       toast.success(success.deactiveNews);
@@ -17,5 +17,5 @@ export function useDeactiveNews() {
     },
   });
 
-  return { deactive };
+  return { deactive, isDeactiving };
 }

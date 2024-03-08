@@ -75,7 +75,11 @@ function DocumentCheckBoxes({
             <Box as="span" flex="1" textAlign="left">
               Chọn giấy tờ pháp lý <span className="text-red-500">*</span>
             </Box>
-            {!isLoading ? <AccordionIcon /> : <Spinner size="sm" />}
+            {!isLoading ? (
+              <AccordionIcon />
+            ) : (
+              <Spinner size="sm" thickness="2px" speed="0.3s" />
+            )}
           </AccordionButton>
         </h2>
         <AccordionPanel pb={4} px={0}>

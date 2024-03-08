@@ -35,6 +35,9 @@ function ModalAvatar({ data, color, level, id }) {
   }
 
   function onSubmit(data) {
+    if (!data) {
+      return false;
+    }
     mutate({ userID: id, ...data }, { onSettled: () => handleClose() });
   }
 
@@ -109,13 +112,16 @@ function ModalAvatar({ data, color, level, id }) {
           </ModalBody>
 
           <ModalFooter gap={3}>
-            <Button onClick={handleClose}>Hủy</Button>
+            <Button onClick={handleClose} size="sm" variant="outline">
+              Hủy
+            </Button>
             <Button
               form="avatar"
               colorScheme="green"
               mr={3}
               isLoading={isPending}
               type="submit"
+              size="sm"
             >
               Lưu
             </Button>

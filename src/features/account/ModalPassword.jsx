@@ -3,6 +3,9 @@ import {
   Box,
   Heading,
   Text,
+  Input,
+  InputGroup,
+  InputRightElement,
   Button,
   useDisclosure,
   Modal,
@@ -15,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { MdOutlineLockReset } from "react-icons/md";
 
-function ModalPassword({ color }) {
+function ModalPassword({ color, id }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -39,21 +42,44 @@ function ModalPassword({ color }) {
           rightIcon={<MdOutlineLockReset />}
           onClick={onOpen}
         >
-          Đổi mật khẩu
+          Cập nhật
         </Button>
       </Flex>
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create your account</ModalHeader>
+          <ModalHeader>Đổi mật khẩu</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>hi</ModalBody>
+          <ModalBody pb={6}>
+            <form id="password">
+              <InputGroup>
+                <Input />
+                <InputRightElement>
+                  <Button size="xs">hi</Button>
+                </InputRightElement>
+              </InputGroup>
+            </form>
+          </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Save
+          <ModalFooter gap={3}>
+            <Button onClick={onClose} size="sm" variant="outline">
+              Hủy
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button
+              colorScheme="green"
+              mr={3}
+              isLoading={true}
+              form="password"
+              type="submit"
+              color="black"
+            >
+              Lưu
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

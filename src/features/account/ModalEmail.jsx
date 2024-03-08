@@ -6,6 +6,7 @@ import {
   Button,
   useDisclosure,
   Badge,
+  Input,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -16,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { BiEditAlt } from "react-icons/bi";
 
-function ModalEmail({ color, email, isConfirmed }) {
+function ModalEmail({ color, email, isConfirmed, id }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -76,15 +77,28 @@ function ModalEmail({ color, email, isConfirmed }) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create your account</ModalHeader>
+          <ModalHeader>Đổi mật khẩu</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>hi</ModalBody>
+          <ModalBody pb={6}>
+            <form id="email">
+              <Input placeholder="email" />
+              <Input placeholder="xac nhan email" />
+            </form>
+          </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Save
+          <ModalFooter gap={3}>
+            <Button onClick={onClose} size="sm" variant="outline">
+              Hủy
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button
+              colorScheme="green"
+              mr={3}
+              isLoading={true}
+              form="email"
+              type="submit"
+            >
+              Lưu
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

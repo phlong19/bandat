@@ -52,7 +52,7 @@ function MobileAction({ onClose }) {
           gap={3}
           pb={3}
         >
-          <Avatar src={data.avatar} fullName={data.fullName} mobile />
+          <Avatar avatar={data.avatar} fullName={data.fullName} mobile />
           <Text mt={2}>{data.fullName}</Text>
         </Flex>
       )}

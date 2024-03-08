@@ -50,7 +50,7 @@ function ManageNavbar() {
             <MenuButton>
               <Avatar fullName={data.fullName} avatar={data.avatar} />
             </MenuButton>
-            <MenuList fontSize="17" boxShadow="dark-lg" border={0}>
+            <MenuList fontSize="sm" boxShadow="dark-lg" border={0}>
               <MenuItem
                 icon={<HiOutlineCog8Tooth fontSize="16" />}
                 as={NavLink}

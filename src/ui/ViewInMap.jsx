@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { FaMap, FaRegMap } from "react-icons/fa6";
-import { useMapView } from "../context/MapViewContext";
 
 function ViewInMap({ postID, onClick }) {
-  const { mapView } = useMapView();
   const [hover, setHover] = useState(false);
 
   function handleClick(e) {
@@ -19,9 +17,7 @@ function ViewInMap({ postID, onClick }) {
       onMouseLeave={() => setHover(false)}
       id={`viewInMap${postID}`}
       onClick={handleClick}
-      className={`${
-        !mapView ? "p-2.5" : "p-1.5"
-      } group rounded-md border border-light bg-white dark:border-dark lg:border-0`}
+      className="rounded-md border border-light bg-white p-1.5 dark:border-dark lg:border-0"
     >
       <span className="text-xl text-black">
         {hover ? <FaMap className="fill-secondary" /> : <FaRegMap />}

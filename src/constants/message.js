@@ -3,11 +3,13 @@ import {
   maxContent,
   maxDesLength,
   maxLength,
+  maxName,
   maxSummary,
   maxTitle,
   minContent,
   minDesLength,
   minLength,
+  minName,
   minSummary,
   minTitle,
 } from "./anyVariables";
@@ -51,6 +53,9 @@ export const error = {
   // docs
   cantInsertDocs: "khong the them giay to phap ly, vui long thu lai sau",
   cantDeleteDocs: "khong the xoa docs, vui long thu lai",
+
+  // name edit
+  cantEditName: "chua den ngay edit",
 };
 
 export const success = {
@@ -78,6 +83,8 @@ export const success = {
   // api account
   updateAddress: "cap nhat dia chi ok",
   updateAvatar: "cap nhat avatar / anh dai dien xong",
+  updateUsername: "cap nhat ten ok",
+  updateOthers: "cap nhat thanh cong",
 };
 
 export const reform = {
@@ -159,4 +166,8 @@ export const account = {
 
   overFile: "1 account nhieu avatar?",
   acceptFiles: "chi chap nhan dinh dang png, jpg, jpeg",
+
+  // name
+  minName: `ten it nhat ${minName} ky tu?`,
+  maxName: `vuot qua ${maxName} ky tu`,
 };

@@ -93,3 +93,9 @@ export const newsCaptions = [
 ];
 
 export const maxAreaSearch = 300;
+
+// auth
+const minName = 8;
+const maxName = 30;
+
+export { minName, maxName };
