@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaMap, FaRegMap } from "react-icons/fa6";
 
-function ViewInMap({ postID, onClick }) {
+function ViewInMap({ onClick }) {
   const [hover, setHover] = useState(false);
 
   function handleClick(e) {
@@ -15,7 +15,6 @@ function ViewInMap({ postID, onClick }) {
       title="Xem trên map"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      id={`viewInMap${postID}`}
       onClick={handleClick}
       className="rounded-md border border-light bg-white p-1.5 dark:border-dark lg:border-0"
     >

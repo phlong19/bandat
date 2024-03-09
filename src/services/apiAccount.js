@@ -2,7 +2,7 @@ import supabase, { supabaseUrl } from "./supabase";
 import { account } from "../constants/message";
 import { v4 } from "uuid";
 import { error as errorMessage } from "../constants/message";
-import { compareAsc } from "date-fns";
+import { addMonths, compareAsc, startOfToday } from "date-fns";
 
 export async function updateAddress(data) {
   const { userID, ...newAddress } = data;
@@ -73,8 +73,11 @@ export async function updateUsername(formData) {
     throw new Error(errorMessage.fetchError);
   }
 
-  // compare today with next allow edit date
-  const result = compareAsc(new Date(), new Date(getUser.allowEditDate));
+  // compare 00:00 today with 00:00 allow edit date
+  const result = compareAsc(
+    new Date(startOfToday()),
+    new Date(getUser.allowEditDate),
+  );
 
   // rs =1 => today > allow
   if (result !== 1) {
@@ -83,7 +86,8 @@ export async function updateUsername(formData) {
   console.log(result);
   const { data: updatedAccount, error } = await supabase
     .from("Profile")
-    .update({ ...newUsername, allowEditDate: new Date() })
+    // new allow => 00:00 today + 1 month
+    .update({ ...newUsername, allowEditDate: addMonths(startOfToday(), 1) })
     .eq("id", userID)
     .select();
 

@@ -12,7 +12,6 @@ function Map({ data, purType }) {
   const [selectedMarker, setSelectedMarker] = useState(0);
   const mapRoot = useRef({});
 
-  // TODO: clean up error on mount and unmount
   useEffect(() => {
     const renderTimeout = setTimeout(() => {
       if (data?.length) {
@@ -22,6 +21,7 @@ function Map({ data, purType }) {
             mapRoot.current[item.id] = ReactDOM.createRoot(container);
             mapRoot.current[item.id].render(
               <ViewInMap
+                postID={item.id}
                 onClick={() => {
                   setSelectedMarker(item.id);
                   // flyTo([lat,long],zoom)
@@ -37,8 +37,11 @@ function Map({ data, purType }) {
     // clean up
     return () => {
       clearTimeout(renderTimeout);
-      Object.values(mapRoot.current).forEach((root) => root.unmount());
       mapRoot.current = {};
+
+      setTimeout(() => {
+        Object.values(mapRoot.current).forEach((root) => root.unmount());
+      });
     };
   }, [mapView, data]);
 

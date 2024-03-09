@@ -30,6 +30,10 @@ function ChakraNumberInput({
               message: reform.requiredMessage,
             },
             valueAsNumber: true,
+            validate: (v) =>
+              Number.isInteger(Number(v)) ||
+              Number.isNaN(Number(v)) ||
+              reform.numberInt,
           })}
           placeholder={placeholder}
         />

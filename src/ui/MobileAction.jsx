@@ -27,6 +27,8 @@ function MobileAction({ onClose }) {
       {!isAuthenticated ? (
         <div className="flex justify-center gap-3">
           <Button
+            colorScheme="green"
+            variant="outline"
             as={Link}
             leftIcon={<FaRightToBracket />}
             to="dang-nhap"
@@ -35,6 +37,8 @@ function MobileAction({ onClose }) {
             Đăng nhập
           </Button>
           <Button
+            colorScheme="green"
+            variant="outline"
             leftIcon={<FaUserPlus />}
             as={Link}
             to="dang-ky"
