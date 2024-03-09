@@ -13,6 +13,10 @@ const baseStyle = definePartsStyle({
   },
   control: {
     _checked: {
+      _light: {
+        bg: "primary",
+        borderColor: "primary",
+      },
       _dark: {
         bg: "secondary",
         borderColor: "secondary",

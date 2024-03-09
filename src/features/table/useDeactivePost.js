@@ -6,7 +6,7 @@ import { deactivePost } from "../../services/apiRE";
 export function useDeactivePost() {
   const queryClient = useQueryClient();
 
-  const { mutate: deacive } = useMutation({
+  const { mutate: deactive } = useMutation({
     mutationFn: (id) => deactivePost(id),
     onSuccess: () => {
       toast.success(success.deactivePost);
@@ -17,5 +17,5 @@ export function useDeactivePost() {
     },
   });
 
-  return { deacive };
+  return { deactive };
 }

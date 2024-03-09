@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,17 +14,17 @@ import { newsForm } from "../constants/message";
 
 function ChakraModalDialog({ isOpen, onClose, onCloseDialog }) {
   const cancelRef = useRef();
+  const queryClient = useQueryClient();
 
   return (
     <AlertDialog
       motionPreset="slideInBottom"
       leastDestructiveRef={cancelRef}
-      onClose={onClose}
+      onClose={onCloseDialog}
       isOpen={isOpen}
       isCentered
     >
       <AlertDialogOverlay />
-
       <AlertDialogContent>
         <AlertDialogHeader>{newsForm.dialogTitle}</AlertDialogHeader>
         <AlertDialogCloseButton />
@@ -32,7 +33,15 @@ function ChakraModalDialog({ isOpen, onClose, onCloseDialog }) {
           <Button ref={cancelRef} onClick={onCloseDialog}>
             Hủy
           </Button>
-          <Button colorScheme="red" ml={3} onClick={onClose}>
+          <Button
+            colorScheme="red"
+            ml={3}
+            onClick={() => {
+              queryClient.removeQueries({ queryKey: ["SingleNews"] });
+              onCloseDialog();
+              onClose();
+            }}
+          >
             Xác nhận
           </Button>
         </AlertDialogFooter>

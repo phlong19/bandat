@@ -3,7 +3,6 @@ import { v4 } from "uuid";
 import { error as errorMessage } from "../constants/message";
 
 export async function uploadMedia(file, postID) {
-  console.log(file);
   const fileName = `REDir - ${v4()}${postID}`;
   const isImage = file.type.startsWith("image");
 

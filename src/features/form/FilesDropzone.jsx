@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { v4 } from "uuid";
 
-import { Text, Flex, Box, useColorModeValue } from "@chakra-ui/react";
+import { Text, Flex, Box, VStack, useColorModeValue } from "@chakra-ui/react";
 import FileDropZoneThumbnail from "../../ui/FileDropZoneThumbnail";
 
 import {
@@ -51,15 +51,19 @@ function FilesDropzone({
       vidLeft.current++;
     }
 
+    // if delete existed media
     if (!file?.isNew) {
       deleteMediasRef.current.push(file);
     }
 
-    const imgIndex = addImagesRef.current.findIndex((i) => i.id === file.id);
-    addImagesRef.current.splice(imgIndex, 1);
-    const vidIndex = addVideosRef.current.findIndex((i) => i.id === file.id);
-    addVideosRef.current.splice(vidIndex, 1);
-
+    // if delete just uploaded media
+    if(file?.isNew){
+      const imgIndex = addImagesRef.current.findIndex((i) => i.id === file.id);
+      addImagesRef.current.splice(imgIndex, 1);
+      const vidIndex = addVideosRef.current.findIndex((i) => i.id === file.id);
+      addVideosRef.current.splice(vidIndex, 1);
+    }
+      
     setError(false);
   }
 
@@ -102,7 +106,7 @@ function FilesDropzone({
     [setFiles, setValue, files, addImagesRef, addVideosRef],
   );
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { fileRejections, getRootProps, getInputProps } = useDropzone({
     onDrop: onDrop,
     maxFiles: limit,
     maxSize: MAX_SIZE_UPLOAD, // 5 mb
@@ -113,6 +117,15 @@ function FilesDropzone({
       "video/mp4": [],
     },
   });
+
+  // file rejections
+  useEffect(() => {
+    if (fileRejections.length > 0) {
+      setError(
+        `Không chấp nhận file với định dạng ${fileRejections[0].file.type}`,
+      );
+    }
+  }, [fileRejections]);
 
   //   create thumbs
   const thumbsImg = files.images.map((file) => (
@@ -157,15 +170,16 @@ function FilesDropzone({
         })}
       >
         <input {...getInputProps({ onChange })} />
-        {!error ? (
-          <Text fontSize="sm" color="gray.500">
-            {reform.helperMedia}
-          </Text>
-        ) : (
-          <Text fontSize="sm" color="red.500">
-            {error}
-          </Text>
-        )}
+        <VStack fontSize="sm" color="gray.500">
+          {!error ? (
+            <Text>{reform.helperMedia}</Text>
+          ) : (
+            <Text fontSize="sm" color="red.500">
+              {error}
+            </Text>
+          )}
+          <Text fontStyle="italic">{reform.acceptMedias}</Text>
+        </VStack>
       </Box>
       <Flex gap={1} wrap="wrap" my={3}>
         {thumbsVid} {thumbsImg}

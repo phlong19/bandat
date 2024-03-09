@@ -1,4 +1,9 @@
-import { extendTheme, defineStyle, defineStyleConfig } from "@chakra-ui/react";
+import {
+  extendTheme,
+  defineStyle,
+  defineStyleConfig,
+  withDefaultColorScheme,
+} from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import { menuTheme } from "./menu";
 import { cardTheme } from "./card";
@@ -8,31 +13,30 @@ import { checkboxTheme } from "./checkbox";
 import { popoverTheme } from "./popover";
 import { numberInputTheme } from "./numberInput";
 import { modalTheme } from "./modal";
+import { spinnerTheme } from "./spinner";
 
 const colors = {
-  // primary: "#1a237e",
-  primary: "#3949AB",
-  "prim-light": "#babff1",
-  secondary: "#FFCC80",
-  // secondary: "#ffb60a",
-  "sec-light": "#ffe5a7",
   light: "#f6f6f6",
   dark: "#2b2b2b",
   darker: "#202020",
+  primary: "#52AA5E",
+  secondary: "#79B473",
+  "prim-light": "#D6EBD9",
+  "sec-light": "#D9E9D8",
 };
 
 const pagi = defineStyle({
+  fontSize: 14,
+  fontWeight: 600,
   borderRadius: "lg",
   bg: "gray.200",
   _hover: {
-    bg: "blue.600",
-    color: "white",
+    bg: "primary",
   },
   _dark: {
     bg: "dark",
     _hover: {
       bg: "secondary",
-      color: "black",
     },
   },
 });
@@ -53,6 +57,7 @@ export const theme = extendTheme({
     Popover: popoverTheme,
     NumberInput: numberInputTheme,
     Modal: modalTheme,
+    Spinner: spinnerTheme,
   },
   font: {
     lexend: `'Lexend, sans-serif'`,
@@ -66,7 +71,6 @@ export const theme = extendTheme({
         color: mode("black", "white")(props),
         bg: mode("white", "darker")(props),
         lineHeight: "base",
-        colorScheme: "green",
       },
     }),
   },

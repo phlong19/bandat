@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPost } from "../../services/apiRE";
+import { getPost } from "../../services/apiManage";
 
 export function useGetRE(title, level, userID) {
   const { data: post, isFetching } = useQuery({

@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { useMediaQuery } from "react-responsive";
 import slugify from "react-slugify";
+import { Center, Spinner,Text } from "@chakra-ui/react";
 
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import BreadCrumb from "../ui/BreadCrumb";
 import ChakraTablePagination from "../ui/ChakraTablePagination";
 
-import { news } from "../data/news";
 import { city } from "../data/city";
 import { navLinks } from "../constants/navlink";
+import { getNewsList } from "../services/apiNews";
+import { formatDate } from "../utils/helper";
 
 function News() {
   const [show1, setShow1] = useState(false);
@@ -20,7 +23,14 @@ function News() {
     query: "(min-width: 1200px)",
   });
 
+  const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+
   // fetch list news
+  const { data: { data, count } = {}, isLoading } = useQuery({
+    queryKey: ["news"],
+    queryFn: () => getNewsList(page),
+  });
 
   return (
     <div>
@@ -37,62 +47,75 @@ function News() {
           </p>
         </div>
       </div>
-      <div className="justify-center bg-white dark:bg-dark lg:flex ">
-        <div className="bg-white px-3.5 dark:bg-dark">
-          {news.map((item, i) => (
-            <Link to={`/tin-tuc/${slugify(item.title)}`} key={i}>
-              <div className="mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b lg:bg-white lg:pb-5 lg:shadow-none ">
-                <img
-                  src={item.img}
-                  className="w-full rounded-t-md lg:h-[150px] lg:w-[260px] lg:rounded-md  "
-                />
-                <div className="p-3 ">
-                  <i className="text-gray-400">{item.date}</i>
-                  <h1 className="py-2 font-montserrat text-base font-semibold lg:text-lg lg:font-bold">
-                    {item.title}
-                  </h1>
-                  <p className="line-clamp-3 ">{item.summary}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-          <div className="flex justify-center">
-            <ChakraTablePagination />
-          </div>
-        </div>
 
-        <div className="lg:max-w-[300px] ">
-          <div>
-            <div className="rounded-md border-[1px] bg-white p-3 dark:bg-dark">
-              <h1 className="text-center text-xl font-bold">Tin nổi bật</h1>
-              {news.map((item, i) => (
-                <Link to={`/tin-tuc/${slugify(item.title)}`} key={i}>
-                  <div key={i} className="py-3">
-                    <i className="text-gray-400">{item.date}</i>
-                    <h1 className="line-clamp-3 font-montserrat font-semibold">
+      {/* main content */}
+      {isLoading ? (
+        <Center minH="50dvh">
+          <Spinner />
+        </Center>
+      ) : data && data?.length < 1 ? (
+        <Center minH="50dvh"><Text fontSize='lg'>Hiện không có bài viết tin tức.</Text></Center>
+      ) : (
+        <div className="justify-center bg-white dark:bg-dark lg:flex ">
+          <div className="bg-white px-3.5 dark:bg-dark">
+            {data.map((item, i) => (
+              <Link to={`/tin-tuc/` + item.slug} key={i}>
+                <div className="mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b lg:bg-white lg:pb-5 lg:shadow-none ">
+                  <img
+                    src={item.thumbnail}
+                    className="w-full rounded-t-md lg:h-[150px] lg:w-[260px] lg:rounded-md"
+                  />
+                  <div className="p-3 ">
+                    <i className="text-gray-400">
+                      {formatDate(item.created_at)}
+                    </i>
+                    <h1 className="py-2 font-montserrat text-base font-semibold lg:text-lg lg:font-bold">
                       {item.title}
                     </h1>
+                    <p className="line-clamp-3 ">{item.summary}</p>
                   </div>
-                </Link>
-              ))}
+                </div>
+              </Link>
+            ))}
+            <div className="flex justify-center">
+              <ChakraTablePagination count={count} />
             </div>
-            <div className="mt-5">
-              <div className="rounded-md border bg-white p-3 dark:bg-dark">
-                <h1 className="text-center text-lg font-semibold">
-                  Thị trường BDS tại 10 tỉnh/thành phố lớn
-                </h1>
-                {/* considering remove in the future */}
-                {city.map((item, i) => (
-                  <div key={i} className="flex items-center p-3">
-                    <img src={item.img} className="h-10 w-20 rounded-xl" />
-                    <h1 className="pl-3">{item.cityname}</h1>
-                  </div>
+          </div>
+
+          <div className="lg:max-w-[300px] ">
+            <div>
+              <div className="rounded-md border-[1px] bg-white p-3 dark:bg-dark">
+                <h1 className="text-center text-xl font-bold">Tin nổi bật</h1>
+                {data.map((item, i) => (
+                  <Link to={`/tin-tuc/${slugify(item.title)}`} key={i}>
+                    <div key={i} className="py-3">
+                      <i className="text-gray-400">{item.date}</i>
+                      <h1 className="line-clamp-3 font-montserrat font-semibold">
+                        {item.title}
+                      </h1>
+                    </div>
+                  </Link>
                 ))}
+              </div>
+              <div className="mt-5">
+                <div className="rounded-md border bg-white p-3 dark:bg-dark">
+                  <h1 className="text-center text-lg font-semibold">
+                    Thị trường BDS tại 10 tỉnh/thành phố lớn
+                  </h1>
+                  {/* considering remove in the future */}
+                  {city.map((item, i) => (
+                    <div key={i} className="flex items-center p-3">
+                      <img src={item.img} className="h-10 w-20 rounded-xl" />
+                      <h1 className="pl-3">{item.cityname}</h1>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
       {isDesktopOrLaptop ? (
         <div className="flex w-full justify-center bg-white py-10 dark:bg-dark">
           {navLinks.map((item) => (

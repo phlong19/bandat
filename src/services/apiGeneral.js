@@ -98,6 +98,8 @@ export async function getFullAddress(cityID, disID, wardID, address) {
 
     return fullAddress;
   }
+
+  return null;
 }
 
 // geocoding api

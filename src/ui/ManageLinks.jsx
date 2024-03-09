@@ -28,13 +28,13 @@ function ManageLinks({ level, isDarkMode }) {
 
       <NavLink to="/dang-tin" title="Đăng tin BĐS">
         <Button variant="ghost" m={0}>
-          <FaRegPenToSquare fontSize="25" />
+          <FaRegPenToSquare fontSize="22" />
         </Button>
       </NavLink>
 
       <NavLink to="/quan-ly-bai-viet" title="Quản lý bài viết BĐS">
         <Button variant="ghost" m={0}>
-          <FaRegNewspaper fontSize="25" />
+          <FaRegNewspaper fontSize="22" />
         </Button>
       </NavLink>
 
@@ -42,7 +42,7 @@ function ManageLinks({ level, isDarkMode }) {
       {level >= EDITOR_LEVEL && (
         <NavLink to="/quan-ly-tin-tuc" title="Quản lý tin tức">
           <Button variant="ghost" m={0}>
-            <HiOutlineClipboardDocumentList fontSize={25} />
+            <HiOutlineClipboardDocumentList fontSize={22} />
           </Button>
         </NavLink>
       )}
@@ -51,17 +51,17 @@ function ManageLinks({ level, isDarkMode }) {
         <>
           <NavLink to="/control" title="admin panel">
             <Button variant="ghost" m={0}>
-              <GiQueenCrown fontSize="25" />
+              <GiQueenCrown fontSize="22" />
             </Button>
           </NavLink>
           <NavLink to="/control" title="admin panel">
             <Button variant="ghost" m={0}>
-              <GiQueenCrown fontSize="25" />
+              <GiQueenCrown fontSize="22" />
             </Button>
           </NavLink>
           <NavLink to="/control" title="admin panel">
             <Button variant="ghost" m={0}>
-              <GiQueenCrown fontSize="25" />
+              <GiQueenCrown fontSize="22" />
             </Button>
           </NavLink>
         </>

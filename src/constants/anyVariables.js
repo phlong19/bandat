@@ -8,12 +8,15 @@ const BASE_MEDIA_UPLOAD = 4;
 const LIMIT_IMG_UPLOAD = 8;
 const LIMIT_VID_UPLOAD = 2;
 const MAX_SIZE_UPLOAD = 5242880;
-
+const MAX_SIZE_AVATAR = 3145728;
+const ratio = 16 / 9;
 export {
   BASE_MEDIA_UPLOAD,
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
   MAX_SIZE_UPLOAD,
+  MAX_SIZE_AVATAR,
+  ratio,
 };
 
 // level access
@@ -50,6 +53,15 @@ const minDesLength = 150;
 const maxDesLength = 2000;
 export { minLength, maxLength, minDesLength, maxDesLength };
 
+// news
+const minTitle = 30;
+const maxTitle = 150;
+const minSummary = 150;
+const maxSummary = 250;
+const minContent = 300;
+const maxContent = 3000;
+export { minTitle, maxTitle, minSummary, maxSummary, minContent, maxContent };
+
 // table captions
 export const reCaptions = [
   "Người đăng",
@@ -81,3 +93,9 @@ export const newsCaptions = [
 ];
 
 export const maxAreaSearch = 300;
+
+// auth
+const minName = 8;
+const maxName = 30;
+
+export { minName, maxName };

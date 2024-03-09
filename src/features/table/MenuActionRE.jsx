@@ -21,7 +21,7 @@ import { useDeletePost } from "./useDeletePost";
 function MenuActionRE({ userID, authorID, statusID, postID, slug, level }) {
   const { approve } = useApprovePost();
   const { markSold } = useMarkSold();
-  const { deacive } = useDeactivePost();
+  const { deactive } = useDeactivePost();
   const { deletePost } = useDeletePost();
 
   return (
@@ -52,7 +52,7 @@ function MenuActionRE({ userID, authorID, statusID, postID, slug, level }) {
             color="red.600"
             action="Gỡ bài viết"
             icon={<PiDownload />}
-            onAction={() => deacive(postID)}
+            onAction={() => deactive(postID)}
             warning
           />
         )}

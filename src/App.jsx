@@ -146,15 +146,14 @@ function App() {
             containerClassName="m-2 md:m-3"
             toastOptions={{
               position: "top-right",
-              duration: 3500,
               style: { padding: "16px 24px" },
               className:
                 "md:font-base max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
               success: {
-                duration: 3000,
+                duration: 2000,
               },
               error: {
-                duration: 4000,
+                duration: 3000,
               },
             }}
           />

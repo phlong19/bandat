@@ -15,7 +15,7 @@ function Button({
     width ? "md:w-32" : "xl:w-auto"
   } ${widthBase ? "w-1/2" : ""} ${
     basePY ? "py-6" : "py-2.5"
-  } flex font-medium justify-center font-lexend max-h-10 items-center text-base rounded-lg transition-all duration-300 md:py-3 px-3.5 opacity-90 hover:opacity-100 `;
+  } flex font-medium justify-center font-lexend max-h-10 items-center text-sm rounded-lg transition-all duration-300 md:py-3 px-3.5 opacity-90 hover:opacity-100 `;
   const variants = {
     light:
       base +
@@ -28,14 +28,14 @@ function Button({
   if (to) {
     return (
       <NavLink className={variants[variant]} onClick={onClick} to={to}>
-        <span className="text-lg">{icon}</span>
+        <span className="text-sm">{icon}</span>
         {children}
       </NavLink>
     );
   }
   return (
     <button disabled={disabled} onClick={onClick} className={variants[variant]}>
-      <span className="text-lg">{icon}</span>
+      <span className="text-sm">{icon}</span>
       {children}
     </button>
   );

@@ -1,9 +1,9 @@
-import Spinner from "./Spinner";
+import { Spinner } from "@chakra-ui/react";
 
 function SpinnerFullPage() {
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-light dark:bg-dark">
-      <Spinner inButton={false} height={35} width={35} />
+      <Spinner emptyColor="gray.200" />
     </div>
   );
 }

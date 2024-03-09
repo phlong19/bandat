@@ -55,18 +55,18 @@ export const navLinks = [
 
 export const mobileNavLinks = {
   base: [
-    { title: "Đăng tin", icon: "RegPenToSquare", to: "dang-tin" },
-    { title: "Tin đăng đã lưu", icon: "RegHeart", to: "tin-da-luu" },
+    { title: "Đăng tin", icon: "PenToSquare", to: "dang-tin" },
+    { title: "Tin đăng đã lưu", icon: "Heart", to: "tin-da-luu" },
     { title: "Trang chủ", icon: "House", to: "/" },
     { title: "Nhà đất bán", icon: "HouseFlag", to: "nha-dat-ban" },
     { title: "Nhà đất cho thuê", icon: "BuildingFlag", to: "nha-dat-cho-thue" },
     { title: "Dự án", icon: "City", to: "du-an" },
-    { title: "Tin tức", icon: "RegNewspaper", to: "tin-tuc" },
+    { title: "Tin tức", icon: "Newspaper", to: "tin-tuc" },
     // later
-    { title: "Góp ý - Báo lỗi", icon: "RegAddressBook", to: "hom-thu-gop-y" },
-    { title: "Giới thiệu về chúng tôi", icon: "RegAddressBook", to: "danh-ba" },
-    { title: "Liên hệ", icon: "RegAddressBook", to: "danh-ba" },
-    //
+    { title: "Góp ý - Báo lỗi", icon: "EnvelopeCircleCheck", to: "hom-thu-gop-y" },
+    { title: "Giới thiệu về chúng tôi", icon: "UsersLine", to: "danh-ba" },
+    { title: "Liên hệ", icon: "Headset", to: "danh-ba" },
+    // TODO
   ],
   authen: [
     {

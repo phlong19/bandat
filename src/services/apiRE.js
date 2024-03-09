@@ -18,12 +18,14 @@ import { deleteMedia, uploadMedia } from "./apiMedia";
 import { error as errorMessage } from "../constants/message";
 
 export async function getList(type, citeria, page) {
+  const from = (page - 1) * LIMIT_PER_PAGE;
+  const to = from + LIMIT_PER_PAGE - 1;
   // query
   // re type
   // area
   // address
 
-  let query = supabase
+  const { data, count, error } = await supabase
     .from("REDirectory")
     .select(
       `*,
@@ -39,19 +41,15 @@ export async function getList(type, citeria, page) {
     .eq("purType", type)
     .eq("images.isImage", true)
     .eq("status", SELLING_STATUS)
-    .order("created_at", { ascending: false });
-  // for pagination
-  if (page) {
-    const from = (page - 1) * LIMIT_PER_PAGE;
-    const to = from + LIMIT_PER_PAGE - 1;
-    query = query.range(from, to);
-  }
-  const { data, count, error } = await query;
+    .order("created_at", { ascending: false })
+    .limit(LIMIT_PER_PAGE)
+    .range(from, to);
 
   if (error) {
     console.log(error);
     throw new Error(errorMessage.fetchError);
   }
+
   return { data, count };
 }
 
@@ -74,7 +72,7 @@ export async function checkPost(slug) {
   return data;
 }
 
-export async function getPost(slug, level, userID) {
+export async function getSinglePost(slug) {
   if (!slug || slug < minLength || slug > maxLength) {
     return null;
   }
@@ -96,10 +94,6 @@ export async function getPost(slug, level, userID) {
     .limit(1)
     .eq("slug", slug);
 
-  if (level < ADMIN_LEVEL) {
-    query = query.eq("userID", userID);
-  }
-
   const { data, error } = await query.single();
 
   if (error) {
@@ -114,7 +108,7 @@ export async function createPost(newData) {
   const { files, docs, reType, ...reData } = newData;
 
   // get re type id, ex: nha-rieng = 1
-  const { data: typeID, error } = await supabase
+  const { data: REType, error } = await supabase
     .from("REType")
     .select("*")
     .eq("type", reType)
@@ -123,6 +117,8 @@ export async function createPost(newData) {
   if (error) {
     throw new Error(errorMessage.fetchError);
   }
+
+  const { REType_ID: typeID } = REType;
 
   const fullAddress = await getFullAddress(
     reData.cityID,
@@ -134,15 +130,12 @@ export async function createPost(newData) {
   const { lat, long } = await getLatLong(fullAddress);
 
   // post
-  const {
-    data: { id: postID },
-    error: createError,
-  } = await supabase
+  const { data, error: createError } = await supabase
     .from("REDirectory")
     .insert([
       {
         ...reData,
-        REType_ID: typeID.REType_ID,
+        REType_ID: typeID,
         lat,
         long,
       },
@@ -154,6 +147,8 @@ export async function createPost(newData) {
     console.log(createError);
     throw new Error(errorMessage.cantCreate);
   }
+
+  const { id: postID } = data;
 
   // handle media
   files.images.forEach((file) => uploadMedia(file, postID));

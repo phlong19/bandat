@@ -74,7 +74,7 @@ function Footer() {
           {/* socials media, mobile hidden */}
           <div className="hidden lg:mt-32 lg:block xl:mt-0">
             <h3 className="text-xl font-bold">Kết nối với chúng tôi qua</h3>
-            <ul className="flex gap-3 pt-4 text-4xl text-primary dark:text-secondary">
+            <ul className="flex gap-3 pt-4 text-2xl text-primary dark:text-secondary">
               <li>
                 <a href={fb}>
                   <FaFacebook />

@@ -1,16 +1,9 @@
-import {
-  Tag,
-  TagLabel,
-  TagLeftIcon,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Tag, TagLabel, TagLeftIcon } from "@chakra-ui/react";
 
 function ItemTagInformation({ icon, value }) {
-  const scheme = useColorModeValue("blue", "orange");
-
   return (
-    <Tag size="md" variant="outline" colorScheme={scheme}>
-      <TagLeftIcon fontSize='large' as={icon} />
+    <Tag size="sm" variant="outline" fontSize='12px'>
+      <TagLeftIcon fontSize="md" as={icon} />
       <TagLabel>{value}</TagLabel>
     </Tag>
   );

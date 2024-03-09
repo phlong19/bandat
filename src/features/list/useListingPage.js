@@ -1,17 +1,35 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
 import { getList } from "../../services/apiRE";
+import { LIMIT_PER_PAGE } from "../../constants/anyVariables";
 
 export function useListingPage(purType) {
   const { type } = useParams();
   const [searchParams] = useSearchParams();
+  const queryClient = useQueryClient();
 
-  const page = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
+  const page = Number(searchParams.get("page")) || 1;
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["listing-page", purType, type],
+  const { data: { data, count } = {}, isLoading } = useQuery({
+    queryKey: ["REList-client", purType, type, page],
     queryFn: () => getList(purType, type, page),
   });
 
-  return { data, isLoading };
+  // PRE-FETCHING
+  const totalPage = Math.ceil(count / LIMIT_PER_PAGE);
+  // A. next page
+  if (page < totalPage) {
+    queryClient.prefetchQuery({
+      queryKey: ["REList-client", purType, type, page + 1],
+      queryFn: () => getList(purType, type, page + 1),
+    });
+  }
+  // B. prev page
+  if (page > 1)
+    queryClient.prefetchQuery({
+      queryKey: ["REList-client", purType, type, page - 1],
+      queryFn: () => getList(purType, type, page - 1),
+    });
+
+  return { data, count, isLoading };
 }

@@ -1,26 +1,24 @@
-import ChakraTable from "../features/table/ChakraTable";
-import TableNewRow from "../features/table/TableNewRow";
-import NewsFormModal from "../features/form/NewsFormModal";
-
 import { useAuth } from "../context/UserContext";
-import { newsCaptions } from "../constants/anyVariables";
+import { Center, Spinner } from "@chakra-ui/react";
 
-import { news } from "../data/news";
+import EditorDashboardTable from "../features/dashboard/EditorDashboardTable";
+import { useGetFullNewsList } from "../features/dashboard/useGetFullNewsList";
 
 function EditorDashboard() {
-  const { level } = useAuth();
+  const {
+    data: { id },
+  } = useAuth();
+  const { data, count, isLoading } = useGetFullNewsList(id);
 
-  return (
-    <ChakraTable
-      data={news}
-      edit
-      captions={newsCaptions}
-      render={(item) => <TableNewRow data={item} level={level} key={item.id} />}
-      primaryButton={<NewsFormModal />}
-      title="Quản lý tin tức"
-      count={news.length}
-    />
-  );
+  if (isLoading) {
+    return (
+      <Center minH="80dvh">
+        <Spinner />
+      </Center>
+    );
+  }
+
+  return <EditorDashboardTable data={data} count={count} />;
 }
 
 export default EditorDashboard;

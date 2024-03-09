@@ -1,68 +1,63 @@
 import { NavLink } from "react-router-dom";
-import { FaCircleUser } from "react-icons/fa6";
+import { FaRegCircleUser } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
-import { BiSolidBible } from "react-icons/bi";
+import { LiaBibleSolid } from "react-icons/lia";
 import { RiListSettingsLine } from "react-icons/ri";
+import { BsDoorOpen } from "react-icons/bs";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
 import SpinnerFullPage from "./SpinnerFullPage";
 import ChakraPopover from "./ChakraPopover";
-import Logout from "../features/auth/Logout";
 
 import { useAuth } from "../context/UserContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
+import { useLogout } from "../features/auth/useLogout";
 
 function Action({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
+  const { logout } = useLogout();
 
   if (isLoading) {
     return <SpinnerFullPage />;
   }
 
   return (
-    <div className="flex items-center justify-stretch gap-5">
-      <ChakraPopover title="Tin đã lưu">
-        <p>hi</p>
-      </ChakraPopover>
+    <div className="flex items-center justify-stretch gap-2.5">
+      <div>
+        <ChakraPopover title="Tin đã lưu">
+          <p>hi</p>
+        </ChakraPopover>
 
-      <ToggleTheme />
+        <ToggleTheme />
+      </div>
       {!isAuthenticated ? (
         <>
-          <Button to={"dang-nhap"} onClick={onClose} variant="light">
+          <Button to="dang-nhap" onClick={onClose} variant="light">
             Đăng nhập
           </Button>
-          <Button to={"dang-ky"} onClick={onClose} variant="light">
+          <Button to="dang-ky" onClick={onClose} variant="light">
             Đăng ký
           </Button>
         </>
       ) : (
         <div className="flex items-center">
           <ChakraPopover title="Tài khoản" avatar data={data}>
-            <div className="flex flex-col gap-2">
-              <NavLink
-                to="/quan-ly-bai-viet"
-                className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-              >
+            <div className="flex flex-col gap-2.5">
+              <NavLink to="/quan-ly-bai-viet" className="user-item">
                 <span className="text-xl">
                   <RiListSettingsLine />
                 </span>
                 Quản lý bài viết
               </NavLink>
-              <NavLink
-                to="/tai-khoan"
-                className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-              >
+              <NavLink to="/tai-khoan" className="user-item">
                 <span className="text-xl">
-                  <FaCircleUser />
+                  <FaRegCircleUser />
                 </span>
                 Quản lý tài khoản
               </NavLink>
               {level >= EDITOR_LEVEL && (
-                <NavLink
-                  to="/quan-ly-tin-tuc"
-                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-                >
+                <NavLink to="/quan-ly-tin-tuc" className="user-item">
                   <span className="text-xl">
                     <FaRegNewspaper />
                   </span>
@@ -70,20 +65,20 @@ function Action({ onClose }) {
                 </NavLink>
               )}
               {level >= ADMIN_LEVEL && (
-                <NavLink
-                  to="/control"
-                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-                >
+                <NavLink to="/control" className="user-item">
                   <span className="text-xl">
-                    <BiSolidBible />
+                    <LiaBibleSolid />
                   </span>
                   Admin Panel
                 </NavLink>
               )}
+              <NavLink onClick={logout} className="user-item">
+                <span className="text-xl">
+                  <BsDoorOpen />
+                </span>
+                Đăng xuất
+              </NavLink>
             </div>
-            <span className="mt-3 flex w-full items-center justify-center">
-              <Logout />
-            </span>
           </ChakraPopover>
         </div>
       )}

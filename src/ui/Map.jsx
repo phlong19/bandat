@@ -1,24 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import ReactDOM from "react-dom/client";
 import L from "leaflet";
 import ListItem from "../features/list/ListItem";
-import { createPortal } from "react-dom";
 import ViewInMap from "./ViewInMap";
 import { useMapView } from "../context/MapViewContext";
 
 function Map({ data, purType }) {
   const { mapView } = useMapView();
   const mapRef = useRef(null);
-  const [wait, setWait] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(0);
+  const mapRoot = useRef({});
 
+  // TODO: clean up error on mount and unmount
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setWait(mapView);
-    }, 500);
+    const renderTimeout = setTimeout(() => {
+      if (data?.length) {
+        data.forEach((item) => {
+          const container = document.querySelector(`#viewInMap${item.id}`);
+          if (container !== null) {
+            mapRoot.current[item.id] = ReactDOM.createRoot(container);
+            mapRoot.current[item.id].render(
+              <ViewInMap
+                onClick={() => {
+                  setSelectedMarker(item.id);
+                  // flyTo([lat,long],zoom)
+                  mapRef.current.flyTo([item.lat, item.long], 13);
+                }}
+              />,
+            );
+          }
+        });
+      }
+    });
 
-    return () => clearTimeout(timer);
-  }, [mapView]);
+    // clean up
+    return () => {
+      clearTimeout(renderTimeout);
+      Object.values(mapRoot.current).forEach((root) => root.unmount());
+      mapRoot.current = {};
+    };
+  }, [mapView, data]);
 
   return (
     <MapContainer
@@ -43,19 +65,6 @@ function Map({ data, purType }) {
             click: () => setSelectedMarker(item.id),
           }}
         >
-          {mapView &&
-            wait &&
-            createPortal(
-              <ViewInMap
-                location={[item.lat, item.long]}
-                onClick={() => {
-                  setSelectedMarker(item.id);
-                  // flyTo([lat,long],zoom)
-                  mapRef.current.flyTo([item.lat, item.long], 13);
-                }}
-              />,
-              document.querySelector(`#viewInMap${item.id}`),
-            )}
           <Popup>
             <ListItem data={item} purType={purType} mapView={true} isPopup />
           </Popup>

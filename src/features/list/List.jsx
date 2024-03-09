@@ -1,13 +1,12 @@
 // libs
 import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Switch } from "@chakra-ui/react";
+import { Switch, Center, Spinner } from "@chakra-ui/react";
 
 // UI
 import ListItem from "./ListItem";
 import Searchbar from "../searchbar/Searchbar";
 import Map from "../../ui/Map";
-import SpinnerFullPage from "../../ui/SpinnerFullPage";
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
 // hooks & helpers & context
@@ -17,7 +16,7 @@ import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
 import { useMapView } from "../../context/MapViewContext";
 
 function List({ purType }) {
-  const { data, isLoading } = useListingPage(purType);
+  const { data, count, isLoading } = useListingPage(purType);
   const { mapView, setMapView } = useMapView();
 
   const listAnimationControl = useAnimation();
@@ -63,10 +62,12 @@ function List({ purType }) {
   }, [mapView, mapAnimationControl, listAnimationControl]);
 
   if (isLoading) {
-    return <SpinnerFullPage />;
+    return (
+      <Center minH="90dvh">
+        <Spinner size="md" speed="0.35s" thickness="1px" />
+      </Center>
+    );
   }
-
-  const list = data.data || [];
 
   return (
     <div className="relative h-full min-h-[80%] justify-center px-2.5 sm:px-4 lg:flex lg:gap-2">
@@ -77,7 +78,7 @@ function List({ purType }) {
             mapView ? "overflow-y-auto" : ""
           }`}
         >
-          <div className="pt-4">
+          <div className="pt-4 md:pt-8">
             <Searchbar />
           </div>
 
@@ -87,7 +88,7 @@ function List({ purType }) {
           <div className="flex items-center justify-between">
             {/* counter */}
             <span className="inline-block text-base lg:text-lg">
-              Có <span>{formatNumber(list.length)}</span> bất động sản.
+              Có <span>{formatNumber(count)}</span> bất động sản.
             </span>
 
             {/* toggle grid & map views */}
@@ -95,8 +96,9 @@ function List({ purType }) {
               <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
               <Switch
                 onChange={() => setMapView((s) => !s)}
-                checked={mapView}
+                isChecked={mapView}
                 key={purType}
+                colorScheme="green"
               />
             </div>
           </div>
@@ -109,11 +111,11 @@ function List({ purType }) {
                 : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-5"
             } mt-3 space-y-4 lg:grid lg:space-y-0`}
           >
-            {list.map((item) => (
+            {data.map((item) => (
               <ListItem key={item.id} data={item} purType={purType} />
             ))}
           </motion.div>
-          <ChakraTablePagination count={data.count} />
+          <ChakraTablePagination count={count} />
         </motion.div>
 
         {/* map, mobile hidden */}
@@ -122,7 +124,7 @@ function List({ purType }) {
           initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
           animate={mapAnimationControl}
         >
-          <Map data={list} purType={purType} />
+          <Map data={data} purType={purType} />
         </motion.div>
       </AnimatePresence>
     </div>

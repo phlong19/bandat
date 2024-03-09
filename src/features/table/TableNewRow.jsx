@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Tr,
   Td,
@@ -12,32 +11,48 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 
-import { PiDotsSixVerticalBold, PiUpload } from "react-icons/pi";
+import ChakraMenuItemDialog from "../../ui/ChakraMenuItemDialog";
+import { PiDotsSixVerticalBold, PiDownload, PiUpload } from "react-icons/pi";
 import { TbEyeCheck } from "react-icons/tb";
 import { HiOutlineTrash } from "react-icons/hi";
 
 import { ADMIN_LEVEL } from "../../constants/anyVariables";
 import { formatDate } from "../../utils/helper";
 
-function TableNewRow({ data, level }) {
+import { useApproveNews } from "./useApproveNews";
+import { useDeactiveNews } from "./useDeactiveNews";
+import { useDeleteNews } from "./useDeleteNews";
+import { useAuth } from "../../context/UserContext";
+
+function TableNewRow({ data, setSlug }) {
+  const {
+    data: { id: userID },
+    level,
+  } = useAuth();
+
   const {
     id,
     created_at,
-    profile: { fullName, avatar },
+    userID: authorID,
+    author: { fullName, avatar },
     title,
     slug,
     summary,
     status,
   } = data;
 
+  const { approved } = useApproveNews();
+  const { deactive } = useDeactiveNews();
+  const { deleted } = useDeleteNews();
+
   return (
     <Tr className="group">
       <Td width={{ sm: "250px" }} maxWidth={{ sm: "300px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Avatar src={avatar} name={fullName} size="md" me="18px" />
+          <Avatar src={avatar} name={fullName} me="18px" />
           <Flex direction="column">
             <Text
-              fontSize="md"
+              fontSize="sm"
               fontWeight="600"
               noOfLines={1}
               minWidth="100%"
@@ -52,7 +67,7 @@ function TableNewRow({ data, level }) {
       <Td>
         <Badge
           colorScheme={status ? "green" : "red"}
-          fontSize="sm"
+          fontSize="xs"
           p="3px 10px"
           borderRadius="lg"
           textTransform="capitalize"
@@ -69,31 +84,45 @@ function TableNewRow({ data, level }) {
         <Text noOfLines={2}>{summary}</Text>
       </Td>
       <Td>
-        <Text fontSize="md" pb=".5rem">
+        <Text pb=".5rem">
           {formatDate(created_at)}
         </Text>
       </Td>
       <Td>
         <Menu>
           <MenuButton className="invisible rounded-md border border-dark p-1 group-hover:visible dark:border-white">
-            <PiDotsSixVerticalBold fontSize={25} />
+            <PiDotsSixVerticalBold fontSize={18} />
           </MenuButton>
           <MenuList fontSize="medium">
             {level >= ADMIN_LEVEL && !status && (
-              <MenuItem gap={3} color="blue.600">
-                <PiUpload />
-                Duyệt bài nhanh
-              </MenuItem>
+              <ChakraMenuItemDialog
+                color="blue.600"
+                action="Duyệt bài nhanh"
+                icon={<PiUpload />}
+                onAction={() => approved(id)}
+              />
             )}
-            <MenuItem gap={3} color="green" as={Link} to={`edit/${slug}`}>
-              {/* future: add edit page */}
+            {/* must be admin or author to de-active news */}
+            {(level >= ADMIN_LEVEL || userID === authorID) && status && (
+              <ChakraMenuItemDialog
+                color="red.600"
+                action="Gỡ bài viết"
+                icon={<PiDownload />}
+                onAction={() => deactive(id)}
+                warning
+              />
+            )}
+            <MenuItem gap={3} color="green" onClick={() => setSlug(slug)}>
               <TbEyeCheck fontSize="20" />
               Xem / Sửa
             </MenuItem>
-            <MenuItem gap={3} color="red">
-              <HiOutlineTrash />
-              Xóa
-            </MenuItem>
+            <ChakraMenuItemDialog
+              color="red"
+              action="Xóa"
+              warning
+              icon={<HiOutlineTrash />}
+              onAction={() => deleted(id, level, userID)}
+            />
           </MenuList>
         </Menu>
       </Td>
