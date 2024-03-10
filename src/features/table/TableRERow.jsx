@@ -38,7 +38,7 @@ function TableRERow({ data, level, userID }) {
 
   return (
     <Tr className="group">
-      <Td width={{ sm: "250px" }} maxWidth={{ sm: "300px" }} pl="0px">
+      <Td width={{ sm: "230px" }} maxWidth={{ sm: "300px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar src={avatar} name={fullName} me="18px" />
           <Flex direction="column">

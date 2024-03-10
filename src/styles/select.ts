@@ -6,6 +6,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 
 const baseStyle = definePartsStyle({
   field: {
+    fontSize:'sm',
     _focus: {
       _dark: {
         borderColor: "secondary",

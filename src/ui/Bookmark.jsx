@@ -22,7 +22,7 @@ function Bookmark() {
       onClick={handleClick}
       className={`${!mapView ? "p-2" : "p-1.5"} rounded-md bg-light`}
     >
-      <span className="text-xl text-black">
+      <span className="ml-1 lg:ml-0 text-md lg:text-lg text-black">
         {hover ? <FaHeart className="fill-red-500" /> : <FaRegHeart />}
       </span>
     </button>

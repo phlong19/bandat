@@ -80,6 +80,7 @@ function ChakraTable({
                     fontSize="small"
                     key={i}
                     ps={i === 0 ? "0px" : null}
+                    pr={0}
                   >
                     {caption}
                   </Th>

@@ -87,7 +87,7 @@ export async function getSinglePost(slug) {
     medias: REMedias(id, mediaLink, isImage),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
     profile: Profile(phone,fullName,avatar),
-    status: REStatus (*),
+    statusRE: REStatus (*),
     type: REType (type)
   `,
     )

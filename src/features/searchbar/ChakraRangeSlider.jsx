@@ -21,7 +21,7 @@ function ChakraRangeSlider({ rangeValue, setRangeValue }) {
       value={rangeValue}
       max={maxAreaSearch}
       colorScheme='green'
-      onChange={(v) => setRangeValue(v)}
+      onChange={(v) => setRangeValue(v)} mt={2.5}
     >
       <RangeSliderTrack>
         <RangeSliderFilledTrack />
