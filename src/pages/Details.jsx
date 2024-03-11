@@ -2,16 +2,22 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
+import parse from "html-react-parser";
+import { toast } from "react-hot-toast";
 
 // libs ui and ui
 import {
   Box,
   Center,
+  Button,
   Spinner,
-  Flex,
+  Flex,Grid,
   Image,
+  Link as ChakraLink,
   AspectRatio,
   Heading,
+  VStack,
+  HStack,
   Text,
   Stat,
   StatGroup,
@@ -24,6 +30,7 @@ import {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import GoBackButton from "../ui/GoBackButton";
+import Avatar from "../ui/Avatar";
 
 // icons
 import { GrMoney } from "react-icons/gr";
@@ -33,9 +40,13 @@ import { useAuth } from "../context/UserContext";
 import { getSinglePost } from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
 import { formatCurrency } from "../utils/helper";
+import { success } from "../constants/message";
 
 function Details() {
   const accent = useColorModeValue("primary", "secondary");
+  const wb = useColorModeValue("light", "darker");
+  const border = useColorModeValue("gray.200", "gray.500");
+  const desColor = useColorModeValue("dark", "whiteAlpha.800");
   const { isLoading } = useAuth();
 
   const { land } = useParams();
@@ -149,9 +160,10 @@ function Details() {
       },
     ],
     profile: {
-      phone: null,
+      phone: 987513549,
       avatar: null,
       fullName: "Nhà đất Hà Nội",
+      email: "test@gmail.com",
     },
     statusRE: {
       id: 2,
@@ -178,6 +190,7 @@ function Details() {
     type,
     price,
     purType,
+    profile: { email, fullName, phone, avatar },
   } = fake;
   const settings = {
     customPaging: function (i) {
@@ -218,7 +231,7 @@ function Details() {
       {/* main content */}
       <Box>
         <Flex
-          gap={2.5}
+          gap={{ base: 2, lg: 3, xl: 4 }}
           display={{ base: "block", lg: "flex" }}
           px={{ base: 1, md: 1.5 }}
         >
@@ -229,8 +242,13 @@ function Details() {
             </Heading>
             {/* stats */}
             <Box borderY="1px solid var(--chakra-colors-gray-200)" p={2} my={3}>
-              <StatGroup>
-                <Stat mr={4}>
+              <StatGroup
+                display={{ base: "grid", md: "flex" }}
+                gridTemplateColumns="repeat(2, 1fr)"
+                gridTemplateRows="repeat(2, 1fr)"
+                gridGap={1}
+              >
+                <Stat mr={{ base: 0.5, md: 2.5, lg: 4 }}>
                   <StatLabel>Giá trị</StatLabel>
                   <StatNumber color={accent}>
                     {formatCurrency(price)}
@@ -259,17 +277,78 @@ function Details() {
               </StatGroup>
             </Box>
             {/* des */}
-            <Box h={200} bg="yellow"></Box>
+            <Box
+              h={200}
+              fontSize="sm"
+              height="fit-content"
+              p={{ base: 2, lg: 2.5 }}
+            >
+              <Heading fontSize="xl" pb={3} fontWeight="600">
+                Thông tin mô tả
+              </Heading>
+              <Box color={desColor}>{parse(des)}</Box>
+            </Box>
+            {/* features */}
+            <Heading fontSize="xl">Đặc điểm bất động sản</Heading>
+            <Grid templateColumns={{base:2,md:4}} templateRows={{base:2,md:4}}>
+              hi
+            </Grid>
           </Box>
           {/* sticky post author */}
           <Box
-            bg="blue.300"
+            position={{ base: "relative", lg: "sticky" }}
+            top={20}
+            w={{ base: "full", lg: "30%" }}
+            border="1px solid transparent"
+            borderColor={border}
+            rounded="md"
+            p={2} mt={1}
             pos="sticky"
-            // h="100dvh"
             h={{ base: "fit-content", md: "100%" }}
           >
-            hi 
-            {/* TODO */}
+            <Center flexDir="column">
+              <Avatar avatar={avatar} fullName={fullName} mobile />
+              <Text size="xs" color="gray.400" pt={3} fontFamily="roboto">
+                Được đăng bởi
+              </Text>
+              <Text>{fullName}</Text>
+              <VStack gap={2} my={2} w="50%">
+                <Button
+                  bg={accent}
+                  color={wb}
+                  w="full"
+                  size="sm"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(`0${phone}`);
+                    toast.success(success.copyToClipboard);
+                  }}
+                >
+                  0{phone}
+                </Button>
+                {/* zalo chat */}
+                <Button
+                  size="sm"
+                  w="full"
+                  variant="outline"
+                  fontWeight={500}
+                  as={ChakraLink} target="_blank"
+                  href={`https://chat.zalo.me/?phone=0${phone}`}
+                >
+                  Chat qua Zalo
+                </Button>
+                {/* email */}
+                <Button
+                  size="sm"
+                  w="full"
+                  variant="outline"
+                  fontWeight={500}
+                  as={ChakraLink}
+                  href={`mailto:${email}`}
+                >
+                  Gửi email
+                </Button>
+              </VStack>
+            </Center>
           </Box>
         </Flex>
       </Box>

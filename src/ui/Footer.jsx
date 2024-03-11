@@ -50,11 +50,11 @@ function Footer() {
           </span>
           <div className="mt-6 border-b border-dark pb-5 text-left text-base dark:border-light lg:border-none">
             <h3>Tải ứng dụng</h3>
-            <ul className="mt-3 items-center xs:flex">
-              <li className="w-1/2 md:w-1/3 lg:w-1/2">
+            <ul className="mt-3 items-center gap-1 xs:flex sm:gap-0">
+              <li className="w-1/2 md:w-1/3 lg:w-1/2 -ml-2">
                 <a href="#">
                   <img
-                    src="./google-play.png"
+                    src="/google-play.png"
                     alt="google play"
                     className="max-w-48"
                   />
@@ -63,9 +63,9 @@ function Footer() {
               <li className="w-1/2 md:w-1/3 lg:w-1/2">
                 <a href="#">
                   <img
-                    src="./app_store.png"
+                    src="/app_store.png"
                     alt="app store"
-                    className="max-w-48 dark:contrast-150"
+                    className="mt-[3.5px] max-w-48 dark:contrast-150 sm:mt-0"
                   />
                 </a>
               </li>

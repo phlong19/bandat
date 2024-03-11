@@ -31,6 +31,7 @@ export async function register({ fullName, email, password }) {
         id: justCreateUser.user.id,
         fullName: fullName,
         level: USER_LEVEL,
+        email,
       },
     ])
     .select();

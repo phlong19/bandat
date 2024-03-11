@@ -86,7 +86,7 @@ export async function getSinglePost(slug) {
     ward: WardDirectory (wardName),
     medias: REMedias(id, mediaLink, isImage),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
-    profile: Profile(phone,fullName,avatar),
+    profile: Profile(phone,fullName,avatar,email),
     statusRE: REStatus (*),
     type: REType (type)
   `,

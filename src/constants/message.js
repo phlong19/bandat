@@ -85,6 +85,9 @@ export const success = {
   updateAvatar: "Cập nhật ảnh đại diện thành công",
   updateUsername: "Cập nhật tên người dùng thành công",
   updateOthers: "Cập nhật thành công",
+
+  // others
+  copyToClipboard: "da sao chep vao bo nho tam",
 };
 
 export const reform = {
