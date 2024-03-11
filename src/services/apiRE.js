@@ -87,12 +87,12 @@ export async function getSinglePost(slug) {
     medias: REMedias(id, mediaLink, isImage),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
     profile: Profile(phone,fullName,avatar,email),
-    statusRE: REStatus (*),
     type: REType (type)
   `,
     )
     .limit(1)
-    .eq("slug", slug);
+    .eq("slug", slug)
+    .eq("status", SELLING_STATUS);
 
   const { data, error } = await query.single();
 

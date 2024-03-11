@@ -11,7 +11,8 @@ import {
   Center,
   Button,
   Spinner,
-  Flex,Grid,
+  Flex,
+  Grid,
   Image,
   Link as ChakraLink,
   AspectRatio,
@@ -34,6 +35,10 @@ import Avatar from "../ui/Avatar";
 
 // icons
 import { GrMoney } from "react-icons/gr";
+import { PiFrameCornersLight } from "react-icons/pi";
+import { SiDogecoin } from "react-icons/si";
+import { TbBed, TbStack2 } from "react-icons/tb";
+import { LiaBathSolid } from "react-icons/lia";
 
 // vars, ctx, hooks, ...
 import { useAuth } from "../context/UserContext";
@@ -41,11 +46,12 @@ import { getSinglePost } from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
 import { formatCurrency } from "../utils/helper";
 import { success } from "../constants/message";
+import DetailsFeature from "../ui/DetailsFeature";
 
 function Details() {
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
-  const border = useColorModeValue("gray.200", "gray.500");
+  const border = useColorModeValue("gray.200", "whiteAlpha.700");
   const desColor = useColorModeValue("dark", "whiteAlpha.800");
   const { isLoading } = useAuth();
 
@@ -165,11 +171,6 @@ function Details() {
       fullName: "Nhà đất Hà Nội",
       email: "test@gmail.com",
     },
-    statusRE: {
-      id: 2,
-      status: "Đã duyệt",
-      created_at: "2024-01-28T14:44:07.888227+00:00",
-    },
     type: {
       type: "nha-rieng",
     },
@@ -234,6 +235,7 @@ function Details() {
           gap={{ base: 2, lg: 3, xl: 4 }}
           display={{ base: "block", lg: "flex" }}
           px={{ base: 1, md: 1.5 }}
+          justifyContent="space-around"
         >
           {/* infs */}
           <Box>
@@ -248,7 +250,7 @@ function Details() {
                 gridTemplateRows="repeat(2, 1fr)"
                 gridGap={1}
               >
-                <Stat mr={{ base: 0.5, md: 2.5, lg: 4 }}>
+                <Stat mr={{ base: 0.5, md: 2.5, lg: 3 }}>
                   <StatLabel>Giá trị</StatLabel>
                   <StatNumber color={accent}>
                     {formatCurrency(price)}
@@ -290,9 +292,24 @@ function Details() {
             </Box>
             {/* features */}
             <Heading fontSize="xl">Đặc điểm bất động sản</Heading>
-            <Grid templateColumns={{base:2,md:4}} templateRows={{base:2,md:4}}>
-              hi
-            </Grid>
+            <Flex>
+              {/* first 4 */}
+              <VStack w="50%" py={2}>
+                <DetailsFeature
+                  value={area}
+                  label="Diện tích"
+                  icon={PiFrameCornersLight}
+                />
+                <DetailsFeature
+                  value={formatCurrency(price)}
+                  label="Mức giá"
+                  icon={SiDogecoin}
+                />
+                <Flex></Flex>
+                <Flex></Flex>
+              </VStack>
+              {/* last 4 */}
+            </Flex>
           </Box>
           {/* sticky post author */}
           <Box
@@ -302,7 +319,8 @@ function Details() {
             border="1px solid transparent"
             borderColor={border}
             rounded="md"
-            p={2} mt={1}
+            p={2}
+            mt={1}
             pos="sticky"
             h={{ base: "fit-content", md: "100%" }}
           >
@@ -312,12 +330,12 @@ function Details() {
                 Được đăng bởi
               </Text>
               <Text>{fullName}</Text>
-              <VStack gap={2} my={2} w="50%">
+              <VStack gap={2} my={2} w="45%">
                 <Button
                   bg={accent}
                   color={wb}
                   w="full"
-                  size="sm"
+                  fontSize="sm"
                   onClick={async () => {
                     await navigator.clipboard.writeText(`0${phone}`);
                     toast.success(success.copyToClipboard);
@@ -327,18 +345,19 @@ function Details() {
                 </Button>
                 {/* zalo chat */}
                 <Button
-                  size="sm"
                   w="full"
                   variant="outline"
                   fontWeight={500}
-                  as={ChakraLink} target="_blank"
+                  fontSize="sm"
+                  as={ChakraLink}
+                  target="_blank"
                   href={`https://chat.zalo.me/?phone=0${phone}`}
                 >
                   Chat qua Zalo
                 </Button>
                 {/* email */}
                 <Button
-                  size="sm"
+                  fontSize="sm"
                   w="full"
                   variant="outline"
                   fontWeight={500}
