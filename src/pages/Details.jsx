@@ -1,9 +1,9 @@
 function Details() {
-    return (
-        <div className="w-full h-72 flex justify-center items-center">
-            single nha dat details
-        </div>
-    )
+  return (
+    <div className="flex min-h-full w-full items-center justify-center">
+      single nha dat details
+    </div>
+  );
 }
 
-export default Details
+export default Details;

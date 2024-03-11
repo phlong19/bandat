@@ -39,7 +39,7 @@ export async function getList(type, citeria) {
   `,
       { count: "exact" },
     )
-    .eq("purType", type)
+    // .eq("purType", type)
     // .eq("status", true)
     // for pagination
     .range(0, LIMIT_PER_PAGE - 1);
@@ -47,15 +47,50 @@ export async function getList(type, citeria) {
 
   if (error) throw new Error(error.message);
 
-  // every thing is object =)) 
+  // every thing is object =))
   data.count = count;
 
   return data;
 }
 
-// city: CityDirectory (cityName),
-// dis: DistrictDirectory (disName),
-// images: REImages(mediaLink),
-// type: REType(REType_Name),
-// profile: Profile(phone,fullName,avatar),
-// legalDocs: LegalDoc!LegalDoc_postID_fkey (doc_name)
+const data = {};
+data.city = data.dis = data.ward = [];
+
+export async function getAddress(city, district, ward) {
+
+  if (!city && !district && !ward) {
+    data.dis = data.ward = [];
+    const { data: city, error } = await supabase
+      .from("CityDirectory")
+      .select("*", { count: "exact" });
+
+    if (error) throw new Error(error.message);
+
+    data.city = city;
+  }
+
+  if (city && !district && !ward) {
+    data.ward = [];
+    const { data: dis, error } = await supabase
+      .from("DistrictDirectory")
+      .select("*", { count: "exact" })
+      .eq("cityID", city);
+
+    if (error) throw new Error(error.message);
+
+    data.dis = dis;
+  }
+
+  if (city && district && !ward) {
+    const { data: ward, error } = await supabase
+      .from("WardDirectory")
+      .select("*", { count: "exact" })
+      .eq("disID", district);
+
+    if (error) throw new Error(error.message);
+
+    data.ward = ward;
+  }
+
+  return data;
+}

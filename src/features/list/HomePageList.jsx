@@ -4,23 +4,22 @@ import SpinnerFullPage from "../../ui/SpinnerFullPage";
 import ErrorFallBack from "../../ui/ErrorFallBack";
 
 import { useHomePage } from "./useHomePage";
-import List from "./List";
 
 function HomePageList() {
-  const { data, error, isLoading } = useHomePage();
+  // const { data, error, isLoading } = useHomePage();
 
-  if (isLoading) {
-    return <SpinnerFullPage />;
-  }
+  // if (isLoading) {
+  //   return <SpinnerFullPage />;
+  // }
 
-  if (error) {
-    toast.error(error.message);
-    return <ErrorFallBack />;
-  }
+  // if (error) {
+  //   toast.error(error.message);
+  //   return <ErrorFallBack />;
+  // }
 
   return (
     <div>
-      <List purType={true} home />
+      
     </div>
   );
 }

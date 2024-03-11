@@ -27,6 +27,9 @@ body {
   .nav-link {
     @apply relative text-sm font-medium tracking-wide before:absolute before:-bottom-1 before:left-0 before:h-[2px] before:w-0 before:origin-left before:rounded before:bg-primary before:transition-all before:duration-500 before:ease-out before:content-[''] hover:before:w-full dark:before:bg-secondary sm:text-base;
   }
+  .select {
+    @apply relative m-0 -mr-0.5 block w-[1px] min-w-0 flex-auto rounded border border-solid border-prim-light bg-light bg-clip-padding px-3 py-1 text-base font-normal leading-[1.6] text-black outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-black focus:shadow-prim-light focus:outline-none dark:border-sec-light dark:bg-dark dark:text-white dark:placeholder:text-white dark:focus:border-secondary focus:dark:text-white dark:focus:shadow-sec-light
+  }
 }
 
 input:focus-within ~ label,
