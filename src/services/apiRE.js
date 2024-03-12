@@ -42,7 +42,7 @@ export async function getList(type, citeria, page) {
     )
     .eq("purType", type)
     .eq("images.isImage", true)
-    // .eq("status", SELLING_STATUS)
+    // .eq("status", SELLING_STATUS) for dev
     // .gt("expriryDate", new Date().toISOString())
     .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
@@ -90,12 +90,12 @@ export async function getSinglePost(slug) {
     medias: REMedias(id, mediaLink, isImage),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
     profile: Profile(phone,fullName,avatar,email),
-    type: REType (type)
+    type: REType (type, name)
   `,
     )
     .limit(1)
-    .eq("slug", slug)
-    .eq("status", SELLING_STATUS);
+    .eq("slug", slug);
+  // .eq("status", SELLING_STATUS); for dev
 
   const { data, error } = await query.single();
 

@@ -7,6 +7,7 @@ import {
   HStack,
   Button,
   IconButton,
+  Tooltip,
   Image,
   Link as ChakraLink,
   useColorModeValue,
@@ -15,17 +16,15 @@ import { toast } from "react-hot-toast";
 import {
   FacebookShareButton,
   FacebookIcon,
-  FacebookMessengerIcon,
   FacebookMessengerShareButton,
 } from "react-share";
 
 import Avatar from "./Avatar";
-import { hiddenLast3PhoneNum } from "../utils/helper";
-import { success } from "../constants/message";
-import { TbShare } from "react-icons/tb";
 import { FaRegHeart } from "react-icons/fa6";
 import { PiWarning } from "react-icons/pi";
-import { RiFacebookCircleFill } from "react-icons/ri";
+
+import { hiddenLast3PhoneNum } from "../utils/helper";
+import { success } from "../constants/message";
 
 function StickyAuthorBox({ author }) {
   const { phone, fullName, avatar, email } = author;
@@ -34,6 +33,8 @@ function StickyAuthorBox({ author }) {
   const border = useColorModeValue("gray.200", "whiteAlpha.700");
 
   const [show, setShow] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [report, setReport] = useState(false);
 
   async function handleClick(e) {
     e.stopPropagation();
@@ -49,7 +50,7 @@ function StickyAuthorBox({ author }) {
     <Box
       position={{ base: "relative", lg: "sticky" }}
       top={20}
-      w={{ base: "full", lg: "70%" }}
+      w={{ base: "full", lg: "130%", xl: "85%" }}
       border="1px solid transparent"
       borderColor={border}
       rounded="md"
@@ -65,7 +66,7 @@ function StickyAuthorBox({ author }) {
           Được đăng bởi
         </Text>
         <Text>{fullName}</Text>
-        <VStack gap={2} my={2} w="60%">
+        <VStack gap={2} my={2} w={{ base: "70%", sm: "40%", lg: "60%" }}>
           <Button
             bg={accent}
             color={wb}
@@ -118,32 +119,48 @@ function StickyAuthorBox({ author }) {
       </Center>
       {/* buttons */}
       <Center>
-        <HStack py={2}>
-          <FacebookShareButton url={window.location.href}>
-            <FacebookIcon
-              round
-              size={38}
-              className="transition-opacity duration-200 hover:opacity-75"
+        <HStack py={{ base: 1, md: 3, lg: 3.5 }}>
+          {/* fb */}
+          <Tooltip label="Chia sẻ lên Facebook">
+            <FacebookShareButton url={window.location.href}>
+              <FacebookIcon
+                round
+                size={30}
+                className="transition-opacity duration-200 hover:opacity-75"
+              />
+            </FacebookShareButton>
+          </Tooltip>
+          {/* messenger */}
+          <Tooltip label="Chia sẻ qua Messenger">
+            <FacebookMessengerShareButton url={window.location.href}>
+              <Image
+                src="/messenger.png"
+                boxSize={8}
+                className="transition-opacity duration-200 hover:opacity-75"
+              />
+            </FacebookMessengerShareButton>
+          </Tooltip>
+          <Tooltip label="Báo xấu">
+            <IconButton
+              size="sm"
+              rounded="full"
+              onMouseEnter={() => setReport(true)}
+              onMouseLeave={() => setReport(false)}
+              color={report ? "#d6ba17f8" : ""}
+              icon={<PiWarning />}
+              onClick={() => toast.success("+1 bao xau, cho bai nay ra dao")}
             />
-          </FacebookShareButton>
-          <FacebookMessengerShareButton url={window.location.href}>
-            {/* <FacebookMessengerIcon
-              size={36}
-              round
-              className="transition-opacity duration-200 hover:opacity-75"
-            /> */}
-            <Image
-              src="/messenger.png"
-              boxSize={10}
-              className="transition-opacity duration-200 hover:opacity-75"
+          </Tooltip>
+          <Tooltip label="Lưu vào tin của bạn">
+            <IconButton
+              size="sm"
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              rounded="full"
+              icon={hover ? <FaRegHeart fill="red" /> : <FaRegHeart />}
+              onClick={() => toast.error("chuwa lam cai nay dau")}
             />
-          </FacebookMessengerShareButton>
-          <IconButton rounded="full" icon={<PiWarning />} title="Báo xấu" />
-          <IconButton
-            rounded="full"
-            icon={<FaRegHeart />}
-            title="Lưu vào tin"
-          />
+          </Tooltip>
         </HStack>
       </Center>
     </Box>

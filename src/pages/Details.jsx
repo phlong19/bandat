@@ -6,17 +6,18 @@ import Slider from "react-slick";
 import parse from "html-react-parser";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
+import { useMediaQuery } from "react-responsive";
 
 // libs ui and ui
 import {
   Box,
   Center,
   Button,
+  Tag,
   Spinner,
   Flex,
   Grid,
   Image,
-  Link as ChakraLink,
   AspectRatio,
   Heading,
   VStack,
@@ -33,8 +34,8 @@ import {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import GoBackButton from "../ui/GoBackButton";
-import Avatar from "../ui/Avatar";
 import DetailsFeature from "../ui/DetailsFeature";
+import Disclaimer from "../ui/Disclaimer";
 
 // icons
 import { GrMoney } from "react-icons/gr";
@@ -49,18 +50,17 @@ import { CiRuler } from "react-icons/ci";
 import { useAuth } from "../context/UserContext";
 import { getSinglePost } from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
-import {
-  formatCurrency,
-  formatDate,
-  hiddenLast3PhoneNum,
-} from "../utils/helper";
+import { formatCurrency, formatDate } from "../utils/helper";
 import StickyAuthorBox from "../ui/StickyAuthorBox";
 
 function Details() {
   const accent = useColorModeValue("primary", "secondary");
-  const wb = useColorModeValue("light", "darker");
   const border = useColorModeValue("gray.200", "whiteAlpha.700");
   const desColor = useColorModeValue("dark", "whiteAlpha.800");
+
+  const isMobile = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
 
   // hooks
   const { isLoading } = useAuth();
@@ -68,125 +68,18 @@ function Details() {
   const { land } = useParams();
 
   const { data: post, isLoading: isFetching } = useQuery({
-    queryKey: ["SinglePost"],
+    queryKey: ["SinglePost", land],
     queryFn: () => getSinglePost(land),
-    enabled: false,
+    enabled: Boolean(land),
   });
 
   if (isLoading || isFetching) {
     return (
       <Center minH="80dvh">
-        <Spinner speed="0.3s" />
+        <Spinner speed="0.35s" size="md" />
       </Center>
     );
   }
-
-  let fake = {
-    id: 70,
-    expriryDate: "2024-03-26T07:36:59.965453+00:00",
-    created_at: "2024-03-09T07:36:59.965453+00:00",
-    purType: true,
-    REType_ID: 1,
-    address: "Phố Hoàng Hoa Thám",
-    area: 45,
-    price: 8450000000,
-    fur: true,
-    bed_room: 5,
-    bath_room: 4,
-    floor: 5,
-    userID: "e292b030-456a-4044-90a9-5610fe5f3971",
-    name: "Bán nhà phố Hoàng Hoa Thám 45m2, 5 tầng ô tô 4 chỗ đỗ cửa ",
-    des: "<p>Phân lô, ôtô, phố víp, nhà đẹp, gần phố, nội thất biếu không.</p><p><br></p><p>+ Nhà dân xây rất trắc chắn kiên cố, cả ngõ có 16 nhà, rất hiếm nhà bán.</p><p><br></p><p>+ Ngõ rộng đều 3m, cách phố đúng 30m, hàng xóm văn minh, dân trí cao.</p><p><br></p><p>+ Gần chợ Bưởi, vài bước ra Hồ Tây, cạnh sưởng phim, gần bệnh viện Phổi, viện 354, giao thông đi lại rất thuận tiện.</p><p>+ Nhà thiết kế rất đẹp, kiên cố.</p><p><br></p><p>+ Tầng 1 để xe, bếp, vệ sinh.</p><p>+ Tầng 2 phòng khách + 1 ngủ, vệ sinh.</p><p>+ Tầng 3 có 2 phòng ngủ vệ sinh giữa.</p><p>+ Tầng 4 phòng thờ và 1 ngủ.</p><p>+ Tầng 5 phòng thờ sân phơi.</p><p>+ Sổ đỏ vuông đét, giao dịch ngay.</p>",
-    direction: "Bắc",
-    facade: 5,
-    entryLength: null,
-    report: 0,
-    lat: 21.03958,
-    long: 105.82835,
-    cityID: 1,
-    disID: 1,
-    wardID: 4,
-    status: 2,
-    slug: "ban-nha-pho-hoang-hoa-tham-45m2-5-tang-o-to-4-cho-do-cua",
-    city: {
-      cityName: " Hà Nội",
-    },
-    dis: {
-      disName: "Quận Ba Đình",
-    },
-    ward: {
-      wardName: "Phường Cống Vị",
-    },
-    medias: [
-      {
-        id: 328,
-        isImage: true,
-        mediaLink:
-          "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - dc67150b-8257-4928-833c-d2a8a8e3b7fb70",
-      },
-      {
-        id: 329,
-        isImage: true,
-        mediaLink:
-          "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - d7d85096-d29e-4e74-892a-e7b3b38f6fd370",
-      },
-      {
-        id: 330,
-        isImage: true,
-        mediaLink:
-          "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - 4aec8dd3-19a2-4996-8254-556dffc7c42770",
-      },
-      {
-        id: 331,
-        isImage: true,
-        mediaLink:
-          "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - 05fc3314-c9b2-4313-9725-11d2f42fe29970",
-      },
-      {
-        id: 332,
-        isImage: true,
-        mediaLink:
-          "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - f537e687-777f-4ad8-887e-645bdde289d470",
-      },
-      {
-        id: 333,
-        isImage: true,
-        mediaLink:
-          "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - af50c474-1ec7-4de8-8fed-20f896fd4c9170",
-      },
-      {
-        id: 334,
-        isImage: true,
-        mediaLink:
-          "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - fb1b7149-8541-4428-af7f-1494c2e40ffe70",
-      },
-    ],
-    docs: [
-      {
-        id: 95,
-        docName: {
-          doc_id: 2,
-          doc_name: "Sổ hồng",
-        },
-      },
-      {
-        id: 96,
-        docName: {
-          doc_id: 5,
-          doc_name: "Sổ đỏ",
-        },
-      },
-    ],
-    profile: {
-      phone: 987513549,
-      avatar: null,
-      fullName: "Nhà đất Hà Nội",
-      email: "test@gmail.com",
-    },
-    type: {
-      type: "nha-rieng",
-    },
-  };
 
   const {
     medias,
@@ -210,8 +103,11 @@ function Details() {
     type,
     price,
     purType,
-    profile,
-  } = fake;
+    profile: dev,
+  } = post;
+
+  const profile = { ...dev, phone: `236346346` };
+
   const settings = {
     customPaging: function (i) {
       return (
@@ -229,8 +125,16 @@ function Details() {
 
   return (
     <Box maxW="1500px" mx="auto" p={3} px={5}>
-      <Flex justify="start" align="center">
+      <Flex justify="space-between" align="center">
         <GoBackButton />
+        <Flex gap={2}>
+          <Tag variant="outline" colorScheme="green">
+            {purType ? "Bán" : "Cho thuê"}
+          </Tag>
+          <Tag variant="outline" colorScheme="green">
+            {type.name}
+          </Tag>
+        </Flex>
       </Flex>
 
       <Box my={3} bg="green.700" h={400}>
@@ -250,16 +154,20 @@ function Details() {
       {/* main content */}
       <Box>
         <Flex
-          gap={{ base: 2, lg: 3, xl: 4 }}
+          gap={{ base: 2, lg: 4, xl: 5 }}
           display={{ base: "block", lg: "flex" }}
           px={{ base: 1, md: 1.5 }}
           justifyContent="space-around"
         >
           {/* infs */}
           <Box>
-            <Heading fontSize="2xl" fontWeight="600">
+            <Heading fontSize="3xl" fontWeight="600">
               {name}
             </Heading>
+            <Text
+              my={2}
+              opacity={0.9}
+            >{`${address}, ${wardName}, ${disName}, ${cityName}`}</Text>
             {/* stats */}
             <Box borderY="1px solid var(--chakra-colors-gray-200)" p={2} my={3}>
               <StatGroup
@@ -412,24 +320,13 @@ function Details() {
             </Box>
 
             {/* disclaimer */}
-            <Box py={3}>
-              Quý vị đang xem nội dung tin rao &quot;
-              <strong>{name}</strong>
-              &quot;. Mọi thông tin, nội dung liên quan tới tin rao này là do
-              người đăng tin đăng tải và chịu trách nhiệm. LandHub luôn cố gắng
-              để các thông tin được hữu ích nhất cho quý vị tuy nhiên chúng tôi
-              không đảm bảo và không chịu trách nhiệm về bất kỳ thông tin, nội
-              dung nào liên quan tới tin rao này. Trường hợp phát hiện nội dung
-              tin đăng không chính xác, Quý vị hãy nhấn nút báo xấu, kèm theo
-              thông báo và cung cấp thông tin cho Ban quản trị theo{" "}
-              <strong>hotline</strong> để được hỗ trợ nhanh, kịp thời và chính
-              xác nhất. nhất.
-            </Box>
+            {!isMobile && <Disclaimer name={name} />}
           </Box>
           {/* sticky post author */}
           <StickyAuthorBox author={profile} />
         </Flex>
       </Box>
+      {isMobile && <Disclaimer name={name} />}
     </Box>
   );
 }
@@ -450,3 +347,110 @@ function resizeMap(mapRef) {
     resizeObserver.observe(container);
   }
 }
+
+// let fake = {
+//   id: 70,
+//   expriryDate: "2024-03-26T07:36:59.965453+00:00",
+//   created_at: "2024-03-09T07:36:59.965453+00:00",
+//   purType: true,
+//   REType_ID: 1,
+//   address: "Phố Hoàng Hoa Thám",
+//   area: 45,
+//   price: 8450000000,
+//   fur: true,
+//   bed_room: 5,
+//   bath_room: 4,
+//   floor: 5,
+//   userID: "e292b030-456a-4044-90a9-5610fe5f3971",
+//   name: "Bán nhà phố Hoàng Hoa Thám 45m2, 5 tầng ô tô 4 chỗ đỗ cửa ",
+//   des: "<p>Phân lô, ôtô, phố víp, nhà đẹp, gần phố, nội thất biếu không.</p><p><br></p><p>+ Nhà dân xây rất trắc chắn kiên cố, cả ngõ có 16 nhà, rất hiếm nhà bán.</p><p><br></p><p>+ Ngõ rộng đều 3m, cách phố đúng 30m, hàng xóm văn minh, dân trí cao.</p><p><br></p><p>+ Gần chợ Bưởi, vài bước ra Hồ Tây, cạnh sưởng phim, gần bệnh viện Phổi, viện 354, giao thông đi lại rất thuận tiện.</p><p>+ Nhà thiết kế rất đẹp, kiên cố.</p><p><br></p><p>+ Tầng 1 để xe, bếp, vệ sinh.</p><p>+ Tầng 2 phòng khách + 1 ngủ, vệ sinh.</p><p>+ Tầng 3 có 2 phòng ngủ vệ sinh giữa.</p><p>+ Tầng 4 phòng thờ và 1 ngủ.</p><p>+ Tầng 5 phòng thờ sân phơi.</p><p>+ Sổ đỏ vuông đét, giao dịch ngay.</p>",
+//   direction: "Bắc",
+//   facade: 5,
+//   entryLength: null,
+//   report: 0,
+//   lat: 21.03958,
+//   long: 105.82835,
+//   cityID: 1,
+//   disID: 1,
+//   wardID: 4,
+//   status: 2,
+//   slug: "ban-nha-pho-hoang-hoa-tham-45m2-5-tang-o-to-4-cho-do-cua",
+//   city: {
+//     cityName: " Hà Nội",
+//   },
+//   dis: {
+//     disName: "Quận Ba Đình",
+//   },
+//   ward: {
+//     wardName: "Phường Cống Vị",
+//   },
+//   medias: [
+//     {
+//       id: 328,
+//       isImage: true,
+//       mediaLink:
+//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - dc67150b-8257-4928-833c-d2a8a8e3b7fb70",
+//     },
+//     {
+//       id: 329,
+//       isImage: true,
+//       mediaLink:
+//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - d7d85096-d29e-4e74-892a-e7b3b38f6fd370",
+//     },
+//     {
+//       id: 330,
+//       isImage: true,
+//       mediaLink:
+//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - 4aec8dd3-19a2-4996-8254-556dffc7c42770",
+//     },
+//     {
+//       id: 331,
+//       isImage: true,
+//       mediaLink:
+//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - 05fc3314-c9b2-4313-9725-11d2f42fe29970",
+//     },
+//     {
+//       id: 332,
+//       isImage: true,
+//       mediaLink:
+//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - f537e687-777f-4ad8-887e-645bdde289d470",
+//     },
+//     {
+//       id: 333,
+//       isImage: true,
+//       mediaLink:
+//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - af50c474-1ec7-4de8-8fed-20f896fd4c9170",
+//     },
+//     {
+//       id: 334,
+//       isImage: true,
+//       mediaLink:
+//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - fb1b7149-8541-4428-af7f-1494c2e40ffe70",
+//     },
+//   ],
+//   docs: [
+//     {
+//       id: 95,
+//       docName: {
+//         doc_id: 2,
+//         doc_name: "Sổ hồng",
+//       },
+//     },
+//     {
+//       id: 96,
+//       docName: {
+//         doc_id: 5,
+//         doc_name: "Sổ đỏ",
+//       },
+//     },
+//   ],
+//   profile: {
+//     phone: 987513549,
+//     avatar: null,
+//     fullName: "Nhà đất Hà Nội",
+//     email: "test@gmail.com",
+//   },
+//   type: {
+//     type: "nha-rieng",
+//   },
+// };
