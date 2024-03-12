@@ -2,6 +2,7 @@ import supabase from "./supabase";
 import {
   ADMIN_LEVEL,
   DEFAULT_RE_STATUS,
+  EXPRIRY_LENGTH,
   LIMIT_PER_PAGE,
   SELLING_STATUS,
   SOLD_STATUS,
@@ -16,6 +17,7 @@ import {
 } from "./apiGeneral";
 import { deleteMedia, uploadMedia } from "./apiMedia";
 import { error as errorMessage } from "../constants/message";
+import { addDays } from "date-fns";
 
 export async function getList(type, citeria, page) {
   const from = (page - 1) * LIMIT_PER_PAGE;
@@ -40,7 +42,8 @@ export async function getList(type, citeria, page) {
     )
     .eq("purType", type)
     .eq("images.isImage", true)
-    .eq("status", SELLING_STATUS)
+    // .eq("status", SELLING_STATUS)
+    // .gt("expriryDate", new Date().toISOString())
     .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
     .range(from, to);
@@ -247,7 +250,10 @@ export async function updatePost(newData) {
 export async function approvePost(postID) {
   const { data, error } = await supabase
     .from("REDirectory")
-    .update({ status: SELLING_STATUS })
+    .update({
+      status: SELLING_STATUS,
+      expriryDate: addDays(new Date(), EXPRIRY_LENGTH),
+    })
     .eq("id", postID)
     .select();
 

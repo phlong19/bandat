@@ -1,9 +1,11 @@
 // libs
+import { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import parse from "html-react-parser";
-import { toast } from "react-hot-toast";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
 
 // libs ui and ui
 import {
@@ -32,30 +34,39 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import GoBackButton from "../ui/GoBackButton";
 import Avatar from "../ui/Avatar";
+import DetailsFeature from "../ui/DetailsFeature";
 
 // icons
 import { GrMoney } from "react-icons/gr";
 import { PiFrameCornersLight } from "react-icons/pi";
-import { SiDogecoin } from "react-icons/si";
-import { TbBed, TbStack2 } from "react-icons/tb";
+import { BsCashCoin } from "react-icons/bs";
+import { TbBed, TbRoad, TbStack2 } from "react-icons/tb";
 import { LiaBathSolid } from "react-icons/lia";
+import { RiCompass3Line } from "react-icons/ri";
+import { CiRuler } from "react-icons/ci";
 
 // vars, ctx, hooks, ...
 import { useAuth } from "../context/UserContext";
 import { getSinglePost } from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
-import { formatCurrency } from "../utils/helper";
-import { success } from "../constants/message";
-import DetailsFeature from "../ui/DetailsFeature";
+import {
+  formatCurrency,
+  formatDate,
+  hiddenLast3PhoneNum,
+} from "../utils/helper";
+import StickyAuthorBox from "../ui/StickyAuthorBox";
 
 function Details() {
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
   const border = useColorModeValue("gray.200", "whiteAlpha.700");
   const desColor = useColorModeValue("dark", "whiteAlpha.800");
-  const { isLoading } = useAuth();
 
+  // hooks
+  const { isLoading } = useAuth();
+  const mapRef = useRef(null);
   const { land } = useParams();
+
   const { data: post, isLoading: isFetching } = useQuery({
     queryKey: ["SinglePost"],
     queryFn: () => getSinglePost(land),
@@ -72,6 +83,7 @@ function Details() {
 
   let fake = {
     id: 70,
+    expriryDate: "2024-03-26T07:36:59.965453+00:00",
     created_at: "2024-03-09T07:36:59.965453+00:00",
     purType: true,
     REType_ID: 1,
@@ -178,20 +190,27 @@ function Details() {
 
   const {
     medias,
+    expriryDate,
     name,
     bed_room,
     bath_room,
+    direction,
     city: { cityName },
     dis: { disName },
     ward: { wardName },
     address,
     area,
+    lat,
+    long,
     created_at,
+    facade,
+    entryLength,
+    floor,
     des,
     type,
     price,
     purType,
-    profile: { email, fullName, phone, avatar },
+    profile,
   } = fake;
   const settings = {
     customPaging: function (i) {
@@ -210,9 +229,8 @@ function Details() {
 
   return (
     <Box maxW="1500px" mx="auto" p={3} px={5}>
-      <Flex justify="space-between" align="center">
+      <Flex justify="start" align="center">
         <GoBackButton />
-        <p>share buttons</p>
       </Flex>
 
       <Box my={3} bg="green.700" h={400}>
@@ -279,102 +297,156 @@ function Details() {
               </StatGroup>
             </Box>
             {/* des */}
-            <Box
-              h={200}
-              fontSize="sm"
-              height="fit-content"
-              p={{ base: 2, lg: 2.5 }}
-            >
-              <Heading fontSize="xl" pb={3} fontWeight="600">
+            <Box pb={1}>
+              <Heading fontSize="xl" color={accent}>
                 Thông tin mô tả
               </Heading>
-              <Box color={desColor}>{parse(des)}</Box>
+              <Box h={200} fontSize="sm" height="fit-content">
+                <Box color={desColor} p={1.5}>
+                  {parse(des)}
+                </Box>
+              </Box>
             </Box>
             {/* features */}
-            <Heading fontSize="xl">Đặc điểm bất động sản</Heading>
-            <Flex>
-              {/* first 4 */}
-              <VStack w="50%" py={2}>
-                <DetailsFeature
-                  value={area}
-                  label="Diện tích"
-                  icon={PiFrameCornersLight}
+            <Box my={3}>
+              <Heading fontSize="xl" color={accent}>
+                Đặc điểm bất động sản
+              </Heading>
+              <Flex
+                gap={{ base: 2, sm: 3, md: 4, xl: 5 }}
+                flexDir={{ base: "column", md: "row" }}
+                p={1.5}
+                fontSize="sm"
+              >
+                {/* first 4 */}
+                <VStack w={{ base: "100%", md: "50%" }}>
+                  <DetailsFeature
+                    value={area + " " + m2}
+                    label="Diện tích"
+                    icon={PiFrameCornersLight}
+                  />
+                  <DetailsFeature
+                    value={formatCurrency(price) + `${purType ? "" : "/tháng"}`}
+                    label="Mức giá"
+                    icon={BsCashCoin}
+                  />
+                  <DetailsFeature
+                    icon={RiCompass3Line}
+                    label="Hướng nhà"
+                    value={direction}
+                  />
+                  <DetailsFeature
+                    icon={TbBed}
+                    label="Số phòng ngủ"
+                    value={bed_room}
+                  />
+                </VStack>
+                {/* last 4 */}
+                <VStack w={{ base: "100%", md: "50%" }}>
+                  <DetailsFeature
+                    value={bath_room}
+                    label="Số toilet"
+                    icon={LiaBathSolid}
+                  />
+                  {floor && (
+                    <DetailsFeature
+                      icon={TbStack2}
+                      label="Số tầng"
+                      value={floor}
+                    />
+                  )}
+                  {facade && (
+                    <DetailsFeature
+                      value={facade + " m"}
+                      label="Mặt tiền"
+                      icon={CiRuler}
+                    />
+                  )}
+                  {entryLength && (
+                    <DetailsFeature
+                      icon={TbRoad}
+                      label="Đường vào"
+                      value={entryLength + " m"}
+                    />
+                  )}
+                </VStack>
+              </Flex>
+            </Box>
+            {/* location */}
+            <Box>
+              <Heading fontSize="xl" color={accent}>
+                Xem trên bản đồ
+              </Heading>
+              <MapContainer
+                className="my-3.5 min-h-80 max-w-[1200px] rounded-md"
+                center={[lat, long]}
+                zoom={14}
+                ref={mapRef}
+                scrollWheelZoom={true}
+                whenReady={() => resizeMap(mapRef)}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <DetailsFeature
-                  value={formatCurrency(price)}
-                  label="Mức giá"
-                  icon={SiDogecoin}
-                />
-                <Flex></Flex>
-                <Flex></Flex>
-              </VStack>
-              {/* last 4 */}
-            </Flex>
+                <Marker position={[lat, long]} icon={marker}></Marker>
+              </MapContainer>
+            </Box>
+            {/* dates */}
+            <Box>
+              <Flex
+                py={1.5}
+                borderY="1px solid transparent"
+                borderColor={border}
+                gap={{ base: 10 }}
+              >
+                <Box>
+                  <Text color="gray.400">Tin đăng ngày</Text>
+                  <Text>{formatDate(created_at)}</Text>
+                </Box>
+                <Box ml={{ base: 0, md: 10, xl: 12 }}>
+                  <Text color="gray.400">Ngày hết hạn</Text>
+                  <Text>{formatDate(expriryDate)}</Text>
+                </Box>
+              </Flex>
+            </Box>
+
+            {/* disclaimer */}
+            <Box py={3}>
+              Quý vị đang xem nội dung tin rao &quot;
+              <strong>{name}</strong>
+              &quot;. Mọi thông tin, nội dung liên quan tới tin rao này là do
+              người đăng tin đăng tải và chịu trách nhiệm. LandHub luôn cố gắng
+              để các thông tin được hữu ích nhất cho quý vị tuy nhiên chúng tôi
+              không đảm bảo và không chịu trách nhiệm về bất kỳ thông tin, nội
+              dung nào liên quan tới tin rao này. Trường hợp phát hiện nội dung
+              tin đăng không chính xác, Quý vị hãy nhấn nút báo xấu, kèm theo
+              thông báo và cung cấp thông tin cho Ban quản trị theo{" "}
+              <strong>hotline</strong> để được hỗ trợ nhanh, kịp thời và chính
+              xác nhất. nhất.
+            </Box>
           </Box>
           {/* sticky post author */}
-          <Box
-            position={{ base: "relative", lg: "sticky" }}
-            top={20}
-            w={{ base: "full", lg: "30%" }}
-            border="1px solid transparent"
-            borderColor={border}
-            rounded="md"
-            p={2}
-            mt={1}
-            pos="sticky"
-            h={{ base: "fit-content", md: "100%" }}
-          >
-            <Center flexDir="column">
-              <Avatar avatar={avatar} fullName={fullName} mobile />
-              <Text size="xs" color="gray.400" pt={3} fontFamily="roboto">
-                Được đăng bởi
-              </Text>
-              <Text>{fullName}</Text>
-              <VStack gap={2} my={2} w="45%">
-                <Button
-                  bg={accent}
-                  color={wb}
-                  w="full"
-                  fontSize="sm"
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(`0${phone}`);
-                    toast.success(success.copyToClipboard);
-                  }}
-                >
-                  0{phone}
-                </Button>
-                {/* zalo chat */}
-                <Button
-                  w="full"
-                  variant="outline"
-                  fontWeight={500}
-                  fontSize="sm"
-                  as={ChakraLink}
-                  target="_blank"
-                  href={`https://chat.zalo.me/?phone=0${phone}`}
-                >
-                  Chat qua Zalo
-                </Button>
-                {/* email */}
-                <Button
-                  fontSize="sm"
-                  w="full"
-                  variant="outline"
-                  fontWeight={500}
-                  as={ChakraLink}
-                  href={`mailto:${email}`}
-                >
-                  Gửi email
-                </Button>
-              </VStack>
-            </Center>
-          </Box>
+          <StickyAuthorBox author={profile} />
         </Flex>
       </Box>
-
-      {/* location */}
     </Box>
   );
 }
 
 export default Details;
+
+const marker = new L.Icon({
+  iconUrl: "/customMarker.png",
+  iconSize: [30, 30],
+});
+
+function resizeMap(mapRef) {
+  const resizeObserver = new ResizeObserver(() =>
+    mapRef.current?.invalidateSize(),
+  );
+  const container = document.getElementById("map-container");
+  if (container) {
+    resizeObserver.observe(container);
+  }
+}

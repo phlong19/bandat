@@ -443,7 +443,11 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           {edit && <ChakraAlert type="warning" message={reform.note} />}
 
           {editData?.status.id !== SOLD_STATUS && (
-            <Flex w="100%" justify="space-between" align="center">
+            <Flex
+              w="100%"
+              justify={edit ? "space-between" : "end"}
+              align="center"
+            >
               {edit && (
                 <FormActions
                   authorID={editData.profile.id}
