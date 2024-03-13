@@ -62,7 +62,9 @@ function NameInput({ postId, register, error }) {
           </Badge>
         )}
       </Flex>
-      <FormHelperText mb={2}>{reform.noPhone}</FormHelperText>
+      <FormHelperText mt={0} mb={2}>
+        {reform.noPhone}
+      </FormHelperText>
       <Input
         type="text"
         {...register}

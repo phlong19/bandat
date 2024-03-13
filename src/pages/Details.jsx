@@ -11,7 +11,6 @@ import { useMediaQuery } from "react-responsive";
 // libs ui and ui
 import {
   Box,
-  Icon,
   Center,
   SimpleGrid,
   Tag,
@@ -19,9 +18,10 @@ import {
   Flex,
   Image,
   AspectRatio,
-  IconButton,
   Heading,
   VStack,
+  UnorderedList,
+  ListItem,
   Button,
   Text,
   Stat,
@@ -38,6 +38,11 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
+  AccordionPanel,
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionIcon,
   ModalCloseButton,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
@@ -50,13 +55,14 @@ import CustomArrow from "../ui/CustomArrow";
 
 // icons
 import { GrMoney } from "react-icons/gr";
-import { PiFrameCornersLight, PiImagesFill } from "react-icons/pi";
+import { PiArmchair, PiFrameCornersLight, PiImagesFill } from "react-icons/pi";
 import { BsCashCoin } from "react-icons/bs";
 import { TbBed, TbRoad, TbStack2 } from "react-icons/tb";
 import { LiaBathSolid } from "react-icons/lia";
 import { RiCompass3Line } from "react-icons/ri";
 import { CiRuler } from "react-icons/ci";
 import { FiPlayCircle } from "react-icons/fi";
+import { CgFileDocument } from "react-icons/cg";
 
 // vars, ctx, hooks, ...
 import { useAuth } from "../context/UserContext";
@@ -108,6 +114,7 @@ function Details() {
     ward: { wardName },
     address,
     area,
+    docs,
     lat,
     long,
     created_at,
@@ -115,6 +122,7 @@ function Details() {
     entryLength,
     floor,
     des,
+    fur,
     type,
     price,
     purType,
@@ -123,26 +131,33 @@ function Details() {
 
   const videos = medias.filter((media) => media.isImage === false);
   const images = medias.filter((media) => media.isImage === true);
+  // for reduce bug threat when medias array fetched has unknown order about the file type
+  const newMedia = [...videos, ...images];
 
   // for dev
   const profile = { ...dev, phone: `236346346` };
 
   const settings = {
     customPaging: function (i) {
-      const isPagingImg = medias[i].isImage;
+      const isImg = newMedia[i].isImage;
 
       return (
         <a>
-          {isPagingImg ? (
+          {!isImg ? (
+            <Box
+              id="video-thumbnail"
+              bg={darklight}
+              boxSize="40px"
+              color={revert}
+            >
+              <FiPlayCircle fontSize={18} />
+            </Box>
+          ) : (
             <Image
               boxSize="40px"
               filter="grayscale(1)"
-              src={medias[i].mediaLink}
+              src={newMedia[i].mediaLink}
             />
-          ) : (
-            <Box bg={darklight} boxSize="40px" color={revert}>
-              <FiPlayCircle fontSize={18} />
-            </Box>
           )}
         </a>
       );
@@ -169,18 +184,16 @@ function Details() {
           </Tag>
         </Flex>
       </Flex>
-      {/* TODO: fix render order bug at mobile */}
+
+      {/* media section */}
       <Box mb={3.5}>
-        {/* media section */}
         {isMobile ? (
           <Slider {...settings}>
-            {/* if has video */}
             {videos.map((media) => (
               <AspectRatio key={media.id}>
                 <video src={media.mediaLink} controls />
               </AspectRatio>
             ))}
-            {/* list imgs */}
             {images.map((media) => (
               <AspectRatio key={media.id} ratio={4 / 3} w="full">
                 <Image src={media.mediaLink} />
@@ -206,28 +219,30 @@ function Details() {
             </Flex>
             {/* others */}
             <SimpleGrid
-              spacing={1}
+              spacing={0.5}
               columns={2}
               w="50%"
               templateRows="repeat(2, 1fr)"
               h="100%"
             >
-              {/* if has second videos display it at the first grid place */}
+              {/* if has second videos display it at the first grid place with 3 other images */}
               {videos.length > 1 ? (
                 <>
                   <AspectRatio _before="none">
                     <video src={videos[1].mediaLink} controls />
                   </AspectRatio>
-                  {images.map((media, i) => (
+                  {images.slice(0, 2).map((media, i) => (
                     <AspectRatio key={media.id} _before="none">
                       <Image
                         src={media.mediaLink}
-                        borderTopRightRadius={i === 1 ? "lg" : "none"}
+                        borderTopRightRadius={i === 0 ? "lg" : "none"}
                       />
                     </AspectRatio>
                   ))}
                 </>
               ) : (
+                // or else diplay 4 images
+                // first 3
                 images.slice(1, 4).map((media, i) => (
                   <AspectRatio key={media.id} _before="none">
                     <Image
@@ -237,10 +252,11 @@ function Details() {
                   </AspectRatio>
                 ))
               )}
-              {medias.length === 5 ? (
+              {/* if has more imgs, overlay or else just display the final image as normal */}
+              {medias.length <= 5 ? (
                 <AspectRatio _before="none">
                   <Image
-                    src={medias[4].mediaLink}
+                    src={medias[4]?.mediaLink}
                     borderBottomRightRadius="lg"
                   />
                 </AspectRatio>
@@ -252,48 +268,51 @@ function Details() {
                     rounded="none"
                     borderBottomRightRadius="lg"
                   >
-                    <Image src={medias[4].mediaLink} filter="grayscale(1)" />
-                    {medias.length > 5 && (
-                      <Box
-                        position="absolute"
-                        top="0"
-                        right="0"
-                        bg="blackAlpha.500"
-                        w="full"
+                    <Image src={images[4].mediaLink} filter="grayscale(1)" />
+                    <Box
+                      position="absolute"
+                      top="0"
+                      right="0"
+                      bg="blackAlpha.500"
+                      w="full"
+                      h="full"
+                    >
+                      <Text
+                        fontSize="lg"
+                        color="white"
+                        display="flex"
+                        gap={1.5}
+                        alignItems="center"
+                        justifyContent="center"
                         h="full"
                       >
-                        <Text
-                          fontSize="lg"
-                          color="white"
-                          display="flex"
-                          gap={1.5}
-                          alignItems="center"
-                          justifyContent="center"
-                          h="full"
-                        >
-                          +{medias.length - 5} <PiImagesFill fontSize={25} />
-                        </Text>
-                      </Box>
-                    )}
+                        +{newMedia.length - 5} <PiImagesFill fontSize={25} />
+                      </Text>
+                    </Box>
                   </Button>
                 </AspectRatio>
               )}
             </SimpleGrid>
           </Flex>
         )}
-        <Modal isOpen={isOpen} onClose={onClose} isCentered size="5xl">
-          <ModalOverlay />
+        <Modal
+          isOpen={isOpen}
+          onClose={onClose}
+          isCentered
+          size={{ sm: "3xl", xl: "4xl" }}
+        >
+          <ModalOverlay zIndex={10000} />
           <ModalContent>
             <ModalHeader>Toàn bộ ảnh / video bất động sản</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Slider {...settings}>
-                {medias.map((media) => (
+                {newMedia.map((media) => (
                   <AspectRatio key={media.id}>
-                    {media.isImage ? (
-                      <Image src={media.mediaLink} />
-                    ) : (
+                    {!media.isImage ? (
                       <video src={media.mediaLink} controls />
+                    ) : (
+                      <Image src={media.mediaLink} />
                     )}
                   </AspectRatio>
                 ))}
@@ -301,7 +320,7 @@ function Details() {
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
+              <Button colorScheme="green" mr={3} onClick={onClose}>
                 Đóng
               </Button>
             </ModalFooter>
@@ -387,7 +406,7 @@ function Details() {
                 p={1.5}
                 fontSize="sm"
               >
-                {/* first 4 */}
+                {/* first col */}
                 <VStack w={{ base: "100%", md: "50%" }}>
                   <DetailsFeature
                     value={area + " " + m2}
@@ -409,8 +428,13 @@ function Details() {
                     label="Số phòng ngủ"
                     value={bed_room + " phòng"}
                   />
+                  <DetailsFeature
+                    icon={PiArmchair}
+                    label="Nội thất"
+                    value={fur ? "Có sẵn" : "Không"}
+                  />
                 </VStack>
-                {/* last 4 */}
+                {/* second col */}
                 <VStack w={{ base: "100%", md: "50%" }}>
                   <DetailsFeature
                     value={bath_room + " phòng"}
@@ -438,6 +462,34 @@ function Details() {
                       value={entryLength + " m"}
                     />
                   )}
+                  <DetailsFeature doc icon={CgFileDocument}>
+                    <Accordion w="full" allowToggle>
+                      <AccordionItem border="none">
+                        <h2>
+                          <AccordionButton pr='1'>
+                            <Box
+                              as="span"
+                              fontSize="sm"
+                              flex="1"
+                              textAlign="left"
+                            >
+                              Giấy tờ pháp lý
+                            </Box>
+                            <AccordionIcon color={accent} />
+                          </AccordionButton>
+                        </h2>
+                        <AccordionPanel pb={4}>
+                          <UnorderedList>
+                            {docs.map((doc) => (
+                              <ListItem key={doc.id}>
+                                {doc.docName.doc_name}
+                              </ListItem>
+                            ))}
+                          </UnorderedList>
+                        </AccordionPanel>
+                      </AccordionItem>
+                    </Accordion>
+                  </DetailsFeature>
                 </VStack>
               </Flex>
             </Box>
@@ -462,7 +514,7 @@ function Details() {
               </MapContainer>
             </Box>
             {/* dates */}
-            <Box>
+            <Box my={2}>
               <Flex
                 py={1.5}
                 borderY="1px solid transparent"

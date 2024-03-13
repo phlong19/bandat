@@ -210,11 +210,15 @@ ul.slick-dots li {
 }
 
 ul.slick-dots li.slick-active img {
-  border: 2px solid var(--active-img);
+  border: 2px solid var(--ql-color);
   filter: grayscale(0);
 }
 
-/* slick custom arrows */
-/* div.slick-slider button#slick-custom-arrow {
-  top: 40%;
-} */
+ul.slick-dots li.slick-active div#video-thumbnail {
+  border: 2px solid var(--ql-color);
+}
+
+/* modal z */
+.chakra-modal__content-container {
+  z-index: 12000 !important;
+}
