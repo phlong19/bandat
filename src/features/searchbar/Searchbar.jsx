@@ -42,7 +42,6 @@ function Searchbar() {
 
   const bg = useColorModeValue("white", "darker");
   const bgAcc = useColorModeValue("white", "darker");
-  const bgBtn = useColorModeValue("primary", "secondary");
   const color = useColorModeValue("darker", "white");
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
@@ -91,7 +90,8 @@ function Searchbar() {
             <FaFilterCircleDollar />
             <span className="hidden text-sm sm:block">Lọc</span>
           </AccordionButton>
-          <AccordionPanel mt={1}
+          <AccordionPanel
+            mt={1}
             borderRadius="md"
             position="absolute"
             bg={bgAcc}
@@ -115,7 +115,7 @@ function Searchbar() {
                 className="sm:flex"
               >
                 <FormControl maxW="150px">
-                  <FormLabel fontSize='sm'>Dạng bán</FormLabel>
+                  <FormLabel fontSize="sm">Dạng bán</FormLabel>
                   <Select
                     onChange={(e) => setPurType(e.target.value === "true")}
                   >
@@ -136,7 +136,7 @@ function Searchbar() {
                 </FormControl>
 
                 <FormControl mx={2}>
-                  <FormLabel fontSize='sm'>
+                  <FormLabel fontSize="sm">
                     <span className="mr-1.5">Diện tích:</span>
                     <span className="text-primary dark:text-secondary">
                       {rangeValue[0]} - {rangeValue[1]}{" "}
@@ -150,7 +150,7 @@ function Searchbar() {
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel fontSize='sm'>Giá</FormLabel>
+                  <FormLabel fontSize="sm">Giá</FormLabel>
                   <Select {...register("price")}>
                     {prices.map((item) => (
                       <option value={item.value} key={item.label}>
@@ -203,7 +203,7 @@ function Searchbar() {
           />
           <InputRightElement width="fit-content">
             {!isTablet ? (
-              <IconButton bg={bgBtn} color={color} icon={<BiSearchAlt />} />
+              <IconButton bg={bg} color={color} icon={<BiSearchAlt />} />
             ) : (
               <Button
                 fontSize="sm"

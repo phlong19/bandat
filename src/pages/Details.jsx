@@ -11,17 +11,18 @@ import { useMediaQuery } from "react-responsive";
 // libs ui and ui
 import {
   Box,
+  Icon,
   Center,
-  Button,
+  SimpleGrid,
   Tag,
   Spinner,
   Flex,
-  Grid,
   Image,
   AspectRatio,
+  IconButton,
   Heading,
   VStack,
-  HStack,
+  Button,
   Text,
   Stat,
   StatGroup,
@@ -30,33 +31,45 @@ import {
   StatNumber,
   StatArrow,
   useColorModeValue,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import GoBackButton from "../ui/GoBackButton";
 import DetailsFeature from "../ui/DetailsFeature";
 import Disclaimer from "../ui/Disclaimer";
+import StickyAuthorBox from "../ui/StickyAuthorBox";
+import CustomArrow from "../ui/CustomArrow";
 
 // icons
 import { GrMoney } from "react-icons/gr";
-import { PiFrameCornersLight } from "react-icons/pi";
+import { PiFrameCornersLight, PiImagesFill } from "react-icons/pi";
 import { BsCashCoin } from "react-icons/bs";
 import { TbBed, TbRoad, TbStack2 } from "react-icons/tb";
 import { LiaBathSolid } from "react-icons/lia";
 import { RiCompass3Line } from "react-icons/ri";
 import { CiRuler } from "react-icons/ci";
+import { FiPlayCircle } from "react-icons/fi";
 
 // vars, ctx, hooks, ...
 import { useAuth } from "../context/UserContext";
 import { getSinglePost } from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
 import { formatCurrency, formatDate } from "../utils/helper";
-import StickyAuthorBox from "../ui/StickyAuthorBox";
 
 function Details() {
   const accent = useColorModeValue("primary", "secondary");
-  const border = useColorModeValue("gray.200", "whiteAlpha.700");
+  const border = useColorModeValue("gray.300", "whiteAlpha.700");
   const desColor = useColorModeValue("dark", "whiteAlpha.800");
+  const darklight = useColorModeValue("dark", "light");
+  const revert = useColorModeValue("white", "black");
 
   const isMobile = useMediaQuery({
     query: "(max-width: 768px)",
@@ -66,6 +79,7 @@ function Details() {
   const { isLoading } = useAuth();
   const mapRef = useRef(null);
   const { land } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data: post, isLoading: isFetching } = useQuery({
     queryKey: ["SinglePost", land],
@@ -82,6 +96,7 @@ function Details() {
   }
 
   const {
+    id,
     medias,
     expriryDate,
     name,
@@ -106,13 +121,29 @@ function Details() {
     profile: dev,
   } = post;
 
+  const videos = medias.filter((media) => media.isImage === false);
+  const images = medias.filter((media) => media.isImage === true);
+
+  // for dev
   const profile = { ...dev, phone: `236346346` };
 
   const settings = {
     customPaging: function (i) {
+      const isPagingImg = medias[i].isImage;
+
       return (
         <a>
-          <img src={medias[i].mediaLink} />
+          {isPagingImg ? (
+            <Image
+              boxSize="40px"
+              filter="grayscale(1)"
+              src={medias[i].mediaLink}
+            />
+          ) : (
+            <Box bg={darklight} boxSize="40px" color={revert}>
+              <FiPlayCircle fontSize={18} />
+            </Box>
+          )}
         </a>
       );
     },
@@ -121,11 +152,13 @@ function Details() {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    prevArrow: <CustomArrow direction="prev" />,
+    nextArrow: <CustomArrow direction="next" />,
   };
 
   return (
-    <Box maxW="1500px" mx="auto" p={3} px={5}>
-      <Flex justify="space-between" align="center">
+    <Box maxW="1500px" mx="auto" p={3} px={{ base: 2, md: 4, xl: 5 }}>
+      <Flex justify="space-between" align="center" pb={2}>
         <GoBackButton />
         <Flex gap={2}>
           <Tag variant="outline" colorScheme="green">
@@ -136,20 +169,144 @@ function Details() {
           </Tag>
         </Flex>
       </Flex>
-
-      <Box my={3} bg="green.700" h={400}>
+      {/* TODO: fix render order bug at mobile */}
+      <Box mb={3.5}>
         {/* media section */}
-        {/* <Slider {...settings}>
-          {medias.map((media) =>
-            media.isImage ? (
-              <Image rounded='lg' src={media.mediaLink} key={media.id}  />
-            ) : (
+        {isMobile ? (
+          <Slider {...settings}>
+            {/* if has video */}
+            {videos.map((media) => (
               <AspectRatio key={media.id}>
-                <video src={media.mediaLink}></video>
+                <video src={media.mediaLink} controls />
               </AspectRatio>
-            ),
-          )}
-        </Slider> */}
+            ))}
+            {/* list imgs */}
+            {images.map((media) => (
+              <AspectRatio key={media.id} ratio={4 / 3} w="full">
+                <Image src={media.mediaLink} />
+              </AspectRatio>
+            ))}
+          </Slider>
+        ) : (
+          <Flex h={400} w="full" justifyContent="center" gap={1}>
+            {/* first img or video */}
+            <Flex w="50%" h="full">
+              {/* if has video display it or else first image */}
+              <AspectRatio ratio={16 / 9} w="full" _before="none">
+                {videos.length > 0 ? (
+                  <video
+                    className="rounded-l-lg"
+                    src={videos[0].mediaLink}
+                    controls
+                  />
+                ) : (
+                  <Image roundedLeft="lg" src={images[0].mediaLink} />
+                )}
+              </AspectRatio>
+            </Flex>
+            {/* others */}
+            <SimpleGrid
+              spacing={1}
+              columns={2}
+              w="50%"
+              templateRows="repeat(2, 1fr)"
+              h="100%"
+            >
+              {/* if has second videos display it at the first grid place */}
+              {videos.length > 1 ? (
+                <>
+                  <AspectRatio _before="none">
+                    <video src={videos[1].mediaLink} controls />
+                  </AspectRatio>
+                  {images.map((media, i) => (
+                    <AspectRatio key={media.id} _before="none">
+                      <Image
+                        src={media.mediaLink}
+                        borderTopRightRadius={i === 1 ? "lg" : "none"}
+                      />
+                    </AspectRatio>
+                  ))}
+                </>
+              ) : (
+                images.slice(1, 4).map((media, i) => (
+                  <AspectRatio key={media.id} _before="none">
+                    <Image
+                      src={media.mediaLink}
+                      borderTopRightRadius={i === 1 ? "lg" : "none"}
+                    />
+                  </AspectRatio>
+                ))
+              )}
+              {medias.length === 5 ? (
+                <AspectRatio _before="none">
+                  <Image
+                    src={medias[4].mediaLink}
+                    borderBottomRightRadius="lg"
+                  />
+                </AspectRatio>
+              ) : (
+                <AspectRatio _before="none">
+                  <Button
+                    variant="unstyled"
+                    onClick={onOpen}
+                    rounded="none"
+                    borderBottomRightRadius="lg"
+                  >
+                    <Image src={medias[4].mediaLink} filter="grayscale(1)" />
+                    {medias.length > 5 && (
+                      <Box
+                        position="absolute"
+                        top="0"
+                        right="0"
+                        bg="blackAlpha.500"
+                        w="full"
+                        h="full"
+                      >
+                        <Text
+                          fontSize="lg"
+                          color="white"
+                          display="flex"
+                          gap={1.5}
+                          alignItems="center"
+                          justifyContent="center"
+                          h="full"
+                        >
+                          +{medias.length - 5} <PiImagesFill fontSize={25} />
+                        </Text>
+                      </Box>
+                    )}
+                  </Button>
+                </AspectRatio>
+              )}
+            </SimpleGrid>
+          </Flex>
+        )}
+        <Modal isOpen={isOpen} onClose={onClose} isCentered size="5xl">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Toàn bộ ảnh / video bất động sản</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Slider {...settings}>
+                {medias.map((media) => (
+                  <AspectRatio key={media.id}>
+                    {media.isImage ? (
+                      <Image src={media.mediaLink} />
+                    ) : (
+                      <video src={media.mediaLink} controls />
+                    )}
+                  </AspectRatio>
+                ))}
+              </Slider>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Đóng
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
       {/* main content */}
       <Box>
@@ -194,14 +351,18 @@ function Details() {
                     {area} {m2}
                   </StatNumber>
                 </Stat>
-                <Stat>
-                  <StatLabel>Phòng ngủ</StatLabel>
-                  <StatNumber color={accent}>{bed_room} PN</StatNumber>
-                </Stat>
-                <Stat>
-                  <StatLabel>Phòng tắm</StatLabel>
-                  <StatNumber color={accent}>{bath_room} PT</StatNumber>
-                </Stat>
+                {bed_room > 0 && (
+                  <Stat>
+                    <StatLabel>Phòng ngủ</StatLabel>
+                    <StatNumber color={accent}>{bed_room} PN</StatNumber>
+                  </Stat>
+                )}
+                {bath_room > 0 && (
+                  <Stat>
+                    <StatLabel>Phòng tắm</StatLabel>
+                    <StatNumber color={accent}>{bath_room} PT</StatNumber>
+                  </Stat>
+                )}
               </StatGroup>
             </Box>
             {/* des */}
@@ -246,13 +407,13 @@ function Details() {
                   <DetailsFeature
                     icon={TbBed}
                     label="Số phòng ngủ"
-                    value={bed_room}
+                    value={bed_room + " phòng"}
                   />
                 </VStack>
                 {/* last 4 */}
                 <VStack w={{ base: "100%", md: "50%" }}>
                   <DetailsFeature
-                    value={bath_room}
+                    value={bath_room + " phòng"}
                     label="Số toilet"
                     icon={LiaBathSolid}
                   />
@@ -260,7 +421,7 @@ function Details() {
                     <DetailsFeature
                       icon={TbStack2}
                       label="Số tầng"
-                      value={floor}
+                      value={floor + " tầng"}
                     />
                   )}
                   {facade && (
@@ -315,6 +476,10 @@ function Details() {
                 <Box ml={{ base: 0, md: 10, xl: 12 }}>
                   <Text color="gray.400">Ngày hết hạn</Text>
                   <Text>{formatDate(expriryDate)}</Text>
+                </Box>
+                <Box ml={{ base: 0, md: 10, xl: 12 }}>
+                  <Text color="gray.400">Mã tin đăng</Text>
+                  <Text>{id}</Text>
                 </Box>
               </Flex>
             </Box>

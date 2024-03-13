@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useMapView } from "../context/MapViewContext";
 import { LIMIT_PER_PAGE } from "../constants/anyVariables";
-import { useEffect } from "react";
 
 function ChakraTablePagination({ count }) {
   const { setMapView } = useMapView();
@@ -38,7 +37,7 @@ function ChakraTablePagination({ count }) {
         break;
     }
     setTimeout(() => {
-      document.getElementById("breadcrumb-scroll").scrollIntoView();
+      document.getElementById("breadcrumb-scroll")?.scrollIntoView();
     }, 100);
     setMapView(false);
     searchParams.set("page", finalDestination.toString());

@@ -16,26 +16,18 @@
   box-sizing: border-box;
 }
 
-:root {
-  --primary: #52aa5e;
-  --secondary: #79b473;
-  --dark: #222;
-  --darker: #202020;
-  --light: #f6f6f6;
-  --white: white;
-  --black: black;
-}
-
 html[data-theme="light"] {
   --ql-fill-color: #202020;
   --ql-bg: #f6f6f6;
   --ql-color: #52aa5e;
+  --active-img: #000;
 }
 
 html[data-theme="dark"] {
   --ql-fill-color: white;
   --ql-bg: #222;
   --ql-color: #79b473;
+  --active-img: white;
 }
 
 body {
@@ -203,3 +195,26 @@ a.active button.chakra-button {
 .ql-font-Lexend {
   font-family: "Lexend", sans-serif;
 }
+
+/* react slick custom dots */
+ul.slick-dots {
+  padding-bottom: 30px;
+  position: relative;
+  bottom: -10px;
+}
+
+ul.slick-dots li {
+  margin: 0 2px;
+  width: 40px;
+  height: 40px;
+}
+
+ul.slick-dots li.slick-active img {
+  border: 2px solid var(--active-img);
+  filter: grayscale(0);
+}
+
+/* slick custom arrows */
+/* div.slick-slider button#slick-custom-arrow {
+  top: 40%;
+} */

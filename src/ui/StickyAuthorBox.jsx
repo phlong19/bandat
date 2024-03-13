@@ -30,7 +30,7 @@ function StickyAuthorBox({ author }) {
   const { phone, fullName, avatar, email } = author;
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
-  const border = useColorModeValue("gray.200", "whiteAlpha.700");
+  const border = useColorModeValue("gray.300", "whiteAlpha.700");
 
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);

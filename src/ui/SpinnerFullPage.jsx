@@ -1,9 +1,11 @@
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, useColorModeValue } from "@chakra-ui/react";
 
 function SpinnerFullPage() {
+  const empty = useColorModeValue("gray.300", "gray.500");
+
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-light dark:bg-dark">
-      <Spinner emptyColor="gray.200" />
+      <Spinner emptyColor={empty} />
     </div>
   );
 }
