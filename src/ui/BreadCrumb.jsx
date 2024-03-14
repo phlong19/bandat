@@ -11,11 +11,11 @@ function BreadCrumb({ Hline }) {
             <BsHouse />
           </NavLink>
           <IoIosArrowForward />
-          <NavLink to="/tin-tuc" className="">
-            <h1 className="font-semibold">Tin tức</h1>
+          <NavLink to="/tin-tuc">
+            <h1 className="line-clamp-1 font-semibold">Tin tức</h1>
           </NavLink>
           {Hline && <IoIosArrowForward />}
-          <h1 className="font-semibold">{Hline}</h1>
+          <h1 className="line-clamp-1 font-semibold">{Hline}</h1>
         </div>
       </div>
     </div>

@@ -36,11 +36,11 @@ function LoginForm() {
       <Flex
         mx="auto"
         w="full"
-        maxW={{ base: "full", md: "70%", lg: "50%", xl: "800px" }}
+        maxW={{ base: "full", md: "70%", lg: "50%", xl: "600px" }}
         align={"center"}
         justify={"center"}
         rounded="md"
-        bg={useColorModeValue("gray.50", "gray.800")}
+        bg={useColorModeValue("gray.50", "darker")}
       >
         <Stack spacing={8} py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
@@ -53,7 +53,7 @@ function LoginForm() {
           </Stack>
           <Box
             rounded={"lg"}
-            bg={useColorModeValue("white", "gray.700")}
+            bg={useColorModeValue("white", "dark")}
             boxShadow={"lg"}
             p={8}
           >

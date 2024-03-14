@@ -3,7 +3,13 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useMediaQuery } from "react-responsive";
 import slugify from "react-slugify";
-import { Center, Spinner,Text } from "@chakra-ui/react";
+import {
+  Center,
+  Spinner,
+  Text,
+  chakra,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import BreadCrumb from "../ui/BreadCrumb";
@@ -19,6 +25,10 @@ function News() {
   const [show2, setShow2] = useState(false);
   const item1 = navLinks[0];
   const item2 = navLinks[1];
+
+  const summaryColor = useColorModeValue("gray.700", "gray.300");
+  const accent = useColorModeValue("primary", "secondary");
+
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1200px)",
   });
@@ -54,31 +64,38 @@ function News() {
           <Spinner />
         </Center>
       ) : data && data?.length < 1 ? (
-        <Center minH="50dvh"><Text fontSize='lg'>Hiện không có bài viết tin tức.</Text></Center>
+        <Center minH="50dvh">
+          <Text fontSize="lg">Hiện không có bài viết tin tức.</Text>
+        </Center>
       ) : (
-        <div className="justify-center bg-white dark:bg-dark lg:flex ">
+        <div className=" justify-center bg-white dark:bg-dark lg:flex ">
           <div className="bg-white px-3.5 dark:bg-dark">
             {data.map((item, i) => (
               <Link to={`/tin-tuc/` + item.slug} key={i}>
-                <div className="mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b lg:bg-white lg:pb-5 lg:shadow-none ">
+                <div className="group mb-6 rounded-md bg-white shadow-md dark:bg-dark lg:mb-5 lg:flex lg:max-w-[800px] lg:items-center lg:rounded-none lg:border-b lg:bg-white lg:pb-5 lg:shadow-none ">
                   <img
                     src={item.thumbnail}
-                    className="w-full rounded-t-md lg:h-[150px] lg:w-[260px] lg:rounded-md"
+                    className="h-[250px] w-full rounded-t-md object-cover lg:h-[150px] lg:w-[260px] lg:min-w-[260px] lg:max-w-[260px] lg:rounded-md"
                   />
-                  <div className="p-3 ">
-                    <i className="text-gray-400">
-                      {formatDate(item.created_at)}
-                    </i>
-                    <h1 className="py-2 font-montserrat text-base font-semibold lg:text-lg lg:font-bold">
+                  <div className="p-3">
+                    <h1 className="py-2 font-montserrat text-base font-semibold transition-colors duration-300 group-hover:text-primary dark:group-hover:text-secondary lg:py-1 lg:text-lg lg:font-bold">
                       {item.title}
                     </h1>
-                    <p className="line-clamp-3 ">{item.summary}</p>
+                    <chakra.i color={accent}>
+                      {formatDate(item.created_at)}
+                    </chakra.i>
+                    <chakra.p
+                      color={summaryColor}
+                      className="line-clamp-3 font-roboto"
+                    >
+                      {item.summary}
+                    </chakra.p>
                   </div>
                 </div>
               </Link>
             ))}
             <div className="flex justify-center">
-              <ChakraTablePagination count={count} />
+              <ChakraTablePagination count={count} news />
             </div>
           </div>
 

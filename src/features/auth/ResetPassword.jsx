@@ -35,7 +35,7 @@ function ResetPassword() {
         align={"center"}
         justify={"center"}
         rounded="md"
-        bg={useColorModeValue("gray.50", "gray.800")}
+        bg={useColorModeValue("gray.50", "darker")}
       >
         <Stack py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
@@ -45,7 +45,7 @@ function ResetPassword() {
           </Stack>
           <Box
             rounded={"lg"}
-            bg={useColorModeValue("white", "gray.700")}
+            bg={useColorModeValue("white", "dark")}
             boxShadow={"lg"}
             p={8}
           >

@@ -6,7 +6,7 @@ function Logo({ footer = false }) {
   return (
     <Link to="/" className="mt-2">
       <img
-        src={isDarkMode ? "/logo-dark.png" : "/logo-light.png"}
+        src={isDarkMode ? "/logo-dark.png" : "/logo-.png"}
         alt="logo"
         className={`${footer && "grayscale"} w-40`}
       />

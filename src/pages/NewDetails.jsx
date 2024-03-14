@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import parse from "html-react-parser";
-import { Center, Spinner, AspectRatio, Image } from "@chakra-ui/react";
+import { Center, Spinner, AspectRatio, Image, Flex } from "@chakra-ui/react";
 
 import { vi } from "date-fns/locale/vi";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
@@ -15,7 +15,7 @@ import { getNew } from "../services/apiNews";
 import { formatDate } from "../utils/helper";
 import Avatar from "../ui/Avatar";
 import { formatDistanceToNow } from "date-fns";
-import { useGoBack } from "../hooks/useGoBack";
+import GoBackButton from "../ui/GoBackButton";
 
 function NewDetails() {
   const [show1, setShow1] = useState(false);
@@ -27,7 +27,6 @@ function NewDetails() {
   });
 
   const { title } = useParams();
-  const goback = useGoBack();
 
   const { data, isLoading } = useQuery({
     queryKey: ["news", title],
@@ -58,12 +57,17 @@ function NewDetails() {
       <BreadCrumb Hline={Hline} />
 
       <div className="mt-5">
-        <span className="cursor-pointer pl-52" onClick={goback}>
-          go back
-        </span>
+        <Flex my={2} ml={2}>
+          <GoBackButton />
+        </Flex>
         <Center w="100%">
-          <AspectRatio w="80%" maxH={400} minH={300} ratio={16 / 9}>
-            <Image src={thumbnail} alt={slug} />
+          <AspectRatio
+            w={{ base: "95%", md: "80%" }}
+            maxH={400}
+            minH={300}
+            ratio={16 / 9}
+          >
+            <Image rounded="lg" src={thumbnail} alt={slug} />
           </AspectRatio>
         </Center>
         <div className="py-4 text-center font-lexend text-3xl font-bold">

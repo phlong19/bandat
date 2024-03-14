@@ -34,7 +34,7 @@ export default function ForgotPassword() {
         align={"center"}
         justify={"center"}
         rounded="md"
-        bg={useColorModeValue("gray.50", "gray.800")}
+        bg={useColorModeValue("gray.50", "darker")}
       >
         <Stack py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
@@ -44,7 +44,7 @@ export default function ForgotPassword() {
           </Stack>
           <Box
             rounded={"lg"}
-            bg={useColorModeValue("white", "gray.700")}
+            bg={useColorModeValue("white", "dark")}
             boxShadow={"lg"}
             p={8}
           >
@@ -55,7 +55,6 @@ export default function ForgotPassword() {
                 hookForm={{
                   ...register("email", {
                     required: "nhap email vao",
-                    value: "vyj55254@nezid.com",
                   }),
                 }}
                 id="email"
