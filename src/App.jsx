@@ -27,6 +27,8 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
 import UserDashboard from "./pages/UserDashboard";
+import ForgotPassword from "./features/auth/ForgotPassword";
+import ResetPassword from "./features/auth/ResetPassword";
 
 // context api
 import { DarkMode } from "./context/DarkModeContext";
@@ -85,6 +87,12 @@ function App() {
                   <Route element={<AuthenticationLayout />}>
                     <Route path="dang-nhap" element={<Login />} />
                     <Route path="dang-ky" element={<Register />} />
+                    {/* TODO */}
+                    <Route path="quen-mat-khau" element={<ForgotPassword />} />
+                    <Route
+                      path="dat-lai-mat-khau/:id"
+                      element={<ResetPassword />}
+                    />
                   </Route>
 
                   {/* require authenticated user */}

@@ -262,7 +262,7 @@ function NewsFormModal({
               />
             )}
             <Flex justify="flex-end" align="center" gap={3}>
-              <Button colorScheme="blue" variant="ghost" onClick={onOpenDialog}>
+              <Button colorScheme="red" variant="ghost" onClick={onOpenDialog}>
                 Đóng
               </Button>
               <ChakraModalDialog

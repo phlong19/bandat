@@ -129,20 +129,22 @@ function Home() {
       <Features />
       {/* CTA */}
       <Center
-        bg="url('/cta.jpg')"
+        bg="url('/cta.png')"
         bgRepeat="no-repeat"
         maxW="1200px"
         mx="auto"
         rounded="lg"
+        bgSize="cover"
+        color="whiteAlpha.800"
       >
         <Box as="section">
           <Container py={{ base: "12", md: "20" }}>
             <Stack spacing={{ base: "8", md: "10" }}>
               <Stack spacing={{ base: "4", md: "5" }} align="center">
-                <Heading size={{ base: "sm", md: "md" }} color="light">
+                <Heading size={{ base: "sm", md: "md" }}>
                   Ready to Grow?
                 </Heading>
-                <Text color="light" maxW="2xl" textAlign="center" fontSize="xl">
+                <Text maxW="2xl" textAlign="center" fontSize="xl">
                   With this beautiful and responsive React components you will
                   realize your next project in no time.
                 </Text>
@@ -155,14 +157,15 @@ function Home() {
                 alignSelf="center"
               >
                 <Button
-                  variant="outline"
-                  _hover={{ bg: "whiteAlpha.500" }}
+                  borderColor="light"
                   color="light"
+                  variant="outline"
+                  _hover={{ bg: "whiteAlpha.300" }}
                 >
                   Learn more
                 </Button>
                 <Button colorScheme="green" as={Link} to="/dang-ky">
-                  dang ky ngay
+                  Đăng ký ngay
                 </Button>
               </Stack>
             </Stack>

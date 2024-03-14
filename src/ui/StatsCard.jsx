@@ -49,8 +49,8 @@ function StatsCard() {
         mt={12}
         mb={4}
       >
-        {statData.map((data) => (
-          <Box key={data.id} p={{ base: 2, sm: 5 }} textAlign="center">
+        {statData.map((data, i) => (
+          <Box key={i} p={{ base: 2, sm: 5 }} textAlign="center">
             <Text fontWeight="extrabold" fontSize="xx-large">
               {data.score}
             </Text>

@@ -219,6 +219,6 @@ ul.slick-dots li.slick-active div#video-thumbnail {
 }
 
 /* modal z */
-.chakra-modal__content-container {
+.chakra-modal__content-container:has(.modal-media) {
   z-index: 12000 !important;
 }

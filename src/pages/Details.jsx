@@ -302,7 +302,7 @@ function Details() {
           size={{ sm: "3xl", xl: "4xl" }}
         >
           <ModalOverlay zIndex={10000} />
-          <ModalContent>
+          <ModalContent className="modal-media">
             <ModalHeader>Toàn bộ ảnh / video bất động sản</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
@@ -466,7 +466,7 @@ function Details() {
                     <Accordion w="full" allowToggle>
                       <AccordionItem border="none">
                         <h2>
-                          <AccordionButton pr='1'>
+                          <AccordionButton pr="1">
                             <Box
                               as="span"
                               fontSize="sm"
@@ -564,110 +564,3 @@ function resizeMap(mapRef) {
     resizeObserver.observe(container);
   }
 }
-
-// let fake = {
-//   id: 70,
-//   expriryDate: "2024-03-26T07:36:59.965453+00:00",
-//   created_at: "2024-03-09T07:36:59.965453+00:00",
-//   purType: true,
-//   REType_ID: 1,
-//   address: "Phố Hoàng Hoa Thám",
-//   area: 45,
-//   price: 8450000000,
-//   fur: true,
-//   bed_room: 5,
-//   bath_room: 4,
-//   floor: 5,
-//   userID: "e292b030-456a-4044-90a9-5610fe5f3971",
-//   name: "Bán nhà phố Hoàng Hoa Thám 45m2, 5 tầng ô tô 4 chỗ đỗ cửa ",
-//   des: "<p>Phân lô, ôtô, phố víp, nhà đẹp, gần phố, nội thất biếu không.</p><p><br></p><p>+ Nhà dân xây rất trắc chắn kiên cố, cả ngõ có 16 nhà, rất hiếm nhà bán.</p><p><br></p><p>+ Ngõ rộng đều 3m, cách phố đúng 30m, hàng xóm văn minh, dân trí cao.</p><p><br></p><p>+ Gần chợ Bưởi, vài bước ra Hồ Tây, cạnh sưởng phim, gần bệnh viện Phổi, viện 354, giao thông đi lại rất thuận tiện.</p><p>+ Nhà thiết kế rất đẹp, kiên cố.</p><p><br></p><p>+ Tầng 1 để xe, bếp, vệ sinh.</p><p>+ Tầng 2 phòng khách + 1 ngủ, vệ sinh.</p><p>+ Tầng 3 có 2 phòng ngủ vệ sinh giữa.</p><p>+ Tầng 4 phòng thờ và 1 ngủ.</p><p>+ Tầng 5 phòng thờ sân phơi.</p><p>+ Sổ đỏ vuông đét, giao dịch ngay.</p>",
-//   direction: "Bắc",
-//   facade: 5,
-//   entryLength: null,
-//   report: 0,
-//   lat: 21.03958,
-//   long: 105.82835,
-//   cityID: 1,
-//   disID: 1,
-//   wardID: 4,
-//   status: 2,
-//   slug: "ban-nha-pho-hoang-hoa-tham-45m2-5-tang-o-to-4-cho-do-cua",
-//   city: {
-//     cityName: " Hà Nội",
-//   },
-//   dis: {
-//     disName: "Quận Ba Đình",
-//   },
-//   ward: {
-//     wardName: "Phường Cống Vị",
-//   },
-//   medias: [
-//     {
-//       id: 328,
-//       isImage: true,
-//       mediaLink:
-//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - dc67150b-8257-4928-833c-d2a8a8e3b7fb70",
-//     },
-//     {
-//       id: 329,
-//       isImage: true,
-//       mediaLink:
-//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - d7d85096-d29e-4e74-892a-e7b3b38f6fd370",
-//     },
-//     {
-//       id: 330,
-//       isImage: true,
-//       mediaLink:
-//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - 4aec8dd3-19a2-4996-8254-556dffc7c42770",
-//     },
-//     {
-//       id: 331,
-//       isImage: true,
-//       mediaLink:
-//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - 05fc3314-c9b2-4313-9725-11d2f42fe29970",
-//     },
-//     {
-//       id: 332,
-//       isImage: true,
-//       mediaLink:
-//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - f537e687-777f-4ad8-887e-645bdde289d470",
-//     },
-//     {
-//       id: 333,
-//       isImage: true,
-//       mediaLink:
-//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - af50c474-1ec7-4de8-8fed-20f896fd4c9170",
-//     },
-//     {
-//       id: 334,
-//       isImage: true,
-//       mediaLink:
-//         "https://aoxsfgokuqsahcxscxqt.supabase.co/storage/v1/object/public/medias/REDir - fb1b7149-8541-4428-af7f-1494c2e40ffe70",
-//     },
-//   ],
-//   docs: [
-//     {
-//       id: 95,
-//       docName: {
-//         doc_id: 2,
-//         doc_name: "Sổ hồng",
-//       },
-//     },
-//     {
-//       id: 96,
-//       docName: {
-//         doc_id: 5,
-//         doc_name: "Sổ đỏ",
-//       },
-//     },
-//   ],
-//   profile: {
-//     phone: 987513549,
-//     avatar: null,
-//     fullName: "Nhà đất Hà Nội",
-//     email: "test@gmail.com",
-//   },
-//   type: {
-//     type: "nha-rieng",
-//   },
-// };

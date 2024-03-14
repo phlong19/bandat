@@ -1,34 +1,28 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import {
-  Flex,
-  Box,
-  Stack,
-  Link as ChakraLink,
   Button,
+  Box,
+  Flex,
+  Link as ChakraLink,
   Heading,
+  Stack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useLogin } from "./useLogin";
+import { useForm } from "react-hook-form";
+
 import FormInput from "../../ui/FormInput";
-import { Link } from "react-router-dom";
 
-function LoginForm() {
+export default function ForgotPassword() {
   const accent = useColorModeValue("primary", "secondary");
-  const [showPassword, setShowPassword] = useState(false);
-
   const {
-    register,
     handleSubmit,
-    getValues,
+    register,
     formState: { errors },
   } = useForm();
-  const { login, isLoggingIn } = useLogin();
 
   function onSubmit(data) {
-    if (!getValues("email") || !getValues("password")) return;
-    login(data);
+    console.log(data);
   }
 
   return (
@@ -42,14 +36,11 @@ function LoginForm() {
         rounded="md"
         bg={useColorModeValue("gray.50", "gray.800")}
       >
-        <Stack spacing={8} py={12} w={{ base: "90%", lg: "85%" }}>
+        <Stack py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign up
+              forgot psw
             </Heading>
-            <Text fontSize={"lg"} color={"gray.600"}>
-              to enjoy all of our cool features ✌️
-            </Text>
           </Stack>
           <Box
             rounded={"lg"}
@@ -70,31 +61,16 @@ function LoginForm() {
                 id="email"
                 type="email"
               />
-              <FormInput
-                label="Mật khẩu"
-                errors={errors}
-                hookForm={{
-                  ...register("password", {
-                    required: "nhap mk vao dcm",
-                    value: "123456",
-                  }),
-                }}
-                id="password"
-                setShowPassword={setShowPassword}
-                showPassword={showPassword}
-                password
-                type="password"
-              />
 
               <Button
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
-                isLoading={isLoggingIn}
+                // isLoading={isLoggingIn}
                 loadingText="Đợi xíu"
                 colorScheme="green"
                 type="submit"
               >
-                Đăng nhập
+                Gửi request
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>
@@ -104,9 +80,9 @@ function LoginForm() {
                   </ChakraLink>
                 </Text>
                 <Text align={"center"}>
-                  Bạn quên mật khẩu?{" "}
-                  <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
-                    Trợ giúp
+                  Đã có tài khoản?{" "}
+                  <ChakraLink as={Link} color={accent} to="/dang-nhap">
+                    Đăng nhập
                   </ChakraLink>
                 </Text>
               </Stack>
@@ -117,5 +93,3 @@ function LoginForm() {
     </form>
   );
 }
-
-export default LoginForm;

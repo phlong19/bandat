@@ -1,40 +1,29 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import {
-  Flex,
-  Box,
-  Stack,
-  Link as ChakraLink,
   Button,
+  Box,
+  Flex,
   Heading,
-  HStack,
-  Text,
+  Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
 
 import FormInput from "../../ui/FormInput";
 
-import { useRegister } from "./useRegister";
-
-function RegisterForm() {
-  const accent = useColorModeValue("primary", "secondary");
+function ResetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showCfPassword, setShowCfPassword] = useState(false);
 
   const {
-    register,
     handleSubmit,
+    register,
     getValues,
     formState: { errors },
   } = useForm();
 
-  const { signup, isLoading } = useRegister();
-
-  // TODO: phone verify
   function onSubmit(data) {
     console.log(data);
-    signup(data);
   }
 
   return (
@@ -48,14 +37,11 @@ function RegisterForm() {
         rounded="md"
         bg={useColorModeValue("gray.50", "gray.800")}
       >
-        <Stack spacing={8} py={12} w={{ base: "90%", lg: "85%" }}>
+        <Stack py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign up
+              dat moi mat khau
             </Heading>
-            <Text fontSize={"lg"} color={"gray.600"}>
-              to enjoy all of our cool features ✌️
-            </Text>
           </Stack>
           <Box
             rounded={"lg"}
@@ -64,35 +50,6 @@ function RegisterForm() {
             p={8}
           >
             <Stack spacing={4} w="full">
-              <HStack flexDirection={{ base: "column", md: "row" }} gap={2.5}>
-                <FormInput
-                  label="Họ và tên"
-                  id="fullName"
-                  hookForm={{
-                    ...register("fullName", {
-                      required: "ten may la gi",
-                      minLength: { message: "deo du 8 ky tu", value: 8 },
-                    }),
-                  }}
-                  errors={errors}
-                />
-
-                <FormInput
-                  label="Số điện thoại"
-                  id="phone"
-                  type="number"
-                  hookForm={{
-                    ...register("phone", {
-                      required: "cho bo cai dia chi",
-                      minLength: 10,
-                      maxLength: 10,
-                      valueAsNumber: true,
-                    }),
-                  }}
-                  errors={errors}
-                />
-              </HStack>
-
               <FormInput
                 label="Mật khẩu"
                 id="password"
@@ -130,29 +87,15 @@ function RegisterForm() {
               />
 
               <Button
-                w={{ base: "full", sm: "180px" }}
+                w={{ base: "full", sm: "150px" }}
                 mx="auto"
+                // isLoading={isLoggingIn}
+                loadingText="Đợi xíu"
                 colorScheme="green"
-                isLoading={isLoading}
-                loadingText="Chờ xíu"
                 type="submit"
               >
-                Đăng ký
+                dat lai mk
               </Button>
-              <Stack pt={4}>
-                <Text align={"center"}>
-                  Đã có tài khoản?{" "}
-                  <ChakraLink as={Link} color={accent} to="/dang-nhap">
-                    Đăng nhập
-                  </ChakraLink>
-                </Text>
-                <Text align={"center"}>
-                  Bạn quên mật khẩu?{" "}
-                  <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
-                    Trợ giúp
-                  </ChakraLink>
-                </Text>
-              </Stack>
             </Stack>
           </Box>
         </Stack>
@@ -161,4 +104,4 @@ function RegisterForm() {
   );
 }
 
-export default RegisterForm;
+export default ResetPassword;
