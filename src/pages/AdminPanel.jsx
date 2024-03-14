@@ -1,8 +1,10 @@
-
 function AdminPanel() {
   return (
     <div>
-        admin panel
+      admin panel
+      {/* TODO */}
+      {/* table users? */}
+      {/* docs table */}
     </div>
   );
 }

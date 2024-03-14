@@ -20,6 +20,7 @@ import { formatDate, getStatusBadgeColor } from "../../utils/helper";
 function TableRERow({ data, level, userID }) {
   const {
     id,
+    expriryDate,
     created_at,
     purType,
     profile: { id: authorID, phone, avatar, fullName },
@@ -30,7 +31,6 @@ function TableRERow({ data, level, userID }) {
     city: { cityName },
     dis: { disName },
     ward: { wardName },
-    name,
     slug,
   } = data;
 
@@ -38,7 +38,7 @@ function TableRERow({ data, level, userID }) {
 
   return (
     <Tr className="group">
-      <Td width={{ sm: "250px" }} maxWidth={{ sm: "300px" }} pl="0px">
+      <Td width={{ sm: "230px" }} maxWidth={{ sm: "300px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
           <Avatar src={avatar} name={fullName} me="18px" />
           <Flex direction="column">
@@ -73,10 +73,6 @@ function TableRERow({ data, level, userID }) {
       <Td>
         <Text fontSize="sm">{type.name}</Text>
       </Td>
-      {/* name */}
-      <Td maxW="250px">
-        <Text noOfLines={2}>{name}</Text>
-      </Td>
       {/* address */}
       <Td maxW="250">
         <Text noOfLines={2}>
@@ -99,9 +95,10 @@ function TableRERow({ data, level, userID }) {
         </Badge>
       </Td>
       <Td>
-        <Text pb=".5rem">
-          {formatDate(created_at)}
-        </Text>
+        <Text pb=".5rem">{formatDate(created_at)}</Text>
+      </Td>
+      <Td>
+        <Text pb=".5rem">{formatDate(expriryDate)}</Text>
       </Td>
       <Td>
         <Menu>

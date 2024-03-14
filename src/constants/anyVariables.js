@@ -67,11 +67,11 @@ export const reCaptions = [
   "Người đăng",
   "Dạng bán",
   "Loại hình",
-  "Tiêu đề",
   "Địa chỉ",
   "Báo xấu",
   "Trạng thái",
   "Ngày đăng",
+  "Ngày hết hạn"
 ];
 
 // hardcode re status
@@ -99,3 +99,6 @@ const minName = 8;
 const maxName = 30;
 
 export { minName, maxName };
+
+// expriry range
+export const EXPRIRY_LENGTH = 14;

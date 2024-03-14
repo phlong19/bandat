@@ -36,6 +36,9 @@ function ChakraTablePagination({ count }) {
       default:
         break;
     }
+    setTimeout(() => {
+      document.getElementById("breadcrumb-scroll")?.scrollIntoView();
+    }, 100);
     setMapView(false);
     searchParams.set("page", finalDestination.toString());
     setSearchParams(searchParams);
@@ -79,7 +82,7 @@ function ChakraTablePagination({ count }) {
           {currentPage + 1}
         </Button>
       )}
-      {currentPage < totalPages - 3 && (
+      {currentPage < totalPages - 2 && (
         <Button variant="pagi" onClick={() => handlePagination("next2")}>
           {currentPage + 2}
         </Button>

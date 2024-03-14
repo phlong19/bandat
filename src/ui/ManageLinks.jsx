@@ -22,7 +22,7 @@ function ManageLinks({ level, isDarkMode }) {
       <NavLink to="/" className="mb-2">
         <Image
           boxSize="30"
-          src={isDarkMode ? "./icon-dark.png" : "./icon.png"}
+          src={isDarkMode ? "/icon-dark.png" : "/icon.png"}
         />
       </NavLink>
 

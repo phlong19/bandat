@@ -82,19 +82,19 @@ function List({ purType }) {
             <Searchbar />
           </div>
 
-          <h2 className="pb-4 pt-3 font-lexend text-xl font-medium xl:text-2xl">
+          <h2 className="pt-3 font-lexend text-lg font-medium">
             {`${purType ? "Mua bán" : "Cho thuê"} nhà đất trên toàn quốc`}
           </h2>
           <div className="flex items-center justify-between">
             {/* counter */}
-            <span className="inline-block text-base lg:text-lg">
+            <span className="inline-block text-sm">
               Có <span>{formatNumber(count)}</span> bất động sản.
             </span>
 
             {/* toggle grid & map views */}
             <div className="hidden items-center gap-2 lg:flex">
-              <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
-              <Switch
+              <span className="font-lexend text-lg font-semibold">Bản đồ:</span>
+              <Switch size='sm'
                 onChange={() => setMapView((s) => !s)}
                 isChecked={mapView}
                 key={purType}

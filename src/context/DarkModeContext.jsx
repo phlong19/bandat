@@ -11,12 +11,12 @@ function DarkMode({ children }) {
 
   useEffect(() => {
     if (isDarkMode) {
-      ref.current.href = "./icon-dark.png";
+      ref.current.href = "/icon-dark.png";
       document.documentElement.classList.add("dark");
       document.documentElement.classList.remove("light");
       setColorMode("dark");
     } else {
-      ref.current.href = "./icon.png";
+      ref.current.href = "/icon.png";
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.add("light");
       setColorMode("light");

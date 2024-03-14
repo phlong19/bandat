@@ -26,33 +26,33 @@ export const homeText = [
 ];
 
 export const emptyREList =
-  "ban chua dang bai viet moi nao, khong co dat de ban a? ban nha di";
+  "Chưa đăng bài viết nào, khong co dat de ban a? ban nha di";
 
 export const error = {
   // general
-  fetchError: "da xay ra loi trong khi lay du lieu, vui long thu lai",
+  fetchError: "Đã xảy ra lỗi khi lấy dữ liệu, Vui lòng thử lại sau",
   // auth
   login: "Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại",
   register: "Không thể đăng ký",
   notAuthen: "Vui lòng đăng nhập để truy cập",
-  notAuthor: "khong co quyen de thuc hien thao tac nay",
+  notAuthor: "Phân quyền hiện tại không được phép thao tác",
   // api re
-  cantCreate: "khong the tao bai dang luc nay, vui long thu lai sau",
-  cantUpdate: "Không thể cập nhật bài đăng,vui long",
-  cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật, vui long",
-  cantDelete: "Không thể xoá bài đăng, vui long",
-  cantFindToDelete: "Không tìm thấy bài đăng để xoá, vui long",
-  apiGeocoding: "khong the tim thay dia chi, vui long cung cap cu the hon ?",
+  cantCreate: "Hiện không thể tạo bài đăng, Vui lòng thử lại sau",
+  cantUpdate: "Không thể cập nhật bài đăng, Vui lòng thử lại sau",
+  cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật, Vui lòng thử lại sau",
+  cantDelete: "Không thể xoá bài đăng, Vui lòng thử lại sau",
+  cantFindToDelete: "Không tìm thấy bài đăng để xoá, Vui lòng thử lại sau",
+  apiGeocoding: "Không thể tìm thấy địa chỉ, Vui lòng cung cấp cụ thể?",
   // api news, re-use some of api re
-  cantCreateNews: "khong the tao bai viet tin tuc",
-  newsExisted: "da ton tai bai viet voi tieu de nay?",
+  cantCreateNews: "Không thể tạo bài viết",
+  newsExisted: "Tiêu đề bài viết đã tồn tại?",
 
   // medias
-  cantDeleteMedia: "xay ra loi khi xoa file, vui long thu lai",
-  uploadFailed: "qua trinh tai len file xay ra loi, vui long blabla",
+  cantDeleteMedia: "Xảy ra lỗi, Vui lòng thử lại sau",
+  uploadFailed: "Quá trình tải file xảy ra lỗi, Vui lòng thử lại sau",
   // docs
-  cantInsertDocs: "khong the them giay to phap ly, vui long thu lai sau",
-  cantDeleteDocs: "khong the xoa docs, vui long thu lai",
+  cantInsertDocs: "Không thể thêm giấy tờ pháp lý, Vui lòng thử lại sau ",
+  cantDeleteDocs: "Không thể xoá văn bản, Vui lòng thử lại sau",
 
   // name edit
   cantEditName: "chua den ngay edit",
@@ -67,24 +67,27 @@ export const success = {
 
   // api re
   createPost: "Tạo bài đăng thành công, đợi admin duyệt bài",
-  updatePost: "sua bai dang thanh cong",
+  updatePost: "Sửa bài đăng thành công",
   approvePost: "Duyệt bài thành công",
   markSold: "Đánh dấu đã bán thành công",
   deactivePost: "Gỡ bài thành công",
   deletePost: "Xoá bài thành công",
 
   // api news
-  createNews: "tao bai viet tin tuc thanh cong",
-  updateNews: "cap nhat ok kh loi gi",
-  approveNews: "duyet bai viet tin tuc thanh cong",
-  deleteNews: "xoa bai ok",
-  deactiveNews: "go tin tuc ok",
+  createNews: "Tạo tin tức thành công",
+  updateNews: "Cập nhật thành công",
+  approveNews: "Duyệt tin tức thành công thành công",
+  deleteNews: "Xoá tin tức thành công",
+  deactiveNews: "Gỡ tin tức thành công",
 
   // api account
-  updateAddress: "cap nhat dia chi ok",
-  updateAvatar: "cap nhat avatar / anh dai dien xong",
-  updateUsername: "cap nhat ten ok",
-  updateOthers: "cap nhat thanh cong",
+  updateAddress: "Cập nhật địa chỉ thành công",
+  updateAvatar: "Cập nhật ảnh đại diện thành công",
+  updateUsername: "Cập nhật tên người dùng thành công",
+  updateOthers: "Cập nhật thành công",
+
+  // others
+  copyToClipboard: "da sao chep vao bo nho tam",
 };
 
 export const reform = {
@@ -102,16 +105,17 @@ export const reform = {
   nameTooLong: `Vượt quá ${maxLength} kí tự cho phép`,
   desTooShort: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
   desTooLong: `Vượt quá ${maxDesLength} kí tự cho phép`,
+  numberInt: "vui long lam tron so",
 
   // helpers
   noPhone:
     "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
-  requiredDocs: "vui long pick it nhat 1",
+  requiredDocs: "Vui lòng chọn ít nhất 1 tai lieu",
 
   // media
   overFile: "Vượt quá số lượng giới hạn file tải lên",
   helperMedia: "Drag & drop file here, or click to select files",
-  acceptMedias: "chi chap nhan dinh dang png, jpg, jpeg hoac mp4",
+  acceptMedias: "Yêu cầu định dạng png, jpg, jpeg hoặc mp4",
   // alert
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",
 
@@ -124,26 +128,26 @@ export const reform = {
 
 export const newsForm = {
   // table has no news
-  empty: "khong co bai viet tin tuc nao o day",
+  empty: "Hiện không có bài viết tin tức nào",
   // general
   requiredMessage: "Vui lòng điền đầy đủ các trường có dấu *",
 
   // form errors
-  minTitle: `tieu de it nhat ${minTitle}`,
-  maxTitle: `tieu de nhieu nhat ${maxTitle}`,
-  minSummary: `tom tat it nhat ${minSummary}`,
-  maxSummary: `tom tat nhieu nhat ${maxSummary}`,
-  minContent: `noi dung it nhat ${minContent}`,
-  maxContent: `noi dung nhieu nhat ${maxContent}`,
+  minTitle: `Tiêu đề ít nhất ${minTitle}`,
+  maxTitle: `Tiêu đề nhiều nhất ${maxTitle}`,
+  minSummary: `Tóm tắt ít nhất ${minSummary}`,
+  maxSummary: `Tóm tắt nhiều nhất ${maxSummary}`,
+  minContent: `Nội dung ít nhất ${minContent}`,
+  maxContent: `Nội dung nhiều nhất ${maxContent}`,
 
   // thumbnail
-  overFile: "chi chap nhan 1 file thumbnail",
+  overFile: "Chỉ chấp nhận 1 file thumbnail",
   helperMedia: "Drag & drop file here, or click to select files",
-  acceptFiles: "chi chap nhan dinh dang png, jpg, jpeg",
-  ratio: "ti le anh yeu cau la 16 / 9",
+  acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
+  ratio: "Tỉ lệ ảnh yêu cầu 16/9",
 
   // submit errors
-  missingThumb: "thieu thumbnail",
+  missingThumb: "Thiếu thumbnail?",
 
   // dialog
   dialogTitle: "Discard Changes?",
@@ -160,14 +164,14 @@ export const newsForm = {
 
 // account
 export const account = {
-  cantUpdate: "khong the update thong tin tai khoan, vui long...",
+  cantUpdate: "Không thể cập nhật thông tin tài khoản, Vui lòng thử lại sau",
   helperMedia: "Drag & drop file here, or click to select files",
-  missingAddress: "neu da dien vui long dien du dia chi",
+  missingAddress: "Vui lòng điền chi tiết địa chỉ",
 
   overFile: "1 account nhieu avatar?",
-  acceptFiles: "chi chap nhan dinh dang png, jpg, jpeg",
+  acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
 
   // name
-  minName: `ten it nhat ${minName} ky tu?`,
-  maxName: `vuot qua ${maxName} ky tu`,
+  minName: `Ít nhất ${minName} ký tự`,
+  maxName: `Vượt quá ${maxName} ký tự`,
 };

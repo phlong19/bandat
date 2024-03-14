@@ -19,12 +19,12 @@ function Button({
   const variants = {
     light:
       base +
-      "dark:text-light dark:border-light border-primary text-primary border hover:text-primary dark:hover:text-secondary dark:hover:border-secondary",
+      "dark:text-light dark:border-light border-dark text-dark border hover:text-primary dark:hover:text-secondary hover:border-primary dark:hover:border-secondary",
     fill:
       base +
       "text-white bg-primary border border-primary dark:border-secondary dark:bg-secondary dark:text-black",
   };
-  
+
   if (to) {
     return (
       <NavLink className={variants[variant]} onClick={onClick} to={to}>

@@ -36,11 +36,17 @@ function ChakraTable({
     <Card overflowX={{ sm: "auto", xl: "hidden" }} bg={tableMode}>
       <CardHeader pt="25" pl="25">
         <Flex justify="space-between">
-          <Text fontSize="xl" color={modeBaseColor} fontWeight="600" fontFamily='roboto'>
+          <Text
+            fontSize="xl"
+            color={modeBaseColor}
+            fontWeight="600"
+            fontFamily="roboto"
+          >
             {title}
           </Text>
           <Flex gap={2}>
             {/* side actions */}
+            {/* TODO: */}
             <InputGroup>
               <Input placeholder="search" />
               <InputRightElement>
@@ -74,6 +80,7 @@ function ChakraTable({
                     fontSize="small"
                     key={i}
                     ps={i === 0 ? "0px" : null}
+                    pr={0}
                   >
                     {caption}
                   </Th>

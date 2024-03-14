@@ -96,8 +96,8 @@ function ListItem({ data, purType, isPopup = false }) {
         </div>
         {/* author */}
         {(!mapView || !isLaptop) && (
-          <div className="mt-auto hidden items-center gap-1.5 xs:flex">
-            <div className="flex h-8 max-w-full items-center gap-2 lg:max-w-[35%] lg:gap-1.5 xl:max-w-[45%] xl:gap-2">
+          <div className="mt-auto items-center gap-1.5 flex">
+            <div className="flex h-8 max-w-full items-center gap-2 lg:max-w-[40%] lg:gap-1.5 xl:max-w-[45%] xl:gap-2">
               <Avatar
                 src={avatar}
                 name={fullName}
