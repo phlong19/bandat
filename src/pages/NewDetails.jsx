@@ -1,8 +1,6 @@
 import { newsdetails } from "../data/newsdetails";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import { BsHouse } from "react-icons/bs";
 import { city } from "../data/city";
-import Searchbar from "../ui/Searchbar";
 import { Link } from "react-router-dom";
 import { news } from "../data/news";
 import { useState } from "react";
@@ -17,7 +15,7 @@ function NewDetails() {
   const item1 = navLinks[0];
   const item2 = navLinks[1];
   const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 1224px)",
+    query: "(min-width: 1200px)",
   });
 
   return (

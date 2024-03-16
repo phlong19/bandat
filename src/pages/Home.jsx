@@ -21,10 +21,10 @@ function Home() {
       </ul>
       {/* content */}
       <div className="mt-4">
+        <Searchbar />
         <h2 className="pb-4 pt-6 font-lexend text-xl font-medium">
           Bất động sản dành cho bạn
         </h2>
-        <Searchbar />
         {/* homepage list */}
         <HomePageList />
       </div>

@@ -1,14 +1,19 @@
 import { useState, useRef } from "react";
+import { NavLink } from "react-router-dom";
 import { FaRegHeart } from "react-icons/fa6";
+import { FaRegNewspaper } from "react-icons/fa";
+import { GrUserSettings } from "react-icons/gr";
+import { GiQueenCrown } from "react-icons/gi";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
 import ToggleBox from "./ToggleBox";
 import SpinnerFullPage from "./SpinnerFullPage";
+import Avatar from "./Avatar";
 
 import Logout from "../features/auth/Logout";
 import { useAuth } from "../context/UserContext";
-import { USER_LEVEL } from "../constants/anyVariables";
+import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 
 function Action({ onClose }) {
   const width = window.innerWidth;
@@ -36,6 +41,8 @@ function Action({ onClose }) {
   const [userToggle, setUserToggle] = useState(false);
   function handleUserToggle(e) {
     e.stopPropagation();
+    const { x } = bookmarkRef.current.getBoundingClientRect();
+    setChildX(width - x - 180);
     if (userToggle !== true) {
       setShow(false);
       setUserToggle(true);
@@ -74,23 +81,50 @@ function Action({ onClose }) {
         </>
       ) : (
         <div className="flex items-center">
-          <img
-            src={data.avatar}
-            alt={data.fullName}
-            className="relative w-8 cursor-pointer rounded-full border border-dark bg-dark/20 dark:border-white dark:bg-white"
-            onClick={handleUserToggle}
-          />
+          <Avatar avatar={data.avatar} fullName={data.fullName} onClick={handleUserToggle} />
           {userToggle && (
             <ToggleBox close={() => setUserToggle(false)} type childX={childX}>
-              {level >= USER_LEVEL && (
-                <Button to="/control">admin panel</Button>
-              )}
-              <Logout />
+              <div className="flex flex-col gap-2">
+                <NavLink
+                  to="/tai-khoan"
+                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+                >
+                  <span className="text-xl">
+                    <GrUserSettings />
+                  </span>
+                  Quản lý tài khoản
+                </NavLink>
+                {level >= EDITOR_LEVEL && (
+                  <NavLink
+                    to="/quan-ly-tin-tuc"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+                  >
+                    <span className="text-xl">
+                      <FaRegNewspaper />
+                    </span>
+                    Quản lý tin tức
+                  </NavLink>
+                )}
+                {level >= ADMIN_LEVEL && (
+                  <NavLink
+                    to="/control"
+                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+                  >
+                    <span className="text-xl">
+                      <GiQueenCrown />
+                    </span>
+                    Admin Panel
+                  </NavLink>
+                )}
+              </div>
+              <span className="mt-3 flex w-full items-center justify-center">
+                <Logout />
+              </span>
             </ToggleBox>
           )}
         </div>
       )}
-      <Button>Đăng tin</Button>
+      <Button to="/dang-tin">Đăng tin</Button>
     </div>
   );
 }

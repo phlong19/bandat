@@ -7,11 +7,14 @@ function Logout() {
   const { isPending, logout } = useLogout();
 
   return (
-    <Button disabled={isPending} onClick={() => logout()}>
+    <Button disabled={isPending} onClick={() => logout()} variant="light">
       {!isPending ? (
-        <span className="px-1.5 text-lg">
-          <FaArrowRightFromBracket />
-        </span>
+        <>
+          <span className="px-1.5 text-lg">
+            <FaArrowRightFromBracket />
+          </span>
+          <span>Đăng xuất</span>
+        </>
       ) : (
         <Spinner />
       )}

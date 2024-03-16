@@ -9,6 +9,8 @@ import { ImStack } from "react-icons/im";
 import { SlLocationPin } from "react-icons/sl";
 import { BiPhoneCall } from "react-icons/bi";
 
+import { Avatar } from "@chakra-ui/react";
+
 import {
   formatCurrency,
   formatDate,
@@ -21,6 +23,7 @@ import Button from "../../ui/Button";
 import Bookmark from "../../ui/Bookmark";
 import ItemImages from "../../ui/ItemImages";
 import { useMapView } from "../../context/MapViewContext";
+import { useAuth } from "../../context/UserContext";
 
 function ListItem({ data, purType, isPopup = false }) {
   const { mapView } = useMapView();
@@ -28,6 +31,8 @@ function ListItem({ data, purType, isPopup = false }) {
   const isLaptop = useMediaQuery({
     query: "(min-width: 1000px)",
   });
+
+  const { isAuthenticated } = useAuth();
 
   const {
     area,
@@ -137,10 +142,11 @@ function ListItem({ data, purType, isPopup = false }) {
         {(!mapView || !isLaptop) && (
           <div className="hidden w-full items-center justify-between xs:flex">
             <div className="flex h-8 w-[45%] items-center">
-              <img
+              <Avatar
                 src={avatar}
+                name={fullName}
                 alt="author avatar"
-                className="object-conver mr-3 h-8 w-8 rounded-full border border-dark/50 dark:border-light/50"
+                // FIX
               />
               <div>
                 <span className="line-clamp-1 font-semibold">{fullName}</span>
@@ -148,18 +154,20 @@ function ListItem({ data, purType, isPopup = false }) {
               </div>
             </div>
             <div className="flex items-center gap-1">
-              <Button
-                onClick={() => setHiddenPhoneNum(true)}
-                widthBase={false}
-                basePY={false}
-                icon={<BiPhoneCall />}
-              >
-                {hiddenPhoneNum ? (
-                  <a href={`tel:0${phone}`}>0{phone}</a>
-                ) : (
-                  hiddenLast3PhoneNum(phone)
-                )}
-              </Button>
+              {isAuthenticated && (
+                <Button
+                  onClick={() => setHiddenPhoneNum(true)}
+                  widthBase={false}
+                  basePY={false}
+                  icon={<BiPhoneCall />}
+                >
+                  {hiddenPhoneNum ? (
+                    <a href={`tel:0${phone}`}>0{phone}</a>
+                  ) : (
+                    hiddenLast3PhoneNum(phone)
+                  )}
+                </Button>
+              )}
               {!isLaptop && <Bookmark />}
             </div>
           </div>

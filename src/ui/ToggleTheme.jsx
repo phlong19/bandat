@@ -7,11 +7,11 @@ function ToggleTheme() {
   return (
     <Button onClick={toggleDarkMode} variant="other">
       {isDarkMode ? (
-        <span className="text-xl">
+        <span className="text-lg">
           <BsFillMoonStarsFill />
         </span>
       ) : (
-        <span className="text-xl">
+        <span className="text-lg">
           <BsFillSunFill />
         </span>
       )}

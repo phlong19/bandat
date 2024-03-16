@@ -15,7 +15,7 @@ export const data = [
     bed_room: 3,
     bath_room: 3,
     floor: 4,
-    status: true,
+    status: "Chua duyet",
     userID: "17ef6153-0017-473a-9623-54be03ce97fc",
     vip: 3,
     name: "RAO BÁN NHÀ 1000m2 với giá 1k VNĐ title daif them 1 ty di pls",
@@ -69,7 +69,7 @@ export const data = [
     profile: {
       phone: 618168468,
       avatar:
-        "https://res.cloudinary.com/ddot3p3my/image/upload/v1690302821/users/image_2023-07-25_233343045_zggymb.png",
+        "https://res.cloudinary.com/ddot3my/image/upload/v1690302821/users/image_2023-07-25_233343045_zggymb.png",
       fullName: "nguyen van a",
     },
   },
@@ -89,7 +89,7 @@ export const data = [
     bed_room: 2,
     bath_room: 2,
     floor: 3,
-    status: true,
+    status: "Da duyet",
     userID: "6035155e-6f47-4323-9149-f879db30d76c",
     vip: 3,
     name: "Nhà Đông Anh siêu đẹp, siêu rộng rãi view bien long gio",
@@ -138,7 +138,7 @@ export const data = [
     profile: {
       phone: 395053892,
       avatar:
-        "https://res.cloudinary.com/ddot3p3my/image/upload/v1690302821/users/image_2023-07-25_233343045_zggymb.png",
+        "https://res.cloudinary.com/ddop3my/ie/upload/v16902821/users/image_2023-07-25_233343045_zggymb.png",
       fullName: "Nguyễn Thu Huyền",
     },
   },
@@ -158,7 +158,7 @@ export const data = [
     bed_room: 4,
     bath_room: 3,
     floor: 3,
-    status: false,
+    status: "Da ban",
     userID: "b72b2f07-06b1-4287-90bb-924c811a80c0",
     vip: 0,
     name: "ban nha rieng co giay to dang hoang xac thuc, tham khao alo ngay em Truc",
@@ -216,7 +216,7 @@ export const data = [
     profile: {
       phone: 987513549,
       avatar:
-        "https://res.cloudinary.com/ddot3p3my/image/upload/v1690302821/users/image_2023-07-25_233343045_zggymb.png",
+        "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
       fullName: "khoidoquang",
     },
   },

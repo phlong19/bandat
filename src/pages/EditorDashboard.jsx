@@ -1,9 +1,6 @@
+
 function EditorDashboard() {
-    return (
-        <div>
-            editor dashboard
-        </div>
-    )
+  return <div>hi</div>;
 }
 
-export default EditorDashboard
+export default EditorDashboard;
