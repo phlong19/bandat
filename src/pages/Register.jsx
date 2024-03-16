@@ -1,7 +1,7 @@
-import RegisterForm from "../features/auth/RegisterForm";
+import MultiStepForm from "../features/auth/MultiStepForm";
 
 function Register() {
-  return <RegisterForm />;
+  return <MultiStepForm />;
 }
 
 export default Register;

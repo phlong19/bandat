@@ -15,6 +15,7 @@ import {
 import { checkPost } from "../../services/apiRE";
 import { maxLength, minLength } from "../../constants/anyVariables";
 import { reform } from "../../constants/message";
+import unidecode from "unidecode";
 
 function NameInput({ postId, register, error }) {
   let invalid = false;
@@ -30,7 +31,8 @@ function NameInput({ postId, register, error }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (search.length > minLength && search.length < maxLength) {
-        const slug = slugify(search);
+        const formattedTitle = unidecode(search);
+        const slug = slugify(formattedTitle);
         setDebouncedSearch(slug);
       }
     }, 500);

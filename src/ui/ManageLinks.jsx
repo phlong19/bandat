@@ -8,7 +8,7 @@ import { GiQueenCrown } from "react-icons/gi";
 
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 
-function ManageLinks({ level, isDarkMode }) {
+function ManageLinks({ level }) {
   return (
     <Flex
       direction="column"
@@ -20,10 +20,7 @@ function ManageLinks({ level, isDarkMode }) {
     >
       {/* logo */}
       <NavLink to="/" className="mb-2">
-        <Image
-          boxSize="30"
-          src={isDarkMode ? "/icon-dark.png" : "/icon.png"}
-        />
+        <Image boxSize="30" src="/icon.png" />
       </NavLink>
 
       <NavLink to="/dang-tin" title="Đăng tin BĐS">

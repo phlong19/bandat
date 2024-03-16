@@ -52,6 +52,7 @@ import { reform } from "../../constants/message";
 import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 import FormActions from "./FormActions";
+import unidecode from "unidecode";
 
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
@@ -143,6 +144,9 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
       });
     }
 
+    const formattedName = unidecode(data.name);
+    const slug = slugify(formattedName);
+
     if (!edit) {
       create({
         ...data,
@@ -154,7 +158,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
         status: DEFAULT_RE_STATUS,
         userID,
         docs,
-        slug: slugify(data.name),
+        slug,
       });
     } else {
       update({
@@ -169,7 +173,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
         wardID,
         purType,
         status: DEFAULT_RE_STATUS,
-        slug: slugify(data.name),
+        slug,
         // docs
         newDocs: addDocsRef.current,
         deleteDocs: deleteDocsRef.current,

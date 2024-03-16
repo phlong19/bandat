@@ -71,7 +71,7 @@ export const reCaptions = [
   "Báo xấu",
   "Trạng thái",
   "Ngày đăng",
-  "Ngày hết hạn"
+  "Ngày hết hạn",
 ];
 
 // hardcode re status
@@ -102,3 +102,4 @@ export { minName, maxName };
 
 // expriry range
 export const EXPRIRY_LENGTH = 14;
+export const phoneLength = 10;

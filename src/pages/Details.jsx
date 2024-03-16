@@ -7,6 +7,8 @@ import parse from "html-react-parser";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 import { useMediaQuery } from "react-responsive";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 // libs ui and ui
 import {
@@ -69,6 +71,7 @@ import { useAuth } from "../context/UserContext";
 import { getSinglePost } from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
 import { formatCurrency, formatDate } from "../utils/helper";
+import { error } from "../constants/message";
 
 function Details() {
   const accent = useColorModeValue("primary", "secondary");
@@ -86,6 +89,7 @@ function Details() {
   const mapRef = useRef(null);
   const { land } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   const { data: post, isLoading: isFetching } = useQuery({
     queryKey: ["SinglePost", land],
@@ -99,6 +103,11 @@ function Details() {
         <Spinner speed="0.35s" size="md" />
       </Center>
     );
+  }
+
+  if (!post?.id) {
+    toast.error(error.cantFindPost);
+    return navigate("/");
   }
 
   const {

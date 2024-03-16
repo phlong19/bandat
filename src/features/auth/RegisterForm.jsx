@@ -14,10 +14,13 @@ import {
 } from "@chakra-ui/react";
 
 import FormInput from "../../ui/FormInput";
+import Logo from "../../ui/Logo";
 
 import { useRegister } from "./useRegister";
+import { account } from "../../constants/message";
+import { phoneLength } from "../../constants/anyVariables";
 
-function RegisterForm() {
+function RegisterForm({ setPhone, setProgress, setStep }) {
   const accent = useColorModeValue("primary", "secondary");
   const [showPassword, setShowPassword] = useState(false);
   const [showCfPassword, setShowCfPassword] = useState(false);
@@ -29,16 +32,20 @@ function RegisterForm() {
     formState: { errors },
   } = useForm();
 
-  const { signup, isLoading } = useRegister();
+  const { signup, isLoading } = useRegister(setProgress, setStep);
 
-  // TODO: phone verify
   function onSubmit(data) {
     console.log(data);
+    setPhone(data.phone);
     signup(data);
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full"
+      key={Math.random()}
+    >
       <Flex
         mx="auto"
         w="full"
@@ -48,13 +55,19 @@ function RegisterForm() {
         rounded="md"
         bg={useColorModeValue("gray.50", "darker")}
       >
-        <Stack spacing={8} py={12} w={{ base: "90%", lg: "85%" }}>
+        <Stack spacing={6} py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
-            <Heading fontSize={"4xl"} textAlign={"center"}>
-              Sign up
+            <Box pb={2}>
+              <Logo size="w-40" />
+            </Box>
+            <Heading fontSize={"2xl"} textAlign={"center"}>
+              Đăng ký
             </Heading>
-            <Text fontSize={"lg"} color={"gray.600"}>
-              to enjoy all of our cool features ✌️
+            <Text
+              fontSize={"md"}
+              color={useColorModeValue("gray.600", "gray.300")}
+            >
+              để bắt đầu sử dụng dịch vụ của Landhub ✌️
             </Text>
           </Stack>
           <Box
@@ -83,9 +96,9 @@ function RegisterForm() {
                   type="number"
                   hookForm={{
                     ...register("phone", {
-                      required: "cho bo cai dia chi",
-                      minLength: 10,
-                      maxLength: 10,
+                      required: account.requiredPhone,
+                      minLength: phoneLength,
+                      maxLength: phoneLength,
                       valueAsNumber: true,
                     }),
                   }}

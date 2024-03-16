@@ -36,6 +36,7 @@ import {
   minTitle,
 } from "../../../constants/anyVariables";
 import NewsActions from "./NewsActions";
+import unidecode from "unidecode";
 
 function NewsFormModal({
   edit = false,
@@ -96,8 +97,11 @@ function NewsFormModal({
       });
     }
 
+    const formattedName = unidecode(data.title);
+    const slug = slugify(formattedName);
+
     if (!edit) {
-      create({ ...data, userID: id, status: false, slug: slugify(data.title) });
+      create({ ...data, userID: id, status: false, slug });
     } else {
       update({
         ...data,
@@ -109,7 +113,7 @@ function NewsFormModal({
         // old thumb
         oldFiles: existedFiles,
         status: false,
-        slug: slugify(data.title),
+        slug,
       });
     }
   }

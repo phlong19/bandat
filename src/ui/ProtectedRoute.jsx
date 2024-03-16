@@ -9,7 +9,7 @@ import { useAuth } from "../context/UserContext";
 import { error as errorMessage } from "../constants/message";
 
 function ProtectedRoute({ children, accessLevel }) {
-  const { data, level, isAuthenticated, isLoading } = useAuth();
+  const { data, level, isAuthenticated, email, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,16 +22,25 @@ function ProtectedRoute({ children, accessLevel }) {
             </span>
           ),
         });
-        navigate("/dang-nhap");
+        return navigate("/dang-nhap");
       } else if (data && level < accessLevel) {
-        navigate("/khong-co-quyen");
+        return navigate("/khong-co-quyen");
+      } else if (data && !email) {
+        toast.error(errorMessage.notAuthen, {
+          icon: (
+            <span className="text-2xl text-yellow-500">
+              <LuShieldAlert />
+            </span>
+          ),
+        });
+        return navigate("/xac-thuc-email");
       }
     }
-  }, [data, isAuthenticated, isLoading, navigate, accessLevel, level]);
+  }, [data, isAuthenticated, isLoading, email, navigate, accessLevel, level]);
 
   if (isLoading) return <SpinnerFullPage />;
 
-  if (data && isAuthenticated) return children;
+  if (data && isAuthenticated && email) return children;
 }
 
 export default ProtectedRoute;

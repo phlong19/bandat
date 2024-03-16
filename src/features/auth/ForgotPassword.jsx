@@ -12,6 +12,7 @@ import {
 import { useForm } from "react-hook-form";
 
 import FormInput from "../../ui/FormInput";
+import Logo from "../../ui/Logo";
 
 export default function ForgotPassword() {
   const accent = useColorModeValue("primary", "secondary");
@@ -38,7 +39,10 @@ export default function ForgotPassword() {
       >
         <Stack py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
-            <Heading fontSize={"4xl"} textAlign={"center"}>
+            <Box pb={2}>
+              <Logo size="w-40" />
+            </Box>
+            <Heading fontSize={"2xl"} textAlign={"center"}>
               forgot psw
             </Heading>
           </Stack>
