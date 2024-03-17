@@ -13,7 +13,6 @@ import FormInput from "../../ui/FormInput";
 import Logo from "../../ui/Logo";
 import { useEmailConfirm } from "./useEmailConfirm";
 import validator from "validator";
-import { updateEmail } from "../../services/apiAuth";
 
 function EmailVerification() {
   const {
@@ -27,9 +26,7 @@ function EmailVerification() {
   async function onSubmit(data) {
     console.log(data);
     if (validator.isEmail(data?.email)) {
-      const { email } = data;
-      await updateEmail(email);
-      sendEmail(email);
+      sendEmail(data.email);
     }
   }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import {
   Flex,
   Box,
@@ -36,8 +37,18 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
   const { signup, isLoading } = useRegister(setProgress, setStep);
 
   function onSubmit(data) {
-    setPhone(data.phone);
-    signup(data);
+    const check = validator.isStrongPassword(data?.password, {
+      minNumbers: 1,
+      minSymbols: 1,
+      minUppercase: 1,
+    });
+
+    if (check) {
+      setPhone(data.phone);
+      signup(data);
+    } else {
+      toast.error("mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so");
+    }
   }
 
   return (
@@ -116,16 +127,6 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                   ...register("password", {
                     required: "nhap cmm mat khau vao",
                     minLength: { message: "kh du 8", value: 8 },
-                    validate: (value) => {
-                      return (
-                        validator.isStrongPassword(value, {
-                          minNumbers: 1,
-                          minSymbols: 1,
-                          minUppercase: 1,
-                        }) ||
-                        "mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so"
-                      );
-                    },
                   }),
                 }}
                 errors={errors}

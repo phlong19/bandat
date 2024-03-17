@@ -73,7 +73,7 @@ export const success = {
 
   // xac nhan sdt thanh cong
   verifyPhone: "xac nhan sdt thanh cong",
-  emailConfirm: "xac thuc email thanh cong, cam on ban da dang ky landhub",
+  emailConfirm: "vui long kiem tra email",
 
   //
   login: "Đăng nhập thành công",

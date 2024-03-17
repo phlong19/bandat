@@ -9,7 +9,7 @@ import { useAuth } from "../context/UserContext";
 import { error as errorMessage } from "../constants/message";
 
 function ProtectedRoute({ children, accessLevel, accSettings = false }) {
-  const { data, level, isAuthenticated, email, isLoading } = useAuth();
+  const { data, level, isAuthenticated, user, email, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,8 +26,12 @@ function ProtectedRoute({ children, accessLevel, accSettings = false }) {
       } else if (data && level < accessLevel) {
         return navigate("/khong-co-quyen");
       }
-      // has user data but not has email or not confirmed email yet
-      else if (!accSettings && data && (!email || !data.email_confirmed_at)) {
+      // user existed but not has email or not confirmed email yet
+      else if (
+        !accSettings &&
+        data &&
+        (!user.email || !user.email_confirmed_at)
+      ) {
         toast.error(errorMessage.notAuthen, {
           icon: (
             <span className="text-2xl text-yellow-500">
@@ -40,6 +44,7 @@ function ProtectedRoute({ children, accessLevel, accSettings = false }) {
     }
   }, [
     data,
+    user,
     isAuthenticated,
     isLoading,
     email,
@@ -55,7 +60,7 @@ function ProtectedRoute({ children, accessLevel, accSettings = false }) {
     return children;
   }
 
-  if (data && isAuthenticated && email && data.email_confirmed_at) {
+  if (data && isAuthenticated && user.email && user.email_confirmed_at) {
     return children;
   }
 }
