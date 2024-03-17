@@ -100,6 +100,17 @@ function App() {
                     />
                   </Route>
 
+                  {/* user account management */}
+                  <Route
+                    element={
+                      <ProtectedRoute accessLevel={USER_LEVEL} accSettings>
+                        <ManageLayout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route path="tai-khoan" element={<AccountManagement />} />
+                  </Route>
+
                   {/* require authenticated user */}
                   <Route
                     element={
@@ -118,9 +129,6 @@ function App() {
                       path="quan-ly-bai-viet/:title"
                       element={<UserDashboard form />}
                     />
-
-                    {/* user account management */}
-                    <Route path="tai-khoan" element={<AccountManagement />} />
 
                     {/* editor path */}
                     <Route
@@ -143,6 +151,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+                    {/* more routes on admin */}
                     {/* <Route path="" element */}
                   </Route>
 

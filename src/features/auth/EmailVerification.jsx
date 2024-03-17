@@ -11,6 +11,9 @@ import {
 
 import FormInput from "../../ui/FormInput";
 import Logo from "../../ui/Logo";
+import { useEmailConfirm } from "./useEmailConfirm";
+import validator from "validator";
+import { updateEmail } from "../../services/apiAuth";
 
 function EmailVerification() {
   const {
@@ -19,9 +22,15 @@ function EmailVerification() {
     formState: { errors },
   } = useForm();
 
-  function onSubmit(data) {
+  const { sendEmail, isSending } = useEmailConfirm();
+
+  async function onSubmit(data) {
     console.log(data);
-    // TODO
+    if (validator.isEmail(data?.email)) {
+      const { email } = data;
+      await updateEmail(email);
+      sendEmail(email);
+    }
   }
 
   return (
@@ -63,7 +72,6 @@ function EmailVerification() {
                 hookForm={{
                   ...register("email", {
                     required: "nhap email vao",
-                    value: "vyj55254@nezid.com",
                   }),
                 }}
                 id="email"
@@ -73,7 +81,7 @@ function EmailVerification() {
               <Button
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
-                // isLoading={isLoggingIn}
+                isLoading={isSending}
                 loadingText="Đợi xíu"
                 colorScheme="green"
                 type="submit"

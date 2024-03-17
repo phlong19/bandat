@@ -8,7 +8,7 @@ import SpinnerFullPage from "./SpinnerFullPage";
 import { useAuth } from "../context/UserContext";
 import { error as errorMessage } from "../constants/message";
 
-function ProtectedRoute({ children, accessLevel }) {
+function ProtectedRoute({ children, accessLevel, accSettings = false }) {
   const { data, level, isAuthenticated, email, isLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -25,7 +25,9 @@ function ProtectedRoute({ children, accessLevel }) {
         return navigate("/dang-nhap");
       } else if (data && level < accessLevel) {
         return navigate("/khong-co-quyen");
-      } else if (data && !email) {
+      }
+      // has user data but not has email or not confirmed email yet
+      else if (!accSettings && data && (!email || !data.email_confirmed_at)) {
         toast.error(errorMessage.notAuthen, {
           icon: (
             <span className="text-2xl text-yellow-500">
@@ -36,11 +38,26 @@ function ProtectedRoute({ children, accessLevel }) {
         return navigate("/xac-thuc-email");
       }
     }
-  }, [data, isAuthenticated, isLoading, email, navigate, accessLevel, level]);
+  }, [
+    data,
+    isAuthenticated,
+    isLoading,
+    email,
+    accSettings,
+    navigate,
+    accessLevel,
+    level,
+  ]);
 
   if (isLoading) return <SpinnerFullPage />;
 
-  if (data && isAuthenticated && email) return children;
+  if (data && accSettings) {
+    return children;
+  }
+
+  if (data && isAuthenticated && email && data.email_confirmed_at) {
+    return children;
+  }
 }
 
 export default ProtectedRoute;

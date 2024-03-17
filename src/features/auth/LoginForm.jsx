@@ -74,7 +74,8 @@ function LoginForm() {
                 hookForm={{
                   ...register("emailOrPhone", {
                     required: "nhap email / so dien thoai vao",
-                    value: "vyj55254@nezid.com",
+                    // value: "vyj55254@nezid.com",
+                    value: "0987263031",
                   }),
                 }}
                 id="email"
@@ -86,7 +87,8 @@ function LoginForm() {
                 hookForm={{
                   ...register("password", {
                     required: "nhap mk vao dcm",
-                    value: "123456",
+                    // value: "123456",
+                    value: "hlong14998",
                   }),
                 }}
                 id="password"

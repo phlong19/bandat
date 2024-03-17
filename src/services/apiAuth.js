@@ -81,7 +81,8 @@ export async function verify(phone, token) {
 
 // update email after successfully confirm phone number
 export async function updateEmail(email) {
-  const { data, error } = await supabase.auth.updateUser({ email });
+  const { data, error } = await supabase.auth.updateUser({  });
+  // TODO
 
   if (error) {
     throw new Error(errorMessage.cantUpdateEmail);
@@ -92,6 +93,19 @@ export async function updateEmail(email) {
 
 // TODO:
 // resend email
+export async function resendEmailAPI(email) {
+  const { data, error } = await supabase.auth.resend({
+    email,
+    type: "signup",
+  });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantSendEmail);
+  }
+
+  return data;
+}
 
 // resend phone
 export async function resendSMSAPI(phone) {

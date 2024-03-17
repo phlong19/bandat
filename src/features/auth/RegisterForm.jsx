@@ -19,6 +19,7 @@ import Logo from "../../ui/Logo";
 import { useRegister } from "./useRegister";
 import { account } from "../../constants/message";
 import { phoneLength } from "../../constants/anyVariables";
+import validator from "validator";
 
 function RegisterForm({ setPhone, setProgress, setStep }) {
   const accent = useColorModeValue("primary", "secondary");
@@ -35,7 +36,6 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
   const { signup, isLoading } = useRegister(setProgress, setStep);
 
   function onSubmit(data) {
-    console.log(data);
     setPhone(data.phone);
     signup(data);
   }
@@ -116,6 +116,16 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                   ...register("password", {
                     required: "nhap cmm mat khau vao",
                     minLength: { message: "kh du 8", value: 8 },
+                    validate: (value) => {
+                      return (
+                        validator.isStrongPassword(value, {
+                          minNumbers: 1,
+                          minSymbols: 1,
+                          minUppercase: 1,
+                        }) ||
+                        "mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so"
+                      );
+                    },
                   }),
                 }}
                 errors={errors}

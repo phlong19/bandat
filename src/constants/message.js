@@ -34,13 +34,14 @@ export const error = {
   // if re post fetched not found (wrong slug, exprired)
   cantFindPost: "bai viet khong ton tai hoac da het han",
   // auth
-  login: "Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại",
+  login: "email / sdt hoặc Mật khẩu không đúng, vui lòng thử lại",
   register: "Không thể đăng ký",
   cantVerify: "khong the xac thuc so dien thoai, ma khong ton tai hoac het han",
   cantUpdateEmail: "khong the update email luc nay?",
   notAuthen: "Vui lòng đăng nhập để truy cập",
   notAuthor: "Phân quyền hiện tại không được phép thao tác",
   cantResendSMS: "khong the gui lai ma xac nhan sms, vui long...",
+  cantSendEmail: "khong the gui email xac thuc",
   codeExprired: "ma xac nhan da het han, vui long nhan gui lai ma moi",
 
   // api re
@@ -71,7 +72,8 @@ export const success = {
   resendSMS: "mot ma xac nhan moi da duoc gui ve thiet bi",
 
   // xac nhan sdt thanh cong
-  verifyPhone: "cam on ban da dang ky landhub",
+  verifyPhone: "xac nhan sdt thanh cong",
+  emailConfirm: "xac thuc email thanh cong, cam on ban da dang ky landhub",
 
   //
   login: "Đăng nhập thành công",
