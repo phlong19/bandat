@@ -25,7 +25,7 @@ const useCountdown = (initialSeconds, onComplete) => {
 
   const formattedSeconds = formatTime(seconds);
 
-  return { formattedSeconds, isComplete, setSeconds };
+  return { formattedSeconds, isComplete, setSeconds, setIsComplete };
 };
 
 export default useCountdown;

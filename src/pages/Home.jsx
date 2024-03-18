@@ -140,7 +140,7 @@ function Home() {
         <Features />
         {/* CTA */}
         <Center
-          bg="url('/cta.png')"
+          bg="url('/cta.jpg')"
           bgRepeat="no-repeat"
           maxW="1200px"
           mx="auto"
@@ -152,7 +152,7 @@ function Home() {
             <Container py={{ base: "12", md: "20" }}>
               <Stack spacing={{ base: "8", md: "10" }}>
                 <Stack spacing={{ base: "4", md: "5" }} align="center">
-                  <Heading size={{ base: "sm", md: "md" }}>
+                  <Heading size={{ base: "sm", md: "md" }} color='white'>
                     Ready to Grow?
                   </Heading>
                   <Text maxW="2xl" textAlign="center" fontSize="xl">

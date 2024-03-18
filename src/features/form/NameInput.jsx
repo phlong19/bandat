@@ -38,7 +38,7 @@ function NameInput({ postId, register, error }) {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, invalid]);
+  }, [search]);
 
   if (!isLoading && data?.length > 0 && data[0].id !== postId) {
     invalid = true;

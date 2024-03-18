@@ -1,14 +1,17 @@
 import { NavLink } from "react-router-dom";
-
 import { Image, Flex, Button, Divider } from "@chakra-ui/react";
+
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { GiQueenCrown } from "react-icons/gi";
 
+import { useDarkMode } from "../context/DarkModeContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 
 function ManageLinks({ level }) {
+  const { isDarkMode } = useDarkMode();
+
   return (
     <Flex
       direction="column"
@@ -20,7 +23,10 @@ function ManageLinks({ level }) {
     >
       {/* logo */}
       <NavLink to="/" className="mb-2">
-        <Image boxSize="30" src="/icon.png" />
+        <Image
+          boxSize="30"
+          src={isDarkMode ? "/micon-light.png" : "/micon-dark.png"}
+        />
       </NavLink>
 
       <NavLink to="/dang-tin" title="Đăng tin BĐS">

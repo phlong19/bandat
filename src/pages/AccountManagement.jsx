@@ -37,6 +37,7 @@ import { useUpdateAddress } from "../features/account/useUpdateAddress";
 import { useForm } from "react-hook-form";
 import { account } from "../constants/message";
 import OtherInformations from "../features/account/OtherInformations";
+import ModalPhone from "../features/account/ModalPhone";
 
 function AccountManagement() {
   const { data, email, user, level, isLoading } = useAuth();
@@ -88,6 +89,8 @@ function AccountManagement() {
           <Stack divider={<StackDivider />} spacing="4">
             {/* avatar */}
             <ModalAvatar data={data} level={level} color={color} id={id} />
+            {/* phone */}
+            <ModalPhone color={color} id={id} />
             {/* email */}
             <ModalEmail
               color={color}

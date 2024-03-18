@@ -4,6 +4,7 @@ import {
   Button,
   FormControl,
   Text,
+  Spinner,
   Box,
   Flex,
   Stack,
@@ -25,9 +26,8 @@ function VerifyPhone({ phoneNum }) {
 
   const phone = `84${phoneNum}`;
   const { register, handleSubmit, reset } = useForm();
-  const { formattedSeconds, isComplete, setSeconds } = useCountdown(90, () =>
-    toast.error(error.codeExprired),
-  );
+  const { formattedSeconds, isComplete, setSeconds, setIsComplete } =
+    useCountdown(90, () => toast.error(error.codeExprired));
   const { mutate, isPending } = useVerifyPhone();
   const { isSending, resendSMS } = useResendSMS();
 
@@ -120,11 +120,13 @@ function VerifyPhone({ phoneNum }) {
                 isLoading={isSending}
                 isDisabled={!isComplete}
                 size="xs"
+                spinner={<Spinner color="white" size="xs" />}
                 colorScheme="red"
                 onClick={() => {
                   reset();
                   resendSMS({ phone });
                   setSeconds(90);
+                  setIsComplete(false);
                 }}
               >
                 Gửi lại

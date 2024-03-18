@@ -126,3 +126,16 @@ export async function updateOthers(formData) {
 // password
 // email
 // phone ?
+
+// check phone existed?
+export async function checkPhone(phone) {
+  const phoneNum = Number(phone.slice(1));
+  const { data } = await supabase
+    .from("Profile")
+    .select("*")
+    .limit(1)
+    .eq("phone", phoneNum)
+    .single();
+
+  return data;
+}
