@@ -9,9 +9,8 @@ export function useEmailConfirm() {
 
   const { mutate: sendEmail, isPending: isSending } = useMutation({
     mutationFn: (email) => resendEmailAPI(email),
-    // rate limit error so just on settled :D maybe it work maybe it not
     onSettled: () => {
-      toast.success(success.emailConfirm);
+      toast.success(success.emailConfirm, { duration: 8000 });
       navigate("/");
     },
   });
