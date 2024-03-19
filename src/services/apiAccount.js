@@ -83,7 +83,7 @@ export async function updateUsername(formData) {
   if (result !== 1) {
     throw new Error(errorMessage.cantEditName);
   }
-  console.log(result);
+
   const { data: updatedAccount, error } = await supabase
     .from("Profile")
     // new allow => 00:00 today + 1 month
@@ -124,8 +124,41 @@ export async function updateOthers(formData) {
 }
 
 // password
+export async function updatePassword(password) {
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantUpdatePass);
+  }
+
+  return null;
+}
+
 // email
-// phone ?
+// export async function emailChange()
+
+// phone
+export async function updatePhone(formData) {
+  const { userID, ...newData } = formData;
+
+  const { data, error } = await supabase
+    .from("Profile")
+    .update({ ...newData })
+    .eq("id", userID)
+    .select();
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantUpdate);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantFindToUpdate);
+  }
+
+  return null;
+}
 
 // check phone existed?
 export async function checkPhone(phone) {

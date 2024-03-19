@@ -18,6 +18,7 @@ import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import EditorDashboard from "./pages/EditorDashboard";
 import AccountManagement from "./pages/AccountManagement";
+import CheckEmailPlease from "./features/auth/CheckEmailPlease";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -98,6 +99,11 @@ function App() {
                       path="xac-thuc-email"
                       element={<EmailVerification />}
                     />
+                    {/* display after email registeration */}
+                    <Route
+                      element={<CheckEmailPlease />}
+                      path="/kiem-tra-email"
+                    />
                   </Route>
 
                   {/* user account management */}
@@ -167,7 +173,7 @@ function App() {
           <Toaster
             containerClassName="m-2 md:m-3"
             toastOptions={{
-              position: "top-right",
+              // position: "top-right",
               style: { padding: "16px 24px" },
               className:
                 "md:font-base max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",

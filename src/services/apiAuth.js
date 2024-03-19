@@ -2,7 +2,9 @@ import supabase from "./supabase";
 import validator from "validator";
 import { USER_LEVEL } from "../constants/anyVariables";
 import { error as errorMessage } from "../constants/message";
+import { addDays } from "date-fns";
 
+// [DEPRECATED] login v2
 export async function login(formData) {
   const { emailOrPhone, password } = formData;
   // check is email or phone number
@@ -15,7 +17,8 @@ export async function login(formData) {
     };
   } else if (validator.isMobilePhone(emailOrPhone, "vi-VN")) {
     credential = {
-      phone: `84${emailOrPhone.slice(1)}`,
+      // phone: `84${emailOrPhone.slice(1)}`,
+      phone: `44${emailOrPhone.slice(1)}`,
       password,
     };
   }
@@ -30,12 +33,64 @@ export async function login(formData) {
   return data;
 }
 
+// login v1 just email
+export async function loginV1(formData) {
+  const { email, password } = formData;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.login);
+  }
+
+  return data;
+}
+
+// register v1 just email
+export async function registerV1(formData) {
+  const { fullName, email, password } = formData;
+
+  const { data: justCreateUser, error: registerError } =
+    await supabase.auth.signUp({ email, password });
+
+  if (registerError) {
+    console.log(registerError);
+    throw new Error(errorMessage.register);
+  }
+
+  const { data, error: profileError } = await supabase
+    .from("Profile")
+    .insert([
+      {
+        id: justCreateUser.user.id,
+        fullName,
+        level: USER_LEVEL,
+        email,
+        allowEditDate: addDays(new Date(), 30),
+      },
+    ])
+    .select();
+
+  if (profileError) {
+    console.log(profileError);
+    throw new Error(errorMessage.register);
+  }
+
+  return data;
+}
+
 export async function register(formData) {
   const { fullName, phone, password } = formData;
 
   const { data: justCreateUser, error: registerError } =
     await supabase.auth.signUp({
       phone: `+84${phone}`,
+      // for now just use UK number
+      // phone: `+44${phone}`,
       password,
     });
 

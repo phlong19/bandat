@@ -69,12 +69,7 @@ function ModalEmail({ color, email, isConfirmed, id }) {
           </Button>
         </Flex>
       </Flex>
-      <Modal
-        closeOnOverlayClick={false}
-        isOpen={isOpen}
-        onClose={onClose}
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Đổi mật khẩu</ModalHeader>
@@ -82,7 +77,6 @@ function ModalEmail({ color, email, isConfirmed, id }) {
           <ModalBody pb={6}>
             <form id="email">
               <Input placeholder="email" />
-              <Input placeholder="xac nhan email" />
             </form>
           </ModalBody>
 

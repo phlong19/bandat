@@ -35,7 +35,7 @@ export const error = {
   cantFindPost: "bai viet khong ton tai hoac da het han",
   // auth
   login: "email / sdt hoặc Mật khẩu không đúng, vui lòng thử lại",
-  register: "Không thể đăng ký",
+  register: "Không thể đăng ký, sdt da ton tai",
   cantVerify: "khong the xac thuc so dien thoai, ma khong ton tai hoac het han",
   cantUpdateEmail: "khong the update email luc nay?",
   notAuthen: "Vui lòng đăng nhập để truy cập",
@@ -43,6 +43,7 @@ export const error = {
   cantResendSMS: "khong the gui lai ma xac nhan sms, vui long...",
   cantSendEmail: "khong the gui email xac thuc",
   codeExprired: "ma xac nhan da het han, vui long nhan gui lai ma moi",
+  cantUpdatePass: "khong the update mk",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng, Vui lòng thử lại sau",
@@ -67,6 +68,9 @@ export const error = {
 };
 
 export const success = {
+  // v1
+  signupV1: "dang ky thanh cong, check email",
+
   // auth
   signup: "dang ky thanh cong, check dien thoai nhap ma de",
   resendSMS: "mot ma xac nhan moi da duoc gui ve thiet bi",
@@ -98,6 +102,7 @@ export const success = {
   updateAddress: "Cập nhật địa chỉ thành công",
   updateAvatar: "Cập nhật ảnh đại diện thành công",
   updateUsername: "Cập nhật tên người dùng thành công",
+  updatePhone: "thanh cong cap nhat sdt",
   updateOthers: "Cập nhật thành công",
 
   // others
@@ -180,6 +185,7 @@ export const newsForm = {
 export const account = {
   // auth
   requiredPhone: "vui long dien sdt",
+  requiredEmail: "vui long nhap email",
 
   // account settings
   cantUpdate: "Không thể cập nhật thông tin tài khoản, Vui lòng thử lại sau",

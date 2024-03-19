@@ -90,7 +90,12 @@ function AccountManagement() {
             {/* avatar */}
             <ModalAvatar data={data} level={level} color={color} id={id} />
             {/* phone */}
-            <ModalPhone color={color} id={id} />
+            <ModalPhone
+              color={color}
+              id={id}
+              phone={data?.phone}
+              isConfirmed={user?.phone_confirmed_at}
+            />
             {/* email */}
             <ModalEmail
               color={color}
