@@ -38,8 +38,21 @@ function ProtectedRoute({ children, accessLevel, accSettings = false }) {
               <LuShieldAlert />
             </span>
           ),
+          duration: 5000,
         });
         return navigate("/xac-thuc-email");
+      }
+      // user doesn't add phone in profile
+      else if (data && !data?.phone) {
+        toast.error(errorMessage.notHavePhone, {
+          icon: (
+            <span className="text-2xl text-yellow-500">
+              <LuShieldAlert />
+            </span>
+          ),
+          duration: 5000,
+        });
+        return navigate("/tai-khoan");
       }
     }
   }, [
@@ -60,7 +73,13 @@ function ProtectedRoute({ children, accessLevel, accSettings = false }) {
     return children;
   }
 
-  if (data && isAuthenticated && user.email && user.email_confirmed_at) {
+  if (
+    data &&
+    isAuthenticated &&
+    user.email &&
+    user.email_confirmed_at &&
+    data.phone
+  ) {
     return children;
   }
 }

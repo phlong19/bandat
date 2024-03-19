@@ -17,30 +17,12 @@ export async function login(formData) {
     };
   } else if (validator.isMobilePhone(emailOrPhone, "vi-VN")) {
     credential = {
-      // phone: `84${emailOrPhone.slice(1)}`,
-      phone: `44${emailOrPhone.slice(1)}`,
+      phone: `84${emailOrPhone.slice(1)}`,
       password,
     };
   }
 
   const { data, error } = await supabase.auth.signInWithPassword(credential);
-
-  if (error) {
-    console.log(error);
-    throw new Error(errorMessage.login);
-  }
-
-  return data;
-}
-
-// login v1 just email
-export async function loginV1(formData) {
-  const { email, password } = formData;
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
 
   if (error) {
     console.log(error);
@@ -83,6 +65,7 @@ export async function registerV1(formData) {
   return data;
 }
 
+// [DEPRECATED]
 export async function register(formData) {
   const { fullName, phone, password } = formData;
 

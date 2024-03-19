@@ -135,16 +135,13 @@ function Details() {
     type,
     price,
     purType,
-    profile: dev,
+    profile,
   } = post;
 
   const videos = medias.filter((media) => media.isImage === false);
   const images = medias.filter((media) => media.isImage === true);
   // for reduce bug threat when medias array fetched has unknown order about the file type
   const newMedia = [...videos, ...images];
-
-  // for dev
-  const profile = { ...dev, phone: `236346346` };
 
   const settings = {
     customPaging: function (i) {
@@ -366,12 +363,12 @@ function Details() {
                   <StatNumber color={accent}>
                     {formatCurrency(price)}
                   </StatNumber>
-                  {purType && (
+                  
                     <StatHelpText>
                       <StatArrow as={GrMoney} type="increase" />
-                      {formatCurrency(price / area)}/{m2}
+                      {purType ? `${formatCurrency(price / area)}/${m2}`:'/ tháng' }
                     </StatHelpText>
-                  )}
+                 
                 </Stat>
                 <Stat>
                   <StatLabel>Diện tích</StatLabel>

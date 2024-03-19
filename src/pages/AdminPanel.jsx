@@ -1,11 +1,24 @@
+import {Center,Spinner} from '@chakra-ui/react'
+import AdminDashboardTable from "../features/dashboard/AdminDashboardTable";
+
+import { useAuth } from "../context/UserContext";
+
 function AdminPanel() {
+  const {
+    data: { id },
+    isLoading,
+  } = useAuth();
+
+  if (isLoading) {
+    return (
+      <Center minH="80dvh">
+        <Spinner />
+      </Center>
+    );
+  }
+
   return (
-    <div>
-      admin panel
-      {/* TODO */}
-      {/* table users? */}
-      {/* docs table */}
-    </div>
+    <AdminDashboardTable />
   );
 }
 

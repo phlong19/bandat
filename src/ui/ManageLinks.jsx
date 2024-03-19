@@ -57,16 +57,6 @@ function ManageLinks({ level }) {
               <GiQueenCrown fontSize="22" />
             </Button>
           </NavLink>
-          <NavLink to="/control" title="admin panel">
-            <Button variant="ghost" m={0}>
-              <GiQueenCrown fontSize="22" />
-            </Button>
-          </NavLink>
-          <NavLink to="/control" title="admin panel">
-            <Button variant="ghost" m={0}>
-              <GiQueenCrown fontSize="22" />
-            </Button>
-          </NavLink>
         </>
       )}
     </Flex>

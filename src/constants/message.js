@@ -44,6 +44,8 @@ export const error = {
   cantSendEmail: "khong the gui email xac thuc",
   codeExprired: "ma xac nhan da het han, vui long nhan gui lai ma moi",
   cantUpdatePass: "khong the update mk",
+  notVerifyEmail: "xac thuc email truoc da",
+  notHavePhone: "chua co sdt, vui long cap nhat",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng, Vui lòng thử lại sau",
