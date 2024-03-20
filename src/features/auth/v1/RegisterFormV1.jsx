@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import {
   Flex,
+  Spinner,
   Box,
   Stack,
   Link as ChakraLink,
@@ -152,6 +153,13 @@ function RegisterFormV1() {
                 w={{ base: "full", sm: "180px" }}
                 mx="auto"
                 colorScheme="green"
+                spinner={
+                  <Spinner
+                    _dark={{ color: "var(--chakra-colors-dark)!important" }}
+                    _light={{ color: "var(--chakra-colors-white)!important" }}
+                    size="sm"
+                  />
+                }
                 isLoading={isLoading}
                 loadingText="Chờ xíu"
                 type="submit"

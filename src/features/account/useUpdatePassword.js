@@ -13,6 +13,7 @@ export function useUpdatePassword() {
     onSuccess: () => {
       toast.success(success.updatePassword);
       queryClient.removeQueries({ queryKey: ["user"] });
+      queryClient.setQueryData(["user"], null);
       localStorage.clear();
       navigate("/dang-nhap");
     },

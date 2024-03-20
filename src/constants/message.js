@@ -106,6 +106,7 @@ export const success = {
   updateUsername: "Cập nhật tên người dùng thành công",
   updatePhone: "thanh cong cap nhat sdt",
   updateOthers: "Cập nhật thành công",
+  updatePassword: "cap nhat mk thanh cong, vui long dang nhap lai",
 
   // others
   copyToClipboard: "da sao chep vao bo nho tam",

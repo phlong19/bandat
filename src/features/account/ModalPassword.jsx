@@ -42,7 +42,7 @@ function ModalPassword({ color }) {
 
   function onSubmit(data) {
     if (
-      validator.isStrongPassword(data.password, {
+      !validator.isStrongPassword(data.password, {
         minUppercase: 1,
         minNumbers: 1,
         minSymbols: 1,
@@ -51,12 +51,7 @@ function ModalPassword({ color }) {
       return toast.error("mk khong du manh, it nhat 1 ky tu, 1 so, 1 chu hoa");
     }
 
-    mutate(
-      { ...data },
-      {
-        onSettled: () => onClose(),
-      },
-    );
+    mutate({ ...data });
   }
 
   return (
@@ -100,15 +95,15 @@ function ModalPassword({ color }) {
                     fontSize="sm"
                     placeholder="password"
                     type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "vui long nhap mk",
+                    })}
                   />
                   <InputRightElement>
                     <IconButton
                       icon={showPassword ? <TbEye /> : <TbEyeClosed />}
                       size="xs"
                       onClick={() => setShowPassword((s) => !s)}
-                      {...register("password", {
-                        required: "vui long nhap mk",
-                      })}
                     />
                   </InputRightElement>
                 </InputGroup>
@@ -122,21 +117,21 @@ function ModalPassword({ color }) {
                     fontSize="sm"
                     placeholder="confirm password"
                     type={showCfPassword ? "text" : "password"}
+                    {...register("confirmPassword", {
+                      required: "vui long xac nhan mk",
+                      validate: (value) => {
+                        return (
+                          value === getValues("password") ||
+                          "password does not match"
+                        );
+                      },
+                    })}
                   />
                   <InputRightElement>
                     <IconButton
                       icon={showCfPassword ? <TbEye /> : <TbEyeClosed />}
                       size="xs"
                       onClick={() => setShowCfPassword((s) => !s)}
-                      {...register("confirmPassword", {
-                        required: "vui long xac nhan mk",
-                        validate: (value) => {
-                          return (
-                            value === getValues("password") ||
-                            "password does not match"
-                          );
-                        },
-                      })}
                     />
                   </InputRightElement>
                 </InputGroup>

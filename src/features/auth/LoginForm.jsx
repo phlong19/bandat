@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Flex,
+  Spinner,
   Box,
   Stack,
   Link as ChakraLink,
@@ -97,6 +98,13 @@ function LoginForm() {
               <Button
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
+                spinner={
+                  <Spinner
+                    _dark={{ color: "var(--chakra-colors-dark)!important" }}
+                    _light={{ color: "var(--chakra-colors-white)!important" }}
+                    size="sm"
+                  />
+                }
                 isLoading={isLoggingIn}
                 loadingText="Đợi xíu"
                 colorScheme="green"

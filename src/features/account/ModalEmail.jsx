@@ -16,9 +16,31 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { BiEditAlt } from "react-icons/bi";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import validator from "validator";
 
 function ModalEmail({ color, email, isConfirmed, id }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [value, setValue] = useState("");
+
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+    reset,
+  } = useForm();
+
+  function handleClose() {
+    onClose();
+    setValue("");
+  }
+
+  function onSubmit(data) {
+    if (validator.isEmail(data?.email)) {
+      console.log(data);
+    }
+  }
 
   return (
     <>
@@ -74,9 +96,15 @@ function ModalEmail({ color, email, isConfirmed, id }) {
         <ModalContent>
           <ModalHeader>Đổi mật khẩu</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
+          <ModalBody>
             <form id="email">
-              <Input placeholder="email" />
+              <Input
+                type="email"
+                placeholder="email"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                {...register("email", { required: "vui long nhap email" })}
+              />
             </form>
           </ModalBody>
 
