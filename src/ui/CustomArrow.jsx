@@ -8,8 +8,7 @@ function CustomArrow(props) {
     <IconButton
       bg="dark"
       color="white"
-      _hover="none"
-      _focus="none"
+      _hover={{ opacity: 0.9 }}
       border="1px solid var(--chakra-colors-light)"
       size="sm"
       p={{ base: 1, md: 2, lg: 2.5 }}

@@ -7,10 +7,11 @@ import { useGetFullNewsList } from "../features/dashboard/useGetFullNewsList";
 function EditorDashboard() {
   const {
     data: { id },
+    isLoading,
   } = useAuth();
-  const { data, count, isLoading } = useGetFullNewsList(id);
+  const { data, count, isLoading: isFetching } = useGetFullNewsList(id);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <Center minH="80dvh">
         <Spinner />

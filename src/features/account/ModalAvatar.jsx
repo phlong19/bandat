@@ -57,7 +57,7 @@ function ModalAvatar({ data, color, level, id }) {
               mobile
             />
             <Box>
-              <Text fontWeight={600}>Chức vụ</Text>
+              <Text fontWeight={600}>Loại tài khoản</Text>
               <Text fontSize="sm" color={color}>
                 {level > EDITOR_LEVEL
                   ? "Quản trị viên"

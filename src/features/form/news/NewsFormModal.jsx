@@ -36,6 +36,7 @@ import {
   minTitle,
 } from "../../../constants/anyVariables";
 import NewsActions from "./NewsActions";
+import unidecode from "unidecode";
 
 function NewsFormModal({
   edit = false,
@@ -96,8 +97,11 @@ function NewsFormModal({
       });
     }
 
+    const formattedName = unidecode(data.title);
+    const slug = slugify(formattedName);
+
     if (!edit) {
-      create({ ...data, userID: id, status: false, slug: slugify(data.title) });
+      create({ ...data, userID: id, status: false, slug });
     } else {
       update({
         ...data,
@@ -109,7 +113,7 @@ function NewsFormModal({
         // old thumb
         oldFiles: existedFiles,
         status: false,
-        slug: slugify(data.title),
+        slug,
       });
     }
   }
@@ -262,7 +266,7 @@ function NewsFormModal({
               />
             )}
             <Flex justify="flex-end" align="center" gap={3}>
-              <Button colorScheme="blue" variant="ghost" onClick={onOpenDialog}>
+              <Button colorScheme="red" variant="ghost" onClick={onOpenDialog}>
                 Đóng
               </Button>
               <ChakraModalDialog

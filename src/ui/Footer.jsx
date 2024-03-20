@@ -15,7 +15,7 @@ import { currentYear, fb, git, ins, x } from "../constants/anyVariables";
 function Footer() {
   return (
     <footer
-      className={`bg-gray-200 px-4 text-center font-lexend text-xs text-dark dark:bg-dark/90 dark:text-light lg:px-8 lg:text-left`}
+      className={`bg-light px-4 pt-4 text-center font-lexend text-xs text-dark dark:bg-dark/90 dark:text-light lg:px-8 lg:text-left`}
     >
       <div className="relative mx-auto max-w-[1400px] lg:flex lg:gap-3.5">
         <div className="lg:min-w-[33%] lg:pt-6">

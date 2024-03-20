@@ -31,11 +31,23 @@ export const emptyREList =
 export const error = {
   // general
   fetchError: "Đã xảy ra lỗi khi lấy dữ liệu, Vui lòng thử lại sau",
+  // if re post fetched not found (wrong slug, exprired)
+  cantFindPost: "bai viet khong ton tai hoac da het han",
   // auth
-  login: "Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại",
-  register: "Không thể đăng ký",
+  login: "email / sdt hoặc Mật khẩu không đúng, vui lòng thử lại",
+  register: "Không thể đăng ký, sdt da ton tai",
+  cantVerify: "khong the xac thuc so dien thoai, ma khong ton tai hoac het han",
+  cantUpdateEmail: "khong the update email luc nay?",
   notAuthen: "Vui lòng đăng nhập để truy cập",
   notAuthor: "Phân quyền hiện tại không được phép thao tác",
+  cantResendSMS: "khong the gui lai ma xac nhan sms, vui long...",
+  cantSendEmail: "khong the gui email xac thuc",
+  codeExprired: "ma xac nhan da het han, vui long nhan gui lai ma moi",
+  cantUpdatePass: "khong the update mk",
+  notVerifyEmail: "xac thuc email truoc da",
+  notHavePhone: "chua co sdt, vui long cap nhat",
+  duplicateEmail: "email da dang ky / ton tai trong he thong",
+
   // api re
   cantCreate: "Hiện không thể tạo bài đăng, Vui lòng thử lại sau",
   cantUpdate: "Không thể cập nhật bài đăng, Vui lòng thử lại sau",
@@ -55,13 +67,22 @@ export const error = {
   cantDeleteDocs: "Không thể xoá văn bản, Vui lòng thử lại sau",
 
   // name edit
-  cantEditName: "chua den ngay edit",
+  cantEditName: "chua den ngay edit, 30 ngay",
 };
 
 export const success = {
+  // v1
+  signupV1: "dang ky thanh cong, check email",
+
   // auth
-  signup:
-    "Your account has been created successfully. Please check for email verification",
+  signup: "dang ky thanh cong, check dien thoai nhap ma de",
+  resendSMS: "mot ma xac nhan moi da duoc gui ve thiet bi",
+
+  // xac nhan sdt thanh cong
+  verifyPhone: "xac nhan sdt thanh cong",
+  emailConfirm: "vui long kiem tra email",
+
+  //
   login: "Đăng nhập thành công",
   logout: "Đăng xuất thành công",
 
@@ -84,7 +105,11 @@ export const success = {
   updateAddress: "Cập nhật địa chỉ thành công",
   updateAvatar: "Cập nhật ảnh đại diện thành công",
   updateUsername: "Cập nhật tên người dùng thành công",
+  updatePhone: "thanh cong cap nhat sdt",
   updateOthers: "Cập nhật thành công",
+  updatePassword: "cap nhat mk thanh cong, vui long dang nhap lai",
+  updateEmail:
+    "cap nhat email thanh cong, vui long check email de confirm chuyen doi",
 
   // others
   copyToClipboard: "da sao chep vao bo nho tam",
@@ -162,8 +187,13 @@ export const newsForm = {
   saving: "Đang lưu",
 };
 
-// account
+// auth + account
 export const account = {
+  // auth
+  requiredPhone: "vui long dien sdt",
+  requiredEmail: "vui long nhap email",
+
+  // account settings
   cantUpdate: "Không thể cập nhật thông tin tài khoản, Vui lòng thử lại sau",
   helperMedia: "Drag & drop file here, or click to select files",
   missingAddress: "Vui lòng điền chi tiết địa chỉ",

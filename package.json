@@ -41,7 +41,9 @@
     "react-slugify": "^3.0.3",
     "react-type-animation": "^3.2.0",
     "slick-carousel": "^1.8.1",
-    "uuid": "^9.0.1"
+    "unidecode": "^1.0.1",
+    "uuid": "^9.0.1",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",

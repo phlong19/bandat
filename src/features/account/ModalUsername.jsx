@@ -74,7 +74,6 @@ function ModalUsername({ color, name, id }) {
         </Flex>
       </Flex>
       <Modal
-        closeOnOverlayClick={false}
         isOpen={isOpen}
         onClose={onClose}
         isCentered

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Flex,
   Box,
@@ -7,7 +8,10 @@ import {
   InputGroup,
   InputRightElement,
   Button,
+  IconButton,
   useDisclosure,
+  FormControl,
+  FormErrorMessage,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -17,9 +21,38 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { MdOutlineLockReset } from "react-icons/md";
+import { TbEye, TbEyeClosed } from "react-icons/tb";
+import { useForm } from "react-hook-form";
+import { useUpdatePassword } from "./useUpdatePassword";
+import validator from "validator";
+import { toast } from "react-hot-toast";
 
-function ModalPassword({ color, id }) {
+function ModalPassword({ color }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCfPassword, setShowCfPassword] = useState(false);
+
+  const {
+    handleSubmit,
+    getValues,
+    formState: { errors },
+    register,
+  } = useForm();
+  const { mutate, isPending } = useUpdatePassword();
+
+  function onSubmit(data) {
+    if (
+      !validator.isStrongPassword(data.password, {
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+    ) {
+      return toast.error("mk khong du manh, it nhat 1 ky tu, 1 so, 1 chu hoa");
+    }
+
+    mutate({ ...data });
+  }
 
   return (
     <>
@@ -45,24 +78,69 @@ function ModalPassword({ color, id }) {
           Cập nhật
         </Button>
       </Flex>
-      <Modal
-        closeOnOverlayClick={false}
-        isOpen={isOpen}
-        onClose={onClose}
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Đổi mật khẩu</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <form id="password">
-              <InputGroup>
-                <Input />
-                <InputRightElement>
-                  <Button size="xs">hi</Button>
-                </InputRightElement>
-              </InputGroup>
+            <form
+              id="password"
+              className="space-y-3"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <FormControl isInvalid={errors.password}>
+                <InputGroup>
+                  <Input
+                    fontSize="sm"
+                    placeholder="password"
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "vui long nhap mk",
+                    })}
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      icon={showPassword ? <TbEye /> : <TbEyeClosed />}
+                      size="xs"
+                      onClick={() => setShowPassword((s) => !s)}
+                    />
+                  </InputRightElement>
+                </InputGroup>
+                {errors.password && (
+                  <FormErrorMessage>{errors.password.message}</FormErrorMessage>
+                )}
+              </FormControl>
+              <FormControl isInvalid={errors.confirmPassword}>
+                <InputGroup>
+                  <Input
+                    fontSize="sm"
+                    placeholder="confirm password"
+                    type={showCfPassword ? "text" : "password"}
+                    {...register("confirmPassword", {
+                      required: "vui long xac nhan mk",
+                      validate: (value) => {
+                        return (
+                          value === getValues("password") ||
+                          "password does not match"
+                        );
+                      },
+                    })}
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      icon={showCfPassword ? <TbEye /> : <TbEyeClosed />}
+                      size="xs"
+                      onClick={() => setShowCfPassword((s) => !s)}
+                    />
+                  </InputRightElement>
+                </InputGroup>
+                {errors.confirmPassword && (
+                  <FormErrorMessage>
+                    {errors.confirmPassword.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
             </form>
           </ModalBody>
 
@@ -73,7 +151,8 @@ function ModalPassword({ color, id }) {
             <Button
               colorScheme="green"
               mr={3}
-              isLoading={true}
+              size="sm"
+              isLoading={isPending}
               form="password"
               type="submit"
               color="black"

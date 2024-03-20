@@ -4,7 +4,7 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useMapView } from "../context/MapViewContext";
 import { LIMIT_PER_PAGE } from "../constants/anyVariables";
 
-function ChakraTablePagination({ count }) {
+function ChakraTablePagination({ count, news = false }) {
   const { setMapView } = useMapView();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get("page")) || 1;
@@ -49,7 +49,7 @@ function ChakraTablePagination({ count }) {
   }
 
   return (
-    <Flex gap={2} justifyContent="end" py={8} pr={6}>
+    <Flex gap={2} justifyContent="end" py={8} pr={news ? 0 : 6}>
       <Button
         variant={currentPage >= 2 ? "pagi" : ""}
         isDisabled={currentPage < 2}

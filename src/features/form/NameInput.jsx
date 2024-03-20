@@ -15,6 +15,7 @@ import {
 import { checkPost } from "../../services/apiRE";
 import { maxLength, minLength } from "../../constants/anyVariables";
 import { reform } from "../../constants/message";
+import unidecode from "unidecode";
 
 function NameInput({ postId, register, error }) {
   let invalid = false;
@@ -22,7 +23,7 @@ function NameInput({ postId, register, error }) {
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["query-post-name"],
+    queryKey: ["query-post-name", debouncedSearch],
     queryFn: () => checkPost(debouncedSearch),
     enabled: search.length >= minLength,
   });
@@ -30,13 +31,14 @@ function NameInput({ postId, register, error }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (search.length > minLength && search.length < maxLength) {
-        const slug = slugify(search);
+        const formattedTitle = unidecode(search);
+        const slug = slugify(formattedTitle);
         setDebouncedSearch(slug);
       }
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, invalid]);
+  }, [search]);
 
   if (!isLoading && data?.length > 0 && data[0].id !== postId) {
     invalid = true;

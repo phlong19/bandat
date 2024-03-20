@@ -1,65 +1,136 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import {
+  Flex,
+  Spinner,
+  Box,
+  Stack,
+  Link as ChakraLink,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useLogin } from "./useLogin";
 import FormInput from "../../ui/FormInput";
-import Button from "../../ui/Button";
-import Spinner from "../../ui/Spinner";
+import Logo from "../../ui/Logo";
 import { Link } from "react-router-dom";
+import { checkInputType } from "../../utils/helper";
 
 function LoginForm() {
+  const accent = useColorModeValue("primary", "secondary");
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm();
   const { login, isLoggingIn } = useLogin();
 
   function onSubmit(data) {
-    if (!getValues("email") || !getValues("password")) return;
-    login(data);
+    const check = checkInputType(data.emailOrPhone);
+
+    if (check !== "unknown") {
+      login(data);
+    }
   }
 
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="relative mx-auto w-72 space-y-7 py-3 pt-10 text-center"
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+      <Flex
+        mx="auto"
+        w="full"
+        maxW={{ base: "full", md: "70%", lg: "50%", xl: "600px" }}
+        align={"center"}
+        justify={"center"}
+        rounded="md"
+        bg={useColorModeValue("gray.50", "darker")}
       >
-        <h2 className="pb-3 font-lexend text-xl font-medium text-primary dark:text-secondary">
-          Đăng nhập
-        </h2>
-        <FormInput
-          label="Email"
-          errors={errors}
-          hookForm={{
-            ...register("email", {
-              required: "nhap email vao",
-              value: "vyj55254@nezid.com",
-            }),
-          }}
-          id="email"
-          type="email"
-        />
-        <FormInput
-          type="password"
-          label="Mật khẩu"
-          errors={errors}
-          hookForm={{
-            ...register("password", {
-              required: "nhap mk vao dcm",
-              value: "123456",
-            }),
-          }}
-          id="password"
-        />
+        <Stack spacing={6} py={12} w={{ base: "90%", lg: "85%" }}>
+          <Stack align={"center"}>
+            <Box pb={2}>
+              <Logo size="w-40" />
+            </Box>
+            <Heading fontSize={"2xl"} textAlign={"center"}>
+              Đăng nhập
+            </Heading>
+            <Text
+              fontSize={"md"}
+              color={useColorModeValue("gray.600", "gray.300")}
+            >
+              để trải nghiệm mọi dịch vụ của Landhub ✌️
+            </Text>
+          </Stack>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "dark")}
+            boxShadow={"lg"}
+            p={8}
+          >
+            <Stack spacing={4} w="full">
+              <FormInput
+                label="Email"
+                errors={errors}
+                hookForm={{
+                  ...register("emailOrPhone", {
+                    required: "nhap email",
+                  }),
+                }}
+                id="email"
+              />
 
-        <Button width>{isLoggingIn ? <Spinner /> : "dang nhap"}</Button>
-      </form>
-      {/* other actions */}
-      <div>
-        <Link to="/dang-ky">dang ky</Link>
-      </div>
-    </div>
+              <FormInput
+                label="Mật khẩu"
+                errors={errors}
+                hookForm={{
+                  ...register("password", {
+                    required: "nhap mk vao",
+                  }),
+                }}
+                id="password"
+                setShowPassword={setShowPassword}
+                showPassword={showPassword}
+                password
+                type="password"
+              />
+
+              <Button
+                w={{ base: "full", sm: "150px" }}
+                mx="auto"
+                spinner={
+                  <Spinner
+                    _dark={{ color: "var(--chakra-colors-dark)!important" }}
+                    _light={{ color: "var(--chakra-colors-white)!important" }}
+                    size="sm"
+                  />
+                }
+                isLoading={isLoggingIn}
+                loadingText="Đợi xíu"
+                colorScheme="green"
+                type="submit"
+              >
+                Đăng nhập
+              </Button>
+              <Stack pt={4}>
+                <Text align={"center"}>
+                  Chưa có tài khoản?{" "}
+                  <ChakraLink as={Link} to="/dang-ky" color={accent}>
+                    Đăng ký ngay
+                  </ChakraLink>
+                </Text>
+                <Text align={"center"}>
+                  Bạn quên mật khẩu?{" "}
+                  <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
+                    Trợ giúp
+                  </ChakraLink>
+                </Text>
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
+      </Flex>
+    </form>
   );
 }
 

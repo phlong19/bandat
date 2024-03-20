@@ -62,6 +62,11 @@ export function hiddenLast3PhoneNum(input) {
   return "0" + input.toString().slice(0, 6) + "***";
 }
 
+// just show lat 4 number
+export function showLast4PhoneNum(input) {
+  return "+84 *****" + input.toString().slice(-4);
+}
+
 // get re status badge color base on status
 export function getStatusBadgeColor(id) {
   if (!id) return "red";
@@ -102,3 +107,15 @@ export function getCoreNameType(name, type) {
 
   return name.split(",")[0];
 }
+
+export const checkInputType = (input) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^(0|\+84)?[0-9]{9}$/;
+  if (emailRegex.test(input)) {
+    return "email";
+  } else if (phoneRegex.test(input)) {
+    return "phone";
+  } else {
+    return "unknown";
+  }
+};

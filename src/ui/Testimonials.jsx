@@ -1,5 +1,6 @@
 import { Avatar, Stack, Text, Box, useColorModeValue } from "@chakra-ui/react";
 import Slider from "react-slick";
+import CustomArrow from "../ui/CustomArrow";
 
 const settings = {
   dots: true,
@@ -9,7 +10,9 @@ const settings = {
   slidesToScroll: 1,
   autoplay: true,
   autoplaySpeed: 3000,
-  arrows: false,
+  arrows: true,
+  prevArrow: <CustomArrow direction="prev" />,
+  nextArrow: <CustomArrow direction="next" />,
 };
 
 function Testimonials() {
@@ -27,6 +30,8 @@ function Testimonials() {
           spacing={{ base: 8, md: 10 }}
           align={"center"}
           direction={"column"}
+          maxH="400px"
+          display="flex"
         >
           <Text
             fontSize={{ base: "xl", md: "2xl" }}

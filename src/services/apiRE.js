@@ -42,8 +42,8 @@ export async function getList(type, citeria, page) {
     )
     .eq("purType", type)
     .eq("images.isImage", true)
-    // .eq("status", SELLING_STATUS) for dev
-    // .gt("expriryDate", new Date().toISOString())
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString())
     .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
     .range(from, to);
@@ -94,8 +94,9 @@ export async function getSinglePost(slug) {
   `,
     )
     .limit(1)
-    .eq("slug", slug);
-  // .eq("status", SELLING_STATUS); for dev
+    .eq("slug", slug)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
 
   const { data, error } = await query.single();
 

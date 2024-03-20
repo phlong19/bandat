@@ -52,6 +52,7 @@ import { reform } from "../../constants/message";
 import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 import FormActions from "./FormActions";
+import unidecode from "unidecode";
 
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
@@ -143,6 +144,9 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
       });
     }
 
+    const formattedName = unidecode(data.name);
+    const slug = slugify(formattedName);
+
     if (!edit) {
       create({
         ...data,
@@ -154,7 +158,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
         status: DEFAULT_RE_STATUS,
         userID,
         docs,
-        slug: slugify(data.name),
+        slug,
       });
     } else {
       update({
@@ -169,7 +173,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
         wardID,
         purType,
         status: DEFAULT_RE_STATUS,
-        slug: slugify(data.name),
+        slug,
         // docs
         newDocs: addDocsRef.current,
         deleteDocs: deleteDocsRef.current,
@@ -413,31 +417,38 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             />
           </FormControl>
           {/* file input */}
-          <FormControl isRequired isInvalid={errors.files}>
-            <FormLabel>Hình ảnh, video bất động sản</FormLabel>
-            <FormHelperText mb={2}>
-              {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
-              {files.videos.length}/{LIMIT_VID_UPLOAD} videos
-            </FormHelperText>
-            {errors.files && (
-              <FormErrorMessage>{errors.files.message}</FormErrorMessage>
-            )}
-            <Controller
-              name="files"
-              control={control}
-              render={({ field: { onChange } }) => (
-                <FilesDropzone
-                  files={files}
-                  setFiles={setFiles}
-                  setValue={setValue}
-                  onChange={onChange}
-                  addImagesRef={addImagesRef}
-                  addVideosRef={addVideosRef}
-                  deleteMediasRef={deleteMediasRef}
-                />
+          <Flex width='full' gap={3}>
+            <FormControl isRequired isInvalid={errors.files}>
+              <FormLabel>Hình ảnh, video bất động sản</FormLabel>
+              <FormHelperText mb={2}>
+                {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
+                {files.videos.length}/{LIMIT_VID_UPLOAD} videos
+              </FormHelperText>
+              {errors.files && (
+                <FormErrorMessage>{errors.files.message}</FormErrorMessage>
               )}
-            />
-          </FormControl>
+              <Controller
+                name="files"
+                control={control}
+                render={({ field: { onChange } }) => (
+                  <FilesDropzone
+                    files={files}
+                    setFiles={setFiles}
+                    setValue={setValue}
+                    onChange={onChange}
+                    addImagesRef={addImagesRef}
+                    addVideosRef={addVideosRef}
+                    deleteMediasRef={deleteMediasRef}
+                  />
+                )}
+              />
+            </FormControl>
+            <FormControl>
+             <FormLabel>
+              cho nay up anh 360, working on it
+              </FormLabel> 
+            </FormControl>
+          </Flex>
 
           {/* note */}
           {edit && <ChakraAlert type="warning" message={reform.note} />}

@@ -1,14 +1,17 @@
 import { NavLink } from "react-router-dom";
-
 import { Image, Flex, Button, Divider } from "@chakra-ui/react";
+
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { GiQueenCrown } from "react-icons/gi";
 
+import { useDarkMode } from "../context/DarkModeContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 
-function ManageLinks({ level, isDarkMode }) {
+function ManageLinks({ level }) {
+  const { isDarkMode } = useDarkMode();
+
   return (
     <Flex
       direction="column"
@@ -22,7 +25,7 @@ function ManageLinks({ level, isDarkMode }) {
       <NavLink to="/" className="mb-2">
         <Image
           boxSize="30"
-          src={isDarkMode ? "/icon-dark.png" : "/icon.png"}
+          src={isDarkMode ? "/micon-light.png" : "/micon-dark.png"}
         />
       </NavLink>
 
@@ -49,16 +52,6 @@ function ManageLinks({ level, isDarkMode }) {
       <Divider w="75%" opacity={1} />
       {level >= ADMIN_LEVEL && (
         <>
-          <NavLink to="/control" title="admin panel">
-            <Button variant="ghost" m={0}>
-              <GiQueenCrown fontSize="22" />
-            </Button>
-          </NavLink>
-          <NavLink to="/control" title="admin panel">
-            <Button variant="ghost" m={0}>
-              <GiQueenCrown fontSize="22" />
-            </Button>
-          </NavLink>
           <NavLink to="/control" title="admin panel">
             <Button variant="ghost" m={0}>
               <GiQueenCrown fontSize="22" />

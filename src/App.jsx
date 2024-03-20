@@ -18,6 +18,7 @@ import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import EditorDashboard from "./pages/EditorDashboard";
 import AccountManagement from "./pages/AccountManagement";
+import CheckEmailPlease from "./features/auth/CheckEmailPlease";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -27,6 +28,9 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
 import UserDashboard from "./pages/UserDashboard";
+import ForgotPassword from "./features/auth/ForgotPassword";
+import ResetPassword from "./features/auth/ResetPassword";
+import EmailVerification from "./features/auth/EmailVerification";
 
 // context api
 import { DarkMode } from "./context/DarkModeContext";
@@ -85,6 +89,32 @@ function App() {
                   <Route element={<AuthenticationLayout />}>
                     <Route path="dang-nhap" element={<Login />} />
                     <Route path="dang-ky" element={<Register />} />
+                    <Route path="quen-mat-khau" element={<ForgotPassword />} />
+                    <Route
+                      path="dat-lai-mat-khau/:id"
+                      element={<ResetPassword />}
+                    />
+                    {/* require email verification */}
+                    <Route
+                      path="xac-thuc-email"
+                      element={<EmailVerification />}
+                    />
+                    {/* display after email registeration */}
+                    <Route
+                      element={<CheckEmailPlease />}
+                      path="/kiem-tra-email"
+                    />
+                  </Route>
+
+                  {/* user account management */}
+                  <Route
+                    element={
+                      <ProtectedRoute accessLevel={USER_LEVEL} accSettings>
+                        <ManageLayout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route path="tai-khoan" element={<AccountManagement />} />
                   </Route>
 
                   {/* require authenticated user */}
@@ -105,9 +135,6 @@ function App() {
                       path="quan-ly-bai-viet/:title"
                       element={<UserDashboard form />}
                     />
-
-                    {/* user account management */}
-                    <Route path="tai-khoan" element={<AccountManagement />} />
 
                     {/* editor path */}
                     <Route
@@ -130,6 +157,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+                    {/* more routes on admin */}
                     {/* <Route path="" element */}
                   </Route>
 
@@ -145,15 +173,15 @@ function App() {
           <Toaster
             containerClassName="m-2 md:m-3"
             toastOptions={{
-              position: "top-right",
+              // position: "top-right",
               style: { padding: "16px 24px" },
               className:
                 "md:font-base max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
               success: {
-                duration: 2000,
+                duration: 4000,
               },
               error: {
-                duration: 3000,
+                duration: 4000,
               },
             }}
           />
