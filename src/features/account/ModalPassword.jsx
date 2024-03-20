@@ -151,6 +151,7 @@ function ModalPassword({ color }) {
             <Button
               colorScheme="green"
               mr={3}
+              size="sm"
               isLoading={isPending}
               form="password"
               type="submit"

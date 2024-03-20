@@ -10,6 +10,8 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
+  FormControl,
+  FormErrorMessage,
   ModalHeader,
   ModalCloseButton,
   ModalBody,
@@ -17,28 +19,33 @@ import {
 } from "@chakra-ui/react";
 import { BiEditAlt } from "react-icons/bi";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import validator from "validator";
+import { useUpdateEmail } from "./useUpdateEmail";
 
-function ModalEmail({ color, email, isConfirmed, id }) {
+function ModalEmail({ color, email, isConfirmed }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [value, setValue] = useState("");
 
   const {
     formState: { errors },
     register,
     handleSubmit,
     reset,
+    setError,
   } = useForm();
+
+  const { mutate, isPending } = useUpdateEmail();
 
   function handleClose() {
     onClose();
-    setValue("");
+    reset();
   }
 
   function onSubmit(data) {
     if (validator.isEmail(data?.email)) {
       console.log(data);
+      mutate({ ...data });
+    } else {
+      setError("email", "email khong hop le");
     }
   }
 
@@ -91,31 +98,34 @@ function ModalEmail({ color, email, isConfirmed, id }) {
           </Button>
         </Flex>
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isOpen={isOpen} onClose={handleClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Đổi mật khẩu</ModalHeader>
+          <ModalHeader>Đổi địa chỉ email</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form id="email">
-              <Input
-                type="email"
-                placeholder="email"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                {...register("email", { required: "vui long nhap email" })}
-              />
+            <form id="email" onSubmit={handleSubmit(onSubmit)}>
+              <FormControl isInvalid={errors.email}>
+                <Input
+                  type="email"
+                  placeholder="nhập Email của bạn"
+                  {...register("email", { required: "vui long nhap email" })}
+                />
+                {errors.email && (
+                  <FormErrorMessage>{errors.email.message}</FormErrorMessage>
+                )}
+              </FormControl>
             </form>
           </ModalBody>
 
           <ModalFooter gap={3}>
-            <Button onClick={onClose} size="sm" variant="outline">
+            <Button onClick={handleClose} size="sm" variant="outline">
               Hủy
             </Button>
-            <Button
+            <Button size="sm"
               colorScheme="green"
               mr={3}
-              isLoading={true}
+              isLoading={isPending}
               form="email"
               type="submit"
             >

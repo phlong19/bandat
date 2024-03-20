@@ -178,10 +178,10 @@ function App() {
               className:
                 "md:font-base max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
               success: {
-                duration: 2000,
+                duration: 4000,
               },
               error: {
-                duration: 3000,
+                duration: 4000,
               },
             }}
           />

@@ -46,6 +46,7 @@ export const error = {
   cantUpdatePass: "khong the update mk",
   notVerifyEmail: "xac thuc email truoc da",
   notHavePhone: "chua co sdt, vui long cap nhat",
+  duplicateEmail: "email da dang ky / ton tai trong he thong",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng, Vui lòng thử lại sau",
@@ -107,6 +108,8 @@ export const success = {
   updatePhone: "thanh cong cap nhat sdt",
   updateOthers: "Cập nhật thành công",
   updatePassword: "cap nhat mk thanh cong, vui long dang nhap lai",
+  updateEmail:
+    "cap nhat email thanh cong, vui long check email de confirm chuyen doi",
 
   // others
   copyToClipboard: "da sao chep vao bo nho tam",

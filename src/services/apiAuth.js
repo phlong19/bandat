@@ -122,7 +122,8 @@ export async function updateEmail(email) {
   const { data, error } = await supabase.auth.updateUser({ email });
 
   if (error) {
-    throw new Error(errorMessage.cantUpdateEmail);
+    console.log(error);
+    throw new Error(errorMessage.duplicateEmail);
   }
 
   // update profile

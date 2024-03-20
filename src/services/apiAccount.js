@@ -135,9 +135,6 @@ export async function updatePassword(password) {
   return null;
 }
 
-// email
-// export async function emailChange()
-
 // phone
 export async function updatePhone(formData) {
   const { userID, ...newData } = formData;

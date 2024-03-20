@@ -417,31 +417,38 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             />
           </FormControl>
           {/* file input */}
-          <FormControl isRequired isInvalid={errors.files}>
-            <FormLabel>Hình ảnh, video bất động sản</FormLabel>
-            <FormHelperText mb={2}>
-              {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
-              {files.videos.length}/{LIMIT_VID_UPLOAD} videos
-            </FormHelperText>
-            {errors.files && (
-              <FormErrorMessage>{errors.files.message}</FormErrorMessage>
-            )}
-            <Controller
-              name="files"
-              control={control}
-              render={({ field: { onChange } }) => (
-                <FilesDropzone
-                  files={files}
-                  setFiles={setFiles}
-                  setValue={setValue}
-                  onChange={onChange}
-                  addImagesRef={addImagesRef}
-                  addVideosRef={addVideosRef}
-                  deleteMediasRef={deleteMediasRef}
-                />
+          <Flex width='full' gap={3}>
+            <FormControl isRequired isInvalid={errors.files}>
+              <FormLabel>Hình ảnh, video bất động sản</FormLabel>
+              <FormHelperText mb={2}>
+                {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
+                {files.videos.length}/{LIMIT_VID_UPLOAD} videos
+              </FormHelperText>
+              {errors.files && (
+                <FormErrorMessage>{errors.files.message}</FormErrorMessage>
               )}
-            />
-          </FormControl>
+              <Controller
+                name="files"
+                control={control}
+                render={({ field: { onChange } }) => (
+                  <FilesDropzone
+                    files={files}
+                    setFiles={setFiles}
+                    setValue={setValue}
+                    onChange={onChange}
+                    addImagesRef={addImagesRef}
+                    addVideosRef={addVideosRef}
+                    deleteMediasRef={deleteMediasRef}
+                  />
+                )}
+              />
+            </FormControl>
+            <FormControl>
+             <FormLabel>
+              cho nay up anh 360, working on it
+              </FormLabel> 
+            </FormControl>
+          </Flex>
 
           {/* note */}
           {edit && <ChakraAlert type="warning" message={reform.note} />}
