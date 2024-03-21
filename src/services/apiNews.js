@@ -114,8 +114,11 @@ export async function updateNews(formData) {
       .from("news")
       .remove([oldFileName]);
 
-    console.error(removeError);
-    console.log("removed: " + removeFile[0]);
+    if (removeError) {
+      console.error(removeError);
+    }
+    console.log("removed:");
+    console.log(removeFile);
 
     // upload new thumb
     const fileName = `News - ${v4()}`;

@@ -1,7 +1,10 @@
 import { Avatar as ChakraAvatar, AvatarBadge } from "@chakra-ui/react";
 import { PiSealCheckFill } from "react-icons/pi";
+import { useAuth } from "../context/UserContext";
 
 function Avatar({ fullName, avatar, onClick, mobile = false, badge = true }) {
+  const { user } = useAuth();
+
   return (
     <ChakraAvatar
       name={fullName}
@@ -12,7 +15,7 @@ function Avatar({ fullName, avatar, onClick, mobile = false, badge = true }) {
       onClick={onClick}
     >
       {/* if user has verified account */}
-      {badge && (
+      {badge && user?.phone_confirmed_at && (
         <AvatarBadge
           border={0}
           m={0}

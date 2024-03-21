@@ -11,7 +11,7 @@ function ErrorFallBack({ error, resetErrorBoundary, home = false }) {
       <h1 className="text-xl font-bold md:text-2xl">
         Arch! Đã có lỗi gì đó xảy ra. Vui lòng thử lại sau. 😥
       </h1>
-      <p>{error.message}</p>
+      <p className="max-w-[70%]">{error.message}</p>
 
       <Button onClick={resetErrorBoundary} icon={<ImHome />}>
         Trang chủ

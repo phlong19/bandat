@@ -12,7 +12,7 @@ function Disclaimer({ name }) {
       này. Trường hợp phát hiện nội dung tin đăng không chính xác, Quý vị hãy
       nhấn nút báo xấu, kèm theo thông báo và cung cấp thông tin cho Ban quản
       trị theo <strong>hotline</strong> để được hỗ trợ nhanh, kịp thời và chính
-      xác nhất. nhất.
+      xác nhất.
     </Box>
   );
 }

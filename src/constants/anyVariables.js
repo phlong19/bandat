@@ -9,7 +9,7 @@ const LIMIT_IMG_UPLOAD = 8;
 const LIMIT_VID_UPLOAD = 2;
 const MAX_SIZE_UPLOAD = 5242880;
 const MAX_SIZE_AVATAR = 3145728;
-const ratio = 16 / 9;
+const ratio = 2 / 1;
 export {
   BASE_MEDIA_UPLOAD,
   LIMIT_IMG_UPLOAD,

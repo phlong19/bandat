@@ -34,7 +34,7 @@ export async function getList(type, citeria, page) {
         city: CityDirectory (cityName),
         dis: DistrictDirectory (disName),
         ward: WardDirectory (wardName),
-        images: REMedias(mediaLink, isImage),
+        images: REMedias(*),
         profile: Profile(fullName,avatar),
         type: REType(*)
     `,
@@ -87,7 +87,7 @@ export async function getSinglePost(slug) {
     city: CityDirectory (cityName),
     dis: DistrictDirectory (disName),
     ward: WardDirectory (wardName),
-    medias: REMedias(id, mediaLink, isImage),
+    medias: REMedias(*),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
     profile: Profile(phone,fullName,avatar,email),
     type: REType (type, name)
@@ -109,7 +109,7 @@ export async function getSinglePost(slug) {
 
 // create
 export async function createPost(newData) {
-  const { files, docs, reType, ...reData } = newData;
+  const { files, docs, reType, files360, ...reData } = newData;
 
   // get re type id, ex: nha-rieng = 1
   const { data: REType, error } = await supabase
@@ -157,6 +157,7 @@ export async function createPost(newData) {
   // handle media
   files.images.forEach((file) => uploadMedia(file, postID));
   files.videos.forEach((file) => uploadMedia(file, postID));
+  files360.forEach((file) => uploadMedia(file, postID, true));
 
   // handle docs
   docs.forEach(async (id) => await insertDocument(id, postID));
@@ -176,7 +177,9 @@ export async function updatePost(newData) {
     deleteMedias,
     newMedias,
     reType,
-    files: _,
+    files360,
+    oldFiles360,
+    files: _, // unused
     ...reData
   } = newData;
 
@@ -233,11 +236,32 @@ export async function updatePost(newData) {
 
   // handle delete old medias
   if (deleteMedias.length > 0) {
-    deleteMedias.forEach(async (file) =>
-      deleteMedia(file, true).then(() =>
-        console.log("Delete media successfully"),
-      ),
+    deleteMedias.forEach(
+      async (file) =>
+        await deleteMedia(file).then(() =>
+          console.log("Delete media successfully"),
+        ),
     );
+  }
+
+  // has id => new image
+  if (files360[0]?.id && files360[0].isNew) {
+    // delete old
+    await deleteMedia(oldFiles360[0]).then(() =>
+      console.log("removed old 360 image"),
+    );
+
+    const { error } = await supabase
+      .from("REMedias")
+      .delete()
+      .eq("id", oldFiles360[0].id);
+
+    if (error) {
+      throw new Error(errorMessage.cantDeleteMedia);
+    }
+
+    // upload new
+    files360.forEach((file) => uploadMedia(file, postID, true));
   }
 
   // handle new docs

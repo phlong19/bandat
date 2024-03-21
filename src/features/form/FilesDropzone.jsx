@@ -32,7 +32,6 @@ function FilesDropzone({
 
   // handle delete medias
   function handleClick(type, file) {
-    console.log(files);
     setFiles((prev) => ({
       ...prev,
       [type]: prev[type].filter((i) => i.id !== file.id),
@@ -45,7 +44,6 @@ function FilesDropzone({
       });
       imgLeft.current++;
     } else {
-      console.log(2);
       setValue("files", {
         images: files.images,
         videos: files.videos.filter((i) => i.id !== file.id),
@@ -62,7 +60,6 @@ function FilesDropzone({
     if (file?.isNew) {
       const imgIndex = addImagesRef.current.findIndex((i) => i.id === file.id);
       addImagesRef.current.splice(imgIndex, 1);
-      console.log(addVideosRef);
       const vidIndex = addVideosRef.current.findIndex((i) => i.id === file.id);
       addVideosRef.current.splice(vidIndex, 1);
     }
@@ -131,7 +128,7 @@ function FilesDropzone({
         `Không chấp nhận file với định dạng ${fileRejections[0].file.type}`,
       );
     } else if (fileRejections.length > 0) {
-      return setError(`Kích thước file vượt quá giới hạn cho phép`);
+      return setError(reform.overSize);
     }
   }, [fileRejections]);
 

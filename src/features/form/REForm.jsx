@@ -10,6 +10,7 @@ import {
   FormErrorMessage,
   FormHelperText,
   Input,
+  useColorModeValue,
   Button,
   Grid,
   Select,
@@ -53,6 +54,7 @@ import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 import FormActions from "./FormActions";
 import unidecode from "unidecode";
+import Files360Dropzone from "./Files360Dropzone";
 
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
@@ -69,9 +71,13 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
 
   // load existed medias and docs
   const existedImages =
-    editData?.medias.filter((media) => media.isImage === true) || [];
+    editData?.medias.filter(
+      (media) => media.isImage === true && media.is360Image === false,
+    ) || [];
   const existedVideos =
     editData?.medias.filter((media) => media.isImage !== true) || [];
+  const existed360 =
+    editData?.medias.filter((media) => media.is360Image === true) || [];
   const existedDocs = editData?.docs || [];
 
   // medias & docs state
@@ -79,7 +85,11 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
     images: [...existedImages],
     videos: [...existedVideos],
   });
+  const [files360, setFiles360] = useState([...existed360]);
+
   const [docs, setDocs] = useState([...existedDocs]);
+
+  const [check, setCheck] = useState(existed360.length > 0);
 
   // for address select
   const [cityID, setCityID] = useState(editData?.cityID || NaN);
@@ -107,6 +117,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
         images: existedImages,
         videos: existedVideos,
       },
+      files360: existed360,
     },
   });
 
@@ -183,6 +194,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           images: addImagesRef.current,
           videos: addVideosRef.current,
         },
+        oldFiles360: existed360,
       });
     }
   }
@@ -417,9 +429,20 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             />
           </FormControl>
           {/* file input */}
-          <Flex width='full' gap={3}>
+          <Flex width="full" gap={3} align="end">
             <FormControl isRequired isInvalid={errors.files}>
               <FormLabel>Hình ảnh, video bất động sản</FormLabel>
+              <Checkbox
+                onChange={() => {
+                  setCheck((s) => !s);
+                  setFiles360([]);
+                  setValue("files360", []);
+                }}
+                size="sm"
+                color={useColorModeValue("gray.700", "gray.400")} defaultChecked={check}
+              >
+                Tôi có thể cung cấp ảnh 360°
+              </Checkbox>
               <FormHelperText mb={2}>
                 {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
                 {files.videos.length}/{LIMIT_VID_UPLOAD} videos
@@ -443,11 +466,28 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                 )}
               />
             </FormControl>
-            <FormControl>
-             <FormLabel>
-              cho nay up anh 360, working on it
-              </FormLabel> 
-            </FormControl>
+
+            {check && (
+              <FormControl
+                isInvalid={false}
+                w={files360.length < 1 ? "70%" : "30%"}
+              >
+                <FormLabel>Hình ảnh 360°</FormLabel>
+                <FormHelperText mb={2}>{files360.length}/1 ảnh</FormHelperText>
+                <Controller
+                  control={control}
+                  name="files360"
+                  render={({ field: { onChange } }) => (
+                    <Files360Dropzone
+                      onChange={onChange}
+                      files={files360}
+                      setFiles={setFiles360}
+                      setValue={setValue}
+                    />
+                  )}
+                />
+              </FormControl>
+            )}
           </Flex>
 
           {/* note */}

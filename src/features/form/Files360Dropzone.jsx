@@ -1,62 +1,84 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { v4 } from "uuid";
 import {
   Flex,
   Box,
+  VStack,
   Text,
   Image as ChakraImage,
   Button,
-  VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { newsForm } from "../../../constants/message";
-import { MAX_SIZE_UPLOAD } from "../../../constants/anyVariables";
+import { MAX_SIZE_UPLOAD, ratio } from "../../constants/anyVariables";
+import { reform } from "../../constants/message";
+import { v4 } from "uuid";
 
-const LIMIT = 1;
 const accepted = ["image/png", "image/jpg", "image/jpeg"];
 
-function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
+function Files360Dropzone({ onChange, files, setFiles, setValue }) {
   const [error, setError] = useState(false);
-  const limit = useRef(1);
   const bg = useColorModeValue("gray.100", "#1d1d1d");
   const borderColor = useColorModeValue("gray.300", "#ffffff29");
 
-  // onDrop callback
+  const limit = useRef(1);
+  
   const onDrop = useCallback(
     (acceptedFiles) => {
       setError(false);
 
       limit.current = 1 - files.length;
+
       const mapped = acceptedFiles.map((file) => {
         limit.current--;
         if (limit.current < 0) {
-          return setError(newsForm.overFile);
+          return setError(reform.overFile);
         }
+
         return Object.assign(file, {
-          preview: URL.createObjectURL(file),
           id: v4(),
+          preview: URL.createObjectURL(file),
           isNew: true,
         });
       });
 
       if (limit.current >= 0) {
         setFiles([...mapped]);
-        setValue("files", [...mapped]);
+        setValue("files360", [...mapped]);
       }
     },
     [files, setFiles, setValue],
   );
 
-  const { fileRejections, getRootProps, getInputProps } = useDropzone({
+  const { fileRejections, getInputProps, getRootProps } = useDropzone({
+    onDrop: onDrop,
     accept: {
       "image/png": [],
       "image/jpg": [],
       "image/jpeg": [],
     },
     maxSize: MAX_SIZE_UPLOAD,
-    maxFiles: LIMIT,
-    onDrop: onDrop,
+    maxFiles: 1,
+    getFilesFromEvent: async (event) => {
+      const files = event.target.files || event.dataTransfer.files;
+      const promises = [];
+      for (let index = 0; index < files.length; index++) {
+        const file = files[index];
+        const promise = new Promise((resolve) => {
+          const image = new Image();
+          let url;
+          image.onload = function () {
+            file.width = image.width;
+            file.height = image.height;
+            resolve(file);
+          };
+          url = URL.createObjectURL(file);
+          image.src = url;
+        });
+        promises.push(promise);
+      }
+      return await Promise.all(promises);
+    },
+    validator: ratioValidator,
   });
 
   useEffect(() => {
@@ -66,24 +88,25 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
         return setError(
           `Không chấp nhận file với định dạng ${fileRejections[0].file.type}`,
         );
-      } else {
-        return setError(newsForm.overSize);
+      } else if (fileRejections[0].file.size > MAX_SIZE_UPLOAD) {
+        return setError(reform.overSize);
+      } else if (fileRejections[0].errors[0].code === "small") {
+        return setError(fileRejections[0].errors[0].message);
       }
     }
   }, [fileRejections]);
 
-  // delete current thumb
   function handleDelete() {
     setError("");
     setFiles([]);
-    setValue("files", []);
+    setValue("files360", []);
     limit.current = 1;
   }
 
   const thumbnail = files.length > 0 && (
     <Flex className="group" pos="relative">
       <ChakraImage
-        src={files?.[0]?.preview || files?.[0]}
+        src={files?.[0]?.preview || files?.[0].mediaLink}
         alt="Preview"
         boxSize="160px"
         objectFit="cover"
@@ -130,21 +153,32 @@ function ThumbnailDropzone({ onChange, files, setFiles, setValue }) {
           <input {...getInputProps({ onChange })} />
           <VStack fontSize="sm" color="gray.500">
             {!error ? (
-              <Text>{newsForm.helperMedia}</Text>
+              <Text>{reform.helperMedia}</Text>
             ) : (
               <Text fontSize="sm" color="red.500">
                 {error}
               </Text>
             )}
-            <Text>{newsForm.acceptFiles}</Text>
+            <Text>{reform.acceptFiles}</Text>
           </VStack>
         </Box>
       )}
-      <Flex gap={1} wrap="wrap" my={3}>
+      <Flex gap={1} wrap="wrap" my={3} justify='center' align='center'>
         {thumbnail}
       </Flex>
     </Flex>
   );
 }
 
-export default ThumbnailDropzone;
+export default Files360Dropzone;
+
+// validator
+function ratioValidator(file) {
+  if (Number(file.width / file.height) !== ratio) {
+    return {
+      code: "small",
+      message: reform.ratio,
+    };
+  }
+  return null;
+}

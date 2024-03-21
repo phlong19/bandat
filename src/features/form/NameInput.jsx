@@ -52,7 +52,7 @@ function NameInput({ postId, register, error }) {
           <Spinner size="xs" ml={2} speed="0.3s" />
         ) : invalid ? (
           <Badge colorScheme="red" borderRadius="sm" textTransform="capitalize">
-            <span className="px-[3px]">Tiêu đề đã tồn tại</span>
+            <span className="px-[3px] text-[11px]">Tiêu đề đã tồn tại</span>
           </Badge>
         ) : (
           <Badge
@@ -60,11 +60,11 @@ function NameInput({ postId, register, error }) {
             borderRadius="md"
             textTransform="capitalize"
           >
-            <span className="px-[3px]">Tiêu đề phù hợp</span>
+            <span className="px-[3px] text-[11px]">Tiêu đề phù hợp</span>
           </Badge>
         )}
       </Flex>
-      <FormHelperText mt={0} mb={2}>
+      <FormHelperText mt={0} mb={2} fontSize='xs'>
         {reform.noPhone}
       </FormHelperText>
       <Input

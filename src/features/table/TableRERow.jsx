@@ -98,7 +98,7 @@ function TableRERow({ data, level, userID }) {
         <Text pb=".5rem">{formatDate(created_at)}</Text>
       </Td>
       <Td>
-        <Text pb=".5rem">{formatDate(expriryDate)}</Text>
+        <Text pb=".5rem">{expriryDate ? formatDate(expriryDate) : '---'}</Text>
       </Td>
       <Td>
         <Menu>

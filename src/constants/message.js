@@ -60,7 +60,7 @@ export const error = {
   newsExisted: "Tiêu đề bài viết đã tồn tại?",
 
   // medias
-  cantDeleteMedia: "Xảy ra lỗi, Vui lòng thử lại sau",
+  cantDeleteMedia: "khong the xoa file cu, vui long thu lai",
   uploadFailed: "Quá trình tải file xảy ra lỗi, Vui lòng thử lại sau",
   // docs
   cantInsertDocs: "Không thể thêm giấy tờ pháp lý, Vui lòng thử lại sau ",
@@ -141,6 +141,10 @@ export const reform = {
   overFile: "Vượt quá số lượng giới hạn file tải lên",
   helperMedia: "Drag & drop file here, or click to select files",
   acceptMedias: "Yêu cầu định dạng png, jpg, jpeg hoặc mp4",
+  acceptFiles: "yeu cau dinh dang png jpg jpeg va dai gap doi rong",
+  overSize: `Kích thước file vượt quá giới hạn cho phép`,
+  ratio: "Tỉ lệ ảnh yêu cầu 2/1 - dài gấp đôi rộng => ảnh 360",
+
   // alert
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",
 
@@ -169,6 +173,7 @@ export const newsForm = {
   overFile: "Chỉ chấp nhận 1 file thumbnail",
   helperMedia: "Drag & drop file here, or click to select files",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
+  overSize: `Kích thước file vượt quá giới hạn cho phép`,
   ratio: "Tỉ lệ ảnh yêu cầu 16/9",
 
   // submit errors

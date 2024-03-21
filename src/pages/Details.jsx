@@ -1,5 +1,5 @@
 // libs
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
@@ -9,6 +9,7 @@ import L from "leaflet";
 import { useMediaQuery } from "react-responsive";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 
 // libs ui and ui
 import {
@@ -34,18 +35,11 @@ import {
   StatArrow,
   useColorModeValue,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
   AccordionPanel,
   Accordion,
   AccordionButton,
   AccordionItem,
   AccordionIcon,
-  ModalCloseButton,
 } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -54,6 +48,7 @@ import DetailsFeature from "../ui/DetailsFeature";
 import Disclaimer from "../ui/Disclaimer";
 import StickyAuthorBox from "../ui/StickyAuthorBox";
 import CustomArrow from "../ui/CustomArrow";
+import DetailsMediasModal from "../ui/DetailsMediasModal";
 
 // icons
 import { GrMoney } from "react-icons/gr";
@@ -90,6 +85,7 @@ function Details() {
   const { land } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const [index, setIndex] = useState(0);
 
   const { data: post, isLoading: isFetching } = useQuery({
     queryKey: ["SinglePost", land],
@@ -139,9 +135,12 @@ function Details() {
   } = post;
 
   const videos = medias.filter((media) => media.isImage === false);
-  const images = medias.filter((media) => media.isImage === true);
+  const images = medias.filter(
+    (media) => media.isImage === true && media.is360Image === false,
+  );
+  const image360 = medias.filter((media) => media.is360Image === true);
   // for reduce bug threat when medias array fetched has unknown order about the file type
-  const newMedia = [...videos, ...images];
+  const newMedia = [...image360, ...videos, ...images];
 
   const settings = {
     customPaging: function (i) {
@@ -171,11 +170,19 @@ function Details() {
     dots: true,
     infinite: true,
     speed: 500,
+    draggable: image360.length === 0, // if has img 360 => no drag
+    initialSlide: index > 0 ? index : 0,
     slidesToShow: 1,
     slidesToScroll: 1,
     prevArrow: <CustomArrow direction="prev" />,
     nextArrow: <CustomArrow direction="next" />,
   };
+
+  function handleOpen(e) {
+    const i = newMedia.findIndex((media) => media.id === Number(e.target.id));
+    setIndex(i);
+    onOpen();
+  }
 
   return (
     <Box maxW="1500px" mx="auto" p={3} px={{ base: 2, md: 4, xl: 5 }}>
@@ -208,20 +215,38 @@ function Details() {
           </Slider>
         ) : (
           <Flex h={400} w="full" justifyContent="center" gap={1}>
-            {/* first img or video */}
+            {/* first 360 img or video or normal img */}
             <Flex w="50%" h="full">
-              {/* if has video display it or else first image */}
-              <AspectRatio ratio={16 / 9} w="full" _before="none">
-                {videos.length > 0 ? (
-                  <video
-                    className="rounded-l-lg"
-                    src={videos[0].mediaLink}
-                    controls
+              {image360.length > 0 ? (
+                <AspectRatio ratio={16 / 9} w="full" _before="none">
+                  <ReactPhotoSphereViewer
+                    src={image360[0].mediaLink}
+                    width="100%"
                   />
-                ) : (
-                  <Image roundedLeft="lg" src={images[0].mediaLink} />
-                )}
-              </AspectRatio>
+                </AspectRatio>
+              ) : (
+                <AspectRatio ratio={16 / 9} w="full" _before="none">
+                  {videos.length > 0 ? (
+                    <video
+                      className="rounded-l-lg"
+                      src={videos[0].mediaLink}
+                      controls
+                    />
+                  ) : (
+                    <Button
+                      variant="unstyled"
+                      onClick={(e) => handleOpen(e)}
+                      rounded="none"
+                    >
+                      <Image
+                        id={images[0].id}
+                        roundedLeft="lg"
+                        src={images[0].mediaLink}
+                      />
+                    </Button>
+                  )}
+                </AspectRatio>
+              )}
             </Flex>
             {/* others */}
             <SimpleGrid
@@ -231,7 +256,7 @@ function Details() {
               templateRows="repeat(2, 1fr)"
               h="100%"
             >
-              {/* if has second videos display it at the first grid place with 3 other images */}
+              {/* no matter post have 360 image or not, just display one video at the first grid place with 3 other normal images */}
               {videos.length > 1 ? (
                 <>
                   <AspectRatio _before="none">
@@ -239,10 +264,17 @@ function Details() {
                   </AspectRatio>
                   {images.slice(0, 2).map((media, i) => (
                     <AspectRatio key={media.id} _before="none">
-                      <Image
-                        src={media.mediaLink}
-                        borderTopRightRadius={i === 0 ? "lg" : "none"}
-                      />
+                      <Button
+                        variant="unstyled"
+                        onClick={(e) => handleOpen(e)}
+                        rounded="none"
+                      >
+                        <Image
+                          id={media.id}
+                          src={media.mediaLink}
+                          borderTopRightRadius={i === 0 ? "lg" : "none"}
+                        />
+                      </Button>
                     </AspectRatio>
                   ))}
                 </>
@@ -251,30 +283,48 @@ function Details() {
                 // first 3
                 images.slice(1, 4).map((media, i) => (
                   <AspectRatio key={media.id} _before="none">
-                    <Image
-                      src={media.mediaLink}
-                      borderTopRightRadius={i === 1 ? "lg" : "none"}
-                    />
+                    <Button
+                      variant="unstyled"
+                      onClick={(e) => handleOpen(e)}
+                      rounded="none"
+                    >
+                      <Image
+                        id={media.id}
+                        src={media.mediaLink}
+                        borderTopRightRadius={i === 1 ? "lg" : "none"}
+                      />
+                    </Button>
                   </AspectRatio>
                 ))
               )}
               {/* if has more imgs, overlay or else just display the final image as normal */}
-              {medias.length <= 5 ? (
+              {newMedia.length <= 5 ? (
                 <AspectRatio _before="none">
-                  <Image
-                    src={medias[4]?.mediaLink}
-                    borderBottomRightRadius="lg"
-                  />
+                  <Button
+                    variant="unstyled"
+                    onClick={(e) => handleOpen(e)}
+                    rounded="none"
+                  >
+                    <Image
+                      id={images[4].id}
+                      src={images[4]?.mediaLink}
+                      borderBottomRightRadius="lg"
+                    />
+                  </Button>
                 </AspectRatio>
               ) : (
                 <AspectRatio _before="none">
                   <Button
                     variant="unstyled"
-                    onClick={onOpen}
+                    onClick={(e) => handleOpen(e)}
                     rounded="none"
                     borderBottomRightRadius="lg"
                   >
-                    <Image src={images[4].mediaLink} filter="grayscale(1)" />
+                    <Image
+                      src={images[4].mediaLink}
+                      id={images[4].id}
+                      filter="grayscale(1)"
+                    />
                     <Box
                       position="absolute"
                       top="0"
@@ -301,37 +351,14 @@ function Details() {
             </SimpleGrid>
           </Flex>
         )}
-        <Modal
+        {/* modal medias */}
+        <DetailsMediasModal
+          image360={image360}
           isOpen={isOpen}
+          newMedia={newMedia}
           onClose={onClose}
-          isCentered
-          size={{ sm: "3xl", xl: "4xl" }}
-        >
-          <ModalOverlay zIndex={10000} />
-          <ModalContent className="modal-media">
-            <ModalHeader>Toàn bộ ảnh / video bất động sản</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Slider {...settings}>
-                {newMedia.map((media) => (
-                  <AspectRatio key={media.id}>
-                    {!media.isImage ? (
-                      <video src={media.mediaLink} controls />
-                    ) : (
-                      <Image src={media.mediaLink} />
-                    )}
-                  </AspectRatio>
-                ))}
-              </Slider>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button colorScheme="green" mr={3} onClick={onClose}>
-                Đóng
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+          settings={settings}
+        />
       </Box>
       {/* main content */}
       <Box>
@@ -363,12 +390,13 @@ function Details() {
                   <StatNumber color={accent}>
                     {formatCurrency(price)}
                   </StatNumber>
-                  
-                    <StatHelpText>
-                      <StatArrow as={GrMoney} type="increase" />
-                      {purType ? `${formatCurrency(price / area)}/${m2}`:'/ tháng' }
-                    </StatHelpText>
-                 
+
+                  <StatHelpText>
+                    <StatArrow as={GrMoney} type="increase" />
+                    {purType
+                      ? `${formatCurrency(price / area)}/${m2}`
+                      : "/ tháng"}
+                  </StatHelpText>
                 </Stat>
                 <Stat>
                   <StatLabel>Diện tích</StatLabel>

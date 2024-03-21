@@ -68,7 +68,7 @@ export async function getPost(slug, level, userID) {
     city: CityDirectory (cityName),
     dis: DistrictDirectory (disName),
     ward: WardDirectory (wardName),
-    medias: REMedias(id, mediaLink, isImage),
+    medias: REMedias(*),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
     profile: Profile(phone,fullName,avatar),
     status: REStatus (*),

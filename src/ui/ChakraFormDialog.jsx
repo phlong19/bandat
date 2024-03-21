@@ -28,6 +28,7 @@ function ChakraFormDialog({
         onClick={onOpen}
         isLoading={isLoading}
         loadingText="Vui lòng chờ"
+        size="sm"
       >
         {action}
       </Button>

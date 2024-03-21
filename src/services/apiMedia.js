@@ -2,8 +2,8 @@ import supabase, { supabaseUrl } from "./supabase";
 import { v4 } from "uuid";
 import { error as errorMessage } from "../constants/message";
 
-export async function uploadMedia(file, postID) {
-  const fileName = `REDir - ${v4()}${postID}`;
+export async function uploadMedia(file, postID, is360Image = false) {
+  const fileName = `REDir - ${is360Image ? "360" : ""}${v4()}${postID}`;
   const isImage = file.type.startsWith("image");
 
   const { data: uploadedFile, error: uploadError } = await supabase.storage
@@ -19,6 +19,7 @@ export async function uploadMedia(file, postID) {
       postID,
       mediaLink: `${supabaseUrl}/storage/v1/object/public/${uploadedFile.fullPath}`,
       isImage,
+      is360Image,
     },
   ]);
 
@@ -32,19 +33,17 @@ export async function uploadMedia(file, postID) {
   return null;
 }
 
-export async function deleteMedia(file, edit = false) {
+export async function deleteMedia(file) {
   const fileName = file.mediaLink.split("/").pop();
   // remove in junc table re medias if update post
   try {
-    if (edit) {
-      const { error } = await supabase
-        .from("REMedias")
-        .delete()
-        .eq("id", file.id);
+    const { error } = await supabase
+      .from("REMedias")
+      .delete()
+      .eq("id", file.id);
 
-      if (error) {
-        throw new Error(errorMessage.cantDeleteMedia);
-      }
+    if (error) {
+      throw new Error(errorMessage.cantDeleteMedia);
     }
   } catch (error) {
     throw new Error(error);
