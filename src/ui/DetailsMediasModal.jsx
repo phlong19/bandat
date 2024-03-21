@@ -10,16 +10,23 @@ import {
   ModalFooter,
   Button,
 } from "@chakra-ui/react";
+import { memo } from "react";
 import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 import Slider from "react-slick";
 
-function DetailsMediasModal({ onClose, isOpen, settings, newMedia, image360 }) {
+const DetailsMediasModal = memo(function DetailsMediasModal({
+  onClose,
+  isOpen,
+  settings,
+  newMedia,
+  image360,
+}) {
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       isCentered
-      size={{ sm: "3xl", lg: "4xl", xl: "5xl" }}
+      size={{ sm: "3xl", lg: "4xl", "2xl": "5xl" }}
     >
       <ModalOverlay zIndex={10000} />
       <ModalContent className="modal-media">
@@ -60,6 +67,6 @@ function DetailsMediasModal({ onClose, isOpen, settings, newMedia, image360 }) {
       </ModalContent>
     </Modal>
   );
-}
+});
 
 export default DetailsMediasModal;

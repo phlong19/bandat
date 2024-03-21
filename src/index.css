@@ -222,3 +222,7 @@ ul.slick-dots li.slick-active div#video-thumbnail {
 .chakra-modal__content-container:has(.modal-media) {
   z-index: 12000 !important;
 }
+
+.slider-mobile .chakra-aspect-ratio::before {
+  padding-bottom: 100% !important;
+}

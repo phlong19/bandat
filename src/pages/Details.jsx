@@ -199,9 +199,19 @@ function Details() {
       </Flex>
 
       {/* media section */}
-      <Box mb={3.5}>
+      <Box mb={3.5} minH={400}>
         {isMobile ? (
-          <Slider {...settings}>
+          <Slider {...settings} className="slider-mobile">
+            {image360.length > 0 && (
+              <AspectRatio w="full">
+                <ReactPhotoSphereViewer
+                  touchmoveTwoFingers
+                  loadingTxt="Đang tải"
+                  src={image360[0].mediaLink}
+                  width="100%"
+                />
+              </AspectRatio>
+            )}
             {videos.map((media) => (
               <AspectRatio key={media.id}>
                 <video src={media.mediaLink} controls />
@@ -209,7 +219,7 @@ function Details() {
             ))}
             {images.map((media) => (
               <AspectRatio key={media.id} ratio={4 / 3} w="full">
-                <Image src={media.mediaLink} />
+                <Image src={media.mediaLink} objectFit="contain" />
               </AspectRatio>
             ))}
           </Slider>
@@ -306,7 +316,7 @@ function Details() {
                     rounded="none"
                   >
                     <Image
-                      id={images[4].id}
+                      id={images[4]?.id}
                       src={images[4]?.mediaLink}
                       borderBottomRightRadius="lg"
                     />
