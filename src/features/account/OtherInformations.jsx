@@ -93,7 +93,12 @@ function OtherInformations({ data, color, id }) {
                 <Box>
                   <Text fontSize="sm">Ngày sinh</Text>
 
-                  <Input type="date" w="80%" mt={2} {...register("birthday")} />
+                  <Input
+                    type="date"
+                    w={{ sm: "80%", lg: "60%", xl: "40%", "2xl": "30%" }}
+                    mt={2}
+                    {...register("birthday")}
+                  />
                 </Box>
               </Grid>
 

@@ -138,24 +138,20 @@ export async function getFullNewsList(userID, page) {
 }
 
 // docs
-export async function getFullDocsList(userID, page) {
+export async function getFullDocsList(page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
   const end = start + LIMIT_PER_PAGE - 1;
 
-  // get curr User
-  const { data: curUser, error: curUserError } = await supabase
-    .from("Profile")
-    .select(`*`)
-    .limit(1)
-    .eq("id", userID)
-    .single();
+  const { data, count, error } = await supabase
+    .from("LegalDoc")
+    .select(`*`, { count: "exact" })
+    .limit(LIMIT_PER_PAGE)
+    .range(start, end);
 
-  if (curUserError) {
-    console.log(curUserError);
+  if (error) {
+    console.log(error);
     throw new Error(errorMessage.fetchError);
   }
 
-  const { level, id } = curUser;
-  // TODO
-  const { data, error } = await supabase.from("LegalDoc").select(`*`);
+  return { data, count };
 }
