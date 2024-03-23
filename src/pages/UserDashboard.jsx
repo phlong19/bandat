@@ -1,42 +1,68 @@
-import { Box } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { Box, Center, Spinner } from "@chakra-ui/react";
+
 import ChakraBreadcrumb from "../ui/ChakraBreadcrumb";
-import ChakraTable from "../features/table/ChakraTable";
-import { reCaptions } from "../constants/anyVariables";
-import { data } from "../constants/products";
-import TableRERow from "../features/table/TableRERow";
-import { useAuth } from "../context/UserContext";
 import REForm from "../features/form/REForm";
+import UserDashboardTable from "../features/dashboard/UserDashboardTable";
+
+import { useGetRE } from "../features/form/useGetRE";
+import { useAuth } from "../context/UserContext";
+import SkeletonREForm from "../ui/SkeletonREForm";
 
 function UserDashboard({ form = false }) {
-  const page = window.location.pathname.includes("dang-tin")
+  const activePage = window.location.pathname.includes("dang-tin")
     ? "Đăng tin"
     : "Quản lý bài viết";
 
-  const { level } = useAuth();
-  // future: get re dir data base on level
-  // admin: all posts
-  // user: only posts from that user
+  const { title } = useParams();
+  const navigate = useNavigate();
+  const { data, level, isLoading } = useAuth();
+  let { post, isFetching } = useGetRE(title, level, data.id);
 
-  // note LIMIT_PER_TABLE = 8
-  const re_data = Array.from({ length: 3 })
-    .map((item) => data)
-    .flat()
-    .slice(0, 8);
+  // change page title
+  useEffect(() => {
+    document.title = activePage;
+  }, [activePage]);
+
+  useEffect(() => {
+    if (title && !post && !isFetching) {
+      toast.error("khong tim thay bai viet");
+      navigate("/dang-tin");
+    } else if (post) {
+      document.title = "Chi tiết bài viết " + post.name;
+    }
+  }, [post, navigate, isFetching, title, activePage]);
+
+  if (isLoading) {
+    return (
+      <Center minH="100%">
+        <Spinner speed="0.4s" />
+      </Center>
+    );
+  }
+
+  // isFetching => loading existed post (edit)
+  if (isFetching) {
+    return <SkeletonREForm activePage={activePage} />;
+  }
 
   return (
-    <Box gridGap={4} display="grid">
-      <ChakraBreadcrumb page={page} />
+    <Box gap={4} display="flex" flexDirection="column">
+      <ChakraBreadcrumb page={activePage} />
       {!form ? (
-        <ChakraTable
-          captions={reCaptions}
-          data={re_data}
-          title="Quản lý bài viết"
-          render={(item) => (
-            <TableRERow key={item.id} data={item} level={level} />
-          )}
-        />
+        <UserDashboardTable id={data.id} level={level} />
       ) : (
-        <REForm />
+        <Box maxWidth="85%" minWidth="85%" mx="auto">
+          <REForm
+            currentUserLevel={level}
+            userID={data.id}
+            edit={Boolean(post)}
+            editData={post}
+            key={post?.id || "new"}
+          />
+        </Box>
       )}
     </Box>
   );

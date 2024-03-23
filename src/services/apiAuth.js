@@ -1,50 +1,178 @@
 import supabase from "./supabase";
-import { ADMIN_LEVEL, USER_LEVEL } from "../constants/anyVariables";
+import validator from "validator";
+import { USER_LEVEL } from "../constants/anyVariables";
+import { error as errorMessage } from "../constants/message";
+import { addDays } from "date-fns";
 
-export async function login({ email, password }) {
-  const { data, error: loginError } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+// [DEPRECATED] login v2
+export async function login(formData) {
+  const { emailOrPhone, password } = formData;
+  // check is email or phone number
+  let credential;
 
-  if (loginError) throw new Error(loginError.message);
+  if (validator.isEmail(emailOrPhone)) {
+    credential = {
+      email: emailOrPhone,
+      password,
+    };
+  } else if (validator.isMobilePhone(emailOrPhone, "vi-VN")) {
+    credential = {
+      phone: `84${emailOrPhone.slice(1)}`,
+      password,
+    };
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword(credential);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.login);
+  }
 
   return data;
 }
 
-export async function register({ fullName, email, password }) {
+// register v1 just email
+export async function registerV1(formData) {
+  const { fullName, email, password } = formData;
+
   const { data: justCreateUser, error: registerError } =
-    await supabase.auth.signUp({
-      email,
-      password,
-    });
+    await supabase.auth.signUp({ email, password });
 
-  if (registerError) throw new Error(registerError.message);
+  if (registerError) {
+    console.log(registerError);
+    throw new Error(errorMessage.register);
+  }
 
-  // insert profile after created user successfully
-  // for development, auto add user level as admin = 3
-  const { data, error } = await supabase
+  const { data, error: profileError } = await supabase
     .from("Profile")
     .insert([
       {
         id: justCreateUser.user.id,
-        fullName: fullName,
+        fullName,
         level: USER_LEVEL,
+        email,
+        allowEditDate: addDays(new Date(), 30),
       },
     ])
     .select();
 
-  if (error) throw new Error(error.message);
+  if (profileError) {
+    console.log(profileError);
+    throw new Error(errorMessage.register);
+  }
 
   return data;
 }
 
-// authenticated user want to post => have to verify phone num
+// [DEPRECATED]
+export async function register(formData) {
+  const { fullName, phone, password } = formData;
+
+  const { data: justCreateUser, error: registerError } =
+    await supabase.auth.signUp({
+      phone: `+84${phone}`,
+      // for now just use UK number
+      // phone: `+44${phone}`,
+      password,
+    });
+
+  if (registerError) {
+    console.log(registerError);
+    throw new Error(errorMessage.register);
+  }
+
+  const { data, error: profileError } = await supabase
+    .from("Profile")
+    .insert([
+      {
+        id: justCreateUser.user.id,
+        fullName,
+        level: USER_LEVEL,
+        phone,
+      },
+    ])
+    .select();
+
+  if (profileError) {
+    console.log(profileError);
+    throw new Error(errorMessage.register);
+  }
+
+  return data;
+}
+
 export async function verify(phone, token) {
   const { data, error } = await supabase.auth.verifyOtp({
     phone,
     token,
+    type: "sms",
   });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantVerify);
+  }
+
+  return data;
+}
+
+// update email after successfully confirm phone number
+export async function updateEmail(email) {
+  const { data, error } = await supabase.auth.updateUser({ email });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.duplicateEmail);
+  }
+
+  // update profile
+  const { error: updateProfileError } = await supabase
+    .from("Profile")
+    .update({ email })
+    .eq("id", data.user.id);
+
+  if (updateProfileError) {
+    console.log(updateProfileError);
+    throw new Error(errorMessage.cantUpdateEmail);
+  }
+
+  return data;
+}
+
+// resend email
+export async function resendEmailAPI(email) {
+  const updatedUser = await updateEmail(email);
+  if (!updatedUser) {
+    throw new Error(errorMessage.cantUpdateEmail);
+  }
+
+  const { data, error } = await supabase.auth.resend({
+    email,
+    type: "signup",
+  });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantSendEmail);
+  }
+
+  return data;
+}
+
+// resend phone
+export async function resendSMSAPI(phone) {
+  const { data, error } = await supabase.auth.resend({
+    type: "sms",
+    phone,
+  });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantResendSMS);
+  }
+
+  return data;
 }
 
 export async function getCurrentUser() {
@@ -70,6 +198,15 @@ export async function getCurrentUser() {
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.log(error);
+  }
+  // interview stories ;))
+  return null;
+}
 
-  if (error) throw new Error(error.message);
+// for admin
+export async function updateUser(formData) {
+  const { phone } = formData;
+  const { data, error } = await supabase.auth.updateUser({});
 }

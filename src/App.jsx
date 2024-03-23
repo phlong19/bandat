@@ -4,7 +4,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-// pages
 import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
 import Details from "./pages/Details";
@@ -12,13 +11,14 @@ import News from "./pages/News";
 import NewDetails from "./pages/NewDetails";
 import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
-import BookMarks from "./pages/BookMarks";
+import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import EditorDashboard from "./pages/EditorDashboard";
 import AccountManagement from "./pages/AccountManagement";
+import CheckEmailPlease from "./features/auth/CheckEmailPlease";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -28,6 +28,9 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
 import UserDashboard from "./pages/UserDashboard";
+import ForgotPassword from "./features/auth/ForgotPassword";
+import ResetPassword from "./features/auth/ResetPassword";
+import EmailVerification from "./features/auth/EmailVerification";
 
 // context api
 import { DarkMode } from "./context/DarkModeContext";
@@ -76,7 +79,7 @@ function App() {
                     />
                     <Route path="du-an" element={<Projects />} />
                     <Route path="nha-dat/:land" element={<Details />} />
-                    <Route path="tin-da-luu" element={<BookMarks />} />
+                    <Route path="tin-da-luu" element={<Bookmarks />} />
                     <Route path="tin-tuc" element={<News />} />
                     <Route path="tin-tuc/:title" element={<NewDetails />} />
                     <Route path="danh-ba" element={<Contacts />} />
@@ -86,6 +89,32 @@ function App() {
                   <Route element={<AuthenticationLayout />}>
                     <Route path="dang-nhap" element={<Login />} />
                     <Route path="dang-ky" element={<Register />} />
+                    <Route path="quen-mat-khau" element={<ForgotPassword />} />
+                    <Route
+                      path="dat-lai-mat-khau/:id"
+                      element={<ResetPassword />}
+                    />
+                    {/* require email verification */}
+                    <Route
+                      path="xac-thuc-email"
+                      element={<EmailVerification />}
+                    />
+                    {/* display after email registeration */}
+                    <Route
+                      element={<CheckEmailPlease />}
+                      path="/kiem-tra-email"
+                    />
+                  </Route>
+
+                  {/* user account management */}
+                  <Route
+                    element={
+                      <ProtectedRoute accessLevel={USER_LEVEL} accSettings>
+                        <ManageLayout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route path="tai-khoan" element={<AccountManagement />} />
                   </Route>
 
                   {/* require authenticated user */}
@@ -102,9 +131,10 @@ function App() {
                       path="quan-ly-bai-viet"
                       element={<UserDashboard />}
                     />
-
-                    {/* user account management */}
-                    <Route path="tai-khoan" element={<AccountManagement />} />
+                    <Route
+                      path="quan-ly-bai-viet/:title"
+                      element={<UserDashboard form />}
+                    />
 
                     {/* editor path */}
                     <Route
@@ -115,6 +145,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+
                     {/* admin path */}
                     {/* if anyone can think out a name cooler, powerful than this */}
                     {/* please let me know */}
@@ -126,6 +157,7 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+                    {/* more routes on admin */}
                     {/* <Route path="" element */}
                   </Route>
 
@@ -141,12 +173,12 @@ function App() {
           <Toaster
             containerClassName="m-2 md:m-3"
             toastOptions={{
-              position: "top-right",
-              duration: 3500,
+              // position: "top-right",
+              style: { padding: "16px 24px" },
               className:
-                "md:font-base py-4 px-6 max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
+                "md:font-base max-w-[500px] bg-light dark:bg-dark text-black dark:text-white shadow-sm shadow-dark/80 dark:shadow-light/80",
               success: {
-                duration: 3000,
+                duration: 4000,
               },
               error: {
                 duration: 4000,

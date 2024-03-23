@@ -1,23 +1,72 @@
+import { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import ReactDOM from "react-dom/client";
+import L from "leaflet";
 import ListItem from "../features/list/ListItem";
+import ViewInMap from "./ViewInMap";
+import { useMapView } from "../context/MapViewContext";
 
 function Map({ data, purType }) {
+  const { mapView } = useMapView();
+  const mapRef = useRef(null);
+  const [selectedMarker, setSelectedMarker] = useState(0);
+  const mapRoot = useRef({});
+
+  useEffect(() => {
+    const renderTimeout = setTimeout(() => {
+      if (data?.length) {
+        data.forEach((item) => {
+          const container = document.querySelector(`#viewInMap${item.id}`);
+          if (container !== null) {
+            mapRoot.current[item.id] = ReactDOM.createRoot(container);
+            mapRoot.current[item.id].render(
+              <ViewInMap
+                postID={item.id}
+                onClick={() => {
+                  setSelectedMarker(item.id);
+                  // flyTo([lat,long],zoom)
+                  mapRef.current.flyTo([item.lat, item.long], 13);
+                }}
+              />,
+            );
+          }
+        });
+      }
+    });
+
+    // clean up
+    return () => {
+      clearTimeout(renderTimeout);
+      mapRoot.current = {};
+
+      setTimeout(() => {
+        Object.values(mapRoot.current).forEach((root) => root.unmount());
+      });
+    };
+  }, [mapView, data]);
+
   return (
     <MapContainer
-      center={[21.028511, 105.804817]}
-      zoom={8}
+      id="map-container"
+      center={[16.363147, 105.713807]}
+      zoom={6}
       className="h-full rounded-lg lg:w-[calc(100vw/2-85px)]"
       scrollWheelZoom={true}
-      // a bit ugly code to set the width, but this is the only way to fix the map bug with animation
+      ref={mapRef}
+      whenReady={() => resizeMap(mapRef)}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {data.map((item, i) => (
+      {data.map((item) => (
         <Marker
-          position={i == 0 ? [20.97455, 105.84436] : [21.029779, 105.810692]}
-          key={i}
+          position={[item.lat, item.long]}
+          key={item.id}
+          icon={selectedMarker === item.id ? selectedIcon : defaultIcon}
+          eventHandlers={{
+            click: () => setSelectedMarker(item.id),
+          }}
         >
           <Popup>
             <ListItem data={item} purType={purType} mapView={true} isPopup />
@@ -29,3 +78,24 @@ function Map({ data, purType }) {
 }
 
 export default Map;
+
+// custom marker
+const selectedIcon = new L.Icon({
+  iconUrl: "./customMarker.png",
+  iconSize: [30, 30],
+});
+
+const defaultIcon = new L.Icon({
+  iconUrl: "./defaultIcon.png",
+  iconSize: [20, 30],
+});
+
+function resizeMap(mapRef) {
+  const resizeObserver = new ResizeObserver(() =>
+    mapRef.current?.invalidateSize(),
+  );
+  const container = document.getElementById("map-container");
+  if (container) {
+    resizeObserver.observe(container);
+  }
+}

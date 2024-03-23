@@ -1,127 +1,85 @@
-import { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaRegCircleUser } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
-import { GrUserSettings } from "react-icons/gr";
-import { GiQueenCrown } from "react-icons/gi";
+import { LiaBibleSolid } from "react-icons/lia";
+import { RiListSettingsLine } from "react-icons/ri";
+import { BsDoorOpen } from "react-icons/bs";
 
 import ToggleTheme from "./ToggleTheme";
 import Button from "./Button";
-import ToggleBox from "./ToggleBox";
 import SpinnerFullPage from "./SpinnerFullPage";
-import Avatar from "./Avatar";
+import ChakraPopover from "./ChakraPopover";
 
-import Logout from "../features/auth/Logout";
 import { useAuth } from "../context/UserContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
+import { useLogout } from "../features/auth/useLogout";
 
 function Action({ onClose }) {
-  const width = window.innerWidth;
   const { data, isAuthenticated, level, isLoading } = useAuth();
-  const [childX, setChildX] = useState(0);
-
-  const bookmarkRef = useRef(null);
-
-  // bookmarks box
-  const [show, setShow] = useState(false);
-  function handleToggle(e) {
-    e.stopPropagation();
-    const { x } = bookmarkRef.current.getBoundingClientRect();
-    setChildX(width - x - 180);
-
-    if (show !== true) {
-      setUserToggle(false);
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  }
-
-  // user details box
-  const [userToggle, setUserToggle] = useState(false);
-  function handleUserToggle(e) {
-    e.stopPropagation();
-    const { x } = bookmarkRef.current.getBoundingClientRect();
-    setChildX(width - x - 180);
-    if (userToggle !== true) {
-      setShow(false);
-      setUserToggle(true);
-    } else {
-      setUserToggle(false);
-    }
-  }
+  const { logout } = useLogout();
 
   if (isLoading) {
     return <SpinnerFullPage />;
   }
 
   return (
-    <div className="flex items-center justify-stretch gap-5">
-      <span
-        ref={bookmarkRef}
-        id="bookmark"
-        onClick={handleToggle}
-        title="Danh sách tin đã lưu"
-        className="relative cursor-pointer p-3 text-xl"
-      >
-        <FaRegHeart />
-      </span>
-      {show && (
-        <ToggleBox childX={childX} close={() => setShow(false)}></ToggleBox>
-      )}
-      <ToggleTheme />
+    <div className="flex items-center justify-stretch gap-2.5">
+      <div>
+        <ChakraPopover title="Tin đã lưu">
+          <p>hi</p>
+        </ChakraPopover>
+
+        <ToggleTheme />
+      </div>
       {!isAuthenticated ? (
         <>
-          <Button to={"dang-nhap"} onClick={onClose} variant="light">
+          <Button to="dang-nhap" onClick={onClose} variant="light">
             Đăng nhập
           </Button>
-          <Button to={"dang-ky"} onClick={onClose} variant="light">
+          <Button to="dang-ky" onClick={onClose} variant="light">
             Đăng ký
           </Button>
         </>
       ) : (
         <div className="flex items-center">
-          <Avatar avatar={data.avatar} fullName={data.fullName} onClick={handleUserToggle} />
-          {userToggle && (
-            <ToggleBox close={() => setUserToggle(false)} type childX={childX}>
-              <div className="flex flex-col gap-2">
-                <NavLink
-                  to="/tai-khoan"
-                  className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-                >
+          <ChakraPopover title="Tài khoản" avatar data={data}>
+            <div className="flex flex-col gap-2.5">
+              <NavLink to="/quan-ly-bai-viet" className="user-item">
+                <span className="text-xl">
+                  <RiListSettingsLine />
+                </span>
+                Quản lý bài viết
+              </NavLink>
+              <NavLink to="/tai-khoan" className="user-item">
+                <span className="text-xl">
+                  <FaRegCircleUser />
+                </span>
+                Quản lý tài khoản
+              </NavLink>
+              {level >= EDITOR_LEVEL && (
+                <NavLink to="/quan-ly-tin-tuc" className="user-item">
                   <span className="text-xl">
-                    <GrUserSettings />
+                    <FaRegNewspaper />
                   </span>
-                  Quản lý tài khoản
+                  Quản lý tin tức
                 </NavLink>
-                {level >= EDITOR_LEVEL && (
-                  <NavLink
-                    to="/quan-ly-tin-tuc"
-                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-                  >
-                    <span className="text-xl">
-                      <FaRegNewspaper />
-                    </span>
-                    Quản lý tin tức
-                  </NavLink>
-                )}
-                {level >= ADMIN_LEVEL && (
-                  <NavLink
-                    to="/control"
-                    className="flex items-center justify-start gap-2 font-lexend text-lg font-medium transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-                  >
-                    <span className="text-xl">
-                      <GiQueenCrown />
-                    </span>
-                    Admin Panel
-                  </NavLink>
-                )}
-              </div>
-              <span className="mt-3 flex w-full items-center justify-center">
-                <Logout />
-              </span>
-            </ToggleBox>
-          )}
+              )}
+              {level >= ADMIN_LEVEL && (
+                <NavLink to="/control" className="user-item">
+                  <span className="text-xl">
+                    <LiaBibleSolid />
+                  </span>
+                  Admin Panel
+                </NavLink>
+              )}
+              <NavLink onClick={logout} className="user-item">
+                <span className="text-xl">
+                  <BsDoorOpen />
+                </span>
+                Đăng xuất
+              </NavLink>
+            </div>
+          </ChakraPopover>
         </div>
       )}
       <Button to="/dang-tin">Đăng tin</Button>

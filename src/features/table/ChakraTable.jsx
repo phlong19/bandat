@@ -10,32 +10,61 @@ import {
   Tr,
   Th,
   Tbody,
+  Input,
+  InputGroup,
+  InputRightElement,
   useColorModeValue,
 } from "@chakra-ui/react";
 
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
+import { BiSearchAlt } from "react-icons/bi";
+import { newsForm } from "../../constants/message";
 
-function ChakraTable({ title, captions, data, render }) {
+function ChakraTable({
+  title,
+  captions,
+  data,
+  render,
+  primaryButton,
+  count,
+  news = false,
+}) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
 
   return (
-    <Card overflowX={{ sm: "scroll", xl: "hidden" }} bg={tableMode}>
+    <Card overflowX={{ sm: "auto", xl: "hidden" }} bg={tableMode}>
       <CardHeader pt="25" pl="25">
         <Flex justify="space-between">
-          <Text fontSize="xl" color={modeBaseColor} fontWeight="bold">
+          <Text
+            fontSize="xl"
+            color={modeBaseColor}
+            fontWeight="600"
+            fontFamily="roboto"
+          >
             {title}
           </Text>
           <Flex gap={2}>
+            {/* side actions */}
+            {/* TODO: */}
+            <InputGroup>
+              <Input placeholder="search" />
+              <InputRightElement>
+                <Button p={0}>
+                  <BiSearchAlt />
+                </Button>
+              </InputRightElement>
+            </InputGroup>
             <Button colorScheme="teal" variant="ghost">
-              here{" "}
+              filter
             </Button>
-            <Button colorScheme="blue" variant="solid">
-              some
+            <Button colorScheme="blue" variant="ghost">
+              sort
             </Button>
-            <Button colorScheme="purple" variant="outline">
-              action
-            </Button>
+            {/* for main action */}
+            {/* with post => link to dang-tin */}
+            {/* news / user + profile / docs => modal */}
+            {primaryButton}
           </Flex>
         </Flex>
       </CardHeader>
@@ -45,17 +74,26 @@ function ChakraTable({ title, captions, data, render }) {
             <Tr my=".8rem" pl="0px" color="gray.400">
               {captions.map((caption, i) => {
                 return (
-                  <Th color="gray.400" key={i} ps={i === 0 ? "0px" : null}>
+                  <Th
+                    color="gray.400"
+                    textTransform="capitalize"
+                    fontSize="small"
+                    key={i}
+                    ps={i === 0 ? "0px" : null}
+                    pr={0}
+                  >
                     {caption}
                   </Th>
                 );
               })}
             </Tr>
           </Thead>
-          <Tbody>{data.map(render)}</Tbody>
+          <Tbody>
+            {!news ? data.map(render) : <Text>{newsForm.empty}</Text>}
+          </Tbody>
         </Table>
       </CardBody>
-      <ChakraTablePagination />
+      <ChakraTablePagination count={count} />
     </Card>
   );
 }

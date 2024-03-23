@@ -1,16 +1,13 @@
 import { useState } from "react";
-import { FaMap, FaRegMap } from "react-icons/fa6";
-import { toast } from "react-hot-toast";
-import { useMapView } from "../context/MapViewContext";
+import { LiaMapMarkedAltSolid, LiaMap } from "react-icons/lia";
 
-function ViewInMap() {
-  const { mapView } = useMapView();
+function ViewInMap({ onClick }) {
   const [hover, setHover] = useState(false);
 
   function handleClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    toast.error("khong the chi den vi tri chinh xac, vi da lam dau =))");
+    onClick();
   }
 
   return (
@@ -19,12 +16,14 @@ function ViewInMap() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={handleClick}
-      className={`${
-        !mapView ? "p-2.5" : "p-1.5"
-      } group rounded-md border border-light bg-prim-light dark:border-dark dark:bg-sec-light lg:border-0`}
+      className="rounded-md border border-light bg-white p-1.5 dark:border-dark lg:border-0"
     >
-      <span className="text-xl text-black transition-colors duration-300 group-hover:fill-green-600 group-hover:text-green-600">
-        {hover ? <FaMap /> : <FaRegMap />}
+      <span className="text-xl text-black">
+        {hover ? (
+          <LiaMapMarkedAltSolid className="fill-secondary stroke-secondary" />
+        ) : (
+          <LiaMap />
+        )}
       </span>
     </button>
   );

@@ -1,27 +1,23 @@
 // libs
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import toast from "react-hot-toast";
+import { Switch, Center, Spinner } from "@chakra-ui/react";
 
 // UI
-import Map from "../../ui/Map";
-import SpinnerFullPage from "../../ui/SpinnerFullPage";
-import ErrorFallBack from "../../ui/ErrorFallBack";
 import ListItem from "./ListItem";
-import SkewedToggle from "../../ui/SkewedToggle";
-import Searchbar from "./Searchbar";
+import Searchbar from "../searchbar/Searchbar";
+import Map from "../../ui/Map";
+import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
 // hooks & helpers & context
 import { useListingPage } from "./useListingPage";
 import { formatNumber } from "../../utils/helper";
 import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
-import Pagination from "../../ui/Pagination";
 import { useMapView } from "../../context/MapViewContext";
-// import { data } from "../../constants/products";
 
 function List({ purType }) {
-  const { data, error, isLoading } = useListingPage(purType);
-  const { mapView } = useMapView();
+  const { data, count, isLoading } = useListingPage(purType);
+  const { mapView, setMapView } = useMapView();
 
   const listAnimationControl = useAnimation();
   const mapAnimationControl = useAnimation();
@@ -36,105 +32,100 @@ function List({ purType }) {
     if (mapView) {
       // if true, animate the map sliding in and the list shrinking
       mapAnimationControl.start({
+        display: "block",
         x: "0%",
         width: "46%",
         opacity: 1,
         transition: { duration: 0.5 },
       });
       listAnimationControl.start({
-        width: "80%",
+        width: "70%",
         transition: { duration: 0.5 },
       });
     } else {
       // if false, animate the map sliding out and the list expanding
-      mapAnimationControl.start({
-        x: "100%",
-        opacity: 0,
-        transition: { duration: 0.5 },
-      });
-      listAnimationControl
-        .start({ width: "100%", transition: { duration: 0.5 } })
-        .then(() => {
-          mapAnimationControl.set({ width: 0 });
-        });
+      Promise.all([
+        mapAnimationControl.start({
+          x: "100%",
+          width: 0,
+          opacity: 0,
+          transition: { duration: 0.5 },
+        }),
+        listAnimationControl
+          .start({
+            width: "100%",
+            transition: { duration: 0.5 },
+          })
+          .then(() => mapAnimationControl.set({ display: "none" })),
+      ]);
     }
   }, [mapView, mapAnimationControl, listAnimationControl]);
 
   if (isLoading) {
-    return <SpinnerFullPage />;
+    return (
+      <Center minH="90dvh">
+        <Spinner size="md" speed="0.35s" thickness="1px" />
+      </Center>
+    );
   }
-
-  if (error) {
-    toast.error(error.message);
-    return <ErrorFallBack />;
-  }
-
-  // console.log(data);
 
   return (
-    <div className="relative h-full justify-center px-2.5 sm:px-5 lg:flex lg:gap-2">
-      {/* main content */}
+    <div className="relative h-full min-h-[80%] justify-center px-2.5 sm:px-4 lg:flex lg:gap-2">
       <AnimatePresence presenceAffectsLayout>
         <motion.div
           animate={listAnimationControl}
-          className={`z-10 h-full w-full ${mapView ? "overflow-y-auto" : ""}`}
+          className={`z-10 h-full min-h-[90dvh] w-full ${
+            mapView ? "overflow-y-auto" : ""
+          }`}
         >
-          <div className="pt-4">
+          <div className="pt-4 md:pt-8">
             <Searchbar />
           </div>
 
-          <h2 className="pb-4 pt-3 font-lexend text-xl font-medium xl:text-2xl">
+          <h2 className="pt-3 font-lexend text-lg font-medium">
             {`${purType ? "Mua bán" : "Cho thuê"} nhà đất trên toàn quốc`}
           </h2>
           <div className="flex items-center justify-between">
             {/* counter */}
-            <span className="inline-block text-base lg:text-lg">
-              Có <span>{formatNumber(data.length)}</span> bất động sản.
+            <span className="inline-block text-sm">
+              Có <span>{formatNumber(count)}</span> bất động sản.
             </span>
 
             {/* toggle grid & map views */}
             <div className="hidden items-center gap-2 lg:flex">
-              <span className="font-lexend text-xl font-semibold">Bản đồ:</span>
-              <SkewedToggle />
+              <span className="font-lexend text-lg font-semibold">Bản đồ:</span>
+              <Switch size='sm'
+                onChange={() => setMapView((s) => !s)}
+                isChecked={mapView}
+                key={purType}
+                colorScheme="green"
+              />
             </div>
           </div>
 
           {/* RE list */}
-          <div
+          <motion.div
             className={`${
               mapView
                 ? "lg:grid-cols-2 lg:gap-2 xl:grid-cols-3 xl:gap-2.5 3xl:grid-cols-4"
-                : "mx-auto max-w-[1400px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-6"
+                : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-5"
             } mt-3 space-y-4 lg:grid lg:space-y-0`}
           >
-            {/* for development */}
-            {Array.from({ length: 4 }).map((dt, i) => (
-              <React.Fragment key={i}>
-                {data.map((item) => (
-                  <ListItem
-                    key={item.id}
-                    data={item}
-                    purType={purType}
-                    mapView={mapView}
-                  />
-                ))}
-              </React.Fragment>
+            {data.map((item) => (
+              <ListItem key={item.id} data={item} purType={purType} />
             ))}
-          </div>
-          {/* total count later */}
-          <Pagination count={data.count} />
+          </motion.div>
+          <ChakraTablePagination count={count} />
         </motion.div>
 
         {/* map, mobile hidden */}
-        {mapView && (
-          <motion.div
-            key="map"
-            initial={{ x: "100%", width: 0, opacity: 0 }}
-            animate={mapAnimationControl}
-          >
-            <Map data={data} purType={purType} />
-          </motion.div>
-        )}
+        <motion.div
+          key="map"
+          initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
+          animate={mapAnimationControl}
+        >
+          <Map data={data} purType={purType} />
+        </motion.div>
       </AnimatePresence>
     </div>
   );

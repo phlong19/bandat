@@ -1,13 +1,32 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRegister } from "./useRegister";
-import FormInput from "../../ui/FormInput";
-import Button from "../../ui/Button";
-import Spinner from "../../ui/Spinner";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import {
+  Flex,
+  Box,
+  Stack,
+  Link as ChakraLink,
+  Button,
+  Heading,
+  HStack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
-// FIX - form too long, thinking about splitting into steps
+import FormInput from "../../ui/FormInput";
+import Logo from "../../ui/Logo";
 
-function RegisterForm() {
+import { useRegister } from "./useRegister";
+import { account } from "../../constants/message";
+import { phoneLength } from "../../constants/anyVariables";
+import validator from "validator";
+
+function RegisterForm({ setPhone, setProgress, setStep }) {
+  const accent = useColorModeValue("primary", "secondary");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCfPassword, setShowCfPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -15,91 +34,154 @@ function RegisterForm() {
     formState: { errors },
   } = useForm();
 
-  const { signup, isLoading } = useRegister();
+  const { signup, isLoading } = useRegister(setProgress, setStep);
 
   function onSubmit(data) {
-    console.log(data);
-    signup(data);
+    const check = validator.isStrongPassword(data?.password, {
+      minNumbers: 1,
+      minSymbols: 1,
+      minUppercase: 1,
+    });
+
+    if (check) {
+      setPhone(data.phone);
+      signup(data);
+    } else {
+      toast.error("mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so");
+    }
   }
 
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="relative mx-auto w-72 space-y-7 py-3 pt-10 text-center"
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full"
+      key={Math.random()}
+    >
+      <Flex
+        mx="auto"
+        w="full"
+        maxW={{ base: "full", md: "70%", lg: "50%", xl: "600px" }}
+        align={"center"}
+        justify={"center"}
+        rounded="md"
+        bg={useColorModeValue("gray.50", "darker")}
       >
-        <h2 className="pb-3 font-lexend text-3xl font-medium text-primary dark:text-secondary">
-          Đăng ký
-        </h2>
-        <FormInput
-          label="Họ và tên"
-          id="fullName"
-          hookForm={{
-            ...register("fullName", {
-              required: "ten may la gi",
-              minLength: 8,
-            }),
-          }}
-          errors={errors}
-        />
+        <Stack spacing={6} py={12} w={{ base: "90%", lg: "85%" }}>
+          <Stack align={"center"}>
+            <Box pb={2}>
+              <Logo size="w-40" />
+            </Box>
+            <Heading fontSize={"2xl"} textAlign={"center"}>
+              Đăng ký
+            </Heading>
+            <Text
+              fontSize={"md"}
+              color={useColorModeValue("gray.600", "gray.300")}
+            >
+              để bắt đầu sử dụng dịch vụ của Landhub ✌️
+            </Text>
+          </Stack>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "dark")}
+            boxShadow={"lg"}
+            p={8}
+          >
+            <Stack spacing={4} w="full">
+              <HStack flexDirection={{ base: "column", md: "row" }} gap={2.5}>
+                <FormInput
+                  label="Họ và tên"
+                  id="fullName"
+                  hookForm={{
+                    ...register("fullName", {
+                      required: "ten may la gi",
+                      minLength: { message: "deo du 8 ky tu", value: 8 },
+                    }),
+                  }}
+                  errors={errors}
+                />
 
-        {/* <FormInput
-          label="Số điện thoại"
-          id="phone"
-          type="tel"
-          hookForm={{
-            ...register("phone", {
-              required: "cho bo cai dia chi",
-              pattern: "[0-9]{4}-[0-9]{3}-[0-9]{3}",
-            }),
-          }}
-          errors={errors}
-        /> */}
-        <FormInput
-          label="Email"
-          id="email"
-          type="email"
-          hookForm={{
-            ...register("email", { required: "vui long nhap email" }),
-          }}
-          errors={errors}
-        />
+                <FormInput
+                  label="Số điện thoại"
+                  id="phone"
+                  type="number"
+                  hookForm={{
+                    ...register("phone", {
+                      required: account.requiredPhone,
+                      minLength: phoneLength,
+                      maxLength: phoneLength,
+                      valueAsNumber: true,
+                    }),
+                  }}
+                  errors={errors}
+                />
+              </HStack>
 
-        <FormInput
-          label="Mật khẩu"
-          id="password"
-          type="password"
-          hookForm={{
-            ...register("password", { required: "nhap cmm mat khau vao" }),
-          }}
-          errors={errors}
-        />
+              <FormInput
+                label="Mật khẩu"
+                id="password"
+                password
+                setShowPassword={setShowPassword}
+                showPassword={showPassword}
+                hookForm={{
+                  ...register("password", {
+                    required: "nhap cmm mat khau vao",
+                    minLength: { message: "kh du 8", value: 8 },
+                  }),
+                }}
+                errors={errors}
+              />
 
-        <FormInput
-          label="Xác nhận mật khẩu"
-          id="confirmPassword"
-          type="password"
-          errors={errors}
-          hookForm={{
-            ...register("confirmPassword", {
-              required: "dm kh xac nhan mk ak",
-              validate: (value) => {
-                return (
-                  value === getValues("password") || "Password does not match"
-                );
-              },
-            }),
-          }}
-        />
+              <FormInput
+                label="Xác nhận mật khẩu"
+                id="confirmPassword"
+                password
+                setShowPassword={setShowCfPassword}
+                showPassword={showCfPassword}
+                errors={errors}
+                hookForm={{
+                  ...register("confirmPassword", {
+                    required: "dm kh xac nhan mk ak",
+                    minLength: { message: "kh du 8", value: 8 },
+                    validate: (value) => {
+                      return (
+                        value === getValues("password") ||
+                        "Password does not match"
+                      );
+                    },
+                  }),
+                }}
+              />
 
-        <Button gap={false} width>
-          {isLoading ? <Spinner /> : "Đăng ký"}
-        </Button>
-      </form>
-      <div>
-        <Link to="/dang-nhap">dang nhap</Link>
-      </div>
-    </div>
+              <Button
+                w={{ base: "full", sm: "180px" }}
+                mx="auto"
+                colorScheme="green"
+                isLoading={isLoading}
+                loadingText="Chờ xíu"
+                type="submit"
+              >
+                Đăng ký
+              </Button>
+              <Stack pt={4}>
+                <Text align={"center"}>
+                  Đã có tài khoản?{" "}
+                  <ChakraLink as={Link} color={accent} to="/dang-nhap">
+                    Đăng nhập
+                  </ChakraLink>
+                </Text>
+                <Text align={"center"}>
+                  Bạn quên mật khẩu?{" "}
+                  <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
+                    Trợ giúp
+                  </ChakraLink>
+                </Text>
+              </Stack>
+            </Stack>
+          </Box>
+        </Stack>
+      </Flex>
+    </form>
   );
 }
 

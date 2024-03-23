@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { Tooltip, IconButton } from "@chakra-ui/react";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
-import { useMapView } from "../context/MapViewContext";
 
 function Bookmark() {
-  const { mapView } = useMapView();
   const [hover, setHover] = useState(false);
-  // FIX ADD BOOKMARK TO LOCAL STORAGE
+  // TODO: ADD BOOKMARK TO LOCAL STORAGE
 
   function handleClick(e) {
     e.preventDefault();
@@ -15,19 +14,21 @@ function Bookmark() {
   }
 
   return (
-    <button
-      title="Lưu vào tin của bạn"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={handleClick}
-      className={`${
-        !mapView ? "p-2.5" : "p-1.5"
-      } group rounded-md border border-light bg-prim-light dark:border-dark dark:bg-sec-light lg:border-0`}
-    >
-      <span className="text-xl text-black transition-colors duration-300 group-hover:fill-red-500 group-hover:text-red-500">
-        {hover ? <FaHeart /> : <FaRegHeart />}
-      </span>
-    </button>
+    <Tooltip label="Lưu vào tin của bạn" placement="top">
+      <IconButton
+        bg="light"
+        color="darker"
+        size="sm"
+        variant="unstyled"
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onClick={handleClick}
+      >
+        <span className="flex items-center justify-center">
+          {hover ? <FaHeart className="fill-red-500" /> : <FaRegHeart />}
+        </span>
+      </IconButton>
+    </Tooltip>
   );
 }
 

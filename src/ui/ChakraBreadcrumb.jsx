@@ -4,7 +4,7 @@ import slugify from "react-slugify";
 
 function ChakraBreadcrumb({ page = "" }) {
   return (
-    <Breadcrumb fontSize={18} fontFamily="lexend">
+    <Breadcrumb fontSize={18} fontFamily="lexend" id="breadcrumb-scroll">
       <BreadcrumbItem>
         <BreadcrumbLink as={NavLink} to="/">
           Trang chủ

@@ -1,22 +1,16 @@
+import { Flex, Button } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
-import { LIMIT_PER_TABLE } from "../constants/anyVariables";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
+import { useMapView } from "../context/MapViewContext";
+import { LIMIT_PER_PAGE } from "../constants/anyVariables";
 
-import { Flex, Button, useColorModeValue } from "@chakra-ui/react";
-
-const totalItems = 288;
-// const totalPages = 14;
-
-function ChakraTablePagination() {
-  const currentPageColor = useColorModeValue("blue", "yellow");
-
+function ChakraTablePagination({ count, news = false }) {
+  const { setMapView } = useMapView();
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = searchParams.get("page")
-    ? Number(searchParams.get("page"))
-    : 1;
-  const totalPages = Math.ceil(totalItems / LIMIT_PER_TABLE);
-  let finalDestination;
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const totalPages = Math.ceil(count / LIMIT_PER_PAGE);
 
+  let finalDestination;
   function handlePagination(to) {
     switch (to) {
       case "first":
@@ -42,12 +36,20 @@ function ChakraTablePagination() {
       default:
         break;
     }
+    setTimeout(() => {
+      document.getElementById("breadcrumb-scroll")?.scrollIntoView();
+    }, 100);
+    setMapView(false);
     searchParams.set("page", finalDestination.toString());
     setSearchParams(searchParams);
   }
 
+  if (count <= 1) {
+    return null;
+  }
+
   return (
-    <Flex gap={2} justifyContent="end" py={8} pr={6}>
+    <Flex gap={2} justifyContent="end" py={8} pr={news ? 0 : 6}>
       <Button
         variant={currentPage >= 2 ? "pagi" : ""}
         isDisabled={currentPage < 2}
@@ -72,11 +74,7 @@ function ChakraTablePagination() {
           {currentPage - 1}
         </Button>
       )}
-      <Button
-        colorScheme={currentPageColor}
-        isDisabled={true}
-        cursor="not-allowed"
-      >
+      <Button colorScheme="green" fontSize="sm">
         {currentPage}
       </Button>
       {currentPage !== totalPages && (
@@ -84,7 +82,7 @@ function ChakraTablePagination() {
           {currentPage + 1}
         </Button>
       )}
-      {currentPage < totalPages - 3 && (
+      {currentPage < totalPages - 2 && (
         <Button variant="pagi" onClick={() => handlePagination("next2")}>
           {currentPage + 2}
         </Button>
@@ -96,7 +94,7 @@ function ChakraTablePagination() {
         </Button>
       )}
       <Button
-        variant="pagi"
+        variant={currentPage !== totalPages ? "pagi" : ""}
         isDisabled={currentPage === totalPages}
         onClick={() => handlePagination("next")}
       >
