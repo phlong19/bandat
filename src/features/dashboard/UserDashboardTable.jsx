@@ -24,7 +24,9 @@ function UserDashboardTable({ id, level }) {
     return (
       <EmptyTable message={emptyREList}>
         <Link to="/dang-tin">
-          <Button>Tạo bài đăng</Button>
+          <Button colorScheme="green" variant="solid">
+            Tạo bài đăng
+          </Button>
         </Link>
       </EmptyTable>
     );
@@ -40,7 +42,9 @@ function UserDashboardTable({ id, level }) {
       )}
       primaryButton={
         <Link to="/dang-tin">
-          <Button variant='outline' colorScheme="green" borderWidth={2}>Tạo bài đăng</Button>
+          <Button variant="outline" colorScheme="green" borderWidth={2}>
+            Tạo bài đăng
+          </Button>
         </Link>
       }
       count={count}

@@ -119,3 +119,23 @@ export const checkInputType = (input) => {
     return "unknown";
   }
 };
+
+// sanitize query input
+export function sanitizeSearchInput(input = "") {
+  return input.trim().split(" ").join(" & ");
+}
+
+// convert price
+export function convertPrice(input) {
+  const [from, to] = input.split("-");
+  // eg: input: "60"
+  // input.split('-')
+  // ['60']
+
+  // has to mean input go in [range]
+  if (to) {
+    return { from: Number(from), to: Number(to) };
+  }
+
+  return Number(from);
+}

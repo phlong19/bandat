@@ -1,7 +1,7 @@
 // libs
 import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Switch, Center, Spinner } from "@chakra-ui/react";
+import { Switch } from "@chakra-ui/react";
 
 // UI
 import ListItem from "./ListItem";
@@ -10,23 +10,14 @@ import Map from "../../ui/Map";
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
 // hooks & helpers & context
-import { useListingPage } from "./useListingPage";
 import { formatNumber } from "../../utils/helper";
-import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
 import { useMapView } from "../../context/MapViewContext";
 
-function List({ purType }) {
-  const { data, count, isLoading } = useListingPage(purType);
+function List({ purType, data, count }) {
   const { mapView, setMapView } = useMapView();
 
   const listAnimationControl = useAnimation();
   const mapAnimationControl = useAnimation();
-
-  // change page title
-  useEffect(() => {
-    const pageTitle = purType ? purTypeTrue : purTypeFalse;
-    document.title = pageTitle;
-  }, [purType]);
 
   useEffect(() => {
     if (mapView) {
@@ -61,14 +52,6 @@ function List({ purType }) {
     }
   }, [mapView, mapAnimationControl, listAnimationControl]);
 
-  if (isLoading) {
-    return (
-      <Center minH="90dvh">
-        <Spinner size="md" speed="0.35s" thickness="1px" />
-      </Center>
-    );
-  }
-
   return (
     <div className="relative h-full min-h-[80%] justify-center px-2.5 sm:px-4 lg:flex lg:gap-2">
       <AnimatePresence presenceAffectsLayout>
@@ -82,10 +65,10 @@ function List({ purType }) {
             <Searchbar />
           </div>
 
-          <h2 className="pt-3 font-lexend text-lg font-medium">
+          <h2 className="mx-auto max-w-[1500px] pt-3 font-lexend text-lg font-medium">
             {`${purType ? "Mua bán" : "Cho thuê"} nhà đất trên toàn quốc`}
           </h2>
-          <div className="flex items-center justify-between">
+          <div className="mx-auto flex max-w-[1500px] items-center justify-between">
             {/* counter */}
             <span className="inline-block text-sm">
               Có <span>{formatNumber(count)}</span> bất động sản.
@@ -94,7 +77,8 @@ function List({ purType }) {
             {/* toggle grid & map views */}
             <div className="hidden items-center gap-2 lg:flex">
               <span className="font-lexend text-lg font-semibold">Bản đồ:</span>
-              <Switch size='sm'
+              <Switch
+                size="sm"
                 onChange={() => setMapView((s) => !s)}
                 isChecked={mapView}
                 key={purType}

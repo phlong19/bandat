@@ -92,7 +92,7 @@ export const newsCaptions = [
   "Ngày đăng",
 ];
 
-export const maxAreaSearch = 300;
+export const maxAreaSearch = 500;
 
 // auth
 const minName = 8;

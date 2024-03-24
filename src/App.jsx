@@ -85,12 +85,12 @@ function App() {
                     <Route path="danh-ba" element={<Contacts />} />
                   </Route>
 
-                  {/* no layout with this 2 path */}
+                  {/* no layout with these path */}
                   <Route element={<AuthenticationLayout />}>
                     <Route path="dang-nhap" element={<Login />} />
                     <Route path="dang-ky" element={<Register />} />
                     <Route path="quen-mat-khau" element={<ForgotPassword />} />
-                    <Route
+                    <Route // TODO
                       path="dat-lai-mat-khau/:id"
                       element={<ResetPassword />}
                     />

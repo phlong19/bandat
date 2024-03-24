@@ -22,12 +22,24 @@ import { addDays } from "date-fns";
 export async function getList(type, citeria, page) {
   const from = (page - 1) * LIMIT_PER_PAGE;
   const to = from + LIMIT_PER_PAGE - 1;
-  // query
-  // re type
-  // area
-  // address
 
-  const { data, count, error } = await supabase
+  let typeID;
+  if (citeria) {
+    const { data, error } = await supabase
+      .from("REType")
+      .select(`*`)
+      .eq("type", citeria)
+      .limit(1)
+      .single();
+    if (error) {
+      console.log(error);
+      throw new Error(errorMessage.fetchError);
+    }
+
+    typeID = data.REType_ID;
+  }
+
+  let query = supabase
     .from("REDirectory")
     .select(
       `*,
@@ -47,6 +59,13 @@ export async function getList(type, citeria, page) {
     .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
     .range(from, to);
+
+  // type params
+  if (typeID) {
+    query = query.eq("REType_ID", typeID);
+  }
+
+  const { data, count, error } = await query;
 
   if (error) {
     console.log(error);

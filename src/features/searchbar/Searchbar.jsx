@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMediaQuery } from "react-responsive";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { FaFilterCircleDollar } from "react-icons/fa6";
 import { BiSearchAlt } from "react-icons/bi";
@@ -34,11 +35,13 @@ import { m2, maxAreaSearch } from "../../constants/anyVariables";
 
 function Searchbar() {
   const { mapView } = useMapView();
-  const [rangeValue, setRangeValue] = useState([0, maxAreaSearch]);
   const [purType, setPurType] = useState(true);
+  const [above, setAbove] = useState(false);
+  const link = `/nha-dat-${purType ? "ban" : "cho-thue"}`;
   const isTablet = useMediaQuery({
     query: "(min-width: 640px)",
   });
+  const navigate = useNavigate();
 
   const bg = useColorModeValue("white", "darker");
   const bgAcc = useColorModeValue("white", "darker");
@@ -46,11 +49,25 @@ function Searchbar() {
 
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
 
-  const [cityID, setCityID] = useState(NaN);
-  const [disID, setDisID] = useState(NaN);
-  const [wardID, setWardID] = useState(NaN);
+  // current search form
+  const { state } = useLocation();
+  const search = { ...state?.fullData };
 
-  const { register, reset, handleSubmit } = useForm();
+  const [cityID, setCityID] = useState(search?.cityID || NaN);
+  const [disID, setDisID] = useState(search?.disID || NaN);
+  const [wardID, setWardID] = useState(search?.wardID || NaN);
+
+  const { register, reset, handleSubmit } = useForm({
+    defaultValues: {
+      reType: search?.reType,
+      query: search?.query,
+    },
+  });
+
+  const min = search?.area?.[0] || 1;
+  const max = search?.area?.[1] || maxAreaSearch;
+
+  const [rangeValue, setRangeValue] = useState([min, max]);
 
   function handleReset(e) {
     e.preventDefault();
@@ -60,8 +77,16 @@ function Searchbar() {
   }
 
   function onSubmit(data) {
-    const fullData = { ...data, area: rangeValue };
-    console.log(fullData);
+    const fullData = {
+      ...data,
+      purType,
+      area: above ? "above" : rangeValue,
+      cityID,
+      disID,
+      wardID,
+    };
+    // send data to destination page location (hook)
+    navigate(link, { state: { fullData }, replace: true });
   }
 
   return (
@@ -96,7 +121,7 @@ function Searchbar() {
             position="absolute"
             bg={bgAcc}
             boxShadow="lg"
-            width={mapView ? "65%" : "75%"}
+            width={mapView ? "65%" : "85%"}
           >
             <AccordionItem>
               <h2>
@@ -117,6 +142,7 @@ function Searchbar() {
                 <FormControl maxW="150px">
                   <FormLabel fontSize="sm">Dạng bán</FormLabel>
                   <Select
+                    defaultValue={search?.purType?.toString() || "true"}
                     onChange={(e) => setPurType(e.target.value === "true")}
                   >
                     <option value="true">Bán</option>
@@ -125,7 +151,7 @@ function Searchbar() {
                 </FormControl>
 
                 <FormControl>
-                  <FormLabel>Loại hình</FormLabel>
+                  <FormLabel fontSize="sm">Loại hình</FormLabel>
                   <Select {...register("reType")}>
                     {arr.map((opt) => (
                       <option value={opt.type} key={opt.type}>
@@ -146,6 +172,8 @@ function Searchbar() {
                   <ChakraRangeSlider
                     setRangeValue={setRangeValue}
                     rangeValue={rangeValue}
+                    above={above}
+                    setAbove={setAbove}
                   />
                 </FormControl>
 
@@ -161,8 +189,14 @@ function Searchbar() {
                 </FormControl>
 
                 <IconButton
+                  mt={{
+                    base: "10px",
+                    md: "-30px",
+                    lg: "-10px",
+                    xl: "15px",
+                  }}
                   icon={<SlRefresh />}
-                  alignSelf="end"
+                  alignSelf="center"
                   type="reset"
                   onClick={handleReset}
                 />
@@ -216,6 +250,7 @@ function Searchbar() {
                 transitionDuration="300ms"
                 px={{ sm: 5 }}
                 gap={1.5}
+                type="submit"
               >
                 Tìm kiếm
               </Button>

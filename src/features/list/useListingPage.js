@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { getList } from "../../services/apiRE";
 import { LIMIT_PER_PAGE } from "../../constants/anyVariables";
 
-export function useListingPage(purType) {
+export function useListingPage(purType, search) {
   const { type } = useParams();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
@@ -13,6 +13,7 @@ export function useListingPage(purType) {
   const { data: { data, count } = {}, isLoading } = useQuery({
     queryKey: ["REList-client", purType, type, page],
     queryFn: () => getList(purType, type, page),
+    enabled: !search,
   });
 
   // PRE-FETCHING
