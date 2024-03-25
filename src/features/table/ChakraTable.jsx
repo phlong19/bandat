@@ -19,6 +19,7 @@ import {
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 import { BiSearchAlt } from "react-icons/bi";
 import { newsForm } from "../../constants/message";
+import ChakraTableSort from "../../ui/ChakraTableSort";
 
 function ChakraTable({
   title,
@@ -35,7 +36,7 @@ function ChakraTable({
   return (
     <Card overflowX={{ sm: "auto", xl: "hidden" }} bg={tableMode}>
       <CardHeader pt="25" pl="25">
-        <Flex justify="space-between">
+        <Flex justify="space-between" align="center">
           <Text
             fontSize="xl"
             color={modeBaseColor}
@@ -44,7 +45,7 @@ function ChakraTable({
           >
             {title}
           </Text>
-          <Flex gap={2}>
+          <Flex gap={2} align="center">
             {/* side actions */}
             {/* TODO: */}
             <InputGroup>
@@ -58,9 +59,7 @@ function ChakraTable({
             <Button colorScheme="teal" variant="ghost">
               filter
             </Button>
-            <Button colorScheme="blue" variant="ghost">
-              sort
-            </Button>
+            <ChakraTableSort />
             {/* for main action */}
             {/* with post => link to dang-tin */}
             {/* news / user + profile / docs => modal */}
