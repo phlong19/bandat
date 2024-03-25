@@ -210,3 +210,10 @@ export const account = {
   minName: `Ít nhất ${minName} ký tự`,
   maxName: `Vượt quá ${maxName} ký tự`,
 };
+
+// display
+// empty list
+export const display = {
+  emptyList: "kh cos ket qua nao",
+  emptyHintMessage: "thu thay doi query / filter",
+};

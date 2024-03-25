@@ -36,7 +36,6 @@ import { m2, maxAreaSearch } from "../../constants/anyVariables";
 function Searchbar() {
   const { mapView } = useMapView();
   const [purType, setPurType] = useState(true);
-  const [above, setAbove] = useState(false);
   const link = `/nha-dat-${purType ? "ban" : "cho-thue"}`;
   const isTablet = useMediaQuery({
     query: "(min-width: 640px)",
@@ -53,6 +52,8 @@ function Searchbar() {
   const { state } = useLocation();
   const search = { ...state?.fullData };
 
+  const [above, setAbove] = useState(search?.area === "above");
+
   const [cityID, setCityID] = useState(search?.cityID || NaN);
   const [disID, setDisID] = useState(search?.disID || NaN);
   const [wardID, setWardID] = useState(search?.wardID || NaN);
@@ -61,11 +62,12 @@ function Searchbar() {
     defaultValues: {
       reType: search?.reType,
       query: search?.query,
+      price: search?.price,
     },
   });
 
-  const min = search?.area?.[0] || 1;
-  const max = search?.area?.[1] || maxAreaSearch;
+  const min = above ? 1 : search?.area?.[0] || 1;
+  const max = above ? maxAreaSearch : search?.area?.[1] || maxAreaSearch;
 
   const [rangeValue, setRangeValue] = useState([min, max]);
 
@@ -73,6 +75,7 @@ function Searchbar() {
     e.preventDefault();
     setRangeValue([0, maxAreaSearch]);
     setPurType(true);
+    setAbove(false);
     reset();
   }
 
@@ -164,10 +167,12 @@ function Searchbar() {
                 <FormControl mx={2}>
                   <FormLabel fontSize="sm">
                     <span className="mr-1.5">Diện tích:</span>
-                    <span className="text-primary dark:text-secondary">
-                      {rangeValue[0]} - {rangeValue[1]}{" "}
-                      <span className="text-xs">{m2}</span>
-                    </span>
+                    {!above && (
+                      <span className="text-primary dark:text-secondary">
+                        {rangeValue[0]} - {rangeValue[1]}{" "}
+                        <span className="text-xs">{m2}</span>
+                      </span>
+                    )}
                   </FormLabel>
                   <ChakraRangeSlider
                     setRangeValue={setRangeValue}
@@ -244,7 +249,7 @@ function Searchbar() {
                 bg={bg}
                 color={color}
                 _hover={{
-                  _dark: { bg: "secondary", color: "darker" },
+                  _dark: { bg: "secondary", opacity: 0.8 },
                   _light: { bg: "prim-light", color: "darker" },
                 }}
                 transitionDuration="300ms"

@@ -11,15 +11,10 @@ function ListingPage() {
   // check purType & search state
   const check = window.location.pathname.includes("/nha-dat-ban");
   const { state } = useLocation();
-  const search = { ...state?.fullData };
+  const search = state?.fullData;
 
   const { data, count, isLoading } = useListingPage(check, search);
-  console.log(search);
-  const {
-    data: queryData,
-    count: queryCount,
-    isLoading: isQuerying,
-  } = useSearch(search);
+  const { queryData, queryCount, isQuerying } = useSearch(search);
 
   // change page title
   useEffect(() => {

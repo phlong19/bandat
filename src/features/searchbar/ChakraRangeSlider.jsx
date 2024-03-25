@@ -39,7 +39,7 @@ function ChakraRangeSlider({ rangeValue, setRangeValue, setAbove, above }) {
           </Tooltip>
         </RangeSlider>
       )}
-      <Checkbox size='sm' onChange={() => setAbove((s) => !s)}>
+      <Checkbox size='sm' defaultChecked={above} onChange={() => setAbove((s) => !s)}>
         Tìm BĐS trên {maxAreaSearch} {m2}
       </Checkbox>
     </>

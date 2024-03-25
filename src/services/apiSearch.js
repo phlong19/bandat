@@ -5,11 +5,11 @@ import {
   maxAreaSearch,
   SELLING_STATUS,
 } from "../constants/anyVariables";
-import { sanitizeSearchInput } from "../utils/helper";
+import { convertPrice, sanitizeSearchInput } from "../utils/helper";
 
 export async function queryList(formData) {
-  console.log(formData);
-  const { purType, page, reType, area, price, query } = formData;
+  const { purType, page, reType, area, price, query, cityID, disID, wardID } =
+    formData;
 
   const from = (page - 1) * LIMIT_PER_PAGE;
   const to = from + LIMIT_PER_PAGE - 1;
@@ -49,10 +49,10 @@ export async function queryList(formData) {
     .eq("status", SELLING_STATUS)
     .gt("expriryDate", new Date().toISOString())
     .order("created_at", { ascending: false })
-    .textSearch("name", query)
     .limit(LIMIT_PER_PAGE)
     .range(from, to);
 
+  // reType
   if (typeID) {
     supabaseQuery = supabaseQuery.eq("REType_ID", typeID);
   }
@@ -72,7 +72,27 @@ export async function queryList(formData) {
   }
 
   // convert price
-  // TODO
+  const searchPrice = convertPrice(price);
+  if (searchPrice.to) {
+    supabaseQuery = supabaseQuery
+      .lte("price", searchPrice.to)
+      .gte("price", searchPrice.from);
+  } else if (price !== "0" && price === "500") {
+    supabaseQuery = supabaseQuery.lte("price", searchPrice.from);
+  } else if (price === "60") {
+    supabaseQuery = supabaseQuery.gte("price", searchPrice.from);
+  }
+
+  // address
+  if (cityID) {
+    supabaseQuery = supabaseQuery.eq("cityID", cityID);
+  }
+  if (disID) {
+    supabaseQuery = supabaseQuery.eq("disID", disID);
+  }
+  if (wardID) {
+    supabaseQuery = supabaseQuery.eq("wardID", wardID);
+  }
 
   const { data, count, error } = await supabaseQuery;
 
