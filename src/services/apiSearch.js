@@ -8,8 +8,18 @@ import {
 import { convertPrice, sanitizeSearchInput } from "../utils/helper";
 
 export async function queryList(formData) {
-  const { purType, page, reType, area, price, query, cityID, disID, wardID } =
-    formData;
+  const {
+    purType,
+    page,
+    reType,
+    area,
+    price,
+    query,
+    cityID,
+    disID,
+    wardID,
+    sort,
+  } = formData;
 
   const from = (page - 1) * LIMIT_PER_PAGE;
   const to = from + LIMIT_PER_PAGE - 1;
@@ -48,9 +58,15 @@ export async function queryList(formData) {
     .eq("images.isImage", true)
     .eq("status", SELLING_STATUS)
     .gt("expriryDate", new Date().toISOString())
-    .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
     .range(from, to);
+
+  if (sort !== "created_at-desc") {
+    const [col, order] = sort.split("-");
+    supabaseQuery = supabaseQuery.order(col, { ascending: order === "asc" });
+  } else {
+    supabaseQuery = supabaseQuery.order("created_at", { ascending: false });
+  }
 
   // reType
   if (typeID) {

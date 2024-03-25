@@ -8,11 +8,12 @@ export function useListingPage(purType, search) {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
 
+  const sort = searchParams.get("sort") || "created_at-desc";
   const page = Number(searchParams.get("page")) || 1;
 
   const { data: { data, count } = {}, isLoading } = useQuery({
-    queryKey: ["REList-client", purType, type, page],
-    queryFn: () => getList(purType, type, page),
+    queryKey: ["REList-client", purType, type, sort, page],
+    queryFn: () => getList(purType, type, sort, page),
     enabled: !search,
   });
 
@@ -21,15 +22,15 @@ export function useListingPage(purType, search) {
   // A. next page
   if (page < totalPage) {
     queryClient.prefetchQuery({
-      queryKey: ["REList-client", purType, type, page + 1],
-      queryFn: () => getList(purType, type, page + 1),
+      queryKey: ["REList-client", purType, type, sort, page + 1],
+      queryFn: () => getList(purType, type, sort, page + 1),
     });
   }
   // B. prev page
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: ["REList-client", purType, type, page - 1],
-      queryFn: () => getList(purType, type, page - 1),
+      queryKey: ["REList-client", purType, type, sort, page - 1],
+      queryFn: () => getList(purType, type, sort, page - 1),
     });
 
   return { data, count, isLoading };

@@ -8,7 +8,7 @@ function AdminDashboardTable({ count, data }) {
       count={count}
       data={data}
       render={(item) => <TableDocRow data={item} key={item.doc_id} />}
-      title="Docs"
+      title="Danh sách giấy tờ, tài liệu pháp lý"
     />
   );
 }

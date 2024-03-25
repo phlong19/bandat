@@ -19,8 +19,8 @@ function ChakraRangeSlider({ rangeValue, setRangeValue, setAbove, above }) {
         <RangeSlider
           id="slider"
           aria-label={["min", "max"]}
-          defaultValue={[0, maxAreaSearch]}
-          min={0}
+          defaultValue={[1, maxAreaSearch]}
+          min={1}
           value={rangeValue}
           max={maxAreaSearch}
           colorScheme="green"

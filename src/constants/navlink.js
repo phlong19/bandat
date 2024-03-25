@@ -63,7 +63,11 @@ export const mobileNavLinks = {
     { title: "Dự án", icon: "City", to: "du-an" },
     { title: "Tin tức", icon: "Newspaper", to: "tin-tuc" },
     // later
-    { title: "Góp ý - Báo lỗi", icon: "EnvelopeCircleCheck", to: "hom-thu-gop-y" },
+    {
+      title: "Góp ý - Báo lỗi",
+      icon: "EnvelopeCircleCheck",
+      to: "hom-thu-gop-y",
+    },
     { title: "Giới thiệu về chúng tôi", icon: "UsersLine", to: "danh-ba" },
     { title: "Liên hệ", icon: "Headset", to: "danh-ba" },
     // TODO
@@ -110,4 +114,13 @@ export const prices = [
   { label: "10 - 30 tỷ", value: "10-30" },
   { label: "30 - 60 tỷ", value: "30-60" },
   { label: "Trên 60 tỷ", value: "60" },
+];
+
+export const sortList = [
+  { label: "Ngày đăng mới nhất", value: "created_at-desc" },
+  { label: "Ngày đăng cũ nhất", value: "created_at-asc" },
+  { label: "Giá giảm dần", value: "price-desc" },
+  { label: "Giá tăng dần", value: "price-asc" },
+  { label: "Diện tích giảm dần", value: "area-desc" },
+  { label: "Diện tích tăng dần", value: "area-asc" },
 ];

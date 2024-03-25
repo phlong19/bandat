@@ -1,8 +1,9 @@
 // libs
 import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Switch } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { Switch, Select } from "@chakra-ui/react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { Flex } from "@chakra-ui/react";
 
 // UI
 import ListItem from "./ListItem";
@@ -15,12 +16,14 @@ import { formatNumber, renderQueryLabel } from "../../utils/helper";
 import { useMapView } from "../../context/MapViewContext";
 import { useSearchbar } from "../searchbar/useSearchbar";
 import EmptyList from "../../ui/EmptyList";
+import { sortList } from "../../constants/navlink";
 
 function List({ purType, data, count = 0 }) {
   const { mapView, setMapView } = useMapView();
   const { data: addressData } = useSearchbar();
   const location = useLocation();
   const search = location.state?.fullData;
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const listAnimationControl = useAnimation();
   const mapAnimationControl = useAnimation();
@@ -90,18 +93,36 @@ function List({ purType, data, count = 0 }) {
 
             {/* toggle grid & map views */}
             {count > 0 && (
-              <div className="hidden items-center gap-2 lg:flex">
-                <span className="font-lexend text-lg font-semibold">
-                  Bản đồ:
-                </span>
-                <Switch
-                  size="sm"
-                  onChange={() => setMapView((s) => !s)}
-                  isChecked={mapView}
-                  key={purType}
-                  colorScheme="green"
-                />
-              </div>
+              <Flex gap={3} align="center">
+                <Select
+                  value={searchParams.get("sort") || "created_at-desc"}
+                  size="xs"
+                  rounded="md"
+                  minW="160px"
+                  onChange={(e) => {
+                    searchParams.set("sort", e.target.value);
+                    setSearchParams(searchParams);
+                  }}
+                >
+                  {sortList.map((i) => (
+                    <option key={i.value} value={i.value}>
+                      {i.label}
+                    </option>
+                  ))}
+                </Select>
+                <div className="hidden items-center gap-2 lg:flex">
+                  <span className="w-max font-lexend text-lg font-semibold">
+                    Bản đồ:
+                  </span>
+                  <Switch
+                    size="sm"
+                    onChange={() => setMapView((s) => !s)}
+                    isChecked={mapView}
+                    key={purType}
+                    colorScheme="green"
+                  />
+                </div>
+              </Flex>
             )}
           </div>
 
@@ -112,7 +133,7 @@ function List({ purType, data, count = 0 }) {
                 className={`${
                   mapView
                     ? "lg:grid-cols-2 lg:gap-2 xl:grid-cols-3 xl:gap-2.5 3xl:grid-cols-4"
-                    : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-5"
+                    : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-4"
                 } mt-3 space-y-4 lg:grid lg:space-y-0`}
               >
                 {data.map((item) => (

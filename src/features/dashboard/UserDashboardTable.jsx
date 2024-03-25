@@ -36,7 +36,7 @@ function UserDashboardTable({ id, level }) {
     <ChakraTable
       captions={reCaptions}
       data={reList}
-      title="Quản lý bài viết"
+      title="Quản lý danh sách bài viết"
       render={(item) => (
         <TableRERow key={item.id} data={item} level={level} userID={id} />
       )}

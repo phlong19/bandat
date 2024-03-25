@@ -73,7 +73,7 @@ function Searchbar() {
 
   function handleReset(e) {
     e.preventDefault();
-    setRangeValue([0, maxAreaSearch]);
+    setRangeValue([1, maxAreaSearch]);
     setPurType(true);
     setAbove(false);
     reset();

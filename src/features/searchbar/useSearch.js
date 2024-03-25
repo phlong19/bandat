@@ -7,13 +7,14 @@ export function useSearch(formData) {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const page = Number(searchParams.get("page")) || 1;
+  const sort = searchParams.get("sort") || "created_at-desc";
 
   const {
     data: { data: queryData, count: queryCount } = {},
     isLoading: isQuerying,
   } = useQuery({
-    queryKey: ["query-results", formData, page],
-    queryFn: () => queryList({ ...formData, page }),
+    queryKey: ["query-results", formData, sort, page],
+    queryFn: () => queryList({ ...formData, sort, page }),
     enabled: Boolean(formData?.reType),
   });
 
@@ -22,15 +23,15 @@ export function useSearch(formData) {
   // A. next page
   if (page < totalPage) {
     queryClient.prefetchQuery({
-      queryKey: ["query-results", formData, page + 1],
-      queryFn: () => queryList({ ...formData, page: page + 1 }),
+      queryKey: ["query-results", formData, sort, page + 1],
+      queryFn: () => queryList({ ...formData, sort, page: page + 1 }),
     });
   }
   // B. prev page
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: ["query-results", formData, page - 1],
-      queryFn: () => queryList({ ...formData, page: page - 1 }),
+      queryKey: ["query-results", formData, sort, page - 1],
+      queryFn: () => queryList({ ...formData, sort, page: page - 1 }),
     });
 
   return { queryData, queryCount, isQuerying };

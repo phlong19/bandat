@@ -13,6 +13,7 @@ import { formatDate } from "../utils/helper";
 import Avatar from "../ui/Avatar";
 import { formatDistanceToNow } from "date-fns";
 import GoBackButton from "../ui/GoBackButton";
+import { useEffect } from "react";
 
 function NewDetails() {
   const { title } = useParams();
@@ -22,6 +23,13 @@ function NewDetails() {
     queryFn: () => getNew(title),
     enabled: Boolean(title),
   });
+
+  // change page title
+  useEffect(() => {
+    if (data) {
+      document.title = data.title;
+    }
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -59,7 +67,7 @@ function NewDetails() {
             <Image rounded="lg" src={thumbnail} alt={slug} />
           </AspectRatio>
         </Center>
-        <div className="py-4 text-center font-lexend text-3xl font-bold">
+        <div className="max-w-[1300px] mx-auto py-4 text-center font-lexend text-3xl font-bold">
           <h1>{Hline}</h1>
         </div>
 

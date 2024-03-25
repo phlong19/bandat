@@ -48,7 +48,7 @@ function EditorDashboardTable({ data, count }) {
           />
         )
       }
-      title="Quản lý tin tức"
+      title="Quản lý danh sách tin tức"
       count={count}
     />
   );
