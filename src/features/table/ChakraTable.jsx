@@ -16,10 +16,11 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import ChakraTablePagination from "../../ui/ChakraTablePagination";
 import { BiSearchAlt } from "react-icons/bi";
-import { newsForm } from "../../constants/message";
+import ChakraTablePagination from "../../ui/ChakraTablePagination";
 import ChakraTableSort from "../../ui/ChakraTableSort";
+import ChakraTableFilter from "../../ui/ChakraTableFilter";
+import { newsForm } from "../../constants/message";
 
 function ChakraTable({
   title,
@@ -42,12 +43,16 @@ function ChakraTable({
             color={modeBaseColor}
             fontWeight="600"
             fontFamily="roboto"
+            noOfLines={1}
+            title={title}
           >
             {title}
           </Text>
           <Flex gap={2} align="center">
             {/* side actions */}
             {/* TODO: */}
+            {/* a. add text search */}
+            {/* b. display suitable empty filter / sort list */}
             <InputGroup>
               <Input placeholder="search" />
               <InputRightElement>
@@ -56,10 +61,8 @@ function ChakraTable({
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <Button colorScheme="teal" variant="ghost">
-              filter
-            </Button>
-            <ChakraTableSort />
+            <ChakraTableFilter news={news} />
+            <ChakraTableSort news={news} />
             {/* for main action */}
             {/* with post => link to dang-tin */}
             {/* news / user + profile / docs => modal */}

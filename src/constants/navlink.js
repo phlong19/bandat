@@ -116,6 +116,7 @@ export const prices = [
   { label: "Trên 60 tỷ", value: "60" },
 ];
 
+// re
 export const sortList = [
   { label: "Ngày đăng mới nhất", value: "created_at-desc" },
   { label: "Ngày đăng cũ nhất", value: "created_at-asc" },
@@ -124,3 +125,14 @@ export const sortList = [
   { label: "Diện tích giảm dần", value: "area-desc" },
   { label: "Diện tích tăng dần", value: "area-asc" },
 ];
+
+export const filterList = [
+  { label: "Chờ duyệt", value: "status-waiting" },
+  { label: "Đã duyệt", value: "status-selling" },
+  { label: "Đã bán", value: "status-sold" },
+  { label: "Đã hết hạn", value: "status-expired" },
+];
+
+// news
+export const sortNewsList = [{ label: "" }];
+// TODO

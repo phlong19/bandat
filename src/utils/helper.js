@@ -189,3 +189,17 @@ export function renderQueryLabel(search, city) {
 
   return "Danh sách " + type + area + price + address;
 }
+
+// get status id
+export function getStatusID(value) {
+  switch (value) {
+    case "waiting":
+      return DEFAULT_RE_STATUS;
+    case "selling":
+      return SELLING_STATUS;
+    case "sold":
+      return SOLD_STATUS;
+    default:
+      break;
+  }
+}

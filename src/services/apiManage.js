@@ -6,8 +6,9 @@ import {
   maxLength,
   minLength,
 } from "../constants/anyVariables";
+import { getStatusID } from "../utils/helper";
 
-export async function getFullREList(userID, page) {
+export async function getFullREList(userID, sort, filter, page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
   const end = start + LIMIT_PER_PAGE - 1;
 
@@ -37,10 +38,25 @@ export async function getFullREList(userID, page) {
     `,
       { count: "exact" },
     )
-    .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
 
+  // sort
+  if (sort !== "created_at-desc") {
+    const [col, order] = sort.split("-");
+    query = query.order(col, { ascending: order === "asc" });
+  } else [(query = query.order("created_at", { ascending: false }))];
+
+  // filter
+  if (filter !== "none" && filter !== "status-expired") {
+    const [col, status] = filter.split("-");
+    const id = getStatusID(status);
+    query = query.eq(col, id);
+  } else if (filter === "status-expired") {
+    query = query.lt("expriryDate", new Date().toISOString());
+  }
+
+  // base level query
   if (level < ADMIN_LEVEL) {
     query = query.eq("userID", id);
   }

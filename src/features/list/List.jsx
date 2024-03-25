@@ -95,7 +95,7 @@ function List({ purType, data, count = 0 }) {
             {count > 0 && (
               <Flex gap={3} align="center">
                 <Select
-                  value={searchParams.get("sort") || "created_at-desc"}
+                  value={searchParams.get("sort") || sortList[0].value}
                   size="xs"
                   rounded="md"
                   minW="160px"
