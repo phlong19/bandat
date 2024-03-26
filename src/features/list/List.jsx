@@ -1,7 +1,7 @@
 // libs
 import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Switch, Select } from "@chakra-ui/react";
+import { Switch, Select, Center, Spinner } from "@chakra-ui/react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 
@@ -17,8 +17,9 @@ import { useMapView } from "../../context/MapViewContext";
 import { useSearchbar } from "../searchbar/useSearchbar";
 import EmptyList from "../../ui/EmptyList";
 import { sortList } from "../../constants/navlink";
+import SkeletonList from "../../ui/SkeletonList";
 
-function List({ purType, data, count = 0 }) {
+function List({ purType, data, count = 0, isLoading }) {
   const { mapView, setMapView } = useMapView();
   const { data: addressData } = useSearchbar();
   const location = useLocation();
@@ -127,7 +128,9 @@ function List({ purType, data, count = 0 }) {
           </div>
 
           {/* RE list */}
-          {count > 0 ? (
+          {!isLoading ? (
+            <SkeletonList />
+          ) : count > 0 ? (
             <>
               <motion.div
                 className={`${

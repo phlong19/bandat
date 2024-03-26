@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Center, Spinner } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import List from "../features/list/List";
 
@@ -22,18 +21,17 @@ function ListingPage() {
     document.title = pageTitle;
   }, [check]);
 
-  if (isLoading || isQuerying) {
-    return (
-      <Center minH="90dvh">
-        <Spinner size="md" speed="0.35s" thickness="1px" />
-      </Center>
-    );
-  }
-
   const listData = search ? queryData : data;
   const listCount = search ? queryCount : count;
 
-  return <List purType={check} data={listData} count={listCount} />;
+  return (
+    <List
+      purType={check}
+      data={listData}
+      count={listCount}
+      isLoading={isLoading || isQuerying}
+    />
+  );
 }
 
 export default ListingPage;

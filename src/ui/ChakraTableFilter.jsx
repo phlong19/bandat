@@ -1,12 +1,12 @@
 import { Select } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
 
-import { filterList } from "../constants/navlink";
+import { filterList, filterNewsList } from "../constants/navlink";
 
-function ChakraTableFilter() {
+function ChakraTableFilter({ news }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const arr = !news ? filterList : filterNewsList;
 
-  console.log(searchParams.get("filter"));
   return (
     <Select
       size="md"
@@ -16,11 +16,12 @@ function ChakraTableFilter() {
       maxW="130px"
       onChange={(e) => {
         searchParams.set("filter", e.target.value);
+        searchParams.set("page", 1);
         setSearchParams(searchParams);
       }}
     >
       <option value="none">Tất cả</option>
-      {filterList.map((i) => (
+      {arr.map((i) => (
         <option value={i.value} key={i.value}>
           {i.label}
         </option>

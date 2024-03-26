@@ -45,7 +45,9 @@ export async function getFullREList(userID, sort, filter, page) {
   if (sort !== "created_at-desc") {
     const [col, order] = sort.split("-");
     query = query.order(col, { ascending: order === "asc" });
-  } else [(query = query.order("created_at", { ascending: false }))];
+  } else {
+    query = query.order("created_at", { ascending: false });
+  }
 
   // filter
   if (filter !== "none" && filter !== "status-expired") {
@@ -109,7 +111,7 @@ export async function getPost(slug, level, userID) {
 }
 
 // news
-export async function getFullNewsList(userID, page) {
+export async function getFullNewsList(userID, sort, filter, page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
   const end = start + LIMIT_PER_PAGE - 1;
 
@@ -138,6 +140,21 @@ export async function getFullNewsList(userID, page) {
     )
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
+
+  // sort
+  if (sort !== "created_at-desc") {
+    const [col, order] = sort.split("-");
+    query = query.order(col, { ascending: order === "asc" });
+  } else {
+    query = query.order("created_at", { ascending: false });
+  }
+
+  // filter
+  if (filter !== "none") {
+    const [col, value] = filter.split("-");
+    const status = value === "waiting" ? false : true;
+    query = query.eq(col, status);
+  }
 
   if (level < ADMIN_LEVEL) {
     query = query.eq("userID", id);

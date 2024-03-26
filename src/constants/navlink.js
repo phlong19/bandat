@@ -134,5 +134,14 @@ export const filterList = [
 ];
 
 // news
-export const sortNewsList = [{ label: "" }];
-// TODO
+export const sortNewsList = [
+  { label: "Ngày đăng mới nhất", value: "created_at-desc" },
+  { label: "Ngày đăng cũ nhất", value: "created_at-asc" },
+  { label: "Tiêu đề (A-Z)", value: "title-asc" },
+  { label: "Tiêu đề (Z-A)", value: "title-desc" },
+];
+
+export const filterNewsList = [
+  { label: "Đã duyệt", value: "status-approved" },
+  { label: "Chờ duyệt", value: "status-waiting" },
+];

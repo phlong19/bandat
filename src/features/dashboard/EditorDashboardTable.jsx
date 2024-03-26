@@ -13,16 +13,19 @@ import TableNewRow from "../table/TableNewRow";
 
 import { newsCaptions } from "../../constants/anyVariables";
 import { useGetSingleNews } from "./useGetSingleNews";
+import { useGetFullNewsList } from "./useGetFullNewsList";
 
-function EditorDashboardTable({ data, count }) {
+function EditorDashboardTable({ id }) {
   const [slug, setSlug] = useState("");
   // form modal
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { data, count, isLoading: isFetching } = useGetFullNewsList(id);
   const { data: newData, isLoading } = useGetSingleNews(slug);
 
   return (
     <ChakraTable
+      isLoading={isLoading || isFetching}
       data={data}
       captions={newsCaptions}
       render={(item) => (
@@ -50,6 +53,7 @@ function EditorDashboardTable({ data, count }) {
       }
       title="Quản lý danh sách tin tức"
       count={count}
+      news
     />
   );
 }

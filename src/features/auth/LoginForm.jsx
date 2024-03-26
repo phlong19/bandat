@@ -41,7 +41,7 @@ function LoginForm() {
       <Flex
         mx="auto"
         w="full"
-        maxW={{ base: "full", md: "70%", lg: "50%", xl: "600px" }}
+        maxW={{ base: "full", sm: "75%", md: "70%", lg: "50%", xl: "600px" }}
         align={"center"}
         justify={"center"}
         rounded="md"

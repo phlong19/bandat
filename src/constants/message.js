@@ -26,7 +26,7 @@ export const homeText = [
 ];
 
 export const emptyREList =
-  "Chưa đăng bài viết nào, khong co dat de ban a? ban nha di";
+  "Chưa đăng bài viết nào, dang bai di hoac thay doi sort/ filter";
 
 export const error = {
   // general
