@@ -9,35 +9,40 @@ import {
 
 function SkeletonList() {
   return (
-    <Box maxW="1500px" mx="auto" mt={3}>
+    <Box maxW="1500px" mx="auto" my={3} py={3} px={2}>
       <Flex
         display={{ sm: "flex", lg: "grid" }}
         flexDir="column"
-        gridTemplateColumns={{ lg: "repeat(3, 1fr)" }}
+        gridTemplateColumns={{ lg: "repeat(3, 1fr)", xl: "repeat(4, 1fr)" }}
         gap={4}
       >
         {Array.from({ length: 12 }).map((_, index) => (
-          <Card minW={160} p={2} key={index}>
+          <Card minW={160} p={2.5} key={index}>
             <Skeleton height={100} rounded="md" />
             <SkeletonText py={3}>
               <Flex />
             </SkeletonText>
             <Flex alignItems="center" gap={3} justifyContent="start">
-              <Skeleton height={6} minWidth={70} />
-              <Skeleton height={6} minWidth={70} />
-              <Skeleton height={6} minWidth={70} />
-              <Skeleton height={6} minWidth={70} />
+              <Skeleton height={6} minWidth={{ base: 50, lg: "60px" }} />
+              <Skeleton height={6} minWidth={{ base: 50, lg: "60px" }} />
+              <Skeleton height={6} minWidth={{ base: 50, lg: "60px" }} />
+              <Skeleton height={6} minWidth={{ base: 50, lg: "60px" }} />
             </Flex>
             <Flex
               width="100%"
               justifyContent="space-between"
               alignItems="center"
+              pt={3}
+              my={2}
             >
-              <Flex alignItems="center">
+              <Flex alignItems="center" gap={3}>
                 <SkeletonCircle />
-                <Skeleton height={5} minWidth={50} />
+                <Skeleton
+                  height={5}
+                  minWidth={{ base: 55, sm: 79, md: 85, xl: 90 }}
+                />
               </Flex>
-              <Skeleton height={8} width={5} minWidth={150} />
+              <Skeleton height={5} minWidth={140} />
             </Flex>
           </Card>
         ))}

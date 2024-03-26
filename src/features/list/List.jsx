@@ -1,7 +1,7 @@
 // libs
 import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Switch, Select, Center, Spinner } from "@chakra-ui/react";
+import { Switch, Select } from "@chakra-ui/react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 
@@ -128,7 +128,7 @@ function List({ purType, data, count = 0, isLoading }) {
           </div>
 
           {/* RE list */}
-          {!isLoading ? (
+          {isLoading ? (
             <SkeletonList />
           ) : count > 0 ? (
             <>
