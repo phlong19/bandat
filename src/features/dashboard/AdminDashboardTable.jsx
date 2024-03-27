@@ -5,6 +5,7 @@ import ChakraTable from "../table/ChakraTable";
 import TableDocRow from "../table/TableDocRow";
 import TableTypeRow from "../table/TableTypeRow";
 import TableUserRow from "../table/TableUserRow";
+import AdminChart from "../../ui/AdminChart";
 
 import { useGetFullTypeList } from "./useGetFullTypeList";
 import { useGetFullListDocs } from "./useGetFullListDocs";
@@ -20,7 +21,7 @@ function AdminDashboardTable() {
     <Box gap={4} display="flex" flexDirection="column">
       <ChakraBreadcrumb page="Admin" />
       {/* chart */}
-      {/* TODO */}
+      <AdminChart isLoading={isUsering} />
       <ChakraTable
         isLoading={isUsering}
         page="user-page"
