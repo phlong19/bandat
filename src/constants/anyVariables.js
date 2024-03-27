@@ -92,6 +92,16 @@ export const newsCaptions = [
   "Ngày đăng",
 ];
 
+export const profileCaptions = [
+  "Tên người dùng",
+  "Email",
+  "Phân quyền",
+  "Địa chỉ",
+  "Giới tính",
+  "Ngày sinh",
+  "Ngày tạo",
+];
+
 export const maxAreaSearch = 500;
 
 // auth

@@ -1,9 +1,12 @@
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import {
+  ADMIN_LEVEL,
   DEFAULT_RE_STATUS,
+  EDITOR_LEVEL,
   SELLING_STATUS,
   SOLD_STATUS,
+  USER_LEVEL,
   billion,
   m2,
   maxAreaSearch,
@@ -84,6 +87,26 @@ export function getStatusBadgeColor(id) {
       break;
     case SOLD_STATUS:
       color = "orange";
+      break;
+    default:
+      break;
+  }
+
+  return color;
+}
+
+export function getStatusBadgeProfile(level) {
+  let color;
+
+  switch (level) {
+    case USER_LEVEL:
+      color = "blue";
+      break;
+    case EDITOR_LEVEL:
+      color = "green";
+      break;
+    case ADMIN_LEVEL:
+      color = "red";
       break;
     default:
       break;

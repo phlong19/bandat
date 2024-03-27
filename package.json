@@ -42,6 +42,7 @@
     "react-slick": "^0.30.2",
     "react-slugify": "^3.0.3",
     "react-type-animation": "^3.2.0",
+    "recharts": "^2.12.3",
     "slick-carousel": "^1.8.1",
     "unidecode": "^1.0.1",
     "uuid": "^9.0.1",

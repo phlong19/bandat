@@ -188,3 +188,48 @@ export async function getFullDocsList(page) {
 
   return { data, count };
 }
+
+// re type
+export async function getFullTypeList(page) {
+  const start = (page - 1) * LIMIT_PER_PAGE;
+  const end = start + LIMIT_PER_PAGE - 1;
+
+  const { data, count, error } = await supabase
+    .from("REType")
+    .select(`REType_ID, created_at, name`, { count: "exact" })
+    .limit(LIMIT_PER_PAGE)
+    .range(start, end);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
+}
+
+// get profiles
+export async function getFullUserList(page) {
+  const start = (page - 1) * LIMIT_PER_PAGE;
+  const end = page + LIMIT_PER_PAGE - 1;
+
+  const { data, count, error } = await supabase
+    .from("Profile")
+    .select(
+      `*, 
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName)
+    `,
+      { count: "exact" },
+    )
+    .limit(LIMIT_PER_PAGE)
+    .range(start, end);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
+}

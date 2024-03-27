@@ -34,13 +34,19 @@ function ChakraTable({
   primaryButton,
   count,
   news = false,
+  viewOnly = false,
   isLoading,
+  page,
 }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
 
   return (
-    <Card overflowX={{ sm: "auto", xl: "hidden" }} bg={tableMode}>
+    <Card
+      overflowX={{ sm: "auto", xl: "hidden" }}
+      bg={tableMode}
+      w={viewOnly ? "100%" : "auto"}
+    >
       <CardHeader pt="25" pl="25">
         <Flex justify="space-between" align="center">
           <Text
@@ -53,26 +59,27 @@ function ChakraTable({
           >
             {title}
           </Text>
-          <Flex gap={2} align="center">
-            {/* side actions */}
-            {/* TODO: */}
-            {/* a. add text search */}
-            {/* b. display suitable empty filter / sort list */}
-            <InputGroup>
-              <Input placeholder="search" />
-              <InputRightElement>
-                <Button p={0}>
-                  <BiSearchAlt />
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            <ChakraTableFilter news={news} />
-            <ChakraTableSort news={news} />
-            {/* for main action */}
-            {/* with post => link to dang-tin */}
-            {/* news / user + profile / docs => modal */}
-            {primaryButton}
-          </Flex>
+          {!viewOnly && (
+            <Flex gap={2} align="center">
+              {/* side actions */}
+              {/* TODO: */}
+              {/* a. add text search */}
+              <InputGroup>
+                <Input placeholder="search" />
+                <InputRightElement>
+                  <Button p={0}>
+                    <BiSearchAlt />
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <ChakraTableFilter news={news} />
+              <ChakraTableSort news={news} />
+              {/* for main action */}
+              {/* with post => link to dang-tin */}
+              {/* news / user + profile / docs => modal */}
+              {primaryButton}
+            </Flex>
+          )}
         </Flex>
       </CardHeader>
       {isLoading ? (
@@ -81,7 +88,11 @@ function ChakraTable({
         </Center>
       ) : (
         <>
-          <CardBody minH={count > 0 ? "" : "50dvh"}>
+          <CardBody
+            minH={count > 0 ? "" : "50dvh"}
+            maxH={viewOnly ? "60dvh" : ""}
+            overflowY="scroll"
+          >
             <Table variant="simple">
               <Thead>
                 <Tr my=".8rem" pl="0px" color="gray.400">
@@ -115,7 +126,12 @@ function ChakraTable({
               </EmptyTable>
             )}
           </CardBody>
-          {count > 0 && <ChakraTablePagination count={count} />}
+          {count > 0 && (
+            <ChakraTablePagination
+              count={count}
+              page={viewOnly ? page : "page"}
+            />
+          )}
         </>
       )}
     </Card>

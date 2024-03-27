@@ -2,14 +2,11 @@ import { Center, Spinner } from "@chakra-ui/react";
 import AdminDashboardTable from "../features/dashboard/AdminDashboardTable";
 
 import { useAuth } from "../context/UserContext";
-import { useGetFullListDocs } from "../features/dashboard/useGetFullListDocs";
 
 function AdminPanel() {
   const { isLoading } = useAuth();
 
-  const { data, count, isFetching } = useGetFullListDocs();
-
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <Center minH="80dvh">
         <Spinner />
@@ -17,7 +14,7 @@ function AdminPanel() {
     );
   }
 
-  return <AdminDashboardTable count={count} data={data} />;
+  return <AdminDashboardTable />;
 }
 
 export default AdminPanel;
