@@ -44,7 +44,7 @@ function ListItem({ data, purType, isPopup = false }) {
     <div
       className={`${
         !isPopup
-          ? "mt-2 border-2 bg-white p-1 transition-colors duration-200 hover:border-primary dark:bg-darker md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
+          ? "mt-2 border-2 bg-white p-1 transition-colors duration-200 hover:border-primary dark:bg-darker md:p-2 lg:m-0 lg:p-2 xl:p-2"
           : "min-w-[160px] p-[2px] text-black lg:w-full"
       } group rounded-lg`}
     >

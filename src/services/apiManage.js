@@ -211,7 +211,7 @@ export async function getFullTypeList(page) {
 // get profiles
 export async function getFullUserList(page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
-  const end = page + LIMIT_PER_PAGE - 1;
+  const end = start + LIMIT_PER_PAGE - 1;
 
   const { data, count, error } = await supabase
     .from("Profile")

@@ -118,11 +118,11 @@ export function getStatusBadgeProfile(level) {
 export function getCoreNameType(name, type) {
   switch (type) {
     case "nha-mat-pho":
-      return name.slice(4);
+      return name.slice(4)[0].toUpperCase() + name.slice(5);
     case "dat-nen-du-an":
-      return name.slice(4);
+      return name.slice(4)[0].toUpperCase() + name.slice(5);
     case "dat-nen-tho-cu":
-      return name.slice(4);
+      return name.slice(4)[0].toUpperCase() + name.slice(5);
     case "cac-loai-khac":
       return name.slice(-4);
     case "kho-nha-xuong":

@@ -90,7 +90,7 @@ function ChakraTable({
         <>
           <CardBody
             minH={count > 0 ? "" : "50dvh"}
-            maxH={viewOnly ? "60dvh" : ""}
+            maxH={viewOnly ? "50dvh" : ""}
             overflowY="scroll"
           >
             <Table variant="simple">
