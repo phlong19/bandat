@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 import {
   useColorModeValue,
@@ -10,19 +11,19 @@ import {
 } from "@chakra-ui/react";
 
 import { useGetREPostData } from "./useGetREPostData";
-import { useState } from "react";
 import { getCoreNameType } from "../../utils/helper";
 
 function TypePieChart() {
   const accent = useColorModeValue("primary", "secondary");
   const empty = useColorModeValue("gray.300", "gray.600");
+  const whiteblack = useColorModeValue("white", "#222");
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(6);
   const { data, count, isLoading } = useGetREPostData();
 
   if (isLoading) {
     return (
-      <Center minH={400} h={400}>
+      <Center minH={300} h={300}>
         <Spinner emptyColor={empty} />
       </Center>
     );
@@ -30,7 +31,7 @@ function TypePieChart() {
 
   if (!isLoading && data.length < 1) {
     return (
-      <Center minH={400} h={400}>
+      <Center minH={300} h={300}>
         <Text>Không có dữ liệu để hiển thị</Text>
       </Center>
     );
@@ -55,12 +56,12 @@ function TypePieChart() {
     }, {});
 
     chartData = Object.values(groupedData)
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 5);
+      .sort((a, b) => a.total - b.total)
+      .slice(-7);
   }
 
   return (
-    <Box maxH={280}>
+    <Box maxH={300}>
       <Flex justify="space-between">
         <Heading
           fontSize="md"
@@ -68,7 +69,7 @@ function TypePieChart() {
           fontWeight="500"
           color={accent}
         >
-          top 5 loai hinh nha dat
+          top 7 loai hinh nha dat
         </Heading>
         <Text pr={18}>Tong so bai dang bds: {count}</Text>
       </Flex>
@@ -80,8 +81,10 @@ function TypePieChart() {
             data={chartData}
             cx="50%"
             cy="50%"
-            innerRadius={60}
-            outerRadius={80}
+            stroke={whiteblack}
+            strokeWidth="2"
+            innerRadius={70}
+            outerRadius={120}
             fill="#79B473"
             dataKey="total"
             onMouseEnter={(_, index) => setActiveIndex(index)}
@@ -109,6 +112,7 @@ const renderActiveShape = (props) => {
     percent,
     value,
   } = props;
+  const mainFill = "#5e8859";
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
@@ -131,7 +135,7 @@ const renderActiveShape = (props) => {
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill="#79B473"
+        fill={mainFill}
       />
       <Sector
         cx={cx}
@@ -140,7 +144,7 @@ const renderActiveShape = (props) => {
         endAngle={endAngle}
         innerRadius={outerRadius + 6}
         outerRadius={outerRadius + 10}
-        fill={fill}
+        fill={mainFill}
       />
       <path
         d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
@@ -153,7 +157,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`SL: ${value}`}</text>
+      >{`Số lượng: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}

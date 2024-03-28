@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPostData } from "../../services/apiChart";
 
-export function useGetREPostData() {
+export function useGetREPostByPurType(purType, dateRange) {
   const { data: { data, count } = {}, isLoading } = useQuery({
-    queryKey: ["REPost-chart"],
-    queryFn: () => getPostData(null, null),
+    queryKey: ["REPost-chart", purType, dateRange],
+    queryFn: () => getPostData(purType, dateRange),
     staleTime: 5 * 60 * 1000,
+    enabled: false,
+    // TODO
   });
 
   return { data, count, isLoading };
