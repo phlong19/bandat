@@ -66,9 +66,9 @@ function AdminChart() {
           fontWeight="500"
           color={accent}
         >
-          thong ke nguoi dung dang ky theo thang
+          Thống kê người dùng đăng ký theo tháng
         </Heading>
-        <Text pr={18}>Tong so tai khoan: {count}</Text>
+        <Text pr={18}>Tổng số tài khoản: {count}</Text>
       </Flex>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart

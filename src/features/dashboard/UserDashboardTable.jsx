@@ -14,7 +14,14 @@ function UserDashboardTable({ id, level }) {
 
   return (
     <Flex flexDirection="column" gap={5}>
-      <SimpleGrid columns={2} gap={2} h={300} minH={300} maxH={300} mb={8}>
+      <SimpleGrid
+        columns={2}
+        gap={2}
+        h={300}
+        minH={300}
+        maxH={300}
+        mb={{ lg: 14, xl: 8 }}
+      >
         {/* chart 1 */}
         <PostBarChart />
         {/* chart 2 */}

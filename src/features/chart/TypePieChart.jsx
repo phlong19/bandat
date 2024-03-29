@@ -76,9 +76,9 @@ function TypePieChart() {
           fontWeight="500"
           color={accent}
         >
-          top {top} loai hinh nha dat
+          Top {top} loại hình nhà đất
         </Heading>
-        <Text pr={18}>Tong so bai dang bds: {count}</Text>
+        <Text pr={18}>Tổng số bài đăng BĐS: {count}</Text>
       </Flex>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>

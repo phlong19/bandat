@@ -19,6 +19,7 @@ export async function getPostData(purType, dateRange) {
     `id,
      REType_ID,
      created_at, 
+     price,
      type: REType(*)
     `,
     { count: "exact" },

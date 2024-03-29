@@ -16,7 +16,7 @@ function ChartDatePicker({
   setPurType,
 }) {
   const accent = useColorModeValue("primary", "secondary");
-  const title = purType ? "ban" : "cho thue";
+  const title = purType ? "Bán" : "Cho thuê";
 
   const props = useMemo(
     () => ({
@@ -90,10 +90,10 @@ function ChartDatePicker({
           fontWeight="500"
           color={accent}
         >
-          Du lieu bai dang theo dang ban
+          Dữ liệu bài đăng theo dạng bán
         </Heading>
         <Text pr={18}>
-          So bai dang {title} bds : {count || "---"}
+          Số bài đăng {title} BĐS : {count || "---"}
         </Text>
       </Flex>
       <Flex gap={1.5} justify="center" w="full">
@@ -102,7 +102,7 @@ function ChartDatePicker({
           closeOnSelect={false}
           configs={{ dateFormat: "dd/MM/yyyy", firstDayOfWeek: 1 }}
           selectedDates={dateRange}
-          onDateChange={setDateRange} 
+          onDateChange={setDateRange}
         />
         <Button
           colorScheme="green"
