@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import {
   ComposedChart,
   Line,
@@ -10,82 +9,34 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  Scatter,
   ResponsiveContainer,
 } from "recharts";
-
 import {
   useColorModeValue,
   Box,
   Center,
-  Flex,
-  Heading,
   Text,
   Button,
   Spinner,
 } from "@chakra-ui/react";
-import { RangeDatepicker } from "chakra-dayzed-datepicker";
+
+import { startOfMonth, format } from "date-fns";
+import { vi } from "date-fns/locale";
 
 import { useGetREPostByPurType } from "./useGetREPostByPurType";
-
-const data = [
-  {
-    name: "Page A",
-    uv: 590,
-    pv: 800,
-    amt: 1400,
-    cnt: 490,
-  },
-  {
-    name: "Page B",
-    uv: 868,
-    pv: 967,
-    amt: 1506,
-    cnt: 590,
-  },
-  {
-    name: "Page C",
-    uv: 1397,
-    pv: 1098,
-    amt: 989,
-    cnt: 350,
-  },
-  {
-    name: "Page D",
-    uv: 1480,
-    pv: 1200,
-    amt: 1228,
-    cnt: 480,
-  },
-  {
-    name: "Page E",
-    uv: 1520,
-    pv: 1108,
-    amt: 1100,
-    cnt: 460,
-  },
-  {
-    name: "Page F",
-    uv: 1400,
-    pv: 680,
-    amt: 1700,
-    cnt: 380,
-  },
-];
+import ChartDatePicker from "./ChartDatePicker";
 
 function PostBarChart() {
-  const accent = useColorModeValue("primary", "secondary");
   const empty = useColorModeValue("gray.300", "gray.600");
   const gray = useColorModeValue("#c9c9c9", "#464646");
 
   const [dateRange, setDateRange] = useState([]);
   const [purType, setPurType] = useState(true);
 
-  const {
-    data: fake,
-    count,
-    isLoading,
-  } = useGetREPostByPurType(purType, dateRange);
+  const { data, count, isLoading, refetch } = useGetREPostByPurType(
+    purType,
+    dateRange,
+  );
 
   if (isLoading) {
     return (
@@ -95,54 +46,61 @@ function PostBarChart() {
     );
   }
 
-  if (!isLoading && data.length < 1) {
+  if (!isLoading && (!data || data?.length < 1)) {
     return (
-      <Center minH={300} h={300}>
-        <Text>Không có dữ liệu để hiển thị</Text>
-      </Center>
+      <Box>
+        <ChartDatePicker
+          count={count}
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          purType={purType}
+          setPurType={setPurType}
+        />
+        <Center minH={300} h={300} flexDirection="column" gap={1.5}>
+          <Text>Không có dữ liệu để hiển thị</Text>
+          <Button
+            onClick={refetch}
+            size="sm"
+            colorScheme="green"
+            variant="ghost"
+          >
+            Tải lại
+          </Button>
+        </Center>
+      </Box>
     );
   }
 
+  const grouped = data.reduce((group, cur) => {
+    // gen key from year - month
+    const date = new Date(cur.created_at);
+    const monthStart = startOfMonth(date);
+    const month = format(monthStart, "yyyy - MMM", { locale: vi });
+    if (!group[month]) {
+      group[month] = {
+        name: month,
+        "Bài đăng": 0,
+      };
+    }
+    group[month]["Bài đăng"] += 1;
+
+    return group;
+  }, {});
+
   return (
     <Box maxH={300}>
-      <Flex justify="space-between">
-        <Heading
-          pb={3}
-          fontSize="md"
-          fontFamily="lexend"
-          fontWeight="500"
-          color={accent}
-        >
-          top some title here
-        </Heading>
-        <Text pr={18}>Tong so bai dang bds : {count}</Text>
-      </Flex>
-      <Flex gap={3}>
-        <RangeDatepicker
-          // TODO
-          propsConfigs={{
-            inputProps: { w: "60%", size: "sm", borderRadius: "md" },
-          }}
-          configs={{ firstDayOfWeek: 1 }}
-          selectedDates={dateRange}
-          onDateChange={setDateRange}
-        />
-        <Button
-          colorScheme="green"
-          variant="ghost"
-          borderWidth={0.5}
-          fontWeight={400}
-          size="sm"
-          onClick={() => setPurType((s) => !s)}
-        >
-          {purType ? "ban" : "thue"}
-        </Button>
-      </Flex>
+      <ChartDatePicker
+        count={count}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        purType={purType}
+        setPurType={setPurType}
+      />
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart
           width={500}
           height={400}
-          data={data}
+          data={grouped}
           margin={{
             top: 20,
             right: 20,
@@ -155,9 +113,9 @@ function PostBarChart() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Area type="monotone" dataKey="amt" fill="salmon" stroke="salmon" />
-          <Bar dataKey="pv" barSize={20} fill="#79b473" />
-          <Line type="monotone" dataKey="uv" stroke="green" />
+          {/* <Area type="monotone" dataKey="amt" fill="salmon" stroke="salmon" /> */}
+          <Bar dataKey="Bài đăng" barSize={20} fill="#79b473" />
+          {/* <Line type="monotone" dataKey="uv" stroke="green" /> */}
         </ComposedChart>
       </ResponsiveContainer>
     </Box>
@@ -165,5 +123,3 @@ function PostBarChart() {
 }
 
 export default PostBarChart;
-
-// const configInput = {};

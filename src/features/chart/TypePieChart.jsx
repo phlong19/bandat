@@ -6,6 +6,7 @@ import {
   Center,
   Flex,
   Heading,
+  Button,
   Text,
   Spinner,
 } from "@chakra-ui/react";
@@ -13,13 +14,16 @@ import {
 import { useGetREPostData } from "./useGetREPostData";
 import { getCoreNameType } from "../../utils/helper";
 
+// top
+const top = 7;
+
 function TypePieChart() {
   const accent = useColorModeValue("primary", "secondary");
   const empty = useColorModeValue("gray.300", "gray.600");
   const whiteblack = useColorModeValue("white", "#222");
 
   const [activeIndex, setActiveIndex] = useState(6);
-  const { data, count, isLoading } = useGetREPostData();
+  const { data, count, isLoading, refetch } = useGetREPostData();
 
   if (isLoading) {
     return (
@@ -29,17 +33,20 @@ function TypePieChart() {
     );
   }
 
-  if (!isLoading && data.length < 1) {
+  if (!isLoading && (!data || data.length < 1)) {
     return (
-      <Center minH={300} h={300}>
+      <Center minH={300} h={300} flexDirection="column" gap={1.5}>
         <Text>Không có dữ liệu để hiển thị</Text>
+        <Button onClick={refetch} size="sm" colorScheme="green" variant="ghost">
+          Tải lại
+        </Button>
       </Center>
     );
   }
 
   let chartData;
   if (!isLoading && data.length > 0) {
-    // calc top 5 re type
+    // calc top re type
     const groupedData = data.reduce((group, cur) => {
       const key = cur.REType_ID;
       if (!group[key]) {
@@ -57,7 +64,7 @@ function TypePieChart() {
 
     chartData = Object.values(groupedData)
       .sort((a, b) => a.total - b.total)
-      .slice(-7);
+      .slice(-top);
   }
 
   return (
@@ -69,7 +76,7 @@ function TypePieChart() {
           fontWeight="500"
           color={accent}
         >
-          top 7 loai hinh nha dat
+          top {top} loai hinh nha dat
         </Heading>
         <Text pr={18}>Tong so bai dang bds: {count}</Text>
       </Flex>
@@ -84,7 +91,7 @@ function TypePieChart() {
             stroke={whiteblack}
             strokeWidth="2"
             innerRadius={70}
-            outerRadius={120}
+            outerRadius={100}
             fill="#79B473"
             dataKey="total"
             onMouseEnter={(_, index) => setActiveIndex(index)}
@@ -157,7 +164,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`Số lượng: ${value}`}</text>
+      >{`SL: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}

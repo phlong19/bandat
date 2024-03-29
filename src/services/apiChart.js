@@ -28,7 +28,7 @@ export async function getPostData(purType, dateRange) {
     query = query.eq("purType", purType);
   }
 
-  if (dateRange || dateRange.length < 2) {
+  if (dateRange !== null && dateRange?.length === 2) {
     const start = dateRange[0].toISOString();
     const end = dateRange[1].toISOString();
     query = query.gte("created_at", start).lte("created_at", end);
