@@ -26,68 +26,68 @@ export const homeText = [
 ];
 
 export const emptyREList =
-  "Chưa đăng bài viết nào, khong co dat de ban a? ban nha di";
+  "Chưa đăng bài viết nào, hãy đăng bài viết đầu tiên";
 
 export const error = {
   // general
-  fetchError: "Đã xảy ra lỗi khi lấy dữ liệu, Vui lòng thử lại sau",
+  fetchError: "Đã xảy ra lỗi khi lấy dữ liệu",
   // if re post fetched not found (wrong slug, exprired)
-  cantFindPost: "bai viet khong ton tai hoac da het han",
+  cantFindPost: "Không tồn tại bài viết",
   // auth
-  login: "email / sdt hoặc Mật khẩu không đúng, vui lòng thử lại",
-  register: "Không thể đăng ký, sdt da ton tai",
-  cantVerify: "khong the xac thuc so dien thoai, ma khong ton tai hoac het han",
-  cantUpdateEmail: "khong the update email luc nay?",
+  login: "Tài khoản hoặc Mật khẩu không đúng",
+  register: "Số điện thoại đã tồn tại",
+  cantVerify: "Không thể xác thực",
+  cantUpdateEmail: "Không thể cập nhật email",
   notAuthen: "Vui lòng đăng nhập để truy cập",
-  notAuthor: "Phân quyền hiện tại không được phép thao tác",
-  cantResendSMS: "khong the gui lai ma xac nhan sms, vui long...",
-  cantSendEmail: "khong the gui email xac thuc",
-  codeExprired: "ma xac nhan da het han, vui long nhan gui lai ma moi",
-  cantUpdatePass: "khong the update mk",
-  notVerifyEmail: "xac thuc email truoc da",
-  notHavePhone: "chua co sdt, vui long cap nhat",
-  duplicateEmail: "email da dang ky / ton tai trong he thong",
+  notAuthor: "Không có thẩm quyền",
+  cantResendSMS: "Không thể gửi mã xác thực",
+  cantSendEmail: "Không thể gửi mail xác thực",
+  codeExprired: "Mã xác nhận đã hết hạn",
+  cantUpdatePass: "Không thể cập nhật mật khẩu",
+  notVerifyEmail: "Chưa xác thực mail",
+  notHavePhone: "Vui lòng cập nhật số điện thoại",
+  duplicateEmail: "Địa chỉ email đã tồn tại",
 
   // api re
-  cantCreate: "Hiện không thể tạo bài đăng, Vui lòng thử lại sau",
-  cantUpdate: "Không thể cập nhật bài đăng, Vui lòng thử lại sau",
-  cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật, Vui lòng thử lại sau",
-  cantDelete: "Không thể xoá bài đăng, Vui lòng thử lại sau",
-  cantFindToDelete: "Không tìm thấy bài đăng để xoá, Vui lòng thử lại sau",
-  apiGeocoding: "Không thể tìm thấy địa chỉ, Vui lòng cung cấp cụ thể?",
+  cantCreate: "Hiện không thể tạo bài đăng",
+  cantUpdate: "Không thể cập nhật bài đăng",
+  cantFindToUpdate: "Không tìm thấy bài đăng để cập nhật",
+  cantDelete: "Không thể xoá bài đăng",
+  cantFindToDelete: "Không tìm thấy bài đăng để xoá",
+  apiGeocoding: "Không thể tìm thấy địa chỉ",
   // api news, re-use some of api re
   cantCreateNews: "Không thể tạo bài viết",
-  newsExisted: "Tiêu đề bài viết đã tồn tại?",
+  newsExisted: "Đã tồn tại tiêu đề bài viết",
 
   // medias
-  cantDeleteMedia: "khong the xoa file cu, vui long thu lai",
-  uploadFailed: "Quá trình tải file xảy ra lỗi, Vui lòng thử lại sau",
+  cantDeleteMedia: "Không thể xoá file",
+  uploadFailed: "Không thể tải file",
   // docs
-  cantInsertDocs: "Không thể thêm giấy tờ pháp lý, Vui lòng thử lại sau ",
-  cantDeleteDocs: "Không thể xoá văn bản, Vui lòng thử lại sau",
+  cantInsertDocs: "Không thể thêm giấy tờ pháp lý",
+  cantDeleteDocs: "Không thể xoá văn bản",
 
   // name edit
-  cantEditName: "chua den ngay edit, 30 ngay",
+  cantEditName: "Không được chỉnh sửa",
 };
 
 export const success = {
   // v1
-  signupV1: "dang ky thanh cong, check email",
+  signupV1: "Đăng ký thành công",
 
   // auth
-  signup: "dang ky thanh cong, check dien thoai nhap ma de",
-  resendSMS: "mot ma xac nhan moi da duoc gui ve thiet bi",
+  signup: "Đăng ký thành công",
+  resendSMS: "Mã xác thực đã được gửi đến số điện thoại",
 
   // xac nhan sdt thanh cong
-  verifyPhone: "xac nhan sdt thanh cong",
-  emailConfirm: "vui long kiem tra email",
+  verifyPhone: "Xác thực thành công số điện thoại",
+  emailConfirm: "Xác thực thành công email",
 
   //
   login: "Đăng nhập thành công",
   logout: "Đăng xuất thành công",
 
   // api re
-  createPost: "Tạo bài đăng thành công, đợi admin duyệt bài",
+  createPost: "Tạo bài đăng thành công",
   updatePost: "Sửa bài đăng thành công",
   approvePost: "Duyệt bài thành công",
   markSold: "Đánh dấu đã bán thành công",
@@ -97,32 +97,32 @@ export const success = {
   // api news
   createNews: "Tạo tin tức thành công",
   updateNews: "Cập nhật thành công",
-  approveNews: "Duyệt tin tức thành công thành công",
-  deleteNews: "Xoá tin tức thành công",
-  deactiveNews: "Gỡ tin tức thành công",
+  approveNews: "Đã duyệt",
+  deleteNews: "Đã xoá thành công",
+  deactiveNews: "Đã gỡ thành công",
 
   // api account
-  updateAddress: "Cập nhật địa chỉ thành công",
-  updateAvatar: "Cập nhật ảnh đại diện thành công",
-  updateUsername: "Cập nhật tên người dùng thành công",
-  updatePhone: "thanh cong cap nhat sdt",
-  updateOthers: "Cập nhật thành công",
-  updatePassword: "cap nhat mk thanh cong, vui long dang nhap lai",
+  updateAddress: "Cập nhật địa chỉ thành công!",
+  updateAvatar: "Cập nhật ảnh đại diện thành công!",
+  updateUsername: "Cập nhật tên người dùng thành công!",
+  updatePhone: "Cập nhật số điện thoại thành công!",
+  updateOthers: "Cập nhật thành công!",
+  updatePassword: "Cập nhật mật khẩu thành công",
   updateEmail:
-    "cap nhat email thanh cong, vui long check email de confirm chuyen doi",
+    "Cập nhật Email thành công, vui lòng xác thực Email!",
 
   // others
-  copyToClipboard: "da sao chep vao bo nho tam",
+  copyToClipboard: "Đã sao chép và lưu vào Clipboard",
 };
 
 export const reform = {
   // general
-  requiredMessage: "Vui lòng điền đầy đủ các trường có dấu *",
+  requiredMessage: "Vui lòng điền đầy đủ thông tin",
   // submit errors
   missingAddress: "Chưa chọn địa chỉ",
-  missingDes: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
+  missingDes: `Vui lòng mô tả chi tiết ít nhất ${minDesLength} kí tự`,
   missingImages: `Số lượng ảnh cung cấp ít nhất là ${BASE_MEDIA_UPLOAD}`,
-  minPrice: "Giá trị bất động sản quá nhỏ",
+  minPrice: "Giá trị nhập quá nhỏ",
 
   // form errors
   missingName: "Chưa nhập tiêu đề",
@@ -130,7 +130,7 @@ export const reform = {
   nameTooLong: `Vượt quá ${maxLength} kí tự cho phép`,
   desTooShort: `Vui lòng điền chi tiết mô tả ít nhất ${minDesLength} kí tự`,
   desTooLong: `Vượt quá ${maxDesLength} kí tự cho phép`,
-  numberInt: "vui long lam tron so",
+  numberInt: "Vui lòng làm tròn số",
 
   // helpers
   noPhone:
@@ -141,9 +141,9 @@ export const reform = {
   overFile: "Vượt quá số lượng giới hạn file tải lên",
   helperMedia: "Drag & drop file here, or click to select files",
   acceptMedias: "Yêu cầu định dạng png, jpg, jpeg hoặc mp4",
-  acceptFiles: "yeu cau dinh dang png jpg jpeg va dai gap doi rong",
+  acceptFiles: "Yêu cầu định dạng png, jpg, jpeg & kích thước 2x1",
   overSize: `Kích thước file vượt quá giới hạn cho phép`,
-  ratio: "Tỉ lệ ảnh yêu cầu 2/1 - dài gấp đôi rộng => ảnh 360",
+  ratio: "Tỉ lệ ảnh yêu cầu 2x1",
 
   // alert
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",
@@ -151,15 +151,15 @@ export const reform = {
   // button submit
   submit: "submit",
   save: "save",
-  creating: "Đang tạo",
-  saving: "Đang lưu",
+  creating: "Đang tạo...",
+  saving: "Đang lưu...",
 };
 
 export const newsForm = {
   // table has no news
   empty: "Hiện không có bài viết tin tức nào",
   // general
-  requiredMessage: "Vui lòng điền đầy đủ các trường có dấu *",
+  requiredMessage: "Vui lòng điền đầy đủ các trường thông tin",
 
   // form errors
   minTitle: `Tiêu đề ít nhất ${minTitle}`,
@@ -174,36 +174,36 @@ export const newsForm = {
   helperMedia: "Drag & drop file here, or click to select files",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
   overSize: `Kích thước file vượt quá giới hạn cho phép`,
-  ratio: "Tỉ lệ ảnh yêu cầu 16/9",
+  ratio: "Tỉ lệ ảnh yêu cầu 16x9",
 
   // submit errors
-  missingThumb: "Thiếu thumbnail?",
+  missingThumb: "Thiếu ảnh thumbnail",
 
   // dialog
-  dialogTitle: "Discard Changes?",
+  dialogTitle: "Huỷ thay đổi?",
   dialogMessage:
-    "Are you sure you want to discard? You will lose everything you're entered so far if you leave now",
+    "Bạn có chắc muốn huỷ thay đổi? Mọi thay đổi sẽ không được lưu lại!",
   // content
   imgUrl: "Paste your image url here",
   // actions
   submit: "submit",
   save: "save",
-  creating: "Đang tạo",
-  saving: "Đang lưu",
+  creating: "Đang tạo...",
+  saving: "Đang lưu...",
 };
 
 // auth + account
 export const account = {
   // auth
-  requiredPhone: "vui long dien sdt",
-  requiredEmail: "vui long nhap email",
+  requiredPhone: "Vui lòng điền đúng số điện thoại",
+  requiredEmail: "Vui lòng nhập đúng địa chỉ Email",
 
   // account settings
-  cantUpdate: "Không thể cập nhật thông tin tài khoản, Vui lòng thử lại sau",
+  cantUpdate: "Không thể cập nhật thông tin tài khoản",
   helperMedia: "Drag & drop file here, or click to select files",
   missingAddress: "Vui lòng điền chi tiết địa chỉ",
 
-  overFile: "1 account nhieu avatar?",
+  overFile: "Vui lòng chọn 1 ảnh",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
 
   // name
