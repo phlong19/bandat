@@ -19,10 +19,11 @@ import { useGetFullNewsList } from "./useGetFullNewsList";
 
 function EditorDashboardTable({ id }) {
   const [slug, setSlug] = useState("");
+  const [query, setQuery] = useState("");
   // form modal
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data, count, isLoading: isFetching } = useGetFullNewsList(id);
+  const { data, count, isLoading: isFetching } = useGetFullNewsList(id, query);
   const { data: newData, isLoading } = useGetSingleNews(slug);
 
   return (
@@ -57,6 +58,7 @@ function EditorDashboardTable({ id }) {
         }
         title="Quản lý danh sách tin tức"
         count={count}
+        setQuery={setQuery}
         news
       />
     </Box>

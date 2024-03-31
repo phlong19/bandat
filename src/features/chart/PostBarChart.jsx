@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ComposedChart,
   Line,
@@ -11,39 +11,38 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import {
-  useColorModeValue,
-  Box,
-  Center,
-  Text,
-  Button,
-  Spinner,
-} from "@chakra-ui/react";
+import { useColorModeValue, Box, Center, Spinner } from "@chakra-ui/react";
 
-import { startOfMonth, format, isToday } from "date-fns";
+import { startOfMonth, format, compareAsc } from "date-fns";
 import { vi } from "date-fns/locale";
 
-import { useGetREPostByPurType } from "./useGetREPostByPurType";
 import ChartDatePicker from "./ChartDatePicker";
-import { billion } from "../../constants/anyVariables";
+import {
+  billion,
+  DEFAULT_RE_STATUS,
+  million,
+} from "../../constants/anyVariables";
 
-function PostBarChart() {
+function PostBarChart({ isFetchingAllData, allData = [] }) {
   const empty = useColorModeValue("gray.300", "gray.600");
   const gray = useColorModeValue("#c9c9c9", "#464646");
 
-  const [dateRange, setDateRange] = useState([new Date(), new Date()]);
+  const [dateRange, setDateRange] = useState([]);
   const [purType, setPurType] = useState(true);
   const measure = purType ? "tỷ" : "triệu";
-  // check today
-  const isInit = dateRange[0] === dateRange[0];
-  console.log(isInit);
+  const currency = purType ? billion : million;
 
-  const { data, count, isLoading, refetch } = useGetREPostByPurType(
-    purType,
-    dateRange,
-  );
+  useEffect(() => {
+    if (!isFetchingAllData && allData) {
+      // the data fetched already sorted, so just take the first one as start, the last as end
+      setDateRange([
+        new Date(allData?.[0]?.created_at),
+        new Date(allData?.slice(-1)?.[0].created_at),
+      ]);
+    }
+  }, [isFetchingAllData, allData]);
 
-  if (isLoading) {
+  if (isFetchingAllData) {
     return (
       <Center minH={300} h={300}>
         <Spinner emptyColor={empty} />
@@ -51,36 +50,15 @@ function PostBarChart() {
     );
   }
 
-  if (!isLoading && (!data || data?.length < 1)) {
-    return (
-      <Box>
-        <ChartDatePicker
-          count={count}
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          purType={purType}
-          setPurType={setPurType}
-        />
-        <Center minH={300} h={300} flexDirection="column" gap={1.5}>
-          {isInit ? (
-            <Text>Vui lòng chọn ngày</Text>
-          ) : (
-            <>
-              <Text>Không có dữ liệu để hiển thị</Text>
-              <Button
-                onClick={refetch}
-                size="sm"
-                colorScheme="green"
-                variant="ghost"
-              >
-                Tải lại
-              </Button>
-            </>
-          )}
-        </Center>
-      </Box>
-    );
-  }
+  const data = allData.filter((i) => {
+    // purType
+    const check = i.purType === purType;
+    // date
+    const date = new Date(i.created_at);
+    const gte = compareAsc(date, dateRange[0]); // 1
+    const lte = compareAsc(date, dateRange[1]); // -1
+    return gte !== -1 && lte !== 1 && check;
+  });
 
   const grouped = data.reduce((group, cur) => {
     // gen key from year - month
@@ -92,25 +70,25 @@ function PostBarChart() {
         name: month,
         totalAmount: 0,
         "Bài đăng": 0,
+        "Được duyệt": 0,
       };
     }
     group[month]["Bài đăng"] += 1;
-    group[month].totalAmount += cur.price;
+    group[month].totalAmount += cur.price / currency;
+    group[month]["Được duyệt"] += cur.status !== DEFAULT_RE_STATUS ? 1 : 0;
 
     return group;
   }, {});
 
   const chartData = Object.values(grouped).map((d) => ({
     ...d,
-    [`Giá TB (${measure})`]: (d.totalAmount / d["Bài đăng"] / billion).toFixed(
-      2,
-    ),
+    [`Giá TB (${measure})`]: (d.totalAmount / d["Bài đăng"]).toFixed(2),
   }));
 
   return (
     <Box maxH={300}>
       <ChartDatePicker
-        count={count}
+        count={data.length}
         dateRange={dateRange}
         setDateRange={setDateRange}
         purType={purType}
@@ -129,21 +107,22 @@ function PostBarChart() {
           }}
         >
           <CartesianGrid stroke={gray} />
-          <XAxis dataKey="name" scale="auto" />
+          <XAxis dataKey="name" scale="auto" angle={320} textAnchor="end" />
           <YAxis domain={[0, "dataMax + 10"]} />
-          <Tooltip />
-          <Legend />
-          {/* <Area
+          <Tooltip contentStyle={{ color: "#222" }} />
+          <Legend wrapperStyle={{ bottom: "-35px" }} />
+          <Area
             type="monotone"
-            dataKey="Bài đăng"
+            dataKey="Được duyệt"
             fill="salmon"
             stroke="salmon"
-          /> */}
+          />
           <Bar dataKey="Bài đăng" barSize={20} fill="#79b473" />
           <Line
             type="monotone"
             dataKey={`Giá TB (${measure})`}
-            stroke="salmon"
+            stroke="mediumpurple"
+            strokeWidth={2}
           />
         </ComposedChart>
       </ResponsiveContainer>

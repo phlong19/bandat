@@ -83,6 +83,9 @@ function App() {
                     <Route path="tin-tuc" element={<News />} />
                     <Route path="tin-tuc/:title" element={<NewDetails />} />
                     <Route path="danh-ba" element={<Contacts />} />
+                    {/* TODO */}
+                    {/* <Route path='lien-he' /> */}
+                    {/* TODO report */}
                   </Route>
 
                   {/* no layout with these path */}

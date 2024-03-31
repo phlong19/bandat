@@ -14,6 +14,7 @@ import { popoverTheme } from "./popover";
 import { numberInputTheme } from "./numberInput";
 import { modalTheme } from "./modal";
 import { spinnerTheme } from "./spinner";
+import { skeletonTheme } from "./skeleton";
 
 const colors = {
   light: "#f6f6f6",
@@ -58,6 +59,7 @@ export const theme = extendTheme({
     NumberInput: numberInputTheme,
     Modal: modalTheme,
     Spinner: spinnerTheme,
+    Skeleton: skeletonTheme,
   },
   font: {
     lexend: `'Lexend, sans-serif'`,

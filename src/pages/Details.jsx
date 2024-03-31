@@ -60,6 +60,7 @@ import { RiCompass3Line } from "react-icons/ri";
 import { CiRuler } from "react-icons/ci";
 import { FiPlayCircle } from "react-icons/fi";
 import { CgFileDocument } from "react-icons/cg";
+import { FaRuler } from "react-icons/fa6";
 
 // vars, ctx, hooks, ...
 import { useAuth } from "../context/UserContext";
@@ -420,6 +421,13 @@ function Details() {
                   <StatNumber color={accent}>
                     {area} {m2}
                   </StatNumber>
+
+                  {facade && (
+                    <StatHelpText>
+                      <StatArrow as={FaRuler} type="increase" />
+                      Mặt tiền {facade}m
+                    </StatHelpText>
+                  )}
                 </Stat>
                 {bed_room > 0 && (
                   <Stat>

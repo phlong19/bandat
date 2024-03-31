@@ -20,6 +20,7 @@ import { formatDate, getStatusBadgeColor } from "../../utils/helper";
 function TableRERow({ data, level, userID }) {
   const {
     id,
+    name,
     expriryDate,
     created_at,
     purType,
@@ -73,8 +74,11 @@ function TableRERow({ data, level, userID }) {
       <Td>
         <Text fontSize="sm">{type.name}</Text>
       </Td>
+      <Td maxW={250} title={name}>
+        <Text noOfLines={2}>{name}</Text>
+      </Td>
       {/* address */}
-      <Td maxW="250">
+      <Td maxW="250" title={`${address}, ${wardName}, ${disName},${cityName}`}>
         <Text noOfLines={2}>
           {address}, {wardName}, {disName},{cityName}
         </Text>
@@ -98,7 +102,7 @@ function TableRERow({ data, level, userID }) {
         <Text pb=".5rem">{formatDate(created_at)}</Text>
       </Td>
       <Td>
-        <Text pb=".5rem">{expriryDate ? formatDate(expriryDate) : '---'}</Text>
+        <Text pb=".5rem">{expriryDate ? formatDate(expriryDate) : "---"}</Text>
       </Td>
       <Td>
         <Menu>

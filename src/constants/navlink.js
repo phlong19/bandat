@@ -145,3 +145,16 @@ export const filterNewsList = [
   { label: "Đã duyệt", value: "status-approved" },
   { label: "Chờ duyệt", value: "status-waiting" },
 ];
+
+export const reportList = [
+  { label: "Địa chỉ của bất động sản", value: "address" },
+  {
+    label: "Các thông tin về: giá, diện tích, mô tả ....",
+    value: "informations",
+  },
+  { label: "Ảnh", value: "image" },
+  { label: "Trùng với tin bài khác", value: "duplicate" },
+  { label: "Không liên lạc được", value: "contact" },
+  { label: "Tin không có thật", value: "real" },
+  { label: "Bất động sản đã bán", value: "sold" },
+];

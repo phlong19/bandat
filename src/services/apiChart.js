@@ -14,9 +14,11 @@ export async function getProfileData() {
   return { data, count };
 }
 
-export async function getPostData(purType, dateRange) {
+export async function getPostData() {
   let query = supabase.from("REDirectory").select(
     `id,
+     purType, 
+     status,
      REType_ID,
      created_at, 
      price,
@@ -25,17 +27,9 @@ export async function getPostData(purType, dateRange) {
     { count: "exact" },
   );
 
-  if (purType !== null) {
-    query = query.eq("purType", purType);
-  }
-
-  if (dateRange !== null && dateRange?.length === 2) {
-    const start = dateRange[0].toISOString();
-    const end = dateRange[1].toISOString();
-    query = query.gte("created_at", start).lte("created_at", end);
-  }
-
-  const { data, count, error } = await query;
+  const { data, count, error } = await query.order("created_at", {
+    ascending: true,
+  });
 
   if (error) {
     console.log(error);

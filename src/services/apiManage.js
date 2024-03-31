@@ -6,9 +6,9 @@ import {
   maxLength,
   minLength,
 } from "../constants/anyVariables";
-import { getStatusID } from "../utils/helper";
+import { getStatusID, sanitizeSearchInput } from "../utils/helper";
 
-export async function getFullREList(userID, sort, filter, page) {
+export async function getFullREList(userID, sort, filter, textQuery, page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
   const end = start + LIMIT_PER_PAGE - 1;
 
@@ -28,7 +28,7 @@ export async function getFullREList(userID, sort, filter, page) {
   let query = supabase
     .from("REDirectory")
     .select(
-      `*, 
+      `id, REType_ID, address, created_at, expriryDate, name, status, userID, report, purType, slug, area, price,  
       city: CityDirectory(cityName),
       dis: DistrictDirectory(disName), 
       ward: WardDirectory(wardName),
@@ -58,7 +58,12 @@ export async function getFullREList(userID, sort, filter, page) {
     query = query.lt("expriryDate", new Date().toISOString());
   }
 
-  // base level query
+  // text query
+  if (textQuery !== "" && textQuery?.length > 2) {
+    query = query.textSearch("name", sanitizeSearchInput(textQuery));
+  }
+
+  // base level
   if (level < ADMIN_LEVEL) {
     query = query.eq("userID", id);
   }
@@ -111,7 +116,7 @@ export async function getPost(slug, level, userID) {
 }
 
 // news
-export async function getFullNewsList(userID, sort, filter, page) {
+export async function getFullNewsList(userID, sort, filter, textQuery, page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
   const end = start + LIMIT_PER_PAGE - 1;
 
@@ -154,6 +159,11 @@ export async function getFullNewsList(userID, sort, filter, page) {
     const [col, value] = filter.split("-");
     const status = value === "waiting" ? false : true;
     query = query.eq(col, status);
+  }
+
+  // text query
+  if (textQuery !== "" && textQuery?.length > 2) {
+    query = query.textSearch("title", sanitizeSearchInput(textQuery));
   }
 
   if (level < ADMIN_LEVEL) {
@@ -209,11 +219,11 @@ export async function getFullTypeList(page) {
 }
 
 // get profiles
-export async function getFullUserList(page) {
+export async function getFullUserList(textQuery, option, page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
   const end = start + LIMIT_PER_PAGE - 1;
 
-  const { data, count, error } = await supabase
+  let query = supabase
     .from("Profile")
     .select(
       `*, 
@@ -226,6 +236,16 @@ export async function getFullUserList(page) {
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
 
+  // text query
+  if (textQuery !== "" && textQuery?.length > 2) {
+    const input = sanitizeSearchInput(textQuery);
+    query =
+      option === "fullName"
+        ? query.textSearch(option, input)
+        : query.ilike(option, `%${input}%`);
+  }
+
+  const { data, count, error } = await query;
   if (error) {
     console.log(error);
     throw new Error(errorMessage.fetchError);

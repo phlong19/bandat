@@ -17,7 +17,7 @@ function SkeletonList() {
         gap={4}
       >
         {Array.from({ length: 12 }).map((_, index) => (
-          <Card minW={160} p={2.5} key={index}>
+          <Card minW={160} p={2.5} key={index} _dark={{ bg: "darker" }}>
             <Skeleton height={100} rounded="md" />
             <SkeletonText py={3}>
               <Flex />

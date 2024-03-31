@@ -67,6 +67,7 @@ export const reCaptions = [
   "Người đăng",
   "Dạng bán",
   "Loại hình",
+  "Tiêu đề",
   "Địa chỉ",
   "Báo xấu",
   "Trạng thái",

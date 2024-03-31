@@ -7,7 +7,6 @@ import { vi } from "date-fns/locale/vi";
 import BreadCrumb from "../ui/BreadCrumb";
 import NewsAccordionLinks from "../ui/NewsAccordionLinks";
 
-import { city } from "../data/city";
 import { getNew } from "../services/apiNews";
 import { formatDate } from "../utils/helper";
 import Avatar from "../ui/Avatar";
@@ -67,7 +66,7 @@ function NewDetails() {
             <Image rounded="lg" src={thumbnail} alt={slug} />
           </AspectRatio>
         </Center>
-        <div className="max-w-[1300px] mx-auto py-4 text-center font-lexend text-3xl font-bold">
+        <div className="mx-auto max-w-[1300px] py-4 text-center font-lexend text-3xl font-bold">
           <h1>{Hline}</h1>
         </div>
 
@@ -82,18 +81,14 @@ function NewDetails() {
 
                 <div className="pl-2">
                   <p>{fullName}</p>
-                  {/* options */}
-                  {/* A */}
-                  <p className="text-xs">
-                    Đăng vào ngày {formatDate(created_at, "d MMMM, yyyy")}
-                  </p>
-                  {/* B */}
+
                   <p className="text-xs">
                     Đăng{" "}
                     {formatDistanceToNow(new Date(created_at), {
                       locale: vi,
                       addSuffix: true,
-                    })}
+                    })}{" "}
+                    vào ngày {formatDate(created_at, "d MMMM, yyyy")}
                   </p>
                 </div>
               </div>
