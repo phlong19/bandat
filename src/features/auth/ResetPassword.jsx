@@ -28,13 +28,13 @@ function ResetPassword() {
   const whitedark = useColorModeValue("white", "dark");
 
   useEffect(() => {
-    console.log(location.state);
-    if (location.state.event != "PASSWORD_RECOVERY") {
+    console.log(location.state === "PASSWORD_RECOVERY");
+    if (location.state?.event != "PASSWORD_RECOVERY") {
       toast.error(
         "Vui lòng check email lay link reset password? hoac gui lai 1 yeu cau moi",
         { duration: 6000 },
       );
-
+      // TODO: fix true state but still navigate
       return navigate("/");
     }
   }, [location.state, navigate]);

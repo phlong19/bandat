@@ -51,7 +51,7 @@ import { useAuth } from "../context/UserContext";
 function Home() {
   const userCtx = useAuth();
   const { onClose, onOpen, isOpen } = useDisclosure();
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState(undefined);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data) => createContact(data),

@@ -29,7 +29,7 @@ export default function ForgotPassword() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (email) => sendMailReset(email),
-    onSuccess: () => toast.success(success.emailConfirm),
+    onSuccess: () => toast.success(success.emailVerify),
     onError: (err) => toast.error(err.message),
   });
 

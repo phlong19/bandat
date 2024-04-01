@@ -82,6 +82,7 @@ export const success = {
   // xac nhan sdt thanh cong
   verifyPhone: "Xác thực thành công số điện thoại",
   emailConfirm: "Xác thực thành công email",
+  emailVerify: "1 request dat lai mk da duoc gui den email, kiem tra di",
 
   //
   login: "Đăng nhập thành công",
