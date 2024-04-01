@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Button,
   Box,
@@ -8,12 +10,34 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 import FormInput from "../../ui/FormInput";
+import Logo from "../../ui/Logo";
+
+import { updatePassword } from "../../services/apiAccount";
+import { success } from "../../constants/message";
 
 function ResetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showCfPassword, setShowCfPassword] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const bg = useColorModeValue("gray.50", "darker");
+  const whitedark = useColorModeValue("white", "dark");
+
+  useEffect(() => {
+    console.log(location.state);
+    if (location.state.event != "PASSWORD_RECOVERY") {
+      toast.error(
+        "Vui lòng check email lay link reset password? hoac gui lai 1 yeu cau moi",
+        { duration: 6000 },
+      );
+
+      return navigate("/");
+    }
+  }, [location.state, navigate]);
 
   const {
     handleSubmit,
@@ -22,8 +46,20 @@ function ResetPassword() {
     formState: { errors },
   } = useForm();
 
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useMutation({
+    mutationFn: (pass) => updatePassword(pass),
+    onSuccess: () => {
+      toast.success(success.updatePassword);
+      queryClient.setQueryData(["user"], null);
+      navigate("/dang-nhap", { replace: true });
+      queryClient.invalidateQueries();
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   function onSubmit(data) {
-    console.log(data);
+    mutate(data.password);
   }
 
   return (
@@ -35,20 +71,18 @@ function ResetPassword() {
         align={"center"}
         justify={"center"}
         rounded="md"
-        bg={useColorModeValue("gray.50", "darker")}
+        bg={bg}
       >
         <Stack py={12} w={{ base: "90%", lg: "85%" }}>
           <Stack align={"center"}>
+            <Box pb={2}>
+              <Logo size="w-40" />
+            </Box>
             <Heading fontSize={"4xl"} textAlign={"center"}>
               dat moi mat khau
             </Heading>
           </Stack>
-          <Box
-            rounded={"lg"}
-            bg={useColorModeValue("white", "dark")}
-            boxShadow={"lg"}
-            p={8}
-          >
+          <Box rounded={"lg"} bg={whitedark} boxShadow={"lg"} p={8}>
             <Stack spacing={4} w="full">
               <FormInput
                 label="Mật khẩu"
@@ -89,7 +123,7 @@ function ResetPassword() {
               <Button
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
-                // isLoading={isLoggingIn}
+                isLoading={isPending}
                 loadingText="Đợi xíu"
                 colorScheme="green"
                 type="submit"

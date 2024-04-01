@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import {
   Box,
   Center,
@@ -6,27 +8,87 @@ import {
   Text,
   SimpleGrid,
   Heading,
+  Input,
   Flex,
   Image,
+  FormControl,
+  VStack,
+  FormLabel,
+  FormErrorMessage,
   Button,
+  Textarea,
   useColorModeValue,
   StackDivider,
   Icon,
+  createIcon,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
+import { toast } from "react-hot-toast";
 
 import VideoBackgroundWithSearch from "../ui/VideoBackgroundWithSearch";
 import StatsCard from "../ui/StatsCard";
 import Features from "../ui/Features";
+import Testimonials from "../ui/Testimonials";
 
 import {
   IoLogoBitcoin,
   IoSearchSharp,
   IoAnalyticsSharp,
 } from "react-icons/io5";
-import Testimonials from "../ui/Testimonials";
-import { Link } from "react-router-dom";
+import { FaRegPaperPlane } from "react-icons/fa6";
+import validator from "validator";
+import { useForm } from "react-hook-form";
+import { createContact } from "../services/apiGeneral";
+import { useAuth } from "../context/UserContext";
 
 function Home() {
+  const userCtx = useAuth();
+  const { onClose, onOpen, isOpen } = useDisclosure();
+  const [email, setEmail] = useState(null);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data) => createContact(data),
+    onSuccess: () => {
+      toast.success("da gui thong tin, cam on ?");
+      handleClose();
+    },
+    onError: (err) => {
+      console.log(err);
+      toast.error("xay ra loi");
+    },
+  });
+
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm();
+
+  function onSubmit(data) {
+    // check validate data
+
+    mutate({ ...data, userID: userCtx?.id });
+  }
+
+  function handleOpen() {
+    if (!email || !validator.isEmail(email)) {
+      return toast.error("vui long nhap email");
+    }
+    onOpen();
+  }
+
+  function handleClose() {
+    setEmail(null);
+    onClose();
+  }
+
   return (
     <Box py={5}>
       <VideoBackgroundWithSearch />
@@ -149,38 +211,134 @@ function Home() {
           color="whiteAlpha.800"
         >
           <Box as="section">
-            <Container py={{ base: "12", md: "20" }}>
-              <Stack spacing={{ base: "8", md: "10" }}>
-                <Stack spacing={{ base: "4", md: "5" }} align="center">
-                  <Heading size={{ base: "sm", md: "md" }} color='white'>
-                    Ready to Grow?
+            <Flex align={"center"} justify={"center"} py={3} bg="transparent">
+              <Stack
+                boxShadow={"sm"}
+                rounded={"xl"}
+                p={10}
+                spacing={8}
+                align={"center"}
+              >
+                <Icon as={NotificationIcon} w={24} h={24} />
+                <Stack align={"center"} spacing={2}>
+                  <Heading
+                    textTransform={"uppercase"}
+                    fontSize={"3xl"}
+                    color="white"
+                  >
+                    Liên hệ
                   </Heading>
-                  <Text maxW="2xl" textAlign="center" fontSize="xl">
-                    With this beautiful and responsive React components you will
-                    realize your next project in no time.
+                  <Text
+                    fontSize={"lg"}
+                    textAlign="center"
+                    color={useColorModeValue("whiteAlpha.900", "white")}
+                  >
+                    Báo lỗi liên hệ hòm thư góp ý các kiểu đà điểu vào đây hết
                   </Text>
                 </Stack>
                 <Stack
-                  spacing="3"
-                  direction={{ base: "column", sm: "row" }}
-                  justify="center"
-                  align="center"
-                  alignSelf="center"
+                  spacing={4}
+                  direction={{ base: "column", md: "row" }}
+                  w={"full"}
                 >
+                  <Input
+                    type="email"
+                    placeholder={"Email của bạn"}
+                    _placeholder={{ color: "whiteAlpha.600" }}
+                    rounded={"full"}
+                    borderWidth={1.5}
+                    color={"white"}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                   <Button
-                    borderColor="light"
-                    color="light"
-                    variant="outline"
-                    _hover={{ bg: "whiteAlpha.300" }}
+                    rounded={"full"}
+                    colorScheme="green"
+                    flex={"1 0 auto"}
+                    rightIcon={<FaRegPaperPlane />}
+                    onClick={handleOpen}
                   >
-                    Learn more
+                    Subscribe
                   </Button>
-                  <Button colorScheme="green" as={Link} to="/dang-ky">
-                    Đăng ký ngay
-                  </Button>
+
+                  <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                    <ModalOverlay zIndex={10000} />
+                    <ModalContent className="modal-media" mx={2}>
+                      <ModalHeader>Thông tin liên hệ</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <VStack gap={2} w="full">
+                            <Flex
+                              flexDirection={{ base: "column", md: "row" }}
+                              w="full"
+                              gap={{ base: 0, md: 2.5 }}
+                            >
+                              <FormControl isRequired>
+                                <FormLabel>Họ và tên</FormLabel>
+                                <Input
+                                  {...register("name", {
+                                    required: "vui long nhap ten",
+                                  })}
+                                />
+                              </FormControl>
+                              <FormControl>
+                                <FormLabel>Số điện thoại</FormLabel>
+                                <Input {...register("phone")} />
+                              </FormControl>
+                            </Flex>
+                            <FormControl isRequired>
+                              <FormLabel>Email</FormLabel>
+                              <Input
+                                isDisabled
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                              />
+                            </FormControl>
+                            <FormControl isRequired>
+                              <FormLabel>Tiêu đề</FormLabel>
+                              <Input
+                                {...register("title", {
+                                  required: "nhap tieu de",
+                                })}
+                              />
+                            </FormControl>
+                            <FormControl isRequired>
+                              <FormLabel>Nội dung</FormLabel>
+                              <Textarea
+                                {...register("content", {
+                                  required: "nhan nhu dieu gi?",
+                                })}
+                              />
+                            </FormControl>
+                          </VStack>
+                        </form>
+                      </ModalBody>
+
+                      <ModalFooter justifyContent="space-between" w="full">
+                        <Button
+                          colorScheme="red"
+                          size="sm"
+                          mr={3}
+                          onClick={handleClose}
+                        >
+                          Đóng
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          isLoading={isPending}
+                          loadingText="Đang gửi"
+                          colorScheme="green"
+                        >
+                          Send
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
                 </Stack>
               </Stack>
-            </Container>
+            </Flex>
           </Box>
         </Center>
       </Box>
@@ -189,3 +347,100 @@ function Home() {
 }
 
 export default Home;
+
+const NotificationIcon = createIcon({
+  displayName: "Notification",
+  viewBox: "0 0 128 128",
+  path: (
+    <g id="Notification">
+      <rect
+        className="cls-1"
+        x="1"
+        y="45"
+        fill={"#fbcc88"}
+        width="108"
+        height="82"
+      />
+      <circle className="cls-2" fill={"#8cdd79"} cx="105" cy="86" r="22" />
+      <rect
+        className="cls-3"
+        fill={"#f6b756"}
+        x="1"
+        y="122"
+        width="108"
+        height="5"
+      />
+      <path
+        className="cls-4"
+        fill={"#7ece67"}
+        d="M105,108A22,22,0,0,1,83.09,84a22,22,0,0,0,43.82,0A22,22,0,0,1,105,108Z"
+      />
+      <path
+        fill={"#f6b756"}
+        className="cls-3"
+        d="M109,107.63v4A22,22,0,0,1,83.09,88,22,22,0,0,0,109,107.63Z"
+      />
+      <path
+        className="cls-5"
+        fill={"#d6ac90"}
+        d="M93,30l16,15L65.91,84.9a16,16,0,0,1-21.82,0L1,45,17,30Z"
+      />
+      <path
+        className="cls-6"
+        fill={"#cba07a"}
+        d="M109,45,65.91,84.9a16,16,0,0,1-21.82,0L1,45l2.68-2.52c43.4,40.19,41.54,39.08,45.46,40.6A16,16,0,0,0,65.91,79.9l40.41-37.42Z"
+      />
+      <path
+        className="cls-7"
+        fill={"#dde1e8"}
+        d="M93,1V59.82L65.91,84.9a16,16,0,0,1-16.77,3.18C45.42,86.64,47,87.6,17,59.82V1Z"
+      />
+      <path
+        className="cls-8"
+        fill={"#c7cdd8"}
+        d="M74,56c-3.56-5.94-3-10.65-3-17.55a16.43,16.43,0,0,0-12.34-16,5,5,0,1,0-7.32,0A16,16,0,0,0,39,38c0,7.13.59,12-3,18a3,3,0,0,0,0,6H50.41a5,5,0,1,0,9.18,0H74a3,3,0,0,0,0-6ZM53.2,21.37a3,3,0,1,1,3.6,0,1,1,0,0,0-.42.7,11.48,11.48,0,0,0-2.77,0A1,1,0,0,0,53.2,21.37Z"
+      />
+      <path
+        className="cls-3"
+        fill={"#f6b756"}
+        d="M46.09,86.73,3,127H1v-1c6-5.62-1.26,1.17,43.7-40.78A1,1,0,0,1,46.09,86.73Z"
+      />
+      <path
+        className="cls-3"
+        fill={"#f6b756"}
+        d="M109,126v1h-2L63.91,86.73a1,1,0,0,1,1.39-1.49C111,127.85,103.11,120.51,109,126Z"
+      />
+      <path
+        className="cls-8"
+        fill={"#c7cdd8"}
+        d="M93,54.81v5L65.91,84.9a16,16,0,0,1-16.77,3.18C45.42,86.64,47,87.6,17,59.82v-5L44.09,79.9a16,16,0,0,0,21.82,0Z"
+      />
+      <path
+        className="cls-9"
+        fill={"#fff"}
+        d="M101,95c-.59,0-.08.34-8.72-8.3a1,1,0,0,1,1.44-1.44L101,92.56l15.28-15.28a1,1,0,0,1,1.44,1.44C100.21,96.23,101.6,95,101,95Z"
+      />
+      <path
+        className="cls-3"
+        fill={"#f6b756"}
+        d="M56.8,18.38a3,3,0,1,0-3.6,0A1,1,0,0,1,52,20,5,5,0,1,1,58,20,1,1,0,0,1,56.8,18.38Z"
+      />
+      <path
+        className="cls-1"
+        fill={"#fbcc88"}
+        d="M71,42.17V35.45c0-8.61-6.62-16-15.23-16.43A16,16,0,0,0,39,35c0,7.33.58,12-3,18H74A21.06,21.06,0,0,1,71,42.17Z"
+      />
+      <path
+        className="cls-3"
+        fill={"#f6b756"}
+        d="M74,53H36a21.36,21.36,0,0,0,1.86-4H72.14A21.36,21.36,0,0,0,74,53Z"
+      />
+      <path className="cls-3" fill={"#f6b756"} d="M59.59,59a5,5,0,1,1-9.18,0" />
+      <path
+        className="cls-1"
+        fill={"#fbcc88"}
+        d="M74,59H36a3,3,0,0,1,0-6H74a3,3,0,0,1,0,6Z"
+      />
+    </g>
+  ),
+});

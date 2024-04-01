@@ -81,6 +81,9 @@ const SELLING_STATUS = 2;
 const SOLD_STATUS = 3;
 export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
 
+const local = `http://localhost:3000`;
+const landhub = `https://www.landhub.netlify.app`;
+export { local, landhub };
 export const questURL = `https://www.mapquestapi.com/geocoding/v1/address?key=${
   import.meta.env.VITE_QUEST_KEY
 }`;

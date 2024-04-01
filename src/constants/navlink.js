@@ -60,17 +60,8 @@ export const mobileNavLinks = {
     { title: "Trang chủ", icon: "House", to: "/" },
     { title: "Nhà đất bán", icon: "HouseFlag", to: "nha-dat-ban" },
     { title: "Nhà đất cho thuê", icon: "BuildingFlag", to: "nha-dat-cho-thue" },
-    { title: "Dự án", icon: "City", to: "du-an" },
     { title: "Tin tức", icon: "Newspaper", to: "tin-tuc" },
-    // later
-    {
-      title: "Góp ý - Báo lỗi",
-      icon: "EnvelopeCircleCheck",
-      to: "hom-thu-gop-y",
-    },
-    { title: "Giới thiệu về chúng tôi", icon: "UsersLine", to: "danh-ba" },
-    { title: "Liên hệ", icon: "Headset", to: "danh-ba" },
-    // TODO
+    { title: "Danh bạ", icon: "Headset", to: "danh-ba" },
   ],
   authen: [
     {

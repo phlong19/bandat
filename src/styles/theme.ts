@@ -15,6 +15,7 @@ import { numberInputTheme } from "./numberInput";
 import { modalTheme } from "./modal";
 import { spinnerTheme } from "./spinner";
 import { skeletonTheme } from "./skeleton";
+import { textareaTheme } from "./textarea";
 
 const colors = {
   light: "#f6f6f6",
@@ -60,6 +61,7 @@ export const theme = extendTheme({
     Modal: modalTheme,
     Spinner: spinnerTheme,
     Skeleton: skeletonTheme,
+    Textarea: textareaTheme,
   },
   font: {
     lexend: `'Lexend, sans-serif'`,

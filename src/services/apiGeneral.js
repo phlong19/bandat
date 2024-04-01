@@ -155,3 +155,14 @@ export async function deleteDocument(docID) {
 
   return null;
 }
+
+// send contact at home page
+export async function createContact(formData) {
+  const { error } = await supabase.from("Contact").insert([{ ...formData }]);
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  return null;
+}

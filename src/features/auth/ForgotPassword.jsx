@@ -1,3 +1,5 @@
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -10,9 +12,12 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { success } from "../../constants/message";
 
 import FormInput from "../../ui/FormInput";
 import Logo from "../../ui/Logo";
+import { sendMailReset } from "../../services/apiAuth";
+import validator from "validator";
 
 export default function ForgotPassword() {
   const accent = useColorModeValue("primary", "secondary");
@@ -22,8 +27,16 @@ export default function ForgotPassword() {
     formState: { errors },
   } = useForm();
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (email) => sendMailReset(email),
+    onSuccess: () => toast.success(success.emailConfirm),
+    onError: (err) => toast.error(err.message),
+  });
+
   function onSubmit(data) {
-    console.log(data);
+    if (validator.isEmail(data?.email)) {
+      mutate(data.email);
+    }
   }
 
   return (
@@ -68,7 +81,7 @@ export default function ForgotPassword() {
               <Button
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
-                // isLoading={isLoggingIn}
+                isLoading={isPending}
                 loadingText="Đợi xíu"
                 colorScheme="green"
                 type="submit"

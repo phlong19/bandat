@@ -47,6 +47,8 @@ export const error = {
   notVerifyEmail: "xac thuc email truoc da",
   notHavePhone: "chua co sdt, vui long cap nhat",
   duplicateEmail: "email da dang ky / ton tai trong he thong",
+  cantSendEmailResetPassword:'khong the gui mail reset mk',
+  
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng, Vui lòng thử lại sau",

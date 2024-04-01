@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import CustomArrow from "../ui/CustomArrow";
 
 const settings = {
-  dots: true,
+  dots: false,
   infinite: true,
   speed: 500,
   slidesToShow: 1,
@@ -20,7 +20,10 @@ function Testimonials() {
   const color = useColorModeValue("gray.400", "gray.400");
 
   return (
-    <Slider {...settings} className="h-[450px] min-h-[450px]">
+    <Slider
+      {...settings}
+      className="h-[500px] max-h-[500px] min-h-[500px] md:h-[450px] md:max-h-[450px] md:min-h-[450px]"
+    >
       {data.map((item, i) => (
         <Stack
           bg={bg}
@@ -30,7 +33,9 @@ function Testimonials() {
           spacing={{ base: 8, md: 10 }}
           align={"center"}
           direction={"column"}
-          maxH="400px"
+          maxH={{ base: 500, md: 450 }}
+          minH={{ base: 500, md: 450 }}
+          h={{ base: 500, md: 450 }}
           display="flex"
         >
           <Text

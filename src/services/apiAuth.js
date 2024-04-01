@@ -1,6 +1,6 @@
 import supabase from "./supabase";
 import validator from "validator";
-import { USER_LEVEL } from "../constants/anyVariables";
+import { landhub, local, USER_LEVEL } from "../constants/anyVariables";
 import { error as errorMessage } from "../constants/message";
 import { addDays } from "date-fns";
 
@@ -175,6 +175,21 @@ export async function resendSMSAPI(phone) {
   return data;
 }
 
+// send email reset password link
+export async function sendMailReset(email) {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    // redirectTo:`${landhub}/dat-lai-mat-khau`
+    redirectTo: `${local}/dat-lai-mat-khau`,
+  });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantSendEmailResetPassword);
+  }
+
+  return null;
+}
+
 export async function getCurrentUser() {
   const { data: session } = await supabase.auth.getSession();
 
@@ -203,10 +218,4 @@ export async function logout() {
   }
   // interview stories ;))
   return null;
-}
-
-// for admin
-export async function updateUser(formData) {
-  const { phone } = formData;
-  const { data, error } = await supabase.auth.updateUser({});
 }
