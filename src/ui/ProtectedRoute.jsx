@@ -1,4 +1,3 @@
-import supabase from "../services/supabase";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -12,14 +11,6 @@ import { error as errorMessage } from "../constants/message";
 function ProtectedRoute({ children, accessLevel, accSettings = false }) {
   const { data, level, isAuthenticated, user, email, isLoading } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    supabase.auth.onAuthStateChange(async (event) => {
-      if (event == "PASSWORD_RECOVERY") {
-        navigate("/dat-lai-mat-khau", { state: event });
-      }
-    });
-  }, [navigate]);
 
   useEffect(() => {
     if (!isLoading) {

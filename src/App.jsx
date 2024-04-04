@@ -28,8 +28,7 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
 import UserDashboard from "./pages/UserDashboard";
-import ForgotPassword from "./features/auth/ForgotPassword";
-import ResetPassword from "./features/auth/ResetPassword";
+import LoginMagicLink from "./features/auth/LoginMagicLink";
 import CheckEmailPlease from "./features/auth/CheckEmailPlease";
 import EmailVerification from "./features/auth/EmailVerification";
 
@@ -90,7 +89,7 @@ function App() {
                   <Route element={<AuthenticationLayout />}>
                     <Route path="dang-nhap" element={<Login />} />
                     <Route path="dang-ky" element={<Register />} />
-                    <Route path="quen-mat-khau" element={<ForgotPassword />} />
+                    <Route path="quen-mat-khau" element={<LoginMagicLink />} />
                     {/* require email verification */}
                     <Route
                       path="xac-thuc-email"
@@ -102,16 +101,6 @@ function App() {
                       path="kiem-tra-email"
                     />
                   </Route>
-
-                  {/* reset password page */}
-                  <Route
-                    path="dat-lai-mat-khau"
-                    element={
-                      <ProtectedRoute accessLevel={USER_LEVEL}>
-                        <ResetPassword />
-                      </ProtectedRoute>
-                    }
-                  />
 
                   {/* user account management */}
                   <Route

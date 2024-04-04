@@ -51,7 +51,7 @@ import { useAuth } from "../context/UserContext";
 function Home() {
   const userCtx = useAuth();
   const { onClose, onOpen, isOpen } = useDisclosure();
-  const [email, setEmail] = useState(undefined);
+  const [email, setEmail] = useState(null);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data) => createContact(data),
@@ -210,7 +210,7 @@ function Home() {
           bgSize="cover"
           color="whiteAlpha.800"
         >
-          <Box as="section">
+          <Box as="section" width="full" backdropFilter="blur(3px)">
             <Flex align={"center"} justify={"center"} py={3} bg="transparent">
               <Stack
                 boxShadow={"sm"}

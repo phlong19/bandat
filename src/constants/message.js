@@ -47,7 +47,7 @@ export const error = {
   notVerifyEmail: "Chưa xác thực mail",
   notHavePhone: "Vui lòng cập nhật số điện thoại",
   duplicateEmail: "Địa chỉ email đã tồn tại",
-  cantSendEmailResetPassword: "khong the gui mail reset mk",
+  cantSendEmailResetPassword: "khong the gui email dang nhap 1 lan",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng",
@@ -82,7 +82,7 @@ export const success = {
   // xac nhan sdt thanh cong
   verifyPhone: "Xác thực thành công số điện thoại",
   emailConfirm: "Xác thực thành công email",
-  emailVerify: "1 request dat lai mk da duoc gui den email, kiem tra di",
+  emailVerify: "link dang nhap da duoc gui den email",
 
   //
   login: "Đăng nhập thành công",

@@ -16,10 +16,10 @@ import { success } from "../../constants/message";
 
 import FormInput from "../../ui/FormInput";
 import Logo from "../../ui/Logo";
-import { sendMailReset } from "../../services/apiAuth";
+import { sendMagicLink } from "../../services/apiAuth";
 import validator from "validator";
 
-export default function ForgotPassword() {
+export default function LoginMagicLink() {
   const accent = useColorModeValue("primary", "secondary");
   const {
     handleSubmit,
@@ -28,7 +28,7 @@ export default function ForgotPassword() {
   } = useForm();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (email) => sendMailReset(email),
+    mutationFn: (email) => sendMagicLink(email),
     onSuccess: () => toast.success(success.emailVerify),
     onError: (err) => toast.error(err.message),
   });
@@ -56,7 +56,7 @@ export default function ForgotPassword() {
               <Logo size="w-40" />
             </Box>
             <Heading fontSize={"2xl"} textAlign={"center"}>
-              forgot psw
+              dang nhap bang email
             </Heading>
           </Stack>
           <Box

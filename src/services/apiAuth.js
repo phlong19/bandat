@@ -176,10 +176,11 @@ export async function resendSMSAPI(phone) {
 }
 
 // send email reset password link
-export async function sendMailReset(email) {
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    // redirectTo:`${landhub}/dat-lai-mat-khau`
-    redirectTo: `${local}/dat-lai-mat-khau`,
+export async function sendMagicLink(email) {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: `${landhub}/tai-khoan` },
+    // options: { emailRedirectTo: `${local}/tai-khoan` },
   });
 
   if (error) {
