@@ -49,7 +49,7 @@ import { createContact } from "../services/apiGeneral";
 import { useAuth } from "../context/UserContext";
 
 function Home() {
-  const userCtx = useAuth();
+  const { data: profile, isLoading } = useAuth();
   const { onClose, onOpen, isOpen } = useDisclosure();
   const [email, setEmail] = useState(null);
 
@@ -63,18 +63,20 @@ function Home() {
       console.log(err);
       toast.error("xay ra loi");
     },
+    onSettled: () => {
+      handleClose();
+    },
   });
 
   const {
+    reset,
     formState: { errors },
     register,
     handleSubmit,
   } = useForm();
 
   function onSubmit(data) {
-    // check validate data
-
-    mutate({ ...data, userID: userCtx?.id });
+    mutate({ ...data, userID: profile?.id, email, phone: Number(data?.phone) });
   }
 
   function handleOpen() {
@@ -85,7 +87,8 @@ function Home() {
   }
 
   function handleClose() {
-    setEmail(null);
+    setEmail("");
+    reset();
     onClose();
   }
 
@@ -267,7 +270,7 @@ function Home() {
                       <ModalHeader>Thông tin liên hệ</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <form onSubmit={handleSubmit(onSubmit)} id="contact">
                           <VStack gap={2} w="full">
                             <Flex
                               flexDirection={{ base: "column", md: "row" }}
@@ -281,35 +284,59 @@ function Home() {
                                     required: "vui long nhap ten",
                                   })}
                                 />
+                                {errors.name && (
+                                  <FormErrorMessage>
+                                    {errors.name.message}
+                                  </FormErrorMessage>
+                                )}
                               </FormControl>
                               <FormControl>
                                 <FormLabel>Số điện thoại</FormLabel>
                                 <Input {...register("phone")} />
+                                {errors.phone && (
+                                  <FormErrorMessage>
+                                    {errors.phone.message}
+                                  </FormErrorMessage>
+                                )}
                               </FormControl>
                             </Flex>
                             <FormControl isRequired>
                               <FormLabel>Email</FormLabel>
-                              <Input
-                                isDisabled
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                              />
+                              <Input isDisabled value={email} />
                             </FormControl>
                             <FormControl isRequired>
                               <FormLabel>Tiêu đề</FormLabel>
                               <Input
                                 {...register("title", {
                                   required: "nhap tieu de",
+                                  maxLength: {
+                                    value: 200,
+                                    message: "gioi han",
+                                  },
                                 })}
                               />
+                              {errors.title && (
+                                <FormErrorMessage>
+                                  {errors.title.message}
+                                </FormErrorMessage>
+                              )}
                             </FormControl>
                             <FormControl isRequired>
                               <FormLabel>Nội dung</FormLabel>
                               <Textarea
                                 {...register("content", {
                                   required: "nhan nhu dieu gi?",
+                                  maxLength: {
+                                    value: 300,
+                                    message: "gioi han",
+                                  },
                                 })}
                               />
+                              {errors.content && (
+                                <FormErrorMessage>
+                                  {errors.content.message}
+                                </FormErrorMessage>
+                              )}
                             </FormControl>
                           </VStack>
                         </form>
@@ -325,6 +352,9 @@ function Home() {
                           Đóng
                         </Button>
                         <Button
+                          isDisabled={isLoading}
+                          form="contact"
+                          type="submit"
                           variant="outline"
                           size="sm"
                           isLoading={isPending}

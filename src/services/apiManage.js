@@ -253,3 +253,24 @@ export async function getFullUserList(textQuery, option, page) {
 
   return { data, count };
 }
+
+// get contacts
+export async function getContactLists(page) {
+  const start = (page - 1) * LIMIT_PER_PAGE;
+  const end = start + LIMIT_PER_PAGE - 1;
+
+  let query = supabase
+    .from("Contact")
+    .select(`*, profile: Profile(*)`, { count: "exact" })
+    .limit(LIMIT_PER_PAGE)
+    .range(start, end);
+
+  const { data, count, error } = await query;
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
+}

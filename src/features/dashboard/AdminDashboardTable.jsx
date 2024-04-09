@@ -1,22 +1,25 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useState } from "react";
 
 import ChakraBreadcrumb from "../../ui/ChakraBreadcrumb";
 import ChakraTable from "../table/ChakraTable";
 import TableDocRow from "../table/TableDocRow";
 import TableTypeRow from "../table/TableTypeRow";
 import TableUserRow from "../table/TableUserRow";
+import TableContactRow from "../table/TableContactRow";
 import AdminChart from "../chart/AdminChart";
 
 import { useGetFullTypeList } from "./useGetFullTypeList";
 import { useGetFullListDocs } from "./useGetFullListDocs";
 import { useGetFullUsers } from "./useGetFullUsers";
 import { profileCaptions } from "../../constants/anyVariables";
-import { useState } from "react";
+import { useGetContactLists } from "./useGetContactLists";
 
 function AdminDashboardTable() {
   const [query, setQuery] = useState("");
   const { data, count, isFetching } = useGetFullListDocs();
   const { types, typesCount, isLoading } = useGetFullTypeList();
+  const { contacts, contactCount, isFetchingContact } = useGetContactLists();
   const { users, usersCount, isUsering } = useGetFullUsers(query);
 
   return (
@@ -36,6 +39,27 @@ function AdminDashboardTable() {
         title="Danh sách hồ sơ người dùng"
         setQuery={setQuery}
       />
+
+      <ChakraTable
+        isLoading={isFetchingContact}
+        data={contacts}
+        captions={[
+          "Tên",
+          "Số điện thoại",
+          "Email",
+          "Tiêu đề",
+          "Nội dung",
+          "Ngày gửi",
+          "Người dùng",
+        ]}
+        count={contactCount}
+        page="contact-page"
+        render={(item) => <TableContactRow data={item} key={item.id} />}
+        title="Danh sách tin liên hệ, góp ý"
+        viewOnly
+        profile={false}
+      />
+
       <Flex gap={3} w="full" maxH="55dvh">
         <ChakraTable
           isLoading={isLoading}
