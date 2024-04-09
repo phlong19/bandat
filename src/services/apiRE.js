@@ -375,3 +375,34 @@ export async function deletePost(postID, level, userID) {
 
   return null;
 }
+
+// get related post based on address
+// limit at 6
+export async function getRelatedPosts(address) {
+  const { cityID, disID, wardID } = address;
+
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .select(
+      `*,
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName),
+      images: REMedias(*),
+      profile: Profile(fullName,avatar),
+      type: REType(*)
+  `,
+    )
+    .eq("cityID", cityID)
+    .eq("disID", disID)
+    .eq("wardID", wardID);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
+}
+
+// get some from the same author

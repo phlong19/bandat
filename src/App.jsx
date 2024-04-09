@@ -10,7 +10,6 @@ import ListingPage from "./pages/ListingPage";
 import Details from "./pages/Details";
 import News from "./pages/News";
 import NewDetails from "./pages/NewDetails";
-import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
 import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
@@ -77,7 +76,6 @@ function App() {
                       path="nha-dat-cho-thue/:type"
                       element={<ListingPage />}
                     />
-                    <Route path="du-an" element={<Projects />} />
                     <Route path="nha-dat/:land" element={<Details />} />
                     <Route path="tin-da-luu" element={<Bookmarks />} />
                     <Route path="tin-tuc" element={<News />} />

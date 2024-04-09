@@ -44,6 +44,7 @@ import {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import GoBackButton from "../ui/GoBackButton";
+import RelatedPosts from "../ui/RelatedPosts";
 import DetailsFeature from "../ui/DetailsFeature";
 import Disclaimer from "../ui/Disclaimer";
 import StickyAuthorBox from "../ui/StickyAuthorBox";
@@ -64,7 +65,7 @@ import { FaRuler } from "react-icons/fa6";
 
 // vars, ctx, hooks, ...
 import { useAuth } from "../context/UserContext";
-import { getSinglePost } from "../services/apiRE";
+import { getRelatedPosts, getSinglePost } from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
 import { formatCurrency, formatDate } from "../utils/helper";
 import { error } from "../constants/message";
@@ -100,6 +101,19 @@ function Details() {
       document.title = "LandHub - " + post.name;
     }
   }, [post]);
+
+  // api get related post
+  const { data: relatedPosts, isLoading: isQuerying } = useQuery({
+    queryKey: ["related-posts", land],
+    queryFn: () =>
+      getRelatedPosts({
+        cityID: post.cityID,
+        disID: post.disID,
+        wardID: post.wardID,
+      }),
+    enabled:
+      Boolean(post?.cityID) && Boolean(post?.disID) && Boolean(post?.wardID),
+  });
 
   if (isLoading || isFetching) {
     return (
@@ -445,7 +459,7 @@ function Details() {
             </Box>
             {/* des */}
             <Box pb={1}>
-              <Heading fontSize="xl" color={accent}>
+              <Heading fontSize="lg" color={accent}>
                 Thông tin mô tả
               </Heading>
               <Box h={200} fontSize="sm" height="fit-content">
@@ -456,7 +470,7 @@ function Details() {
             </Box>
             {/* features */}
             <Box my={3}>
-              <Heading fontSize="xl" color={accent}>
+              <Heading fontSize="lg" color={accent}>
                 Đặc điểm bất động sản
               </Heading>
               <Flex
@@ -554,7 +568,7 @@ function Details() {
             </Box>
             {/* location */}
             <Box>
-              <Heading fontSize="xl" color={accent}>
+              <Heading fontSize="lg" color={accent}>
                 Xem trên bản đồ
               </Heading>
               <MapContainer
@@ -572,6 +586,15 @@ function Details() {
                 <Marker position={[lat, long]} icon={marker}></Marker>
               </MapContainer>
             </Box>
+
+            {/* related posts */}
+            <Box minH={350}>
+              <Heading fontSize="lg" color={accent}>
+                Bài đăng liên quan
+              </Heading>
+              <RelatedPosts data={relatedPosts} isLoading={isQuerying} />
+            </Box>
+
             {/* dates */}
             <Box my={2}>
               <Flex

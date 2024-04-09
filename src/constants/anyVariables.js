@@ -3,6 +3,9 @@ export const currentYear = new Date().getFullYear();
 
 // max item 1 page
 export const LIMIT_PER_PAGE = 12;
+// max news 1 page
+export const LIMIT_NEWS = 8;
+
 // min & max files can be uploaded
 const BASE_MEDIA_UPLOAD = 4;
 const LIMIT_IMG_UPLOAD = 8;
