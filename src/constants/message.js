@@ -114,6 +114,8 @@ export const success = {
 
   // others
   copyToClipboard: "Đã sao chép vào clipboard",
+  createReport:'bao cao cua ban da duoc gui',
+  
 };
 
 export const reform = {

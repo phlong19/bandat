@@ -25,7 +25,7 @@ export function formatCurrency(input) {
   if (Number(input) >= billion) {
     return round2Digit(input / billion) + " tỷ";
   }
-  if (Number(input) > million) {
+  if (Number(input) >= million) {
     return round2Digit(input / million) + " triệu";
   }
   if (Number(input) < million) {

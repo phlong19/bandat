@@ -14,7 +14,7 @@ import { formatCurrency, pricePerArea } from "../../utils/helper";
 import { useMapView } from "../../context/MapViewContext";
 import { m2 } from "../../constants/anyVariables";
 
-function ListItem({ data, purType, isPopup = false }) {
+function ListItem({ data, purType, isPopup = false, author = true }) {
   const { mapView } = useMapView();
   const isLaptop = useMediaQuery({
     query: "(min-width: 1000px)",
@@ -98,14 +98,18 @@ function ListItem({ data, purType, isPopup = false }) {
         {(!mapView || !isLaptop) && (
           <div className="mt-auto flex items-center gap-1.5">
             <div className="flex h-8 max-w-full items-center gap-2 lg:max-w-[40%] lg:gap-1.5 xl:max-w-[45%] xl:gap-2">
-              <Avatar
-                src={avatar}
-                name={fullName}
-                size="xs"
-                alt="author avatar"
-              />
+              {author && (
+                <Avatar
+                  src={avatar}
+                  name={fullName}
+                  size="xs"
+                  alt="author avatar"
+                />
+              )}
               <div className="text-[10px]">
-                <span className="line-clamp-1 font-semibold">{fullName}</span>
+                {author && (
+                  <span className="line-clamp-1 font-semibold">{fullName}</span>
+                )}
                 <p>{formattedDate}</p>
               </div>
             </div>

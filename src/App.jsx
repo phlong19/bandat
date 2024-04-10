@@ -151,8 +151,14 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
-                    {/* more routes on admin */}
-                    {/* <Route path="" element */}
+                    <Route
+                      path="/companies"
+                      element={
+                        <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                          <AdminPanel />
+                        </ProtectedRoute>
+                      }
+                    />
                   </Route>
 
                   {/* 404 & unauthorized */}

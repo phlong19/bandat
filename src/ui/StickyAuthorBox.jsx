@@ -11,6 +11,7 @@ import {
   Image,
   Link as ChakraLink,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
 import {
@@ -25,6 +26,7 @@ import { PiWarning } from "react-icons/pi";
 
 import { hiddenLast3PhoneNum } from "../utils/helper";
 import { success } from "../constants/message";
+import ReportModal from "./ReportModal";
 
 function StickyAuthorBox({ author }) {
   const { phone, fullName, avatar, email } = author;
@@ -35,6 +37,8 @@ function StickyAuthorBox({ author }) {
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
   const [report, setReport] = useState(false);
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   async function handleClick(e) {
     e.stopPropagation();
@@ -148,9 +152,10 @@ function StickyAuthorBox({ author }) {
               onMouseLeave={() => setReport(false)}
               color={report ? "#d6ba17f8" : ""}
               icon={<PiWarning />}
-              onClick={() => toast.success("+1 bao xau, cho bai nay ra dao")}
+              onClick={onOpen}
             />
           </Tooltip>
+          <ReportModal isOpen={isOpen} onClose={onClose} />
           <Tooltip label="Lưu vào tin của bạn">
             <IconButton
               size="sm"

@@ -379,8 +379,81 @@ export async function deletePost(postID, level, userID) {
 // get related post based on address
 // limit at 6
 export async function getRelatedPosts(address) {
-  const { cityID, disID, wardID } = address;
+  const { cityID, disID, wardID, postID } = address;
 
+  const select = `*,
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName),
+      images: REMedias(*),
+      profile: Profile(fullName,avatar),
+      type: REType(*)
+  `;
+
+  // full address
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .select(select)
+    .limit(6)
+    .neq("id", postID)
+    .eq("cityID", cityID)
+    .eq("disID", disID)
+    .eq("wardID", wardID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  if (data.length > 0) {
+    return data;
+  }
+
+  // remove wardID
+  const { data: list, error: error2 } = await supabase
+    .from("REDirectory")
+    .select(select)
+    .limit(6)
+    .neq("id", postID)
+    .eq("cityID", cityID)
+    .eq("disID", disID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
+
+  if (error2) {
+    console.log(error2);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  if (list.length > 0) {
+    return list;
+  }
+
+  // only cityID
+  const { data: list2, error: error3 } = await supabase
+    .from("REDirectory")
+    .select(select)
+    .limit(6)
+    .neq("id", postID)
+    .eq("cityID", cityID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
+
+  if (error3) {
+    console.log(error3);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return list2;
+}
+
+// get some from the same author
+export async function getRelatedPostsAuthor(currentPostID, authorID) {
   const { data, error } = await supabase
     .from("REDirectory")
     .select(
@@ -391,11 +464,14 @@ export async function getRelatedPosts(address) {
       images: REMedias(*),
       profile: Profile(fullName,avatar),
       type: REType(*)
-  `,
+    `,
     )
-    .eq("cityID", cityID)
-    .eq("disID", disID)
-    .eq("wardID", wardID);
+    .limit(6)
+    .eq("userID", authorID)
+    .neq("id", currentPostID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
 
   if (error) {
     console.log(error);
@@ -404,5 +480,3 @@ export async function getRelatedPosts(address) {
 
   return data;
 }
-
-// get some from the same author

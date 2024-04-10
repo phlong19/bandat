@@ -65,7 +65,11 @@ import { FaRuler } from "react-icons/fa6";
 
 // vars, ctx, hooks, ...
 import { useAuth } from "../context/UserContext";
-import { getRelatedPosts, getSinglePost } from "../services/apiRE";
+import {
+  getRelatedPosts,
+  getRelatedPostsAuthor,
+  getSinglePost,
+} from "../services/apiRE";
 import { m2 } from "../constants/anyVariables";
 import { formatCurrency, formatDate } from "../utils/helper";
 import { error } from "../constants/message";
@@ -102,7 +106,7 @@ function Details() {
     }
   }, [post]);
 
-  // api get related post
+  // api get related post on address
   const { data: relatedPosts, isLoading: isQuerying } = useQuery({
     queryKey: ["related-posts", land],
     queryFn: () =>
@@ -110,9 +114,20 @@ function Details() {
         cityID: post.cityID,
         disID: post.disID,
         wardID: post.wardID,
+        postID: post.id,
       }),
     enabled:
-      Boolean(post?.cityID) && Boolean(post?.disID) && Boolean(post?.wardID),
+      Boolean(post?.id) &&
+      Boolean(post?.cityID) &&
+      Boolean(post?.disID) &&
+      Boolean(post?.wardID),
+  });
+
+  // api get related post on author
+  const { data, isLoading: isAuthoring } = useQuery({
+    queryKey: ["related-author-posts", land],
+    queryFn: () => getRelatedPostsAuthor(post?.id, post?.userID),
+    enabled: Boolean(post?.id) && Boolean(post?.userID),
   });
 
   if (isLoading || isFetching) {
@@ -401,7 +416,7 @@ function Details() {
           justifyContent="space-around"
         >
           {/* infs */}
-          <Box>
+          <Box maxW={{ base: "full", lg: "78%" }}>
             <Heading fontSize="3xl" fontWeight="600">
               {name}
             </Heading>
@@ -588,11 +603,23 @@ function Details() {
             </Box>
 
             {/* related posts */}
-            <Box minH={350}>
+            <Box px={1}>
               <Heading fontSize="lg" color={accent}>
-                Bài đăng liên quan
+                Bài đăng liên quan cùng khu vực
               </Heading>
               <RelatedPosts data={relatedPosts} isLoading={isQuerying} />
+            </Box>
+
+            {/* related author posts */}
+            <Box px={1}>
+              <Heading fontSize="lg" color={accent}>
+                Bài đăng cùng tác giả
+              </Heading>
+              <RelatedPosts
+                data={data}
+                isLoading={isAuthoring}
+                author={false}
+              />
             </Box>
 
             {/* dates */}

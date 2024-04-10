@@ -149,3 +149,14 @@ export const reportList = [
   { label: "Tin không có thật", value: "real" },
   { label: "Bất động sản đã bán", value: "sold" },
 ];
+
+// report list
+export const list = [
+  { value: "address", label: "Địa chỉ bất động sản" },
+  { value: "info", label: "Các thông tin: giá, diện tích, mô tả,..." },
+  { value: "media", label: "Ảnh" },
+  { value: "duplicate", label: "Trùng tin rao khác" },
+  { value: "contact", label: "Không liên lạc được" },
+  { value: "exist", label: "Tin không có thật" },
+  { value: "sold", label: "Bất động sản đã bán" },
+];

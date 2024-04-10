@@ -524,6 +524,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           )}
         </VStack>
       </form>
+      {/* TODO: add report table with cur post */}
     </>
   );
 }
