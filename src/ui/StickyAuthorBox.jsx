@@ -28,7 +28,7 @@ import { hiddenLast3PhoneNum } from "../utils/helper";
 import { success } from "../constants/message";
 import ReportModal from "./ReportModal";
 
-function StickyAuthorBox({ author }) {
+function StickyAuthorBox({ postID, author }) {
   const { phone, fullName, avatar, email } = author;
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
@@ -155,7 +155,7 @@ function StickyAuthorBox({ author }) {
               onClick={onOpen}
             />
           </Tooltip>
-          <ReportModal isOpen={isOpen} onClose={onClose} />
+          <ReportModal isOpen={isOpen} onClose={onClose} postID={postID} />
           <Tooltip label="Lưu vào tin của bạn">
             <IconButton
               size="sm"

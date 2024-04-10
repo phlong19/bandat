@@ -649,7 +649,7 @@ function Details() {
             {!isMobile && <Disclaimer name={name} />}
           </Box>
           {/* sticky post author */}
-          <StickyAuthorBox author={profile} />
+          <StickyAuthorBox author={profile} postID={id} />
         </Flex>
       </Box>
       {isMobile && <Disclaimer name={name} />}

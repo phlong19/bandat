@@ -69,6 +69,9 @@ export const error = {
 
   // name edit
   cantEditName: "Không được chỉnh sửa",
+
+  // report
+  cantCreateReport: "khong gui duoc report",
 };
 
 export const success = {
@@ -114,8 +117,7 @@ export const success = {
 
   // others
   copyToClipboard: "Đã sao chép vào clipboard",
-  createReport:'bao cao cua ban da duoc gui',
-  
+  createReport: "bao cao cua ban da duoc gui",
 };
 
 export const reform = {

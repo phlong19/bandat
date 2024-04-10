@@ -15,10 +15,9 @@ import {
   Textarea,
   SimpleGrid,
   ModalCloseButton,
-  NumberInput,
   VStack,
-  NumberInputField,
   useColorMode,
+  Text,
 } from "@chakra-ui/react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -30,7 +29,7 @@ import { createReport } from "../services/apiReport";
 import { success } from "../constants/message";
 import { useAuth } from "../context/UserContext";
 
-function ReportModal({ isOpen, onClose }) {
+function ReportModal({ postID, isOpen, onClose }) {
   const { data: profile } = useAuth();
   const [check, setCheck] = useState(false);
   const [err, setErr] = useState("");
@@ -39,7 +38,7 @@ function ReportModal({ isOpen, onClose }) {
     ? "var(--chakra-colors-primary)"
     : "var(--chakra-colors-secondary)";
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data) => createReport(data),
     onSuccess: () => toast.success(success.createReport),
     onError: (err) => toast.error(err.message),
@@ -56,6 +55,10 @@ function ReportModal({ isOpen, onClose }) {
   } = useForm();
 
   function onSubmit(data) {
+    // require at least one box
+    if (!isAtLeastOneChecked(data)) {
+      return setErr("vui long chon 1 loi hoac dien vao textbox duoi");
+    }
     // validation
     const phone = data.phone.toString();
     if (!validator.isEmail(data.email)) {
@@ -69,12 +72,14 @@ function ReportModal({ isOpen, onClose }) {
         message: "sdt kh phai viet nam",
       });
     }
-    console.log({ ...data, userID: profile?.id });
-    // mutate({ ...data, userID: profile?.id });
+
+    mutate({ ...data, userID: profile?.id, postID });
   }
 
   function handleClose() {
     reset();
+    setCheck(false);
+    setErr("");
     onClose();
   }
 
@@ -94,14 +99,27 @@ function ReportModal({ isOpen, onClose }) {
           >
             <VStack gap={1} align="start">
               {list.map((i, index) => (
-                <Checkbox size="sm" key={index} {...register(`${i.value}`)}>
+                <Checkbox
+                  isInvalid={err}
+                  size="sm"
+                  key={index}
+                  {...register(`${i.value}`)}
+                  onChange={() => setErr("")}
+                >
                   {i.label}
                 </Checkbox>
               ))}
             </VStack>
-            <FormControl>
+            {err && <Text color="red">{err}</Text>}
+            <FormControl isInvalid={err}>
               <FormLabel fontSize="sm">Phản hồi khác</FormLabel>
-              <Textarea {...register("otherReport")} />
+              <Textarea
+                fontSize="sm"
+                {...register("otherReport", {
+                  maxLength: { value: 300, message: "qua dai" },
+                })}
+                onChange={() => setErr("")}
+              />
             </FormControl>
             <SimpleGrid columns={2} pt={2} gap={2}>
               <FormControl isInvalid={errors.name}>
@@ -110,7 +128,7 @@ function ReportModal({ isOpen, onClose }) {
                   {...register("name", { required: "dien ho ten" })}
                   size="sm"
                   borderRadius="5px"
-                  placeholder="Nguyen Van A"
+                  placeholder="Nguyen Van A" value='phan test final'
                 />
                 {errors.name && (
                   <FormErrorMessage>{errors.name.message}</FormErrorMessage>
@@ -120,7 +138,7 @@ function ReportModal({ isOpen, onClose }) {
                 <FormLabel fontSize="sm">Số điện thoại</FormLabel>
 
                 <Input
-                  size="sm"
+                  size="sm" value='0846134872'
                   borderRadius="5px"
                   {...register("phone", {
                     required: "dien sdt",
@@ -135,6 +153,7 @@ function ReportModal({ isOpen, onClose }) {
             <FormControl isInvalid={errors.email}>
               <FormLabel fontSize="sm">Email</FormLabel>
               <Input
+                value="nguyenvana@gmail.com"
                 placeholder="nguyenvana@gmail.com"
                 borderRadius="5px"
                 size="sm"
@@ -145,6 +164,7 @@ function ReportModal({ isOpen, onClose }) {
             <FormControl isInvalid={errors.description}>
               <FormLabel fontSize="sm">Ghi chú khác</FormLabel>
               <Textarea
+                fontSize="sm"
                 {...register("description", {
                   maxLength: { value: 300, message: "qua dai" },
                 })}
@@ -169,6 +189,7 @@ function ReportModal({ isOpen, onClose }) {
             form="report"
             colorScheme="green"
             size="sm"
+            isLoading={isPending}
             isDisabled={!check}
             type="submit"
           >
@@ -181,3 +202,14 @@ function ReportModal({ isOpen, onClose }) {
 }
 
 export default ReportModal;
+
+function isAtLeastOneChecked(formData) {
+  // Iterate through the keys of the formData object
+  for (const key in formData) {
+    // Check if the value is true (assuming it's a boolean value for the checkboxes)
+    if (formData[key] === true || formData.otherReport.length > 0) {
+      return true; // At least one checkbox is checked
+    }
+  }
+  return false; // No checkbox is checked
+}
