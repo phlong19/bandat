@@ -1,4 +1,4 @@
-import { Checkbox, Td, Text, Tr } from "@chakra-ui/react";
+import { Checkbox, Td, Text, Tr, useColorModeValue } from "@chakra-ui/react";
 import { formatDate } from "../../utils/helper";
 
 const data = {
@@ -24,7 +24,14 @@ const data = {
 // function TableReportRow({ data }) {
 function TableReportRow() {
   const { created_at, name, phone, email } = data;
+  const color = useColorModeValue("dark", "light");
 
+  // get type data
+  // re - order to consistant display
+  const types = Object.values(data).filter((i) => typeof i === "boolean");
+
+  console.log(types);
+  // TODO
   return (
     <Tr>
       <Td minW="180px">
@@ -33,15 +40,22 @@ function TableReportRow() {
           0{phone}
         </Text>
       </Td>
-{/* TODO */}
+      {/* TODO */}
       <Td maxW="250px">
         <Text noOfLines={2}>{email}</Text>
       </Td>
-      {Object.values(data).map(
-        (i) =>
+      {types.map(
+        (i, index) =>
           typeof i === "boolean" && (
-            <Td key={i}>
-              <Checkbox>{i}</Checkbox>
+            <Td key={index}>
+              <Checkbox
+                rounded="4px"
+                isDisabled
+                defaultChecked={i}
+                borderStyle="solid"
+                borderWidth="1px"
+                borderColor={color}
+              />
             </Td>
           ),
       )}
