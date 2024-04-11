@@ -45,7 +45,6 @@ function ReportModal({ postID, isOpen, onClose }) {
     onSettled: () => handleClose(),
   });
 
-  // TODO
   const {
     handleSubmit,
     register,
@@ -128,7 +127,8 @@ function ReportModal({ postID, isOpen, onClose }) {
                   {...register("name", { required: "dien ho ten" })}
                   size="sm"
                   borderRadius="5px"
-                  placeholder="Nguyen Van A" value='phan test final'
+                  placeholder="Nguyen Van A"
+                  value="phan test final"
                 />
                 {errors.name && (
                   <FormErrorMessage>{errors.name.message}</FormErrorMessage>
@@ -138,7 +138,8 @@ function ReportModal({ postID, isOpen, onClose }) {
                 <FormLabel fontSize="sm">Số điện thoại</FormLabel>
 
                 <Input
-                  size="sm" value='0846134872'
+                  size="sm"
+                  value="0846134872"
                   borderRadius="5px"
                   {...register("phone", {
                     required: "dien sdt",
@@ -204,11 +205,10 @@ function ReportModal({ postID, isOpen, onClose }) {
 export default ReportModal;
 
 function isAtLeastOneChecked(formData) {
-  // Iterate through the keys of the formData object
+  // iterate through the keys of the formData object
   for (const key in formData) {
-    // Check if the value is true (assuming it's a boolean value for the checkboxes)
     if (formData[key] === true || formData.otherReport.length > 0) {
-      return true; // At least one checkbox is checked
+      return true; // at least one checkbox is checked
     }
   }
   return false; // No checkbox is checked

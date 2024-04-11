@@ -9,9 +9,10 @@ export async function getReportsByPost(postID, page) {
   const start = (page - 1) * LIMIT_NEWS;
   const end = start + LIMIT_NEWS - 1;
 
-  const { data, error } = await supabase
+  const { data, count, error } = await supabase
     .from("Reports")
     .select(`*, profile: Profile(*)`, { count: "exact" })
+    .eq("postID", postID)
     .limit(LIMIT_NEWS)
     .range(start, end);
 
@@ -20,7 +21,7 @@ export async function getReportsByPost(postID, page) {
     throw new Error(errorMessage.fetchError);
   }
 
-  return data;
+  return { data, count };
 }
 
 // create report record and increase 1 at re dir table
@@ -39,10 +40,21 @@ export async function createReport(formData) {
     throw new Error(errorMessage.fetchError);
   }
 
-  const { report } = post;
+  if (!post) {
+    throw new Error(errorMessage.cantFindPost);
+  }
+
+  const { id, report } = post;
+  const newReport = report + 1;
+  console.log(newReport);
 
   // rc = a report record
-  const { error } = await supabase.from("Reports").insert([{ ...formData }]);
+  const { data: rc, error } = await supabase
+    .from("Reports")
+    .insert([{ ...formData }])
+    .select()
+    .limit(1)
+    .single();
 
   if (error) {
     console.log(error);
@@ -51,16 +63,13 @@ export async function createReport(formData) {
 
   const { data, error: updateError } = await supabase
     .from("REDirectory")
-    .update({ report: Number(report) + 1 })
-    .eq("id", formData.postID)
+    .update({ report: newReport })
+    .eq("id", id)
+    .gt("expriryDate", new Date().toISOString())
     .select(`*`);
 
-    console.log(data);
-    // TODO
-
   if (updateError || data.length < 1) {
-    // TODO
-    await supabase.from("Reports").delete().eq("id", formData.postID);
+    await supabase.from("Reports").delete().eq("id", rc.id);
     throw new Error(errorMessage.cantFindToUpdate);
   }
 

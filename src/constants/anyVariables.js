@@ -109,6 +109,9 @@ export const profileCaptions = [
   "Ngày tạo",
 ];
 
+// TODO
+export const reportCaptions = ["Thông tin", "Email",'Ghi chú'];
+
 export const maxAreaSearch = 500;
 
 // auth

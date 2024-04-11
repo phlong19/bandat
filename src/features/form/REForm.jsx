@@ -55,6 +55,7 @@ import { useUpdateRE } from "./useUpdateRE";
 import FormActions from "./FormActions";
 import unidecode from "unidecode";
 import Files360Dropzone from "./Files360Dropzone";
+import ReportTable from "../table/ReportTable";
 
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
@@ -524,7 +525,8 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           )}
         </VStack>
       </form>
-      {/* TODO: add report table with cur post */}
+
+      {edit && <ReportTable id={editData.id} />}
     </>
   );
 }

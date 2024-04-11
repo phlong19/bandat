@@ -21,12 +21,13 @@ import {
 } from "react-share";
 
 import Avatar from "./Avatar";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { PiWarning } from "react-icons/pi";
 
 import { hiddenLast3PhoneNum } from "../utils/helper";
-import { success } from "../constants/message";
+import { error, success } from "../constants/message";
 import ReportModal from "./ReportModal";
+import { checkExist, deleteCookie, setCookie } from "../utils/reuse";
 
 function StickyAuthorBox({ postID, author }) {
   const { phone, fullName, avatar, email } = author;
@@ -39,6 +40,7 @@ function StickyAuthorBox({ postID, author }) {
   const [report, setReport] = useState(false);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const check = checkExist(postID);
 
   async function handleClick(e) {
     e.stopPropagation();
@@ -162,8 +164,21 @@ function StickyAuthorBox({ postID, author }) {
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
               rounded="full"
-              icon={hover ? <FaRegHeart fill="red" /> : <FaRegHeart />}
-              onClick={() => toast.error("chuwa lam cai nay dau")}
+              icon={hover || check ? <FaHeart fill="red" /> : <FaRegHeart />}
+              onClick={() => {
+                if (check) {
+                  // delete
+                  deleteCookie(postID);
+                  toast.success(success.removedBookmark);
+                } else {
+                  const isAdded = setCookie(postID, 14);
+                  if (isAdded) {
+                    toast.success(success.addedBookmark);
+                  } else {
+                    toast.error(error.postExist);
+                  }
+                }
+              }}
             />
           </Tooltip>
         </HStack>

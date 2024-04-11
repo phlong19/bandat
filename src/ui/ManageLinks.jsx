@@ -7,7 +7,6 @@ import { HiOutlinePencilAlt } from "react-icons/hi";
 import { useDarkMode } from "../context/DarkModeContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 import { BiExtension } from "react-icons/bi";
-import { BsBuildingGear } from "react-icons/bs";
 
 function ManageLinks({ level }) {
   const { isDarkMode } = useDarkMode();
@@ -51,18 +50,11 @@ function ManageLinks({ level }) {
       )}
       <Divider w="75%" opacity={1} />
       {level >= ADMIN_LEVEL && (
-        <>
-          <NavLink to="/control" title="Quản lý tổng hợp">
-            <Button variant="ghost" m={0}>
-              <BiExtension fontSize="21" />
-            </Button>
-          </NavLink>
-          <NavLink to="/companies" title="Quản lý báo cáo">
-            <Button variant="ghost" m={0}>
-              <BsBuildingGear fontSize="18" />
-            </Button>
-          </NavLink>
-        </>
+        <NavLink to="/control" title="Quản lý tổng hợp">
+          <Button variant="ghost" m={0}>
+            <BiExtension fontSize="21" />
+          </Button>
+        </NavLink>
       )}
     </Flex>
   );

@@ -5,7 +5,6 @@ import { useAuth } from "../context/UserContext";
 
 function AdminPanel() {
   const { isLoading } = useAuth();
-  const comp = window.location.href.includes("/companies");
 
   if (isLoading) {
     return (
@@ -15,7 +14,7 @@ function AdminPanel() {
     );
   }
 
-  return <AdminDashboardTable sub={comp} />;
+  return <AdminDashboardTable />;
 }
 
 export default AdminPanel;

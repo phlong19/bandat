@@ -126,7 +126,9 @@ function ListItem({ data, purType, isPopup = false, author = true }) {
               )}
             </div>
 
-            <div className="flex items-center">{!isLaptop && <Bookmark />}</div>
+            <div className="flex items-center">
+              {!isLaptop && <Bookmark postID={id} />}
+            </div>
           </div>
         )}
         {isPopup && (

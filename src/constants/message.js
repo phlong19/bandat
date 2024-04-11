@@ -72,6 +72,9 @@ export const error = {
 
   // report
   cantCreateReport: "khong gui duoc report",
+
+  // bookmark
+  postExist: "bai da ton tai trong danh sach tin luu",
 };
 
 export const success = {
@@ -118,6 +121,10 @@ export const success = {
   // others
   copyToClipboard: "Đã sao chép vào clipboard",
   createReport: "bao cao cua ban da duoc gui",
+
+  // bookmark
+  addedBookmark: "Đã thêm vào danh sách tin lưu của bạn",
+  removedBookmark: "da go khoi danh sach tin luu",
 };
 
 export const reform = {

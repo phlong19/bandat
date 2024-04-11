@@ -480,3 +480,27 @@ export async function getRelatedPostsAuthor(currentPostID, authorID) {
 
   return data;
 }
+
+// get bookmarked posts
+export async function getBookmarkedPosts(ids) {
+  const { data, count, error } = await supabase
+    .from("REDirectory")
+    .select(
+      `*,
+      images: REMedias(*),
+      profile: Profile(fullName,avatar)
+    `,
+      { count: "exact" },
+    )
+    .in("id", ids)
+    .gt("expriryDate", new Date().toISOString())
+    .eq("images.isImage", true)
+    .limit(5);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
+}
