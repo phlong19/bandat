@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Center,
   Box,
@@ -20,14 +21,31 @@ import { formatCurrency, pricePerArea } from "../utils/helper";
 import { m2 } from "../constants/anyVariables";
 
 function BookmarkPopover() {
-  const values = getCookie();
-  const ids = values?.split(",") || [];
+  const [values, setValues] = useState(getCookie());
+  const ids = values?.split(",");
 
-  const { data: { data, count } = {}, isLoading } = useQuery({
+  const {
+    data: { data, count } = {},
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["bookmark-list", ids],
     queryFn: () => getBookmarkedPosts(ids),
-    enabled: Boolean(ids?.length),
+    enabled: ids[0] !== "",
   });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const newCookieValues = getCookie();
+      if (newCookieValues !== values) {
+        setValues(newCookieValues);
+        // Trigger refetch when the cookie changes
+        refetch();
+      }
+    }, 1500); // Check every second for changes
+
+    return () => clearInterval(intervalId);
+  }, [values, refetch]);
 
   if (isLoading) {
     return (

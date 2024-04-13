@@ -19,18 +19,21 @@ import {
   FacebookIcon,
   FacebookMessengerShareButton,
 } from "react-share";
+import { Link } from "react-router-dom";
 
-import Avatar from "./Avatar";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { PiWarning } from "react-icons/pi";
 
 import { hiddenLast3PhoneNum } from "../utils/helper";
 import { error, success } from "../constants/message";
-import ReportModal from "./ReportModal";
 import { checkExist, deleteCookie, setCookie } from "../utils/reuse";
+import Avatar from "./Avatar";
+import ReportModal from "./ReportModal";
+import unidecode from "unidecode";
+import slugify from "react-slugify";
 
 function StickyAuthorBox({ postID, author }) {
-  const { phone, fullName, avatar, email } = author;
+  const { id, phone, fullName, avatar, email } = author;
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
   const border = useColorModeValue("gray.300", "whiteAlpha.700");
@@ -71,7 +74,12 @@ function StickyAuthorBox({ postID, author }) {
         <Text size="xs" color="gray.400" pt={3} fontFamily="roboto">
           Được đăng bởi
         </Text>
-        <Text>{fullName}</Text>
+        <Text
+          as={Link}
+          to={`/danh-ba/nguoi-dung/${slugify(unidecode(fullName))}?u=${id}`}
+        >
+          {fullName}
+        </Text>
         <VStack gap={2} my={2} w={{ base: "70%", sm: "40%", lg: "60%" }}>
           <Button
             bg={accent}

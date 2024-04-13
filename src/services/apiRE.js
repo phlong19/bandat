@@ -47,7 +47,7 @@ export async function getList(type, citeria, sort, page) {
         dis: DistrictDirectory (disName),
         ward: WardDirectory (wardName),
         images: REMedias(*),
-        profile: Profile(fullName,avatar),
+        profile: Profile(id, fullName,avatar),
         type: REType(*)
     `,
       { count: "exact" },
@@ -114,7 +114,7 @@ export async function getSinglePost(slug) {
     ward: WardDirectory (wardName),
     medias: REMedias(*),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
-    profile: Profile(phone,fullName,avatar,email),
+    profile: Profile(id, phone,fullName,avatar,email),
     type: REType (type, name)
   `,
     )
@@ -386,7 +386,7 @@ export async function getRelatedPosts(address) {
       dis: DistrictDirectory (disName),
       ward: WardDirectory (wardName),
       images: REMedias(*),
-      profile: Profile(fullName,avatar),
+      profile: Profile(id, fullName,avatar),
       type: REType(*)
   `;
 
@@ -462,7 +462,7 @@ export async function getRelatedPostsAuthor(currentPostID, authorID) {
       dis: DistrictDirectory (disName),
       ward: WardDirectory (wardName),
       images: REMedias(*),
-      profile: Profile(fullName,avatar),
+      profile: Profile(id, fullName,avatar),
       type: REType(*)
     `,
     )
@@ -488,7 +488,7 @@ export async function getBookmarkedPosts(ids) {
     .select(
       `*,
       images: REMedias(*),
-      profile: Profile(fullName,avatar)
+      profile: Profile(id, fullName,avatar)
     `,
       { count: "exact" },
     )

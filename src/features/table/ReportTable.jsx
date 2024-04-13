@@ -15,7 +15,9 @@ function ReportTable({ id }) {
     enabled: Boolean(id),
   });
 
-  console.log(data);
+  if (data.length < 1) {
+    return null;
+  }
 
   return (
     <ChakraTable

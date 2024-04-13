@@ -49,7 +49,7 @@ export async function queryList(formData) {
         dis: DistrictDirectory (disName),
         ward: WardDirectory (wardName),
         images: REMedias(*),
-        profile: Profile(fullName,avatar),
+        profile: Profile(id, fullName,avatar),
         type: REType(*)
     `,
       { count: "exact" },

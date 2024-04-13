@@ -110,7 +110,20 @@ export const profileCaptions = [
 ];
 
 // TODO
-export const reportCaptions = ["Thông tin", "Email",'Ghi chú'];
+export const reportCaptions = [
+  "Thông tin",
+  "Sai địa chỉ",
+  "Không liên lạc được",
+  "Trùng lặp",
+  "Không tồn tại",
+  "Thông tin sai",
+  "Ảnh có vấn đề",
+  "Đã bán",
+  "Báo cáo khác",
+  "Ghi chú",
+  "Người dùng",
+  "Ngày báo cáo",
+];
 
 export const maxAreaSearch = 500;
 

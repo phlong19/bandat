@@ -13,6 +13,8 @@ import InformationStack from "./InformationStack";
 import { formatCurrency, pricePerArea } from "../../utils/helper";
 import { useMapView } from "../../context/MapViewContext";
 import { m2 } from "../../constants/anyVariables";
+import unidecode from "unidecode";
+import slugify from "react-slugify";
 
 function ListItem({ data, purType, isPopup = false, author = true }) {
   const { mapView } = useMapView();
@@ -31,7 +33,7 @@ function ListItem({ data, purType, isPopup = false, author = true }) {
     name,
     price,
     type,
-    profile: { avatar, fullName },
+    profile: { id: authorID, avatar, fullName },
     ...addData
   } = data;
 
@@ -108,7 +110,14 @@ function ListItem({ data, purType, isPopup = false, author = true }) {
               )}
               <div className="text-[10px]">
                 {author && (
-                  <span className="line-clamp-1 font-semibold">{fullName}</span>
+                  <Link
+                    to={`/danh-ba/nguoi-dung/${slugify(
+                      unidecode(fullName),
+                    )}?u=${authorID}`}
+                    className="line-clamp-1 font-semibold"
+                  >
+                    {fullName}
+                  </Link>
                 )}
                 <p>{formattedDate}</p>
               </div>

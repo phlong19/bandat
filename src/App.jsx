@@ -18,6 +18,7 @@ import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import EditorDashboard from "./pages/EditorDashboard";
 import AccountManagement from "./pages/AccountManagement";
+import User from "./pages/User";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -81,6 +82,7 @@ function App() {
                     <Route path="tin-tuc" element={<News />} />
                     <Route path="tin-tuc/:title" element={<NewDetails />} />
                     <Route path="danh-ba" element={<Contacts />} />
+                    <Route path="danh-ba/nguoi-dung/:name" element={<User />} />
                   </Route>
 
                   {/* no layout with these path */}

@@ -1,4 +1,12 @@
-import { Checkbox, Td, Text, Tr, useColorModeValue } from "@chakra-ui/react";
+import {
+  Avatar,
+  Checkbox,
+  Flex,
+  Td,
+  Text,
+  Tr,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { formatDate } from "../../utils/helper";
 
 const data = {
@@ -23,14 +31,21 @@ const data = {
 
 // function TableReportRow({ data }) {
 function TableReportRow() {
-  const { created_at, name, phone, email } = data;
+  const { description, otherReport, profile, created_at, name, phone, email } =
+    data;
   const color = useColorModeValue("dark", "light");
 
   // get type data
   // re - order to consistant display
-  const types = Object.values(data).filter((i) => typeof i === "boolean");
+  let sortedObject = {};
+  const sortedKeys = Object.keys(data).sort();
 
-  console.log(types);
+  sortedKeys.forEach((key) => {
+    sortedObject[key] = data[key];
+  });
+
+  console.log(sortedObject);
+
   // TODO
   return (
     <Tr>
@@ -39,12 +54,12 @@ function TableReportRow() {
         <Text fontSize="xs" color="gray.400" fontWeight="normal">
           0{phone}
         </Text>
+        <Text fontSize="xs" color="gray.400" fontWeight="normal">
+          {email}
+        </Text>
       </Td>
-      {/* TODO */}
-      <Td maxW="250px">
-        <Text noOfLines={2}>{email}</Text>
-      </Td>
-      {types.map(
+
+      {Object.values(sortedObject).map(
         (i, index) =>
           typeof i === "boolean" && (
             <Td key={index}>
@@ -58,6 +73,48 @@ function TableReportRow() {
               />
             </Td>
           ),
+      )}
+
+      <Td maxW="250px" title={otherReport}>
+        <Text pb=".5rem" noOfLines={2}>
+          {otherReport}
+        </Text>
+      </Td>
+      <Td maxW="250px" title={description}>
+        <Text pb=".5rem" noOfLines={2}>
+          {description}
+        </Text>
+      </Td>
+      {profile ? (
+        <Td
+          width={{ sm: "250px" }}
+          maxWidth={{ sm: "300px" }}
+          justifyContent="center"
+        >
+          <Flex
+            gap={2}
+            align="center"
+            py=".8rem"
+            minWidth="100%"
+            flexWrap="nowrap"
+            title={profile.fullName}
+            cursor="default"
+          >
+            <Avatar
+              size="xs"
+              src={profile.avatar}
+              name={profile.fullName}
+              badge={false}
+            />
+            <Text fontSize="xs" noOfLines={1}>
+              {profile.fullName}
+            </Text>
+          </Flex>
+        </Td>
+      ) : (
+        <Td>
+          <Text fontSize="xs">Không đăng nhập</Text>
+        </Td>
       )}
       <Td>
         <Text pb=".5rem">{formatDate(created_at)}</Text>

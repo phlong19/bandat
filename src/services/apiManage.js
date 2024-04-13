@@ -93,7 +93,7 @@ export async function getPost(slug, level, userID) {
     ward: WardDirectory (wardName),
     medias: REMedias(*),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
-    profile: Profile(phone,fullName,avatar),
+    profile: Profile(id, phone,fullName,avatar),
     status: REStatus (*),
     type: REType (type)
   `,
