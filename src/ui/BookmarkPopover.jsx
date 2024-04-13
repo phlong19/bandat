@@ -22,7 +22,7 @@ import { m2 } from "../constants/anyVariables";
 
 function BookmarkPopover() {
   const [values, setValues] = useState(getCookie());
-  const ids = values?.split(",");
+  const ids = values?.split(",") || [];
 
   const {
     data: { data, count } = {},
