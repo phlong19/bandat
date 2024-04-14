@@ -44,8 +44,6 @@ function TableReportRow() {
     sortedObject[key] = data[key];
   });
 
-  console.log(sortedObject);
-
   // TODO
   return (
     <Tr>

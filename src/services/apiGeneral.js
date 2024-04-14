@@ -182,7 +182,7 @@ export async function getUsersList(page) {
       `*, 
       city: CityDirectory (cityName),
       dis: DistrictDirectory (disName),
-      ward: WardDirectory (wardName),
+      ward: WardDirectory (wardName)
     `,
       { count: "exact" },
     )

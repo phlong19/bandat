@@ -33,25 +33,35 @@ function Contacts() {
       ) : (
         <>
           <BreadCrumb base="Danh bạ" />
-          <Flex justify="center" flexDirection={{ base: "column", md: "row" }}>
-            <VStack w="full"  minH={400} bg={bg} justify="start">
+          <Flex
+            gap={3}
+            justify="center"
+            flexDirection={{ base: "column", md: "row" }}
+          >
+            <VStack
+              bg={bg}
+              w="full"
+              align="start"
+              maxW={800}
+              minH={400}
+              justify="start"
+            >
               {data.map((item) => (
                 <Box key={item.id} py={2}>
-                  <Flex gap={3} align="center" w="full" mx="auto">
+                  <Flex gap={3} w="full" mx="auto">
                     <Avatar src={item.avatar} name={item.fullName} />
                     <Text>{item.fullName}</Text>
                   </Flex>
                 </Box>
               ))}
+              <div className="flex self-center">
+                <ChakraTablePagination count={count} />
+              </div>
             </VStack>
-            <Box minH={300} w="60%">
-              {" "}
+            <Box bg={bg} minH={300} w={{ base: "full", lg: 400 }}>
               list
             </Box>
           </Flex>
-          <div className="flex justify-center">
-            <ChakraTablePagination count={count} />
-          </div>
         </>
       )}
     </Box>
