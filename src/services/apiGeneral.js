@@ -197,3 +197,26 @@ export async function getUsersList(page) {
 
   return { data, count };
 }
+
+export async function getUser(id) {
+  const { data, error } = await supabase
+    .from("Profile")
+    .select(
+      `*, 
+    city: CityDirectory (cityName),
+    dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName)
+  `,
+    )
+    .eq("id", id)
+    .eq("level", USER_LEVEL)
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
+}

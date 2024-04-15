@@ -28,6 +28,7 @@ const colors = {
 };
 
 const pagi = defineStyle({
+  alignSelf: "center",
   fontSize: 14,
   fontWeight: 600,
   borderRadius: "lg",

@@ -11,8 +11,11 @@ import {
 import BreadCrumb from "../ui/BreadCrumb";
 import { useQuery } from "@tanstack/react-query";
 import { getUsersList } from "../services/apiGeneral";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ChakraTablePagination from "../ui/ChakraTablePagination";
+import { hiddenLast3PhoneNum } from "../utils/helper";
+import slugify from "react-slugify";
+import unidecode from "unidecode";
 
 function Contacts() {
   const bg = useColorModeValue("white", "darker");
@@ -46,14 +49,28 @@ function Contacts() {
               minH={400}
               justify="start"
             >
-              {data.map((item) => (
-                <Box key={item.id} py={2}>
-                  <Flex gap={3} w="full" mx="auto">
-                    <Avatar src={item.avatar} name={item.fullName} />
-                    <Text>{item.fullName}</Text>
-                  </Flex>
-                </Box>
-              ))}
+              <VStack w={400} mx="auto" align="start">
+                {data.map((item) => (
+                  <Box key={item.id} py={2}>
+                    <Flex gap={3} w="full" mx="auto" align="center">
+                      <Avatar src={item.avatar} name={item.fullName} />
+                      <Box>
+                        <Text
+                          as={Link}
+                          to={`/danh-ba/nguoi-dung/${slugify(
+                            unidecode(item.fullName),
+                          )}?u=${item.id}`}
+                        >
+                          {item.fullName}
+                        </Text>
+                        <Text fontSize="xs" fontStyle="italic" color="gray.500">
+                          {hiddenLast3PhoneNum(item.phone)}
+                        </Text>
+                      </Box>
+                    </Flex>
+                  </Box>
+                ))}
+              </VStack>
               <div className="flex self-center">
                 <ChakraTablePagination count={count} />
               </div>

@@ -109,7 +109,6 @@ export const profileCaptions = [
   "Ngày tạo",
 ];
 
-// TODO
 export const reportCaptions = [
   "Thông tin",
   "Sai địa chỉ",

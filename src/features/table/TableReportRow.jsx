@@ -44,7 +44,6 @@ function TableReportRow() {
     sortedObject[key] = data[key];
   });
 
-  // TODO
   return (
     <Tr>
       <Td minW="180px">
