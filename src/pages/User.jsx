@@ -26,14 +26,6 @@ function User() {
     }
   }, [id, navigate]);
 
-  if (isLoading) {
-    return (
-      <Center minH="90dvh">
-        <Spinner />
-      </Center>
-    );
-  }
-
   console.log(data);
 
   return (
@@ -44,7 +36,14 @@ function User() {
         <Flex my={2} ml={2}>
           <GoBackButton />
         </Flex>
-        <Center>{data.fullName}</Center>
+
+        {isLoading ? (
+          <Center minH="60dvh">
+            <Spinner />
+          </Center>
+        ) : (
+          <Center>{data.fullName}</Center>
+        )}
       </div>
     </div>
   );

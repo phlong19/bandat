@@ -226,3 +226,8 @@ ul.slick-dots li.slick-active div#video-thumbnail {
 .slider-mobile .chakra-aspect-ratio::before {
   padding-bottom: 100% !important;
 }
+
+/* marker li */
+ul.contacts li::marker {
+  color: var(--ql-color);
+}
