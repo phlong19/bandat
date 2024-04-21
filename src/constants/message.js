@@ -214,6 +214,6 @@ export const account = {
 // display
 // empty list
 export const display = {
-  emptyList: "kh cos ket qua nao",
-  emptyHintMessage: "thu thay doi query / filter",
+  emptyList: "Không tồn tại kết quả tìm kiếm",
+  emptyHintMessage: "Thử thay đổi bộ lọc",
 };
