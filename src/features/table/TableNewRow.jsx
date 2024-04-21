@@ -76,17 +76,15 @@ function TableNewRow({ data, setSlug }) {
         </Badge>
       </Td>
       {/* title */}
-      <Td maxW="600px">
+      <Td maxW="600px" title={title}>
         <Text noOfLines={2}>{title}</Text>
       </Td>
       {/* summary */}
-      <Td>
+      <Td title={summary}>
         <Text noOfLines={2}>{summary}</Text>
       </Td>
       <Td>
-        <Text pb=".5rem">
-          {formatDate(created_at)}
-        </Text>
+        <Text pb=".5rem">{formatDate(created_at)}</Text>
       </Td>
       <Td>
         <Menu>

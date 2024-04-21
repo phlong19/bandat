@@ -47,6 +47,7 @@ export const error = {
   notVerifyEmail: "Chưa xác thực mail",
   notHavePhone: "Vui lòng cập nhật số điện thoại",
   duplicateEmail: "Địa chỉ email đã tồn tại",
+  cantSendEmailResetPassword: "khong the gui email dang nhap 1 lan",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng",
@@ -68,6 +69,12 @@ export const error = {
 
   // name edit
   cantEditName: "Không được chỉnh sửa",
+
+  // report
+  cantCreateReport: "khong gui duoc report",
+
+  // bookmark
+  postExist: "bai da ton tai trong danh sach tin luu",
 };
 
 export const success = {
@@ -81,6 +88,7 @@ export const success = {
   // xac nhan sdt thanh cong
   verifyPhone: "Xác thực thành công số điện thoại",
   emailConfirm: "Xác thực thành công email",
+  emailVerify: "link dang nhap da duoc gui den email",
 
   //
   login: "Đăng nhập thành công",
@@ -107,12 +115,16 @@ export const success = {
   updateUsername: "Cập nhật tên người dùng thành công!",
   updatePhone: "Cập nhật số điện thoại thành công!",
   updateOthers: "Cập nhật thành công!",
-  updatePassword: "Cập nhật mật khẩu thành công",
-  updateEmail:
-    "Cập nhật Email thành công, vui lòng xác thực Email!",
+  updatePassword: "Cập nhật mật khẩu thành công, vui lòng đăng nhập lại",
+  updateEmail: "Cập nhật Email thành công, vui lòng xác thực Email!",
 
   // others
-  copyToClipboard: "Đã sao chép và lưu vào Clipboard",
+  copyToClipboard: "Đã sao chép vào clipboard",
+  createReport: "bao cao cua ban da duoc gui",
+
+  // bookmark
+  addedBookmark: "Đã thêm vào danh sách tin lưu của bạn",
+  removedBookmark: "da go khoi danh sach tin luu",
 };
 
 export const reform = {
@@ -141,9 +153,9 @@ export const reform = {
   overFile: "Vượt quá số lượng giới hạn file tải lên",
   helperMedia: "Drag & drop file here, or click to select files",
   acceptMedias: "Yêu cầu định dạng png, jpg, jpeg hoặc mp4",
-  acceptFiles: "Yêu cầu định dạng png, jpg, jpeg & kích thước 2x1",
+  acceptFiles: "Yêu cầu định dạng png, jpg, jpeg & kích thước 2:1",
   overSize: `Kích thước file vượt quá giới hạn cho phép`,
-  ratio: "Tỉ lệ ảnh yêu cầu 2x1",
+  ratio: "Tỉ lệ ảnh yêu cầu 2:1",
 
   // alert
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",
@@ -199,11 +211,11 @@ export const account = {
   requiredEmail: "Vui lòng nhập đúng địa chỉ Email",
 
   // account settings
-  cantUpdate: "Không thể cập nhật thông tin tài khoản",
+  cantUpdate: "Không thể cập nhật thông tin tài khoản, vui lòng thử lại sau",
   helperMedia: "Drag & drop file here, or click to select files",
   missingAddress: "Vui lòng điền chi tiết địa chỉ",
 
-  overFile: "Vui lòng chọn 1 ảnh",
+  overFile: "vuot qua so luong file, chi duoc 1 cai thoi vi no la avt",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
 
   // name

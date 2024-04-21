@@ -50,13 +50,11 @@ function ManageLinks({ level }) {
       )}
       <Divider w="75%" opacity={1} />
       {level >= ADMIN_LEVEL && (
-        <>
-          <NavLink to="/control" title="Quản lý tài liệu">
-            <Button variant="ghost" m={0}>
-              <BiExtension fontSize="21" />
-            </Button>
-          </NavLink>
-        </>
+        <NavLink to="/control" title="Quản lý tổng hợp">
+          <Button variant="ghost" m={0}>
+            <BiExtension fontSize="21" />
+          </Button>
+        </NavLink>
       )}
     </Flex>
   );

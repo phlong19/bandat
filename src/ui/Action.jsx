@@ -13,6 +13,7 @@ import ChakraPopover from "./ChakraPopover";
 import { useAuth } from "../context/UserContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 import { useLogout } from "../features/auth/useLogout";
+import BookmarkPopover from "./BookmarkPopover";
 
 function Action({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
@@ -26,7 +27,7 @@ function Action({ onClose }) {
     <div className="flex items-center justify-stretch gap-2.5">
       <div>
         <ChakraPopover title="Tin đã lưu">
-          <p>hi</p>
+          <BookmarkPopover />
         </ChakraPopover>
 
         <ToggleTheme />

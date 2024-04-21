@@ -1,29 +1,26 @@
 import supabase, { supabaseUrl } from "./supabase";
 import { error as errorMessage } from "../constants/message";
-import { ADMIN_LEVEL, LIMIT_PER_PAGE } from "../constants/anyVariables";
+import { ADMIN_LEVEL, LIMIT_NEWS } from "../constants/anyVariables";
 import { v4 } from "uuid";
 
 // get news list
 export async function getNewsList(page) {
-  let query = supabase
+  const from = (page - 1) * LIMIT_NEWS;
+  const to = from + LIMIT_NEWS - 1;
+
+  const { data, count, error } = await supabase
     .from("News")
     .select(
       `
-        *,
-        author: Profile(fullName, avatar)
-    `,
+      *,
+      author: Profile(fullName, avatar)
+  `,
       { count: "exact" },
     )
-    .limit(LIMIT_PER_PAGE)
+    .limit(LIMIT_NEWS)
     .eq("status", true)
-    .order("created_at", { ascending: false });
-
-  if (page) {
-    const from = (page - 1) * LIMIT_PER_PAGE;
-    const to = from + LIMIT_PER_PAGE - 1;
-    query = query.range(from, to);
-  }
-  const { data, count, error } = await query;
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (error) {
     throw new Error(errorMessage.fetchError);
@@ -218,4 +215,24 @@ export async function deleteNews(postID, level, userID) {
   }
 
   return null;
+}
+
+// get popular list
+// fake, tbh we dont have anything on cookies or gg analytics or like
+// to track user activities on a post
+// so just get 5 oldest post :D
+export async function getPopularList() {
+  const { data, error } = await supabase
+    .from("News")
+    .select(`*`)
+    .limit(5)
+    .eq("status", true)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
 }

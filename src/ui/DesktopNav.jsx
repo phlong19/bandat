@@ -26,11 +26,6 @@ function DesktopNav() {
           </li>
         ))}
         <li>
-          <NavLink className="nav-link" to={"du-an"}>
-            Dự án
-          </NavLink>
-        </li>
-        <li>
           <NavLink className="nav-link" to={"tin-tuc"}>
             Tin tức
           </NavLink>

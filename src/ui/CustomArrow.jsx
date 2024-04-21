@@ -6,6 +6,7 @@ function CustomArrow(props) {
 
   return (
     <IconButton
+      visibility={{ base: "hidden", md: "visible" }}
       bg="dark"
       color="white"
       _hover={{ opacity: 0.9 }}

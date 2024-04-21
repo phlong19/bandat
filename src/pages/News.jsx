@@ -13,7 +13,7 @@ import ChakraTablePagination from "../ui/ChakraTablePagination";
 import NewsAccordionLinks from "../ui/NewsAccordionLinks";
 
 import { city } from "../data/city";
-import { getNewsList } from "../services/apiNews";
+import { getNewsList, getPopularList } from "../services/apiNews";
 import { formatDate } from "../utils/helper";
 import { useEffect } from "react";
 
@@ -26,8 +26,15 @@ function News() {
 
   // fetch list news
   const { data: { data, count } = {}, isLoading } = useQuery({
-    queryKey: ["news"],
+    queryKey: ["news", page],
     queryFn: () => getNewsList(page),
+  });
+
+  // fetch popular list
+  const { data: list, isLoading: isFetching } = useQuery({
+    queryKey: ["popular-news"],
+    queryFn: () => getPopularList(),
+    staleTime: Infinity,
   });
 
   useEffect(() => {
@@ -95,16 +102,28 @@ function News() {
             <div>
               <div className="rounded-md border-[1px] bg-white p-3 dark:bg-dark">
                 <h1 className="text-center text-xl font-bold">Tin nổi bật</h1>
-                {data.map((item, i) => (
-                  <Link to={`/tin-tuc/` + item.slug} key={i}>
-                    <div key={i} className="py-3">
-                      <i className="text-gray-400">{item.date}</i>
-                      <h1 className="line-clamp-3 font-montserrat font-semibold">
-                        {item.title}
-                      </h1>
-                    </div>
-                  </Link>
-                ))}
+                {isFetching ? (
+                  <Center h="300" w="full">
+                    <Spinner size="sm" thickness="2px" />
+                  </Center>
+                ) : (
+                  <>
+                    {list.map((item, i) => (
+                      <Link
+                        to={`/tin-tuc/` + item.slug}
+                        key={i}
+                        className="transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+                      >
+                        <div key={i} className="py-3">
+                          <i className="text-gray-400">{item.date}</i>
+                          <h1 className="line-clamp-3 font-montserrat font-semibold">
+                            {item.title}
+                          </h1>
+                        </div>
+                      </Link>
+                    ))}
+                  </>
+                )}
               </div>
               <div className="mt-5">
                 <div className="rounded-md border bg-white p-3 dark:bg-dark">

@@ -2,13 +2,14 @@ import { Flex, Button } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useMapView } from "../context/MapViewContext";
-import { LIMIT_PER_PAGE } from "../constants/anyVariables";
+import { LIMIT_NEWS, LIMIT_PER_PAGE } from "../constants/anyVariables";
 
 function ChakraTablePagination({ count, news = false, page = "page" }) {
   const { setMapView } = useMapView();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get(page)) || 1;
-  const totalPages = Math.ceil(count / LIMIT_PER_PAGE);
+  const limit = news ? LIMIT_NEWS : LIMIT_PER_PAGE;
+  const totalPages = Math.ceil(count / limit);
 
   let finalDestination;
   function handlePagination(to) {
@@ -50,55 +51,79 @@ function ChakraTablePagination({ count, news = false, page = "page" }) {
 
   return (
     <Flex gap={2} justifyContent="end" py={8} pr={news ? 0 : 6}>
-      <Button
+      <Button size='sm'
         variant={currentPage >= 2 ? "pagi" : ""}
         isDisabled={currentPage < 2}
         onClick={() => handlePagination("prev")}
       >
-        <FaAngleDoubleLeft />
+        <FaAngleDoubleLeft fontSize="14" />
       </Button>
 
       {currentPage > 2 && (
-        <Button variant="pagi" onClick={() => handlePagination("first")}>
+        <Button
+          size="sm"
+          variant="pagi"
+          onClick={() => handlePagination("first")}
+        >
           1
         </Button>
       )}
       {currentPage > 4 && <span className="pt-2">...</span>}
       {currentPage > 3 && (
-        <Button variant="pagi" onClick={() => handlePagination("prev2")}>
+        <Button
+          size="sm"
+          variant="pagi"
+          onClick={() => handlePagination("prev2")}
+        >
           {currentPage - 2}
         </Button>
       )}
       {currentPage > 1 && (
-        <Button variant="pagi" onClick={() => handlePagination("prev")}>
+        <Button
+          size="sm"
+          variant="pagi"
+          onClick={() => handlePagination("prev")}
+        >
           {currentPage - 1}
         </Button>
       )}
-      <Button colorScheme="green" fontSize="sm">
+      <Button size="sm" alignSelf="center" colorScheme="green" fontSize="sm">
         {currentPage}
       </Button>
       {currentPage !== totalPages && (
-        <Button variant="pagi" onClick={() => handlePagination("next")}>
+        <Button
+          size="sm"
+          variant="pagi"
+          onClick={() => handlePagination("next")}
+        >
           {currentPage + 1}
         </Button>
       )}
       {currentPage < totalPages - 2 && (
-        <Button variant="pagi" onClick={() => handlePagination("next2")}>
+        <Button
+          size="sm"
+          variant="pagi"
+          onClick={() => handlePagination("next2")}
+        >
           {currentPage + 2}
         </Button>
       )}
-      {currentPage < totalPages - 5 && <span className="pt-2">...</span>}
+      {currentPage < totalPages - 4 && <span className="pt-2">...</span>}
       {currentPage < totalPages - 1 && (
-        <Button variant="pagi" onClick={() => handlePagination("last")}>
+        <Button
+          size="sm"
+          variant="pagi"
+          onClick={() => handlePagination("last")}
+        >
           {totalPages}
         </Button>
       )}
-      <Button
+      <Button size='sm'
         variant={currentPage !== totalPages ? "pagi" : ""}
         isDisabled={currentPage === totalPages}
         onClick={() => handlePagination("next")}
       >
-        <FaAngleDoubleRight />
+        <FaAngleDoubleRight fontSize="14" className="self-center" />
       </Button>
     </Flex>
   );

@@ -11,19 +11,23 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 
-import { useGetREPostData } from "./useGetREPostData";
 import { getCoreNameType } from "../../utils/helper";
 
 // top
 const top = 7;
 
-function TypePieChart() {
+function TypePieChart({ data, count, isLoading, refetch }) {
   const accent = useColorModeValue("primary", "secondary");
   const empty = useColorModeValue("gray.300", "gray.600");
   const whiteblack = useColorModeValue("white", "#222");
 
+  // consistant gen colors
+  // const colors = useMemo(
+  //   () => Array.from({ length: top }).map(() => genHexColor()),
+  //   [],
+  // );
+
   const [activeIndex, setActiveIndex] = useState(6);
-  const { data, count, isLoading, refetch } = useGetREPostData();
 
   if (isLoading) {
     return (
@@ -35,12 +39,30 @@ function TypePieChart() {
 
   if (!isLoading && (!data || data.length < 1)) {
     return (
-      <Center minH={300} h={300} flexDirection="column" gap={1.5}>
-        <Text>Không có dữ liệu để hiển thị</Text>
-        <Button onClick={refetch} size="sm" colorScheme="green" variant="ghost">
-          Tải lại
-        </Button>
-      </Center>
+      <Box>
+        <Flex justify="space-between" w="full" alignSelf="start">
+          <Heading
+            fontSize="md"
+            fontFamily="lexend"
+            fontWeight="500"
+            color={accent}
+          >
+            Top {top} loại hình nhà đất
+          </Heading>
+          <Text pr={18}>Tổng số bài đăng BĐS: {count || "---"}</Text>
+        </Flex>
+        <Center minH={300} h={300} flexDirection="column" gap={1.5}>
+          <Text>Không có dữ liệu để hiển thị</Text>
+          <Button
+            onClick={refetch}
+            size="sm"
+            colorScheme="green"
+            variant="ghost"
+          >
+            Tải lại
+          </Button>
+        </Center>
+      </Box>
     );
   }
 
@@ -68,8 +90,8 @@ function TypePieChart() {
   }
 
   return (
-    <Box maxH={300}>
-      <Flex justify="space-between">
+    <Box maxH={350}>
+      <Flex justify="space-between" pl={12}>
         <Heading
           fontSize="md"
           fontFamily="lexend"
@@ -84,7 +106,9 @@ function TypePieChart() {
         <PieChart width={400} height={400}>
           <Pie
             activeIndex={activeIndex}
-            activeShape={renderActiveShape}
+            activeShape={(props) =>
+              renderActiveShape({ ...props, fill: "salmon" })
+            }
             data={chartData}
             cx="50%"
             cy="50%"
@@ -92,10 +116,15 @@ function TypePieChart() {
             strokeWidth="2"
             innerRadius={70}
             outerRadius={100}
-            fill="#79B473"
             dataKey="total"
             onMouseEnter={(_, index) => setActiveIndex(index)}
-          />
+            // fill="mediumpurple"
+            fill="#79B473"
+          >
+            {/* {data.map((_, index) => (
+              <Cell key={`cell-${index}`} fill={colors[index]} />
+            ))} */}
+          </Pie>
         </PieChart>
       </ResponsiveContainer>
     </Box>
@@ -114,12 +143,12 @@ const renderActiveShape = (props) => {
     outerRadius,
     startAngle,
     endAngle,
-    fill,
     payload,
     percent,
     value,
+    fill,
   } = props;
-  const mainFill = "#5e8859";
+
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
@@ -142,7 +171,7 @@ const renderActiveShape = (props) => {
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={mainFill}
+        fill={fill}
       />
       <Sector
         cx={cx}
@@ -151,7 +180,7 @@ const renderActiveShape = (props) => {
         endAngle={endAngle}
         innerRadius={outerRadius + 6}
         outerRadius={outerRadius + 10}
-        fill={mainFill}
+        fill={fill}
       />
       <path
         d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
@@ -163,7 +192,7 @@ const renderActiveShape = (props) => {
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#333"
+        fill={fill}
       >{`SL: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
@@ -177,3 +206,20 @@ const renderActiveShape = (props) => {
     </g>
   );
 };
+
+// const genHexColor = () => {
+//   console.log("2");
+//   // Generate a random RGB color
+//   const randomColor = Math.floor(Math.random() * 16777215);
+
+//   // Convert the random color to RGB components
+//   const r = (randomColor >> 16) & 255;
+//   const g = (randomColor >> 8) & 255;
+//   const b = randomColor & 255;
+
+//   // Convert RGB components to hexadecimal
+//   const hexColor =
+//     "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+
+//   return hexColor;
+// };

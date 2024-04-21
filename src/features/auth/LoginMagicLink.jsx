@@ -1,3 +1,5 @@
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -10,11 +12,14 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { success } from "../../constants/message";
 
 import FormInput from "../../ui/FormInput";
 import Logo from "../../ui/Logo";
+import { sendMagicLink } from "../../services/apiAuth";
+import validator from "validator";
 
-export default function ForgotPassword() {
+export default function LoginMagicLink() {
   const accent = useColorModeValue("primary", "secondary");
   const {
     handleSubmit,
@@ -22,8 +27,16 @@ export default function ForgotPassword() {
     formState: { errors },
   } = useForm();
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (email) => sendMagicLink(email),
+    onSuccess: () => toast.success(success.emailVerify),
+    onError: (err) => toast.error(err.message),
+  });
+
   function onSubmit(data) {
-    console.log(data);
+    if (validator.isEmail(data?.email)) {
+      mutate(data.email);
+    }
   }
 
   return (
@@ -43,7 +56,7 @@ export default function ForgotPassword() {
               <Logo size="w-40" />
             </Box>
             <Heading fontSize={"2xl"} textAlign={"center"}>
-              forgot psw
+              dang nhap bang email
             </Heading>
           </Stack>
           <Box
@@ -68,7 +81,7 @@ export default function ForgotPassword() {
               <Button
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
-                // isLoading={isLoggingIn}
+                isLoading={isPending}
                 loadingText="Đợi xíu"
                 colorScheme="green"
                 type="submit"

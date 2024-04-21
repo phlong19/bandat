@@ -52,7 +52,7 @@ function ItemImages({ images, isLaptop, isPopup, type, postID }) {
       {!isPopup && isLaptop && (
         <div className="absolute right-2 top-2 flex flex-col justify-center gap-2">
           <div>
-            <Bookmark />
+            <Bookmark postID={postID} />
           </div>
           <div>{mapView && <span id={`viewInMap${postID}`}></span>}</div>
         </div>

@@ -11,6 +11,7 @@ import {
   Image,
   Link as ChakraLink,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
 import {
@@ -18,16 +19,21 @@ import {
   FacebookIcon,
   FacebookMessengerShareButton,
 } from "react-share";
+import { Link } from "react-router-dom";
 
-import Avatar from "./Avatar";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { PiWarning } from "react-icons/pi";
 
 import { hiddenLast3PhoneNum } from "../utils/helper";
-import { success } from "../constants/message";
+import { error, success } from "../constants/message";
+import { checkExist, deleteCookie, setCookie } from "../utils/reuse";
+import Avatar from "./Avatar";
+import ReportModal from "./ReportModal";
+import unidecode from "unidecode";
+import slugify from "react-slugify";
 
-function StickyAuthorBox({ author }) {
-  const { phone, fullName, avatar, email } = author;
+function StickyAuthorBox({ postID, author }) {
+  const { id, phone, fullName, avatar, email } = author;
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
   const border = useColorModeValue("gray.300", "whiteAlpha.700");
@@ -35,6 +41,9 @@ function StickyAuthorBox({ author }) {
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
   const [report, setReport] = useState(false);
+
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const check = checkExist(postID);
 
   async function handleClick(e) {
     e.stopPropagation();
@@ -65,7 +74,12 @@ function StickyAuthorBox({ author }) {
         <Text size="xs" color="gray.400" pt={3} fontFamily="roboto">
           Được đăng bởi
         </Text>
-        <Text>{fullName}</Text>
+        <Text
+          as={Link}
+          to={`/danh-ba/nguoi-dung/${slugify(unidecode(fullName))}?u=${id}`}
+        >
+          {fullName}
+        </Text>
         <VStack gap={2} my={2} w={{ base: "70%", sm: "40%", lg: "60%" }}>
           <Button
             bg={accent}
@@ -148,17 +162,31 @@ function StickyAuthorBox({ author }) {
               onMouseLeave={() => setReport(false)}
               color={report ? "#d6ba17f8" : ""}
               icon={<PiWarning />}
-              onClick={() => toast.success("+1 bao xau, cho bai nay ra dao")}
+              onClick={onOpen}
             />
           </Tooltip>
+          <ReportModal isOpen={isOpen} onClose={onClose} postID={postID} />
           <Tooltip label="Lưu vào tin của bạn">
             <IconButton
               size="sm"
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
               rounded="full"
-              icon={hover ? <FaRegHeart fill="red" /> : <FaRegHeart />}
-              onClick={() => toast.error("chuwa lam cai nay dau")}
+              icon={hover || check ? <FaHeart fill="red" /> : <FaRegHeart />}
+              onClick={() => {
+                if (check) {
+                  // delete
+                  deleteCookie(postID);
+                  toast.success(success.removedBookmark);
+                } else {
+                  const isAdded = setCookie(postID, 14);
+                  if (isAdded) {
+                    toast.success(success.addedBookmark);
+                  } else {
+                    toast.error(error.postExist);
+                  }
+                }
+              }}
             />
           </Tooltip>
         </HStack>

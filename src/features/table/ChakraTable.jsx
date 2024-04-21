@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Flex,
   Button,
@@ -12,19 +13,15 @@ import {
   Center,
   Th,
   Tbody,
-  Input,
-  InputGroup,
-  InputRightElement,
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import { BiSearchAlt } from "react-icons/bi";
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 import ChakraTableSort from "../../ui/ChakraTableSort";
 import ChakraTableFilter from "../../ui/ChakraTableFilter";
-import { emptyREList, newsForm } from "../../constants/message";
+import TextSearch from "./TextSearch";
 import EmptyTable from "../../ui/EmptyTable";
-import { Link } from "react-router-dom";
+import { emptyREList, newsForm } from "../../constants/message";
 
 function ChakraTable({
   title,
@@ -34,9 +31,12 @@ function ChakraTable({
   primaryButton,
   count,
   news = false,
+  profile = true,
   viewOnly = false,
+  re = false,
   isLoading,
   page,
+  setQuery,
 }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
@@ -59,27 +59,26 @@ function ChakraTable({
           >
             {title}
           </Text>
-          {!viewOnly && (
-            <Flex gap={2} align="center">
-              {/* side actions */}
-              {/* TODO: */}
-              {/* a. add text search */}
-              <InputGroup>
-                <Input placeholder="search" />
-                <InputRightElement>
-                  <Button p={0}>
-                    <BiSearchAlt />
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              <ChakraTableFilter news={news} />
-              <ChakraTableSort news={news} />
-              {/* for main action */}
-              {/* with post => link to dang-tin */}
-              {/* news / user + profile / docs => modal */}
-              {primaryButton}
-            </Flex>
-          )}
+          <Flex gap={2} align="center" minW={{ sm: "50%", lg: "60%" }}>
+            {profile && (
+              <TextSearch
+                setQuery={setQuery}
+                viewOnly={viewOnly}
+                profile={profile}
+              />
+            )}
+            {!viewOnly && (
+              <>
+                {/* side actions */}
+                <ChakraTableFilter news={news} />
+                <ChakraTableSort news={news} re={re} />
+                {/* for main action */}
+                {/* with post => link to dang-tin */}
+                {/* news / user + profile / docs => modal */}
+                {primaryButton}
+              </>
+            )}
+          </Flex>
         </Flex>
       </CardHeader>
       {isLoading ? (
@@ -91,7 +90,7 @@ function ChakraTable({
           <CardBody
             minH={count > 0 ? "" : "50dvh"}
             maxH={viewOnly ? "50dvh" : ""}
-            overflowY="scroll"
+            overflowY="auto"
           >
             <Table variant="simple">
               <Thead>

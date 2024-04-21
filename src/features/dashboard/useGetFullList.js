@@ -4,7 +4,7 @@ import { getFullREList } from "../../services/apiManage";
 import { LIMIT_PER_PAGE } from "../../constants/anyVariables";
 import { sortList } from "../../constants/navlink";
 
-export function useGetFullList(id) {
+export function useGetFullList(id, query) {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const page = Number(searchParams.get("page")) || 1;
@@ -12,8 +12,8 @@ export function useGetFullList(id) {
   const filter = searchParams.get("filter") || "none";
 
   const { data: { data: reList, count } = {}, isLoading } = useQuery({
-    queryKey: ["REList", filter, sort, page],
-    queryFn: () => getFullREList(id, sort, filter, page),
+    queryKey: ["REList", sort, filter, query, page],
+    queryFn: () => getFullREList(id, sort, filter, query, page),
   });
 
   // PRE-FETCHING
@@ -21,15 +21,15 @@ export function useGetFullList(id) {
   // A. next page
   if (page < totalPage) {
     queryClient.prefetchQuery({
-      queryKey: ["REList", filter, sort, page + 1],
-      queryFn: () => getFullREList(id, sort, filter, page + 1),
+      queryKey: ["REList", sort, filter, query, page + 1],
+      queryFn: () => getFullREList(id, sort, filter, query, page + 1),
     });
   }
   // B. prev page
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: ["REList", filter, sort, page - 1],
-      queryFn: () => getFullREList(id, sort, filter, page - 1),
+      queryKey: ["REList", sort, filter, query, page - 1],
+      queryFn: () => getFullREList(id, sort, filter, query, page - 1),
     });
 
   return { reList, isLoading, count };

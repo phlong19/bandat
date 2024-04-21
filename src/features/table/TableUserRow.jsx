@@ -46,7 +46,7 @@ function TableUserRow({ data }) {
       </Td>
 
       <Td maxW="170">
-        <Text fontSize="sm" noOfLines={1}>
+        <Text fontSize="sm" noOfLines={1} title={email}>
           {email}
         </Text>
       </Td>

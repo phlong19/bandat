@@ -60,17 +60,8 @@ export const mobileNavLinks = {
     { title: "Trang chủ", icon: "House", to: "/" },
     { title: "Nhà đất bán", icon: "HouseFlag", to: "nha-dat-ban" },
     { title: "Nhà đất cho thuê", icon: "BuildingFlag", to: "nha-dat-cho-thue" },
-    { title: "Dự án", icon: "City", to: "du-an" },
     { title: "Tin tức", icon: "Newspaper", to: "tin-tuc" },
-    // later
-    {
-      title: "Góp ý - Báo lỗi",
-      icon: "EnvelopeCircleCheck",
-      to: "hom-thu-gop-y",
-    },
-    { title: "Giới thiệu về chúng tôi", icon: "UsersLine", to: "danh-ba" },
-    { title: "Liên hệ", icon: "Headset", to: "danh-ba" },
-    // TODO
+    { title: "Danh bạ", icon: "Headset", to: "danh-ba" },
   ],
   authen: [
     {
@@ -144,4 +135,28 @@ export const sortNewsList = [
 export const filterNewsList = [
   { label: "Đã duyệt", value: "status-approved" },
   { label: "Chờ duyệt", value: "status-waiting" },
+];
+
+export const reportList = [
+  { label: "Địa chỉ của bất động sản", value: "address" },
+  {
+    label: "Các thông tin về: giá, diện tích, mô tả ....",
+    value: "informations",
+  },
+  { label: "Ảnh", value: "image" },
+  { label: "Trùng với tin bài khác", value: "duplicate" },
+  { label: "Không liên lạc được", value: "contact" },
+  { label: "Tin không có thật", value: "real" },
+  { label: "Bất động sản đã bán", value: "sold" },
+];
+
+// report list
+export const list = [
+  { value: "address", label: "Địa chỉ bất động sản" },
+  { value: "info", label: "Các thông tin: giá, diện tích, mô tả,..." },
+  { value: "media", label: "Ảnh" },
+  { value: "duplicate", label: "Trùng tin rao khác" },
+  { value: "contact", label: "Không liên lạc được" },
+  { value: "exist", label: "Tin không có thật" },
+  { value: "sold", label: "Bất động sản đã bán" },
 ];

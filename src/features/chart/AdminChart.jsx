@@ -83,7 +83,7 @@ function AdminChart() {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip contentStyle={{ color: "#222" }} />
           <Legend />
           <Bar
             dataKey="Người dùng"

@@ -4,12 +4,12 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
+// pages
 import Home from "./pages/Home";
 import ListingPage from "./pages/ListingPage";
 import Details from "./pages/Details";
 import News from "./pages/News";
 import NewDetails from "./pages/NewDetails";
-import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
 import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
@@ -18,7 +18,7 @@ import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
 import EditorDashboard from "./pages/EditorDashboard";
 import AccountManagement from "./pages/AccountManagement";
-import CheckEmailPlease from "./features/auth/CheckEmailPlease";
+import User from "./pages/User";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -28,8 +28,8 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Unauthorized from "./ui/Unauthorized";
 import ScrollToTop from "./ui/ScrollToTop";
 import UserDashboard from "./pages/UserDashboard";
-import ForgotPassword from "./features/auth/ForgotPassword";
-import ResetPassword from "./features/auth/ResetPassword";
+import LoginMagicLink from "./features/auth/LoginMagicLink";
+import CheckEmailPlease from "./features/auth/CheckEmailPlease";
 import EmailVerification from "./features/auth/EmailVerification";
 
 // context api
@@ -77,23 +77,19 @@ function App() {
                       path="nha-dat-cho-thue/:type"
                       element={<ListingPage />}
                     />
-                    <Route path="du-an" element={<Projects />} />
                     <Route path="nha-dat/:land" element={<Details />} />
                     <Route path="tin-da-luu" element={<Bookmarks />} />
                     <Route path="tin-tuc" element={<News />} />
                     <Route path="tin-tuc/:title" element={<NewDetails />} />
                     <Route path="danh-ba" element={<Contacts />} />
+                    <Route path="danh-ba/nguoi-dung/:name" element={<User />} />
                   </Route>
 
                   {/* no layout with these path */}
                   <Route element={<AuthenticationLayout />}>
                     <Route path="dang-nhap" element={<Login />} />
                     <Route path="dang-ky" element={<Register />} />
-                    <Route path="quen-mat-khau" element={<ForgotPassword />} />
-                    <Route // TODO
-                      path="dat-lai-mat-khau/:id"
-                      element={<ResetPassword />}
-                    />
+                    <Route path="quen-mat-khau" element={<LoginMagicLink />} />
                     {/* require email verification */}
                     <Route
                       path="xac-thuc-email"
@@ -102,7 +98,7 @@ function App() {
                     {/* display after email registeration */}
                     <Route
                       element={<CheckEmailPlease />}
-                      path="/kiem-tra-email"
+                      path="kiem-tra-email"
                     />
                   </Route>
 
@@ -157,8 +153,6 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
-                    {/* more routes on admin */}
-                    {/* <Route path="" element */}
                   </Route>
 
                   {/* 404 & unauthorized */}

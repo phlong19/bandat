@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { LIMIT_PER_PAGE } from "../../constants/anyVariables";
 import { getFullDocsList } from "../../services/apiManage";
 
-export function useGetFullListDocs() {
+export function useGetFullListDocs(sub) {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
 
@@ -12,6 +12,7 @@ export function useGetFullListDocs() {
   const { data: { data, count } = {}, isLoading: isFetching } = useQuery({
     queryKey: ["DocsList", page],
     queryFn: () => getFullDocsList(page),
+    enabled: !sub,
   });
 
   // PRE-FETCHING
@@ -21,6 +22,7 @@ export function useGetFullListDocs() {
     queryClient.prefetchQuery({
       queryKey: ["DocsList", page + 1],
       queryFn: () => getFullDocsList(page + 1),
+      enabled: !sub,
     });
   }
   // B. prev page
@@ -28,6 +30,7 @@ export function useGetFullListDocs() {
     queryClient.prefetchQuery({
       queryKey: ["DocsList", page - 1],
       queryFn: () => getFullDocsList(page - 1),
+      enabled: !sub,
     });
 
   return { data, count, isFetching };

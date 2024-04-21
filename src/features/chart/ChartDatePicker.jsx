@@ -99,7 +99,7 @@ function ChartDatePicker({
       <Flex gap={1.5} justify="center" w="full">
         <RangeDatepicker
           propsConfigs={props}
-          closeOnSelect={false}
+          closeOnSelect
           configs={{ dateFormat: "dd/MM/yyyy", firstDayOfWeek: 1 }}
           selectedDates={dateRange}
           onDateChange={setDateRange}

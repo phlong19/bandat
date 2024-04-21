@@ -6,6 +6,8 @@ const UserContext = createContext();
 function UserAuthentication({ children }) {
   const { data, isAuthenticated, isLoading, level, email, user } = useUser();
 
+  // data = profile
+  // user = auth user
   return (
     <UserContext.Provider
       value={{ email, data, isAuthenticated, user, isLoading, level }}

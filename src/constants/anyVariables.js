@@ -3,6 +3,9 @@ export const currentYear = new Date().getFullYear();
 
 // max item 1 page
 export const LIMIT_PER_PAGE = 12;
+// max news 1 page
+export const LIMIT_NEWS = 8;
+
 // min & max files can be uploaded
 const BASE_MEDIA_UPLOAD = 4;
 const LIMIT_IMG_UPLOAD = 8;
@@ -67,6 +70,7 @@ export const reCaptions = [
   "Người đăng",
   "Dạng bán",
   "Loại hình",
+  "Tiêu đề",
   "Địa chỉ",
   "Báo xấu",
   "Trạng thái",
@@ -80,6 +84,9 @@ const SELLING_STATUS = 2;
 const SOLD_STATUS = 3;
 export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
 
+const local = `http://localhost:3000`;
+const landhub = `https://www.landhub.netlify.app`;
+export { local, landhub };
 export const questURL = `https://www.mapquestapi.com/geocoding/v1/address?key=${
   import.meta.env.VITE_QUEST_KEY
 }`;
@@ -100,6 +107,21 @@ export const profileCaptions = [
   "Giới tính",
   "Ngày sinh",
   "Ngày tạo",
+];
+
+export const reportCaptions = [
+  "Thông tin",
+  "Sai địa chỉ",
+  "Không liên lạc được",
+  "Trùng lặp",
+  "Không tồn tại",
+  "Thông tin sai",
+  "Ảnh có vấn đề",
+  "Đã bán",
+  "Báo cáo khác",
+  "Ghi chú",
+  "Người dùng",
+  "Ngày báo cáo",
 ];
 
 export const maxAreaSearch = 500;

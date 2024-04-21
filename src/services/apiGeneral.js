@@ -1,6 +1,10 @@
 import supabase from "./supabase";
 import { error as errorMessage } from "../constants/message";
-import { questURL } from "../constants/anyVariables";
+import {
+  LIMIT_PER_PAGE,
+  questURL,
+  USER_LEVEL,
+} from "../constants/anyVariables";
 
 // addresses
 export async function getAddress(city, district, ward, edit) {
@@ -154,4 +158,65 @@ export async function deleteDocument(docID) {
   }
 
   return null;
+}
+
+// send contact at home page
+export async function createContact(formData) {
+  const { error } = await supabase.from("Contact").insert([{ ...formData }]);
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  return null;
+}
+
+// get users list to contacts page
+export async function getUsersList(page) {
+  const start = (page - 1) * LIMIT_PER_PAGE;
+  const end = start + LIMIT_PER_PAGE - 1;
+
+  const { data, count, error } = await supabase
+    .from("Profile")
+    .select(
+      `*, 
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName)
+    `,
+      { count: "exact" },
+    )
+    .limit(LIMIT_PER_PAGE)
+    .range(start, end)
+    .eq("level", USER_LEVEL);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
+}
+
+export async function getUser(id) {
+  const { data, error } = await supabase
+    .from("Profile")
+    .select(
+      `*, 
+    city: CityDirectory (cityName),
+    dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName)
+  `,
+    )
+    .eq("id", id)
+    .eq("level", USER_LEVEL)
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
 }

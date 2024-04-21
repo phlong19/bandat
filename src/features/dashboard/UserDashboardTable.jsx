@@ -1,31 +1,45 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Flex, SimpleGrid } from "@chakra-ui/react";
 
 import ChakraTable from "../table/ChakraTable";
 import TableRERow from "../table/TableRERow";
-
-import { reCaptions } from "../../constants/anyVariables";
-import { useGetFullList } from "./useGetFullList";
 import PostBarChart from "../chart/PostBarChart";
 import TypePieChart from "../chart/TypePieChart";
+import { useGetREPostData } from "../chart/useGetREPostData";
+
+import { useGetFullList } from "./useGetFullList";
+import { reCaptions } from "../../constants/anyVariables";
 
 function UserDashboardTable({ id, level }) {
-  const { reList, count, isLoading } = useGetFullList(id);
+  const [query, setQuery] = useState("");
+  const { reList, count, isLoading } = useGetFullList(id, query);
+  const {
+    data,
+    count: total,
+    isLoading: isFetching,
+    refetch,
+  } = useGetREPostData();
 
   return (
     <Flex flexDirection="column" gap={5}>
       <SimpleGrid
         columns={2}
         gap={2}
-        h={300}
-        minH={300}
-        maxH={300}
+        h={350}
+        minH={350}
+        maxH={350}
         mb={{ lg: 14, xl: 8 }}
       >
         {/* chart 1 */}
-        <PostBarChart />
+        <PostBarChart allData={data} isFetchingAllData={isFetching} />
         {/* chart 2 */}
-        <TypePieChart />
+        <TypePieChart
+          count={total}
+          data={data}
+          isLoading={isFetching}
+          refetch={refetch}
+        />
       </SimpleGrid>
 
       {/* table */}
@@ -45,6 +59,8 @@ function UserDashboardTable({ id, level }) {
           </Link>
         }
         count={count}
+        re
+        setQuery={setQuery}
       />
     </Flex>
   );

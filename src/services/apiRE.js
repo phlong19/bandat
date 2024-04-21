@@ -47,7 +47,7 @@ export async function getList(type, citeria, sort, page) {
         dis: DistrictDirectory (disName),
         ward: WardDirectory (wardName),
         images: REMedias(*),
-        profile: Profile(fullName,avatar),
+        profile: Profile(id, fullName,avatar),
         type: REType(*)
     `,
       { count: "exact" },
@@ -114,7 +114,7 @@ export async function getSinglePost(slug) {
     ward: WardDirectory (wardName),
     medias: REMedias(*),
     docs: REDocs(id, docName: LegalDoc(doc_id, doc_name)),
-    profile: Profile(phone,fullName,avatar,email),
+    profile: Profile(id, phone,fullName,avatar,email),
     type: REType (type, name)
   `,
     )
@@ -374,4 +374,133 @@ export async function deletePost(postID, level, userID) {
   }
 
   return null;
+}
+
+// get related post based on address
+// limit at 6
+export async function getRelatedPosts(address) {
+  const { cityID, disID, wardID, postID } = address;
+
+  const select = `*,
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName),
+      images: REMedias(*),
+      profile: Profile(id, fullName,avatar),
+      type: REType(*)
+  `;
+
+  // full address
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .select(select)
+    .limit(6)
+    .neq("id", postID)
+    .eq("cityID", cityID)
+    .eq("disID", disID)
+    .eq("wardID", wardID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  if (data.length > 0) {
+    return data;
+  }
+
+  // remove wardID
+  const { data: list, error: error2 } = await supabase
+    .from("REDirectory")
+    .select(select)
+    .limit(6)
+    .neq("id", postID)
+    .eq("cityID", cityID)
+    .eq("disID", disID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
+
+  if (error2) {
+    console.log(error2);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  if (list.length > 0) {
+    return list;
+  }
+
+  // only cityID
+  const { data: list2, error: error3 } = await supabase
+    .from("REDirectory")
+    .select(select)
+    .limit(6)
+    .neq("id", postID)
+    .eq("cityID", cityID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
+
+  if (error3) {
+    console.log(error3);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return list2;
+}
+
+// get some from the same author
+export async function getRelatedPostsAuthor(currentPostID, authorID) {
+  const { data, error } = await supabase
+    .from("REDirectory")
+    .select(
+      `*,
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName),
+      images: REMedias(*),
+      profile: Profile(id, fullName,avatar),
+      type: REType(*)
+    `,
+    )
+    .limit(6)
+    .eq("userID", authorID)
+    .neq("id", currentPostID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString());
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
+}
+
+// get bookmarked posts
+export async function getBookmarkedPosts(ids) {
+  const { data, count, error } = await supabase
+    .from("REDirectory")
+    .select(
+      `*,
+      images: REMedias(*),
+      profile: Profile(id, fullName,avatar)
+    `,
+      { count: "exact" },
+    )
+    .in("id", ids)
+    .gt("expriryDate", new Date().toISOString())
+    .eq("images.isImage", true)
+    .limit(5);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
 }

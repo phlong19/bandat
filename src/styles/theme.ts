@@ -14,6 +14,8 @@ import { popoverTheme } from "./popover";
 import { numberInputTheme } from "./numberInput";
 import { modalTheme } from "./modal";
 import { spinnerTheme } from "./spinner";
+import { skeletonTheme } from "./skeleton";
+import { textareaTheme } from "./textarea";
 
 const colors = {
   light: "#f6f6f6",
@@ -26,6 +28,7 @@ const colors = {
 };
 
 const pagi = defineStyle({
+  alignSelf: "center",
   fontSize: 14,
   fontWeight: 600,
   borderRadius: "lg",
@@ -58,6 +61,8 @@ export const theme = extendTheme({
     NumberInput: numberInputTheme,
     Modal: modalTheme,
     Spinner: spinnerTheme,
+    Skeleton: skeletonTheme,
+    Textarea: textareaTheme,
   },
   font: {
     lexend: `'Lexend, sans-serif'`,
