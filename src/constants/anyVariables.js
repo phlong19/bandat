@@ -50,7 +50,7 @@ export { billion, million, m2 };
 const minLength = 40;
 const maxLength = 130;
 const minDesLength = 150;
-const maxDesLength = 2000;
+const maxDesLength = 3000;
 export { minLength, maxLength, minDesLength, maxDesLength };
 
 // news
@@ -59,7 +59,7 @@ const maxTitle = 150;
 const minSummary = 150;
 const maxSummary = 250;
 const minContent = 300;
-const maxContent = 3000;
+const maxContent = 7000;
 export { minTitle, maxTitle, minSummary, maxSummary, minContent, maxContent };
 
 // table captions
@@ -92,7 +92,17 @@ export const newsCaptions = [
   "Ngày đăng",
 ];
 
-export const maxAreaSearch = 300;
+export const profileCaptions = [
+  "Tên người dùng",
+  "Email",
+  "Phân quyền",
+  "Địa chỉ",
+  "Giới tính",
+  "Ngày sinh",
+  "Ngày tạo",
+];
+
+export const maxAreaSearch = 500;
 
 // auth
 const minName = 8;

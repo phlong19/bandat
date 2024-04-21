@@ -7,7 +7,7 @@ export function useGetFullListDocs() {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
 
-  const page = Number(searchParams.get("page")) || 1;
+  const page = Number(searchParams.get("doc-page")) || 1;
 
   const { data: { data, count } = {}, isLoading: isFetching } = useQuery({
     queryKey: ["DocsList", page],

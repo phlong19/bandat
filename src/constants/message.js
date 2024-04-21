@@ -26,7 +26,7 @@ export const homeText = [
 ];
 
 export const emptyREList =
-  "Chưa đăng bài viết nào, hãy đăng bài viết đầu tiên";
+  "Chưa đăng bài viết nào, dang bai di hoac thay doi sort/ filter";
 
 export const error = {
   // general
@@ -209,4 +209,11 @@ export const account = {
   // name
   minName: `Ít nhất ${minName} ký tự`,
   maxName: `Vượt quá ${maxName} ký tự`,
+};
+
+// display
+// empty list
+export const display = {
+  emptyList: "kh cos ket qua nao",
+  emptyHintMessage: "thu thay doi query / filter",
 };

@@ -1,5 +1,11 @@
+import { useState } from "react";
+import { RangeDatepicker } from "chakra-dayzed-datepicker";
+
 function Contacts() {
-  return <p>nothing to see here</p>
+  const [date, setDate] = useState([new Date(), new Date()]);
+  console.log(date);
+
+  return <RangeDatepicker onDateChange={setDate} selectedDates={date} />;
 }
 
 export default Contacts;

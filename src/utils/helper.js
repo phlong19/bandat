@@ -1,12 +1,18 @@
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import {
+  ADMIN_LEVEL,
   DEFAULT_RE_STATUS,
+  EDITOR_LEVEL,
   SELLING_STATUS,
   SOLD_STATUS,
+  USER_LEVEL,
   billion,
+  m2,
+  maxAreaSearch,
   million,
 } from "../constants/anyVariables";
+import { navLinks, prices } from "../constants/navlink";
 
 // calc how much money per m2
 export function pricePerArea(purType, price, area) {
@@ -89,14 +95,34 @@ export function getStatusBadgeColor(id) {
   return color;
 }
 
+export function getStatusBadgeProfile(level) {
+  let color;
+
+  switch (level) {
+    case USER_LEVEL:
+      color = "blue";
+      break;
+    case EDITOR_LEVEL:
+      color = "green";
+      break;
+    case ADMIN_LEVEL:
+      color = "red";
+      break;
+    default:
+      break;
+  }
+
+  return color;
+}
+
 export function getCoreNameType(name, type) {
   switch (type) {
     case "nha-mat-pho":
-      return name.slice(4);
+      return name.slice(4)[0].toUpperCase() + name.slice(5);
     case "dat-nen-du-an":
-      return name.slice(4);
+      return name.slice(4)[0].toUpperCase() + name.slice(5);
     case "dat-nen-tho-cu":
-      return name.slice(4);
+      return name.slice(4)[0].toUpperCase() + name.slice(5);
     case "cac-loai-khac":
       return name.slice(-4);
     case "kho-nha-xuong":
@@ -119,3 +145,84 @@ export const checkInputType = (input) => {
     return "unknown";
   }
 };
+
+// calc min - max range slider
+function getRETypeName(purType, input) {
+  let result;
+  if (purType) {
+    result = navLinks[0].child_links
+      .find((i) => i.type === input)
+      .title.toLowerCase();
+  } else {
+    result = navLinks[1].child_links
+      .find((i) => i.type === input)
+      .title.toLowerCase();
+  }
+
+  return result;
+}
+
+// sanitize query input
+export function sanitizeSearchInput(input = "") {
+  return input.trim().split(" ").join(" & ");
+}
+
+// convert price for display query
+function getPriceLabel(input) {
+  return prices.find((i) => i.value === input).label.toLowerCase();
+}
+
+// convert price for api
+export function convertPrice(input) {
+  const [from, to] = input.split("-");
+  // eg: input: "60"
+  // input.split('-')
+  // ['60']
+  if (from === "60") {
+    return { from: Number(from) * billion };
+  }
+
+  // has to mean input go in [range]
+
+  const tag = from === "500" ? million : billion;
+  if (to) {
+    return { from: Number(from) * tag, to: Number(to) * billion };
+  }
+
+  return { from: Number(from) * tag };
+}
+
+export function renderQueryLabel(search, city) {
+  if (!city) {
+    return;
+  }
+
+  const type = getRETypeName(search.purType, search.reType);
+  const area =
+    search?.area === "above"
+      ? ` trên ${maxAreaSearch}${m2}`
+      : search?.area?.[0] !== 1 || search?.area?.[1] !== maxAreaSearch
+        ? ` từ ${search?.area?.[0]} - ${search?.area?.[1]}${m2}`
+        : "";
+  const price =
+    search?.price !== "0" ? ` giá ${getPriceLabel(search?.price)}` : "";
+  const address = !isNaN(search?.cityID)
+    ? ` tại ${city.find((i) => i.cityID === search.cityID)?.cityName}`
+    : "";
+
+  return "Danh sách " + type + area + price + address;
+}
+
+// get status id
+export function getStatusID(value) {
+  switch (value) {
+    case "waiting":
+      return DEFAULT_RE_STATUS;
+    case "selling":
+      return SELLING_STATUS;
+    case "sold":
+      return SOLD_STATUS;
+    default:
+      break;
+  }
+}

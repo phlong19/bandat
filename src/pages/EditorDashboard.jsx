@@ -2,16 +2,14 @@ import { useAuth } from "../context/UserContext";
 import { Center, Spinner } from "@chakra-ui/react";
 
 import EditorDashboardTable from "../features/dashboard/EditorDashboardTable";
-import { useGetFullNewsList } from "../features/dashboard/useGetFullNewsList";
 
 function EditorDashboard() {
   const {
     data: { id },
     isLoading,
   } = useAuth();
-  const { data, count, isLoading: isFetching } = useGetFullNewsList(id);
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <Center minH="80dvh">
         <Spinner />
@@ -19,7 +17,7 @@ function EditorDashboard() {
     );
   }
 
-  return <EditorDashboardTable data={data} count={count} />;
+  return <EditorDashboardTable id={id} />;
 }
 
 export default EditorDashboard;

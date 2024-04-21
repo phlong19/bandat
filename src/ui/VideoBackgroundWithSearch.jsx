@@ -74,7 +74,7 @@ function VideoBackgroundWithSearch() {
             />
           </Heading>
         </Box>
-        <Searchbar home />
+        <Searchbar />
       </Box>
     </Flex>
   );

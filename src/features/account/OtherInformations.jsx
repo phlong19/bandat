@@ -30,10 +30,6 @@ function OtherInformations({ data, color, id }) {
   });
 
   function onSubmit(data) {
-    if (!data.birthday) {
-      return false;
-    }
-    console.log(data);
     let sex;
     // convert sex option
     switch (newSex) {

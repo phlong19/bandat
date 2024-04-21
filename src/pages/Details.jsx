@@ -1,5 +1,5 @@
 // libs
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
@@ -92,6 +92,13 @@ function Details() {
     queryFn: () => getSinglePost(land),
     enabled: Boolean(land),
   });
+
+  // change page title
+  useEffect(() => {
+    if (post) {
+      document.title = "LandHub - " + post.name;
+    }
+  }, [post]);
 
   if (isLoading || isFetching) {
     return (

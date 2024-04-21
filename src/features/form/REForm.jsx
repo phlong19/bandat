@@ -433,13 +433,15 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             <FormControl isRequired isInvalid={errors.files}>
               <FormLabel>Hình ảnh, video bất động sản</FormLabel>
               <Checkbox
+                required={false}
                 onChange={() => {
                   setCheck((s) => !s);
                   setFiles360([]);
                   setValue("files360", []);
                 }}
                 size="sm"
-                color={useColorModeValue("gray.700", "gray.400")} defaultChecked={check}
+                color={useColorModeValue("gray.700", "gray.400")}
+                defaultChecked={check}
               >
                 Tôi có thể cung cấp ảnh 360°
               </Checkbox>

@@ -56,7 +56,7 @@ function Footer() {
                   <img
                     src="/google-play.png"
                     alt="google play"
-                    className="max-w-48"
+                    className="max-w-36 xl:max-w-40"
                   />
                 </a>
               </li>
@@ -65,7 +65,7 @@ function Footer() {
                   <img
                     src="/app_store.png"
                     alt="app store"
-                    className="mt-[3.5px] max-w-48 dark:contrast-150 sm:mt-0"
+                    className="mt-[3.5px] max-w-36 dark:contrast-150 sm:mt-0 xl:max-w-40"
                   />
                 </a>
               </li>
@@ -74,7 +74,7 @@ function Footer() {
           {/* socials media, mobile hidden */}
           <div className="hidden lg:mt-32 lg:block xl:mt-0">
             <h3 className="text-xl font-bold">Kết nối với chúng tôi qua</h3>
-            <ul className="flex gap-3 pt-4 text-2xl text-primary dark:text-secondary">
+            <ul className="flex gap-3 pt-4 text-2xl pb-3 text-primary dark:text-secondary">
               <li>
                 <a href={fb}>
                   <FaFacebook />
@@ -104,8 +104,8 @@ function Footer() {
             Copyright © 2023 - {currentYear} LandHub.com.vn.
           </p>
           {/* mobile hidden */}
-          <div className="mt-3 hidden w-full font-roboto lg:flex lg:flex-wrap lg:gap-2">
-            <div className="h-36 w-1/3 max-w-[250px]">
+          <div className="mt-3 hidden w-full font-roboto lg:flex lg:justify-around lg:gap-2">
+            <div className="h-36 w-1/3 max-w-[200px]">
               <a
                 href="tel:19009069"
                 className="ml-1 flex h-full items-center justify-start gap-3 xl:justify-center"
@@ -119,9 +119,9 @@ function Footer() {
                 </div>
               </a>
             </div>
-            <div className="h-36 w-1/3 max-w-[250px]">
+            <div className="h-36 w-1/3 max-w-[200px]">
               <a
-                href="mailto:hotro@landhub.com.vn"
+                href="mailto:landhub-services@outlook.com"
                 className="flex h-full items-center justify-center gap-3"
               >
                 <span className="text-4xl">
@@ -129,13 +129,11 @@ function Footer() {
                 </span>
                 <div>
                   <p className="font-normal">Hỗ trợ khách hàng:</p>
-                  <p className="text-base font-semibold">
-                    hotro@landhub.com.vn
-                  </p>
+                  <p className="text-base font-semibold">support@landhub.com</p>
                 </div>
               </a>
             </div>
-            <div className="h-36 w-1/3 max-w-[250px] lg:ml-3 xl:mr-0">
+            <div className="h-36 w-1/3 max-w-[200px] lg:ml-3 xl:mr-0">
               <a
                 href="mailto:hotro@landhub.com.vn"
                 className="flex h-full items-center justify-center gap-3"

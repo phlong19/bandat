@@ -1,7 +1,9 @@
 // libs
 import { useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Switch, Center, Spinner } from "@chakra-ui/react";
+import { Switch, Select } from "@chakra-ui/react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { Flex } from "@chakra-ui/react";
 
 // UI
 import ListItem from "./ListItem";
@@ -10,23 +12,22 @@ import Map from "../../ui/Map";
 import ChakraTablePagination from "../../ui/ChakraTablePagination";
 
 // hooks & helpers & context
-import { useListingPage } from "./useListingPage";
-import { formatNumber } from "../../utils/helper";
-import { purTypeFalse, purTypeTrue } from "../../constants/anyVariables";
+import { formatNumber, renderQueryLabel } from "../../utils/helper";
 import { useMapView } from "../../context/MapViewContext";
+import { useSearchbar } from "../searchbar/useSearchbar";
+import EmptyList from "../../ui/EmptyList";
+import { sortList } from "../../constants/navlink";
+import SkeletonList from "../../ui/SkeletonList";
 
-function List({ purType }) {
-  const { data, count, isLoading } = useListingPage(purType);
+function List({ purType, data, count = 0, isLoading }) {
   const { mapView, setMapView } = useMapView();
+  const { data: addressData } = useSearchbar();
+  const location = useLocation();
+  const search = location.state?.fullData;
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const listAnimationControl = useAnimation();
   const mapAnimationControl = useAnimation();
-
-  // change page title
-  useEffect(() => {
-    const pageTitle = purType ? purTypeTrue : purTypeFalse;
-    document.title = pageTitle;
-  }, [purType]);
 
   useEffect(() => {
     if (mapView) {
@@ -61,14 +62,6 @@ function List({ purType }) {
     }
   }, [mapView, mapAnimationControl, listAnimationControl]);
 
-  if (isLoading) {
-    return (
-      <Center minH="90dvh">
-        <Spinner size="md" speed="0.35s" thickness="1px" />
-      </Center>
-    );
-  }
-
   return (
     <div className="relative h-full min-h-[80%] justify-center px-2.5 sm:px-4 lg:flex lg:gap-2">
       <AnimatePresence presenceAffectsLayout>
@@ -82,50 +75,91 @@ function List({ purType }) {
             <Searchbar />
           </div>
 
-          <h2 className="pt-3 font-lexend text-lg font-medium">
-            {`${purType ? "Mua bán" : "Cho thuê"} nhà đất trên toàn quốc`}
+          <h2
+            className={`${
+              search ? "text-base" : "text-lg"
+            } mx-auto max-w-[1500px] pt-3 font-lexend font-medium`}
+          >
+            {!search
+              ? purType
+                ? "Mua bán" + " nhà đất trên toàn quốc"
+                : "Cho thuê" + " nhà đất trên toàn quốc"
+              : renderQueryLabel(search, addressData?.city)}
           </h2>
-          <div className="flex items-center justify-between">
+          <div className="mx-auto flex max-w-[1500px] items-center justify-between">
             {/* counter */}
             <span className="inline-block text-sm">
               Có <span>{formatNumber(count)}</span> bất động sản.
             </span>
 
             {/* toggle grid & map views */}
-            <div className="hidden items-center gap-2 lg:flex">
-              <span className="font-lexend text-lg font-semibold">Bản đồ:</span>
-              <Switch size='sm'
-                onChange={() => setMapView((s) => !s)}
-                isChecked={mapView}
-                key={purType}
-                colorScheme="green"
-              />
-            </div>
+            {count > 0 && (
+              <Flex gap={3} align="center">
+                <Select
+                  value={searchParams.get("sort") || sortList[0].value}
+                  size="xs"
+                  rounded="md"
+                  minW="160px"
+                  onChange={(e) => {
+                    searchParams.set("sort", e.target.value);
+                    setSearchParams(searchParams);
+                  }}
+                >
+                  {sortList.map((i) => (
+                    <option key={i.value} value={i.value}>
+                      {i.label}
+                    </option>
+                  ))}
+                </Select>
+                <div className="hidden items-center gap-2 lg:flex">
+                  <span className="w-max font-lexend text-lg font-semibold">
+                    Bản đồ:
+                  </span>
+                  <Switch
+                    size="sm"
+                    onChange={() => setMapView((s) => !s)}
+                    isChecked={mapView}
+                    key={purType}
+                    colorScheme="green"
+                  />
+                </div>
+              </Flex>
+            )}
           </div>
 
           {/* RE list */}
-          <motion.div
-            className={`${
-              mapView
-                ? "lg:grid-cols-2 lg:gap-2 xl:grid-cols-3 xl:gap-2.5 3xl:grid-cols-4"
-                : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-5"
-            } mt-3 space-y-4 lg:grid lg:space-y-0`}
-          >
-            {data.map((item) => (
-              <ListItem key={item.id} data={item} purType={purType} />
-            ))}
-          </motion.div>
-          <ChakraTablePagination count={count} />
+          {isLoading ? (
+            <SkeletonList />
+          ) : count > 0 ? (
+            <>
+              <motion.div
+                className={`${
+                  mapView
+                    ? "lg:grid-cols-2 lg:gap-2 xl:grid-cols-3 xl:gap-2.5 3xl:grid-cols-4"
+                    : "mx-auto max-w-[1500px] lg:grid-cols-3 lg:gap-3 xl:grid-cols-4 xl:gap-4"
+                } mt-3 space-y-4 lg:grid lg:space-y-0`}
+              >
+                {data.map((item) => (
+                  <ListItem key={item.id} data={item} purType={purType} />
+                ))}
+              </motion.div>
+              <ChakraTablePagination count={count} />
+            </>
+          ) : (
+            <EmptyList />
+          )}
         </motion.div>
 
         {/* map, mobile hidden */}
-        <motion.div
-          key="map"
-          initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
-          animate={mapAnimationControl}
-        >
-          <Map data={data} purType={purType} />
-        </motion.div>
+        {count > 0 && (
+          <motion.div
+            key="map"
+            initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
+            animate={mapAnimationControl}
+          >
+            <Map data={data} purType={purType} />
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );

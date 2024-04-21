@@ -125,7 +125,7 @@ function NewsFormModal({
         px="2rem"
         colorScheme="green"
         variant="outline"
-        borderWidth={2}
+        borderWidth={2} minW={100}
       >
         Viết bài
       </Button>

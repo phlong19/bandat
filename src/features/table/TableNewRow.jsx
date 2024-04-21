@@ -76,7 +76,7 @@ function TableNewRow({ data, setSlug }) {
         </Badge>
       </Td>
       {/* title */}
-      <Td maxW="250px">
+      <Td maxW="600px">
         <Text noOfLines={2}>{title}</Text>
       </Td>
       {/* summary */}

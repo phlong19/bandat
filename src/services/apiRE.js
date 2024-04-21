@@ -19,15 +19,27 @@ import { deleteMedia, uploadMedia } from "./apiMedia";
 import { error as errorMessage } from "../constants/message";
 import { addDays } from "date-fns";
 
-export async function getList(type, citeria, page) {
+export async function getList(type, citeria, sort, page) {
   const from = (page - 1) * LIMIT_PER_PAGE;
   const to = from + LIMIT_PER_PAGE - 1;
-  // query
-  // re type
-  // area
-  // address
 
-  const { data, count, error } = await supabase
+  let typeID;
+  if (citeria) {
+    const { data, error } = await supabase
+      .from("REType")
+      .select(`*`)
+      .eq("type", citeria)
+      .limit(1)
+      .single();
+    if (error) {
+      console.log(error);
+      throw new Error(errorMessage.fetchError);
+    }
+
+    typeID = data.REType_ID;
+  }
+
+  let query = supabase
     .from("REDirectory")
     .select(
       `*,
@@ -44,9 +56,22 @@ export async function getList(type, citeria, page) {
     .eq("images.isImage", true)
     .eq("status", SELLING_STATUS)
     .gt("expriryDate", new Date().toISOString())
-    .order("created_at", { ascending: false })
     .limit(LIMIT_PER_PAGE)
     .range(from, to);
+
+  if (sort !== "created_at-desc") {
+    const [col, order] = sort.split("-");
+    query = query.order(col, { ascending: order === "asc" });
+  } else {
+    query = query.order("created_at", { ascending: false });
+  }
+
+  // type params
+  if (typeID) {
+    query = query.eq("REType_ID", typeID);
+  }
+
+  const { data, count, error } = await query;
 
   if (error) {
     console.log(error);

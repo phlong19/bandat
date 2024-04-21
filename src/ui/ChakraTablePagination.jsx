@@ -4,10 +4,10 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useMapView } from "../context/MapViewContext";
 import { LIMIT_PER_PAGE } from "../constants/anyVariables";
 
-function ChakraTablePagination({ count, news = false }) {
+function ChakraTablePagination({ count, news = false, page = "page" }) {
   const { setMapView } = useMapView();
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentPage = Number(searchParams.get(page)) || 1;
   const totalPages = Math.ceil(count / LIMIT_PER_PAGE);
 
   let finalDestination;
@@ -40,7 +40,7 @@ function ChakraTablePagination({ count, news = false }) {
       document.getElementById("breadcrumb-scroll")?.scrollIntoView();
     }, 100);
     setMapView(false);
-    searchParams.set("page", finalDestination.toString());
+    searchParams.set(page, finalDestination.toString());
     setSearchParams(searchParams);
   }
 

@@ -3,11 +3,13 @@ import {
   Button,
   Card,
   CardHeader,
+  Spinner,
   CardBody,
   Text,
   Thead,
   Table,
   Tr,
+  Center,
   Th,
   Tbody,
   Input,
@@ -16,9 +18,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import ChakraTablePagination from "../../ui/ChakraTablePagination";
 import { BiSearchAlt } from "react-icons/bi";
-import { newsForm } from "../../constants/message";
+import ChakraTablePagination from "../../ui/ChakraTablePagination";
+import ChakraTableSort from "../../ui/ChakraTableSort";
+import ChakraTableFilter from "../../ui/ChakraTableFilter";
+import { emptyREList, newsForm } from "../../constants/message";
+import EmptyTable from "../../ui/EmptyTable";
+import { Link } from "react-router-dom";
 
 function ChakraTable({
   title,
@@ -28,72 +34,106 @@ function ChakraTable({
   primaryButton,
   count,
   news = false,
+  viewOnly = false,
+  isLoading,
+  page,
 }) {
   const modeBaseColor = useColorModeValue("primary", "secondary");
   const tableMode = useColorModeValue("light", "#afafaf1c");
 
   return (
-    <Card overflowX={{ sm: "auto", xl: "hidden" }} bg={tableMode}>
+    <Card
+      overflowX={{ sm: "auto", xl: "hidden" }}
+      bg={tableMode}
+      w={viewOnly ? "100%" : "auto"}
+    >
       <CardHeader pt="25" pl="25">
-        <Flex justify="space-between">
+        <Flex justify="space-between" align="center">
           <Text
             fontSize="xl"
             color={modeBaseColor}
             fontWeight="600"
             fontFamily="roboto"
+            noOfLines={1}
+            title={title}
           >
             {title}
           </Text>
-          <Flex gap={2}>
-            {/* side actions */}
-            {/* TODO: */}
-            <InputGroup>
-              <Input placeholder="search" />
-              <InputRightElement>
-                <Button p={0}>
-                  <BiSearchAlt />
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            <Button colorScheme="teal" variant="ghost">
-              filter
-            </Button>
-            <Button colorScheme="blue" variant="ghost">
-              sort
-            </Button>
-            {/* for main action */}
-            {/* with post => link to dang-tin */}
-            {/* news / user + profile / docs => modal */}
-            {primaryButton}
-          </Flex>
+          {!viewOnly && (
+            <Flex gap={2} align="center">
+              {/* side actions */}
+              {/* TODO: */}
+              {/* a. add text search */}
+              <InputGroup>
+                <Input placeholder="search" />
+                <InputRightElement>
+                  <Button p={0}>
+                    <BiSearchAlt />
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <ChakraTableFilter news={news} />
+              <ChakraTableSort news={news} />
+              {/* for main action */}
+              {/* with post => link to dang-tin */}
+              {/* news / user + profile / docs => modal */}
+              {primaryButton}
+            </Flex>
+          )}
         </Flex>
       </CardHeader>
-      <CardBody>
-        <Table variant="simple">
-          <Thead>
-            <Tr my=".8rem" pl="0px" color="gray.400">
-              {captions.map((caption, i) => {
-                return (
-                  <Th
-                    color="gray.400"
-                    textTransform="capitalize"
-                    fontSize="small"
-                    key={i}
-                    ps={i === 0 ? "0px" : null}
-                    pr={0}
-                  >
-                    {caption}
-                  </Th>
-                );
-              })}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {!news ? data.map(render) : <Text>{newsForm.empty}</Text>}
-          </Tbody>
-        </Table>
-      </CardBody>
-      <ChakraTablePagination count={count} />
+      {isLoading ? (
+        <Center minH="80dvh">
+          <Spinner />
+        </Center>
+      ) : (
+        <>
+          <CardBody
+            minH={count > 0 ? "" : "50dvh"}
+            maxH={viewOnly ? "50dvh" : ""}
+            overflowY="scroll"
+          >
+            <Table variant="simple">
+              <Thead>
+                <Tr my=".8rem" pl="0px" color="gray.400">
+                  {captions.map((caption, i) => {
+                    return (
+                      <Th
+                        color="gray.400"
+                        textTransform="capitalize"
+                        fontSize="small"
+                        key={i}
+                        ps={i === 0 ? "0px" : null}
+                        pr={0}
+                      >
+                        {caption}
+                      </Th>
+                    );
+                  })}
+                </Tr>
+              </Thead>
+              <Tbody>{count > 0 && data.map(render)}</Tbody>
+            </Table>
+            {count < 1 && (
+              <EmptyTable message={news ? newsForm.empty : emptyREList}>
+                {!news && (
+                  <Link to="/dang-tin">
+                    <Button colorScheme="green" variant="solid">
+                      Tạo bài đăng
+                    </Button>
+                  </Link>
+                )}
+              </EmptyTable>
+            )}
+          </CardBody>
+          {count > 0 && (
+            <ChakraTablePagination
+              count={count}
+              page={viewOnly ? page : "page"}
+            />
+          )}
+        </>
+      )}
     </Card>
   );
 }

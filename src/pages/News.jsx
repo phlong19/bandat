@@ -15,6 +15,7 @@ import NewsAccordionLinks from "../ui/NewsAccordionLinks";
 import { city } from "../data/city";
 import { getNewsList } from "../services/apiNews";
 import { formatDate } from "../utils/helper";
+import { useEffect } from "react";
 
 function News() {
   const summaryColor = useColorModeValue("gray.700", "gray.300");
@@ -28,6 +29,10 @@ function News() {
     queryKey: ["news"],
     queryFn: () => getNewsList(page),
   });
+
+  useEffect(() => {
+    document.title = "Thông tin bất động sản Việt Nam cập nhật mới nhất";
+  }, []);
 
   return (
     <div className="mx-auto max-w-[1500px] bg-white pb-8 dark:bg-darker lg:rounded-lg lg:pb-6">

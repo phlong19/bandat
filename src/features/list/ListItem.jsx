@@ -44,7 +44,7 @@ function ListItem({ data, purType, isPopup = false }) {
     <div
       className={`${
         !isPopup
-          ? "mt-2 border-2 bg-white p-1 transition-colors duration-200 hover:border-primary dark:bg-darker md:p-2 lg:m-0 lg:p-2.5 xl:p-2"
+          ? "mt-2 border-2 bg-white p-1 transition-colors duration-200 hover:border-primary dark:bg-darker md:p-2 lg:m-0 lg:p-2 xl:p-2"
           : "min-w-[160px] p-[2px] text-black lg:w-full"
       } group rounded-lg`}
     >
@@ -96,7 +96,7 @@ function ListItem({ data, purType, isPopup = false }) {
         </div>
         {/* author */}
         {(!mapView || !isLaptop) && (
-          <div className="mt-auto items-center gap-1.5 flex">
+          <div className="mt-auto flex items-center gap-1.5">
             <div className="flex h-8 max-w-full items-center gap-2 lg:max-w-[40%] lg:gap-1.5 xl:max-w-[45%] xl:gap-2">
               <Avatar
                 src={avatar}
@@ -114,7 +114,7 @@ function ListItem({ data, purType, isPopup = false }) {
               <span>
                 {formatCurrency(price)} {!purType && "/ tháng"}
               </span>
-              {purType && "-"}
+              {purType && <span className="text-black dark:text-white">-</span>}
               {purType && (
                 <span className="font-semibold text-primary dark:text-secondary">
                   {formatCurrency(pricePerArea(purType, price, area))}/{m2}
@@ -134,7 +134,7 @@ function ListItem({ data, purType, isPopup = false }) {
             <span>
               {formatCurrency(price)} {!purType && "/ tháng"}
             </span>
-            {purType && "-"}
+            {purType && <span className="text-black dark:text-white">-</span>}
             <span className="font-semibold text-primary dark:text-secondary">
               {formatCurrency(pricePerArea(purType, price, area))}
               {purType && `/${m2}`}
