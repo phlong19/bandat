@@ -15,13 +15,13 @@ import {
 } from "./anyVariables";
 
 export const homeText = [
-  "Find your dream house",
+  "Bạn có nhu cầu mua nhà ?",
   1000,
-  "Find your real home",
+  "Với giá phải chăng ?",
   1000,
-  "Find your nhà ở",
+  "Và ở vị trí thuận tiện ?",
   1000,
-  "Learning chemistry",
+  "Hãy cùng tìm kiếm ngôi nhà lý tưởng của bạn",
   1000,
 ];
 
@@ -47,7 +47,7 @@ export const error = {
   notVerifyEmail: "Chưa xác thực mail",
   notHavePhone: "Vui lòng cập nhật số điện thoại",
   duplicateEmail: "Địa chỉ email đã tồn tại",
-  cantSendEmailResetPassword: "khong the gui email dang nhap 1 lan",
+  cantSendEmailResetPassword: "Không thể gửi email",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng",
@@ -71,10 +71,10 @@ export const error = {
   cantEditName: "Không được chỉnh sửa",
 
   // report
-  cantCreateReport: "khong gui duoc report",
+  cantCreateReport: "Chưa thể gửi báo cáo",
 
   // bookmark
-  postExist: "bai da ton tai trong danh sach tin luu",
+  postExist: "Bài đăng đã lưu",
 };
 
 export const success = {
@@ -88,7 +88,7 @@ export const success = {
   // xac nhan sdt thanh cong
   verifyPhone: "Xác thực thành công số điện thoại",
   emailConfirm: "Xác thực thành công email",
-  emailVerify: "link dang nhap da duoc gui den email",
+  emailVerify: "Đã gửi mail xác thực",
 
   //
   login: "Đăng nhập thành công",
@@ -119,12 +119,12 @@ export const success = {
   updateEmail: "Cập nhật Email thành công, vui lòng xác thực Email!",
 
   // others
-  copyToClipboard: "Đã sao chép vào clipboard",
-  createReport: "bao cao cua ban da duoc gui",
+  copyToClipboard: "Sao chép thành công",
+  createReport: "Gửi báo cáo thành công",
 
   // bookmark
-  addedBookmark: "Đã thêm vào danh sách tin lưu của bạn",
-  removedBookmark: "da go khoi danh sach tin luu",
+  addedBookmark: "Thêm thành công",
+  removedBookmark: "Gỡ thành công",
 };
 
 export const reform = {
@@ -151,18 +151,18 @@ export const reform = {
 
   // media
   overFile: "Vượt quá số lượng giới hạn file tải lên",
-  helperMedia: "Drag & drop file here, or click to select files",
+  helperMedia: "Kéo & thả file tại đây, hoặc chọn file trong máy tính",
   acceptMedias: "Yêu cầu định dạng png, jpg, jpeg hoặc mp4",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg & kích thước 2:1",
   overSize: `Kích thước file vượt quá giới hạn cho phép`,
   ratio: "Tỉ lệ ảnh yêu cầu 2:1",
 
   // alert
-  note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, đảm bảo đúng các thông tin để đỡ phải sửa nhiều, bài đăng luôn được hiển thị",
+  note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, hãy đảm bảo đúng các thông tin,bài đăng luôn được hiển thị",
 
   // button submit
-  submit: "submit",
-  save: "save",
+  submit: "Submit",
+  save: "Save",
   creating: "Đang tạo...",
   saving: "Đang lưu...",
 };
@@ -183,7 +183,7 @@ export const newsForm = {
 
   // thumbnail
   overFile: "Chỉ chấp nhận 1 file thumbnail",
-  helperMedia: "Drag & drop file here, or click to select files",
+  helperMedia: "Kéo & thả file tại đây, hoặc chọn file trong máy tính",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
   overSize: `Kích thước file vượt quá giới hạn cho phép`,
   ratio: "Tỉ lệ ảnh yêu cầu 16x9",
@@ -196,10 +196,10 @@ export const newsForm = {
   dialogMessage:
     "Bạn có chắc muốn huỷ thay đổi? Mọi thay đổi sẽ không được lưu lại!",
   // content
-  imgUrl: "Paste your image url here",
+  imgUrl: "Dán link ảnh tại đây",
   // actions
-  submit: "submit",
-  save: "save",
+  submit: "Submit",
+  save: "Save",
   creating: "Đang tạo...",
   saving: "Đang lưu...",
 };
@@ -212,10 +212,10 @@ export const account = {
 
   // account settings
   cantUpdate: "Không thể cập nhật thông tin tài khoản, vui lòng thử lại sau",
-  helperMedia: "Drag & drop file here, or click to select files",
+  helperMedia: "Kéo & thả file tại đây, hoặc chọn file trong máy tính",
   missingAddress: "Vui lòng điền chi tiết địa chỉ",
 
-  overFile: "vuot qua so luong file, chi duoc 1 cai thoi vi no la avt",
+  overFile: "Vượt quá số lượng ảnh",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
 
   // name
