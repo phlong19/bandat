@@ -238,6 +238,7 @@ export async function getUser(id, page) {
       .limit(LIMIT_NEWS)
       .eq("userID", data.id)
       .eq("images.isImage", true)
+      // TODO
       // .eq("status", SELLING_STATUS)
       .gt("expriryDate", new Date().toISOString())
       .range(start, end);
