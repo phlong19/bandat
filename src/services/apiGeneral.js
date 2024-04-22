@@ -1,8 +1,9 @@
 import supabase from "./supabase";
 import { error as errorMessage } from "../constants/message";
 import {
-  LIMIT_PER_PAGE,
+  LIMIT_NEWS,
   questURL,
+  SELLING_STATUS,
   USER_LEVEL,
 } from "../constants/anyVariables";
 
@@ -173,8 +174,8 @@ export async function createContact(formData) {
 
 // get users list to contacts page
 export async function getUsersList(page) {
-  const start = (page - 1) * LIMIT_PER_PAGE;
-  const end = start + LIMIT_PER_PAGE - 1;
+  const start = (page - 1) * LIMIT_NEWS;
+  const end = start + LIMIT_NEWS - 1;
 
   const { data, count, error } = await supabase
     .from("Profile")
@@ -186,7 +187,7 @@ export async function getUsersList(page) {
     `,
       { count: "exact" },
     )
-    .limit(LIMIT_PER_PAGE)
+    .limit(LIMIT_NEWS)
     .range(start, end)
     .eq("level", USER_LEVEL);
 
@@ -198,7 +199,10 @@ export async function getUsersList(page) {
   return { data, count };
 }
 
-export async function getUser(id) {
+export async function getUser(id, page) {
+  const start = (page - 1) * LIMIT_NEWS;
+  const end = page + LIMIT_NEWS - 1;
+
   const { data, error } = await supabase
     .from("Profile")
     .select(
@@ -216,6 +220,34 @@ export async function getUser(id) {
   if (error) {
     console.log(error);
     throw new Error(errorMessage.fetchError);
+  }
+
+  if (data.id) {
+    const { data: posts, error } = await supabase
+      .from("REDirectory")
+      .select(
+        `*,
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName),
+      images: REMedias(*),
+      profile: Profile(id, fullName,avatar),
+      type: REType(*)
+    `,
+      )
+      .limit(LIMIT_NEWS)
+      .eq("userID", data.id)
+      .eq("images.isImage", true)
+      // .eq("status", SELLING_STATUS)
+      .gt("expriryDate", new Date().toISOString())
+      .range(start, end);
+
+    if (error) {
+      console.log(error);
+      throw new Error(errorMessage.fetchError);
+    }
+
+    data.list = posts;
   }
 
   return data;

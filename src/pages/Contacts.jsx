@@ -47,7 +47,6 @@ import { MdOutlineMarkEmailUnread } from "react-icons/md";
 
 function Contacts() {
   const bg = useColorModeValue("white", "darker");
-  const color = useColorModeValue("darker", "white");
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
@@ -96,11 +95,10 @@ function Contacts() {
 
   const { data: { data: users, count } = {}, isLoading: isQuerying } = useQuery(
     {
-      queryKey: ["users"],
+      queryKey: ["users", page],
       queryFn: () => getUsersList(page),
     },
   );
-  console.log(users);
 
   return (
     <Box maxW="1500px" mx="auto" px={3}>
@@ -129,7 +127,7 @@ function Contacts() {
               <Box w={400} mx="auto" align="start" pt={4}>
                 <Heading fontSize="large">Danh bạ nhà môi giới</Heading>
               </Box>
-              <VStack w={400} mx="auto" align="start">
+              <VStack w={400} minH={800} mx="auto" align="start">
                 {users.map((item) => (
                   <Box
                     key={item.id}
@@ -164,46 +162,56 @@ function Contacts() {
                       </Box>
                     </Flex>
                     <ButtonGroup flexDirection="column" gap={2}>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        colorScheme="green"
-                        color
-                        fontSize="xs"
-                        fontWeight={500}
-                        rightIcon={<BiSolidUserDetail />}
+                      <Link
+                        to={`/danh-ba/nguoi-dung/${slugify(
+                          unidecode(item.fullName),
+                        )}?u=${item.id}`}
                       >
-                        <Link
-                          to={`/danh-ba/nguoi-dung/${slugify(
-                            unidecode(item.fullName),
-                          )}?u=${item.id}`}
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          colorScheme="green"
+                          color
+                          fontSize="xs"
+                          fontWeight={500}
+                          rightIcon={<BiSolidUserDetail />}
                         >
                           Xem thêm
-                        </Link>
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        colorScheme="green"
-                        color
-                        fontSize="xs"
-                        fontWeight={500}
-                        rightIcon={<MdOutlineMarkEmailUnread />}
-                      >
-                        <Link to={`mailto:${item.email}`}>Gửi email</Link>
-                      </Button>
+                        </Button>
+                      </Link>
+                      <Link to={`mailto:${item.email}`}>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          colorScheme="green"
+                          color
+                          fontSize="xs"
+                          fontWeight={500}
+                          rightIcon={<MdOutlineMarkEmailUnread />}
+                        >
+                          Gửi email
+                        </Button>
+                      </Link>
                     </ButtonGroup>
                   </Box>
                 ))}
               </VStack>
               <div className="flex self-center">
-                <ChakraTablePagination count={count} />
+                <ChakraTablePagination news count={count} />
               </div>
             </VStack>
             {/* sider */}
             <Box bg={bg} minH={300} w={300} rounded="md">
-              <Box as="section" width="full">
+              <Box
+                roundedTop="lg"
+                as="section"
+                width="full"
+                bgImage="./contact.png"
+                bgSize="cover"
+                bgRepeat="no-repeat"
+              >
                 <Flex
+                  backdropFilter="blur(2px)"
                   align={"center"}
                   justify={"center"}
                   py={3}
@@ -222,19 +230,28 @@ function Contacts() {
                       w={"full"}
                     >
                       <Heading
-                        fontSize="xx-large"
+                        fontSize="x-large"
                         fontWeight={600}
                         textAlign="center"
+                        color="black"
                       >
                         Liên hệ
                       </Heading>
                       <Input
-                        fontSize="sm"
+                        borderColor="black"
+                        borderWidth={1.5}
+                        size="sm"
+                        fontSize="xs"
+                        p={4}
+                        _hover={{ borderColor: "primary" }}
                         type="email"
                         placeholder={"Email của bạn"}
-                        _placeholder={{ color: "whiteAlpha.600" }}
+                        _placeholder={{
+                          color: "black",
+                          fontSize: "xs",
+                        }}
                         rounded={"full"}
-                        color={color}
+                        color="black"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
@@ -244,7 +261,9 @@ function Contacts() {
                         colorScheme="green"
                         flex={"1 0 auto"}
                         maxW={150}
+                        fontWeight={500}
                         fontSize="xs"
+                        p={4}
                         mx="auto"
                         rightIcon={<FaRegPaperPlane />}
                         onClick={handleOpen}
@@ -352,7 +371,7 @@ function Contacts() {
                               loadingText="Đang gửi"
                               colorScheme="green"
                             >
-                              Send
+                              Gửi
                             </Button>
                           </ModalFooter>
                         </ModalContent>
@@ -362,7 +381,7 @@ function Contacts() {
                 </Flex>
               </Box>
 
-              <Box>
+              <Box py={5}>
                 {navLinks.map((i, index) => (
                   <Box key={index} pl={8} pr={3}>
                     <Link
@@ -375,7 +394,7 @@ function Contacts() {
                       {i.child_links.map((e) => (
                         <ListItem
                           key={e.type}
-                          className="text-sm py-1 transition-colors duration-300 last:pb-3 hover:text-primary dark:hover:text-secondary"
+                          className="py-1 text-sm transition-colors duration-300 last:pb-3 hover:text-primary dark:hover:text-secondary"
                         >
                           <Link to={`/${i.to}/${e.type}`}>{e.title}</Link>
                         </ListItem>
