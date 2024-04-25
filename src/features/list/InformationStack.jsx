@@ -18,7 +18,7 @@ function InformationStack({ isLaptop, isPopup, data, area }) {
           {bath_room > 0 && (
             <ItemTagInformation value={bath_room} icon={LiaBathSolid} />
           )}
-          {floor && <ItemTagInformation value={floor} icon={TbStack2} />}
+          {floor > 0 && <ItemTagInformation value={floor} icon={TbStack2} />}
         </div>
       )}
     </>

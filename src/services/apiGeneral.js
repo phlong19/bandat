@@ -199,10 +199,8 @@ export async function getUsersList(page) {
   return { data, count };
 }
 
-export async function getUser(id, page) {
-  const start = (page - 1) * LIMIT_NEWS;
-  const end = page + LIMIT_NEWS - 1;
-
+// user detail page
+export async function getUser(id) {
   const { data, error } = await supabase
     .from("Profile")
     .select(
@@ -222,34 +220,45 @@ export async function getUser(id, page) {
     throw new Error(errorMessage.fetchError);
   }
 
-  if (data.id) {
-    const { data: posts, error } = await supabase
-      .from("REDirectory")
-      .select(
-        `*,
-      city: CityDirectory (cityName),
-      dis: DistrictDirectory (disName),
-      ward: WardDirectory (wardName),
-      images: REMedias(*),
-      profile: Profile(id, fullName,avatar),
-      type: REType(*)
-    `,
-      )
-      .limit(LIMIT_NEWS)
-      .eq("userID", data.id)
-      .eq("images.isImage", true)
-      // TODO
-      // .eq("status", SELLING_STATUS)
-      .gt("expriryDate", new Date().toISOString())
-      .range(start, end);
+  return data;
+}
 
-    if (error) {
-      console.log(error);
-      throw new Error(errorMessage.fetchError);
-    }
+export async function getUserPosts(userID, page) {
+  if (!userID) {
+    return;
+  }
+  const start = (page - 1) * LIMIT_NEWS;
+  const end = start + LIMIT_NEWS - 1;
 
-    data.list = posts;
+  const {
+    data: posts,
+    count,
+    error,
+  } = await supabase
+    .from("REDirectory")
+    .select(
+      `*,
+    city: CityDirectory (cityName),
+    dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName),
+    images: REMedias(*),
+    profile: Profile(id, fullName,avatar),
+    type: REType(*)
+  `,
+      { count: "exact" },
+    )
+    // .limit(LIMIT_NEWS)
+    .eq("userID", userID)
+    .eq("images.isImage", true)
+    // .eq("status", SELLING_STATUS)
+    // .gt("expriryDate", new Date().toISOString())
+    .range(start, end)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
   }
 
-  return data;
+  return { posts, count };
 }

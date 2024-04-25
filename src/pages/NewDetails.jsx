@@ -17,7 +17,7 @@ import BreadCrumb from "../ui/BreadCrumb";
 import NewsAccordionLinks from "../ui/NewsAccordionLinks";
 
 import { getNew } from "../services/apiNews";
-import { formatDate } from "../utils/helper";
+import { formatDate, getTime } from "../utils/helper";
 import Avatar from "../ui/Avatar";
 import { formatDistanceToNow } from "date-fns";
 import GoBackButton from "../ui/GoBackButton";
@@ -115,13 +115,14 @@ function NewDetails() {
                       locale: vi,
                       addSuffix: true,
                     })}{" "}
-                    vào ngày {formatDate(created_at, "d MMMM, yyyy")}
+                    lúc {getTime(created_at)}
                   </p>
+                  <p className="text-xs">Vào ngày {formatDate(created_at, "d MMMM, yyyy")}</p>
                 </div>
               </div>
               <div className="mt-5">{parse(content)}</div>
 
-              <div className="disclaimer italic">
+              <div className="disclaimer pt-3 italic">
                 <span className="font-bold">
                   Tuyên bố miễn trừ trách nhiệm:
                 </span>{" "}

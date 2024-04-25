@@ -26,6 +26,8 @@ import {
   UnorderedList,
   ListItem,
   ButtonGroup,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import BreadCrumb from "../ui/BreadCrumb";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -44,6 +46,7 @@ import { useState } from "react";
 import { navLinks } from "../constants/navlink";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
+import { TbSearch } from "react-icons/tb";
 
 function Contacts() {
   const bg = useColorModeValue("white", "darker");
@@ -101,14 +104,15 @@ function Contacts() {
   );
 
   return (
-    <Box maxW="1500px" mx="auto" px={3}>
+    <Box maxW="1500px" mx="auto">
       <>
         <BreadCrumb base="Danh bạ" />
         <Flex
           gap={2}
+          w="full"
           justify="center"
           flexDirection={{ base: "column", md: "row" }}
-          mt={3}
+          bg={bg}
         >
           <VStack
             position="relative"
@@ -121,7 +125,7 @@ function Contacts() {
             rounded="md"
           >
             <Box mx="auto" px={2} align="start" pt={4}>
-              <Box>
+              <Flex w="full" justify="space-between">
                 <Heading
                   fontSize="large"
                   className={
@@ -130,7 +134,22 @@ function Contacts() {
                 >
                   Danh bạ nhà môi giới
                 </Heading>
-              </Box>
+
+                <InputGroup w="50%" size="sm">
+                  <Input rounded="md" placeholder="search by phone / name" />
+                  <InputRightElement w="fit">
+                    {/* TODO */}
+                    <Button
+                      size="sm"
+                      colorScheme="green"
+                      variant="solid"
+                      onClick={() => toast.success("hi")}
+                    >
+                      <TbSearch />
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </Flex>
               {isLoading || isQuerying ? (
                 <Center minH="50dvh">
                   <Spinner />
@@ -154,6 +173,7 @@ function Contacts() {
                     >
                       <Flex gap={3} w="full" mx="auto" align="center">
                         <Avatar
+                          boxShadow="xl"
                           size="lg"
                           src={item.avatar}
                           rounded="none"
@@ -229,12 +249,19 @@ function Contacts() {
           </VStack>
 
           {/* sider */}
-          <Box bg={bg} minH={300} w={{ base: "auto", md: 300 }} rounded="md">
+          <Box
+            borderWidth={1.3}
+            m={2}
+            className="dark:bg-dark"
+            minH={300}
+            w={{ base: "auto", md: 300 }}
+            rounded="md"
+          >
             <Box
               roundedTop="lg"
               as="section"
               width="full"
-              bgImage="./contact.png"
+              bgImage="/contact.png"
               bgSize="cover"
               bgRepeat="no-repeat"
             >

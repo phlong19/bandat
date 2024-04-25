@@ -226,10 +226,18 @@ function Details() {
       <Flex justify="space-between" align="center" pb={2}>
         <GoBackButton />
         <Flex gap={2}>
-          <Tag variant="outline" colorScheme="green">
+          <Tag
+            variant="outline"
+            colorScheme="green"
+            fontSize={{ base: "xs", md: "sm" }}
+          >
             {purType ? "Bán" : "Cho thuê"}
           </Tag>
-          <Tag variant="outline" colorScheme="green">
+          <Tag
+            variant="outline"
+            colorScheme="green"
+            fontSize={{ base: "xs", md: "sm" }}
+          >
             {type.name}
           </Tag>
         </Flex>
@@ -429,7 +437,7 @@ function Details() {
               <StatGroup
                 display={{ base: "grid", md: "flex" }}
                 gridTemplateColumns="repeat(2, 1fr)"
-                gridTemplateRows="repeat(2, 1fr)"
+                gridTemplateRows={bath_room && bed_room ? "repeat(2, 1fr)" : ""}
                 gridGap={1}
               >
                 <Stat mr={{ base: 0.5, md: 2.5, lg: 3 }}>
