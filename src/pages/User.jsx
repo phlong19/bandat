@@ -44,6 +44,7 @@ function User() {
   const { data, isLoading } = useQuery({
     queryKey: ["user", id],
     queryFn: () => getUser(id),
+    enabled: Boolean(id),
   });
 
   const {

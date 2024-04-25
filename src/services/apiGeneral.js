@@ -6,6 +6,7 @@ import {
   SELLING_STATUS,
   USER_LEVEL,
 } from "../constants/anyVariables";
+import { sanitizeSearchInput } from "../utils/helper";
 
 // addresses
 export async function getAddress(city, district, ward, edit) {
@@ -247,11 +248,11 @@ export async function getUserPosts(userID, page) {
   `,
       { count: "exact" },
     )
-    // .limit(LIMIT_NEWS)
+    .limit(LIMIT_NEWS)
     .eq("userID", userID)
     .eq("images.isImage", true)
-    // .eq("status", SELLING_STATUS)
-    // .gt("expriryDate", new Date().toISOString())
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString())
     .range(start, end)
     .order("created_at", { ascending: false });
 
@@ -261,4 +262,36 @@ export async function getUserPosts(userID, page) {
   }
 
   return { posts, count };
+}
+
+// query users
+export async function queryUsers(search, page) {
+  if (search.toString().length < 3) {
+    return;
+  }
+
+  const start = (page - 1) * LIMIT_NEWS;
+  const end = start + LIMIT_NEWS - 1;
+  const input = sanitizeSearchInput(search);
+
+  const { data, count, error } = await supabase
+    .from("Profile")
+    .select(
+      `*, city: CityDirectory (cityName),
+    dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName)
+  `,
+      { count: "exact" },
+    )
+    .textSearch("fullName", input)
+    .limit(LIMIT_NEWS)
+    .range(start, end)
+    .eq("level", USER_LEVEL);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
 }

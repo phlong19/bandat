@@ -26,12 +26,14 @@ import {
   UnorderedList,
   ListItem,
   ButtonGroup,
-  InputGroup,
-  InputRightElement,
 } from "@chakra-ui/react";
 import BreadCrumb from "../ui/BreadCrumb";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createContact, getUsersList } from "../services/apiGeneral";
+import {
+  createContact,
+  getUsersList,
+  queryUsers,
+} from "../services/apiGeneral";
 import { Link, useSearchParams } from "react-router-dom";
 import ChakraTablePagination from "../ui/ChakraTablePagination";
 import { hiddenLast3PhoneNum } from "../utils/helper";
@@ -42,13 +44,14 @@ import validator from "validator";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/UserContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navLinks } from "../constants/navlink";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
-import { TbSearch } from "react-icons/tb";
 
 function Contacts() {
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const bg = useColorModeValue("white", "darker");
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
@@ -60,12 +63,12 @@ function Contacts() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data) => createContact(data),
     onSuccess: () => {
-      toast.success("da gui thong tin, cam on ?");
+      toast.success("Cảm ơn bạn đã gửi thông tin");
       handleClose();
     },
     onError: (err) => {
       console.log(err);
-      toast.error("xay ra loi");
+      toast.error("Xảy ra lỗi trong quá trình gửi");
     },
     onSettled: () => {
       handleClose();
@@ -96,12 +99,35 @@ function Contacts() {
     onClose();
   }
 
-  const { data: { data: users, count } = {}, isLoading: isQuerying } = useQuery(
-    {
-      queryKey: ["users", page],
-      queryFn: () => getUsersList(page),
-    },
-  );
+  const {
+    data: { data: users, count: normalCount } = {},
+    isLoading: isQuerying,
+  } = useQuery({
+    queryKey: ["users", page],
+    queryFn: () => getUsersList(page),
+    enabled: search.length == 0,
+  });
+
+  // search logic
+  const { data: { data, count: queryCount } = {}, isLoading: isSearching } =
+    useQuery({
+      queryKey: ["users-search", page, debouncedSearch],
+      queryFn: () => queryUsers(debouncedSearch, page),
+      enabled: debouncedSearch.length >= 3,
+    });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (search.length >= 3) {
+        setDebouncedSearch(search.toString());
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const list = search.length < 3 ? users : data;
+  const count = search.length < 3 ? normalCount : queryCount;
 
   return (
     <Box maxW="1500px" mx="auto">
@@ -119,49 +145,62 @@ function Contacts() {
             bg={bg}
             w="full"
             align="start"
-            maxW={700}
+            maxW={{ base: "full", md: 700, xl: 1000 }}
             minH={400}
-            justify="space-between"
             rounded="md"
           >
-            <Box mx="auto" px={2} align="start" pt={4}>
-              <Flex w="full" justify="space-between">
-                <Heading
-                  fontSize="large"
-                  className={
-                    (isLoading || isQuerying) && "absolute left-0 pl-2"
-                  }
-                >
-                  Danh bạ nhà môi giới
-                </Heading>
-
-                <InputGroup w="50%" size="sm">
-                  <Input rounded="md" placeholder="search by phone / name" />
-                  <InputRightElement w="fit">
-                    {/* TODO */}
-                    <Button
-                      size="sm"
-                      colorScheme="green"
-                      variant="solid"
-                      onClick={() => toast.success("hi")}
-                    >
-                      <TbSearch />
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
+            <Box
+              mx="auto"
+              px={2}
+              align="start"
+              pt={4}
+              minW={{ base: "full", md: 500, lg: 700, xl: 800 }}
+            >
+              <Flex
+                align="center"
+                w="full"
+                px={{ base: 2, lg: 0 }}
+                direction={{ base: "column-reverse", md: "row" }}
+                justify="space-between"
+              >
+                <Box my={{ base: 2, md: 0 }}>
+                  <Heading
+                    fontSize="large"
+                    className={
+                      (isLoading || isQuerying) && "absolute left-0 pl-2"
+                    }
+                  >
+                    Danh bạ
+                  </Heading>
+                  {!isLoading && !isQuerying && !isSearching && (
+                    <Text fontSize="xs" color="gray">
+                      Có {count} tài khoản môi giới cá nhân
+                    </Text>
+                  )}
+                </Box>
+                <Box minW={{ base: "80%", md: "45%" }} mb={{ base: 1, md: 0 }}>
+                  <Input
+                    fontSize="sm"
+                    size="sm"
+                    w="full"
+                    rounded="md"
+                    placeholder="Tìm theo tên"
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </Box>
               </Flex>
-              {isLoading || isQuerying ? (
+              {isLoading || isQuerying || isSearching ? (
                 <Center minH="50dvh">
                   <Spinner />
                 </Center>
               ) : (
                 <VStack
-                  w={{ base: "auto", sm: 400, md: 500, lg: 600 }}
+                  w={{ base: "auto", sm: 400, md: 500, lg: 600, xl: 800 }}
                   minH={800}
                   mx="auto"
                   align="start"
                 >
-                  {users.map((item) => (
+                  {list.map((item) => (
                     <Box
                       key={item.id}
                       py={2}
@@ -252,6 +291,7 @@ function Contacts() {
           <Box
             borderWidth={1.3}
             m={2}
+            mt={{ base: 2, lg: "16px" }}
             className="dark:bg-dark"
             minH={300}
             w={{ base: "auto", md: 300 }}
@@ -333,7 +373,7 @@ function Contacts() {
                                   <FormLabel>Họ và tên</FormLabel>
                                   <Input
                                     {...register("name", {
-                                      required: "vui long nhap ten",
+                                      required: "Vui lòng cung cấp họ tên",
                                     })}
                                   />
                                   {errors.name && (
@@ -360,10 +400,10 @@ function Contacts() {
                                 <FormLabel>Tiêu đề</FormLabel>
                                 <Input
                                   {...register("title", {
-                                    required: "nhap tieu de",
+                                    required: "Vui lòng nhập tiêu đề",
                                     maxLength: {
                                       value: 200,
-                                      message: "gioi han",
+                                      message: "Vượt quá giới hạn ký tự",
                                     },
                                   })}
                                 />
@@ -377,10 +417,11 @@ function Contacts() {
                                 <FormLabel>Nội dung</FormLabel>
                                 <Textarea
                                   {...register("content", {
-                                    required: "nhan nhu dieu gi?",
+                                    required:
+                                      "Bạn nhắn nhủ điều gì đến BQT web?",
                                     maxLength: {
                                       value: 300,
-                                      message: "gioi han",
+                                      message: "Vượt quá giới hạn ký tự",
                                     },
                                   })}
                                 />
