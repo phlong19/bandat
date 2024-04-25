@@ -6,8 +6,8 @@ export function useCheckListPage() {
   const [isListingPage, setIsListingPage] = useState(false);
 
   useEffect(() => {
-    // console.log(location.pathname.includes("/nha-dat-"));
-    location.pathname.includes("/nha-dat-")
+    location.pathname.includes("/nha-dat-") &&
+    !location.pathname.includes("/nguoi-dung/")
       ? setIsListingPage(true)
       : setIsListingPage(false);
   }, [location]);

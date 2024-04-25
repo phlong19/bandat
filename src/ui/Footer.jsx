@@ -22,7 +22,7 @@ function Footer() {
           <span className="flex justify-center pb-4 lg:block">
             <Logo footer />
           </span>
-          <h2 className="pb-2 text-base font-bold lg:text-primary lg:dark:text-secondary">
+          <h2 className="pb-2 text-sm font-bold lg:text-primary lg:dark:text-secondary xl:text-base">
             CÔNG TY CỔ PHẦN LANDHUB VIỆT NAM
           </h2>
           <h3 className="lg:flex">
@@ -51,7 +51,7 @@ function Footer() {
           <div className="mt-6 border-b border-dark pb-5 text-left text-base dark:border-light lg:border-none">
             <h3>Tải ứng dụng</h3>
             <ul className="mt-3 items-center gap-1 xs:flex sm:gap-0">
-              <li className="-ml-2 w-1/2 md:w-1/3 lg:w-1/2">
+              <li className="w-1/2 md:-ml-2 md:w-1/3 lg:w-1/2">
                 <a href="#">
                   <img
                     src="/google-play.png"
@@ -74,7 +74,7 @@ function Footer() {
           {/* socials media, mobile hidden */}
           <div className="hidden lg:mt-32 lg:block xl:mt-0">
             <h3 className="text-xl font-bold">Kết nối với chúng tôi qua</h3>
-            <ul className="flex gap-3 pt-4 text-2xl pb-3 text-primary dark:text-secondary">
+            <ul className="flex gap-3 pb-3 pt-4 text-2xl text-primary dark:text-secondary">
               <li>
                 <a href={fb}>
                   <FaFacebook />
@@ -115,7 +115,9 @@ function Footer() {
                 </span>
                 <div>
                   <p className="font-normal">Hotline:</p>
-                  <p className="text-base font-semibold">1900 9069</p>
+                  <p className="text-sm font-semibold xl:text-base">
+                    1900 9069
+                  </p>
                 </div>
               </a>
             </div>
@@ -129,7 +131,9 @@ function Footer() {
                 </span>
                 <div>
                   <p className="font-normal">Hỗ trợ khách hàng:</p>
-                  <p className="text-base font-semibold">support@landhub.com</p>
+                  <p className="text-sm font-semibold xl:text-base">
+                    support@landhub.com
+                  </p>
                 </div>
               </a>
             </div>
@@ -143,7 +147,7 @@ function Footer() {
                 </span>
                 <div>
                   <p className="font-normal">Chăm sóc khách hàng:</p>
-                  <p className="text-base font-semibold">
+                  <p className="text-sm font-semibold xl:text-base">
                     hotro@landhub.com.vn
                   </p>
                 </div>

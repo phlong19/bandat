@@ -2,14 +2,21 @@ import { Avatar as ChakraAvatar, AvatarBadge } from "@chakra-ui/react";
 import { PiSealCheckFill } from "react-icons/pi";
 import { useAuth } from "../context/UserContext";
 
-function Avatar({ fullName, avatar, onClick, mobile = false, badge = true }) {
+function Avatar({
+  fullName,
+  avatar,
+  onClick,
+  mobile = false,
+  badge = true,
+  csz = false,
+}) {
   const { user } = useAuth();
 
   return (
     <ChakraAvatar
       name={fullName}
       boxShadow="dark-lg"
-      size={!mobile ? "sm" : "lg"}
+      size={csz ? "xl" : !mobile ? "sm" : "lg"}
       cursor="pointer"
       src={avatar}
       onClick={onClick}

@@ -226,3 +226,41 @@ export function getStatusID(value) {
       break;
   }
 }
+
+export function convertSex(value) {
+  switch (value) {
+    case true:
+      return "1";
+    case false:
+      return "2";
+    default:
+      return "3";
+  }
+}
+
+export function convertSexToText(id) {
+  switch (id) {
+    case `1`:
+      return "Nam";
+    case `2`:
+      return "Nữ";
+    default:
+      return "Không xác định";
+  }
+}
+
+export function getAge(input) {
+  const date = new Date(input).getFullYear();
+  const today = new Date();
+  return String(today.getFullYear() - date);
+}
+
+export function getTime(input) {
+  const date = new Date(input);
+  const hr = date.getHours();
+  const min = date.getMinutes();
+  const scd = date.getSeconds();
+  console.log(hr, min, scd);
+
+  return `${hr}:${min < 10 ? "0" + min : min}`;
+}

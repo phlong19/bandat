@@ -1,10 +1,12 @@
 import supabase from "./supabase";
 import { error as errorMessage } from "../constants/message";
 import {
-  LIMIT_PER_PAGE,
+  LIMIT_NEWS,
   questURL,
+  SELLING_STATUS,
   USER_LEVEL,
 } from "../constants/anyVariables";
+import { sanitizeSearchInput } from "../utils/helper";
 
 // addresses
 export async function getAddress(city, district, ward, edit) {
@@ -173,8 +175,8 @@ export async function createContact(formData) {
 
 // get users list to contacts page
 export async function getUsersList(page) {
-  const start = (page - 1) * LIMIT_PER_PAGE;
-  const end = start + LIMIT_PER_PAGE - 1;
+  const start = (page - 1) * LIMIT_NEWS;
+  const end = start + LIMIT_NEWS - 1;
 
   const { data, count, error } = await supabase
     .from("Profile")
@@ -186,7 +188,7 @@ export async function getUsersList(page) {
     `,
       { count: "exact" },
     )
-    .limit(LIMIT_PER_PAGE)
+    .limit(LIMIT_NEWS)
     .range(start, end)
     .eq("level", USER_LEVEL);
 
@@ -198,6 +200,7 @@ export async function getUsersList(page) {
   return { data, count };
 }
 
+// user detail page
 export async function getUser(id) {
   const { data, error } = await supabase
     .from("Profile")
@@ -219,4 +222,76 @@ export async function getUser(id) {
   }
 
   return data;
+}
+
+export async function getUserPosts(userID, page) {
+  if (!userID) {
+    return;
+  }
+  const start = (page - 1) * LIMIT_NEWS;
+  const end = start + LIMIT_NEWS - 1;
+
+  const {
+    data: posts,
+    count,
+    error,
+  } = await supabase
+    .from("REDirectory")
+    .select(
+      `*,
+    city: CityDirectory (cityName),
+    dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName),
+    images: REMedias(*),
+    profile: Profile(id, fullName,avatar),
+    type: REType(*)
+  `,
+      { count: "exact" },
+    )
+    .limit(LIMIT_NEWS)
+    .eq("userID", userID)
+    .eq("images.isImage", true)
+    .eq("status", SELLING_STATUS)
+    .gt("expriryDate", new Date().toISOString())
+    .range(start, end)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { posts, count };
+}
+
+// query users
+export async function queryUsers(search, page) {
+  if (search.toString().length < 3) {
+    return;
+  }
+
+  const start = (page - 1) * LIMIT_NEWS;
+  const end = start + LIMIT_NEWS - 1;
+  const input = sanitizeSearchInput(search);
+
+  const { data, count, error } = await supabase
+    .from("Profile")
+    .select(
+      `*, city: CityDirectory (cityName),
+    dis: DistrictDirectory (disName),
+    ward: WardDirectory (wardName)
+  `,
+      { count: "exact" },
+    )
+    .textSearch("fullName", input)
+    .limit(LIMIT_NEWS)
+    .range(start, end)
+    .eq("level", USER_LEVEL);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return { data, count };
 }

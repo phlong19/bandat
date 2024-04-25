@@ -51,7 +51,8 @@ function ChakraTablePagination({ count, news = false, page = "page" }) {
 
   return (
     <Flex gap={2} justifyContent="end" py={8} pr={news ? 0 : 6}>
-      <Button size='sm'
+      <Button
+        size="sm"
         variant={currentPage >= 2 ? "pagi" : ""}
         isDisabled={currentPage < 2}
         onClick={() => handlePagination("prev")}
@@ -118,7 +119,8 @@ function ChakraTablePagination({ count, news = false, page = "page" }) {
           {totalPages}
         </Button>
       )}
-      <Button size='sm'
+      <Button
+        size="sm"
         variant={currentPage !== totalPages ? "pagi" : ""}
         isDisabled={currentPage === totalPages}
         onClick={() => handlePagination("next")}

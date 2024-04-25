@@ -108,7 +108,7 @@ function ListItem({ data, purType, isPopup = false, author = true }) {
                   alt="author avatar"
                 />
               )}
-              <div className="text-[10px]">
+              <div className={`${!author ? "text-xs" : "text-[10px] "}`}>
                 {author && (
                   <Link
                     to={`/danh-ba/nguoi-dung/${slugify(
@@ -119,7 +119,9 @@ function ListItem({ data, purType, isPopup = false, author = true }) {
                     {fullName}
                   </Link>
                 )}
-                <p>{formattedDate}</p>
+                <p>
+                  {!author && "Đăng"} {formattedDate}
+                </p>
               </div>
             </div>
 

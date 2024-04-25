@@ -6,7 +6,7 @@ import ListItem from "../features/list/ListItem";
 import ViewInMap from "./ViewInMap";
 import { useMapView } from "../context/MapViewContext";
 
-function Map({ data, purType }) {
+function Map({ data, userpage }) {
   const { mapView } = useMapView();
   const mapRef = useRef(null);
   const [selectedMarker, setSelectedMarker] = useState(0);
@@ -50,7 +50,11 @@ function Map({ data, purType }) {
       id="map-container"
       center={[16.363147, 105.713807]}
       zoom={6}
-      className="h-full rounded-lg lg:w-[calc(100vw/2-85px)]"
+      className={`h-full rounded-lg ${
+        !userpage
+          ? "lg:w-[calc(100vw/2-85px)]"
+          : "xl:h-[77%] xl:w-[calc(100vw/2-155px)] 2xl:w-[calc(100vw/2-200px)]"
+      }`}
       scrollWheelZoom={true}
       ref={mapRef}
       whenReady={() => resizeMap(mapRef)}
@@ -69,7 +73,12 @@ function Map({ data, purType }) {
           }}
         >
           <Popup>
-            <ListItem data={item} purType={purType} mapView={true} isPopup />
+            <ListItem
+              data={item}
+              purType={item.purType}
+              mapView={true}
+              isPopup
+            />
           </Popup>
         </Marker>
       ))}
@@ -81,12 +90,12 @@ export default Map;
 
 // custom marker
 const selectedIcon = new L.Icon({
-  iconUrl: "./customMarker.png",
+  iconUrl: "/customMarker.png",
   iconSize: [30, 30],
 });
 
 const defaultIcon = new L.Icon({
-  iconUrl: "./defaultIcon.png",
+  iconUrl: "/defaultIcon.png",
   iconSize: [20, 30],
 });
 

@@ -29,7 +29,11 @@ import {
 } from "@chakra-ui/react";
 import BreadCrumb from "../ui/BreadCrumb";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createContact, getUsersList } from "../services/apiGeneral";
+import {
+  createContact,
+  getUsersList,
+  queryUsers,
+} from "../services/apiGeneral";
 import { Link, useSearchParams } from "react-router-dom";
 import ChakraTablePagination from "../ui/ChakraTablePagination";
 import { hiddenLast3PhoneNum } from "../utils/helper";
@@ -40,14 +44,15 @@ import validator from "validator";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/UserContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navLinks } from "../constants/navlink";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 
 function Contacts() {
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const bg = useColorModeValue("white", "darker");
-  const color = useColorModeValue("darker", "white");
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
@@ -58,12 +63,12 @@ function Contacts() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data) => createContact(data),
     onSuccess: () => {
-      toast.success("da gui thong tin, cam on ?");
+      toast.success("Cảm ơn bạn đã gửi thông tin");
       handleClose();
     },
     onError: (err) => {
       console.log(err);
-      toast.error("xay ra loi");
+      toast.error("Xảy ra lỗi trong quá trình gửi");
     },
     onSettled: () => {
       handleClose();
@@ -94,300 +99,396 @@ function Contacts() {
     onClose();
   }
 
-  const { data: { data: users, count } = {}, isLoading: isQuerying } = useQuery(
-    {
-      queryKey: ["users"],
-      queryFn: () => getUsersList(page),
-    },
-  );
-  console.log(users);
+  const {
+    data: { data: users, count: normalCount } = {},
+    isLoading: isQuerying,
+  } = useQuery({
+    queryKey: ["users", page],
+    queryFn: () => getUsersList(page),
+    enabled: search.length == 0,
+  });
+
+  // search logic
+  const { data: { data, count: queryCount } = {}, isLoading: isSearching } =
+    useQuery({
+      queryKey: ["users-search", page, debouncedSearch],
+      queryFn: () => queryUsers(debouncedSearch, page),
+      enabled: debouncedSearch.length >= 3,
+    });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (search.length >= 3) {
+        setDebouncedSearch(search.toString());
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const list = search.length < 3 ? users : data;
+  const count = search.length < 3 ? normalCount : queryCount;
 
   return (
-    <Box maxW="1500px" mx="auto" px={3}>
-      {isLoading || isQuerying ? (
-        <Center minH="50dvh">
-          <Spinner />
-        </Center>
-      ) : (
-        <>
-          <BreadCrumb base="Danh bạ" />
-          <Flex
-            gap={2}
-            justify="center"
-            flexDirection={{ base: "column", md: "row" }}
-            mt={3}
+    <Box maxW="1500px" mx="auto">
+      <>
+        <BreadCrumb base="Danh bạ" />
+        <Flex
+          gap={2}
+          w="full"
+          justify="center"
+          flexDirection={{ base: "column", md: "row" }}
+          bg={bg}
+        >
+          <VStack
+            position="relative"
+            bg={bg}
+            w="full"
+            align="start"
+            maxW={{ base: "full", md: 700, xl: 1000 }}
+            minH={400}
+            rounded="md"
           >
-            <VStack
-              bg={bg}
-              w="full"
+            <Box
+              mx="auto"
+              px={2}
               align="start"
-              maxW={600}
-              minH={400}
-              justify="start"
-              rounded="md"
+              pt={4}
+              minW={{ base: "full", md: 500, lg: 700, xl: 800 }}
             >
-              <Box w={400} mx="auto" align="start" pt={4}>
-                <Heading fontSize="large">Danh bạ nhà môi giới</Heading>
-              </Box>
-              <VStack w={400} mx="auto" align="start">
-                {users.map((item) => (
-                  <Box
-                    key={item.id}
-                    py={2}
-                    w="full"
-                    minH={100}
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
+              <Flex
+                align="center"
+                w="full"
+                px={{ base: 2, lg: 0 }}
+                direction={{ base: "column-reverse", md: "row" }}
+                justify="space-between"
+              >
+                <Box my={{ base: 2, md: 0 }}>
+                  <Heading
+                    fontSize="large"
+                    className={
+                      (isLoading || isQuerying) && "absolute left-0 pl-2"
+                    }
                   >
-                    <Flex gap={3} w="full" mx="auto" align="center">
-                      <Avatar
-                        size="lg"
-                        src={item.avatar}
-                        rounded="none"
-                        borderRadius="none"
-                        name={item.fullName}
-                      />
-                      <Box>
-                        <Text
-                          className="hover:text-primary dark:hover:text-secondary"
-                          as={Link}
-                          to={`/danh-ba/nguoi-dung/${slugify(
-                            unidecode(item.fullName),
-                          )}?u=${item.id}`}
-                        >
-                          {item.fullName}
-                        </Text>
-                        <Text fontSize="xs" fontStyle="italic" color="gray.500">
-                          {hiddenLast3PhoneNum(item.phone)}
-                        </Text>
-                      </Box>
-                    </Flex>
-                    <ButtonGroup flexDirection="column" gap={2}>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        colorScheme="green"
-                        color
-                        fontSize="xs"
-                        fontWeight={500}
-                        rightIcon={<BiSolidUserDetail />}
+                    Danh bạ
+                  </Heading>
+                  {!isLoading && !isQuerying && !isSearching && (
+                    <Text fontSize="xs" color="gray">
+                      Có {count} tài khoản môi giới cá nhân
+                    </Text>
+                  )}
+                </Box>
+                <Box minW={{ base: "80%", md: "45%" }} mb={{ base: 1, md: 0 }}>
+                  <Input
+                    fontSize="sm"
+                    size="sm"
+                    w="full"
+                    rounded="md"
+                    placeholder="Tìm theo tên"
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </Box>
+              </Flex>
+              {isLoading || isQuerying || isSearching ? (
+                <Center minH="50dvh">
+                  <Spinner />
+                </Center>
+              ) : (
+                <VStack
+                  w={{ base: "auto", sm: 400, md: 500, lg: 600, xl: 800 }}
+                  minH={800}
+                  mx="auto"
+                  align="start"
+                >
+                  {list.map((item) => (
+                    <Box
+                      key={item.id}
+                      py={2}
+                      w="full"
+                      minH={100}
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Flex gap={3} w="full" mx="auto" align="center">
+                        <Avatar
+                          boxShadow="xl"
+                          size="lg"
+                          src={item.avatar}
+                          rounded="none"
+                          borderRadius="none"
+                          name={item.fullName}
+                        />
+                        <Box>
+                          <Text
+                            className="hover:text-primary dark:hover:text-secondary"
+                            as={Link}
+                            to={`/danh-ba/nguoi-dung/${slugify(
+                              unidecode(item.fullName),
+                            )}?u=${item.id}`}
+                          >
+                            {item.fullName}
+                          </Text>
+                          <Text
+                            fontSize="xs"
+                            fontStyle="italic"
+                            color="gray.500"
+                          >
+                            {hiddenLast3PhoneNum(item.phone)}
+                          </Text>
+                        </Box>
+                      </Flex>
+                      <ButtonGroup
+                        alignItems="start"
+                        flexDirection={{ base: "column", lg: "row" }}
+                        gap={2}
                       >
                         <Link
                           to={`/danh-ba/nguoi-dung/${slugify(
                             unidecode(item.fullName),
                           )}?u=${item.id}`}
                         >
-                          Xem thêm
+                          <Button
+                            size="sm"
+                            variant={{ lg: "ghost", base: "outline" }}
+                            colorScheme="green"
+                            color
+                            fontSize="xs"
+                            fontWeight={500}
+                            rightIcon={<BiSolidUserDetail />}
+                          >
+                            Xem thêm
+                          </Button>
                         </Link>
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        colorScheme="green"
-                        color
-                        fontSize="xs"
-                        fontWeight={500}
-                        rightIcon={<MdOutlineMarkEmailUnread />}
-                      >
-                        <Link to={`mailto:${item.email}`}>Gửi email</Link>
-                      </Button>
-                    </ButtonGroup>
-                  </Box>
-                ))}
-              </VStack>
-              <div className="flex self-center">
-                <ChakraTablePagination count={count} />
-              </div>
-            </VStack>
-            {/* sider */}
-            <Box bg={bg} minH={300} w={300} rounded="md">
-              <Box as="section" width="full">
-                <Flex
-                  align={"center"}
-                  justify={"center"}
-                  py={3}
-                  bg="transparent"
-                >
-                  <Stack
-                    rounded={"xl"}
-                    p={8}
-                    pb={3}
-                    spacing={8}
-                    align={"center"}
-                  >
-                    <Stack
-                      spacing={4}
-                      direction={{ base: "column" }}
-                      w={"full"}
-                    >
-                      <Heading
-                        fontSize="xx-large"
-                        fontWeight={600}
-                        textAlign="center"
-                      >
-                        Liên hệ
-                      </Heading>
-                      <Input
-                        fontSize="sm"
-                        type="email"
-                        placeholder={"Email của bạn"}
-                        _placeholder={{ color: "whiteAlpha.600" }}
-                        rounded={"full"}
-                        color={color}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      <Button
-                        size="sm"
-                        rounded={"full"}
-                        colorScheme="green"
-                        flex={"1 0 auto"}
-                        maxW={150}
-                        fontSize="xs"
-                        mx="auto"
-                        rightIcon={<FaRegPaperPlane />}
-                        onClick={handleOpen}
-                      >
-                        Subscribe
-                      </Button>
-
-                      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-                        <ModalOverlay zIndex={10000} />
-                        <ModalContent className="modal-media" mx={2}>
-                          <ModalHeader>Thông tin liên hệ</ModalHeader>
-                          <ModalCloseButton />
-                          <ModalBody>
-                            <form
-                              onSubmit={handleSubmit(onSubmit)}
-                              id="contact"
-                            >
-                              <VStack gap={2} w="full">
-                                <Flex
-                                  flexDirection={{ base: "column", md: "row" }}
-                                  w="full"
-                                  gap={{ base: 0, md: 2.5 }}
-                                >
-                                  <FormControl isRequired>
-                                    <FormLabel>Họ và tên</FormLabel>
-                                    <Input
-                                      {...register("name", {
-                                        required: "vui long nhap ten",
-                                      })}
-                                    />
-                                    {errors.name && (
-                                      <FormErrorMessage>
-                                        {errors.name.message}
-                                      </FormErrorMessage>
-                                    )}
-                                  </FormControl>
-                                  <FormControl>
-                                    <FormLabel>Số điện thoại</FormLabel>
-                                    <Input {...register("phone")} />
-                                    {errors.phone && (
-                                      <FormErrorMessage>
-                                        {errors.phone.message}
-                                      </FormErrorMessage>
-                                    )}
-                                  </FormControl>
-                                </Flex>
-                                <FormControl isRequired>
-                                  <FormLabel>Email</FormLabel>
-                                  <Input isDisabled value={email} />
-                                </FormControl>
-                                <FormControl isRequired>
-                                  <FormLabel>Tiêu đề</FormLabel>
-                                  <Input
-                                    {...register("title", {
-                                      required: "nhap tieu de",
-                                      maxLength: {
-                                        value: 200,
-                                        message: "gioi han",
-                                      },
-                                    })}
-                                  />
-                                  {errors.title && (
-                                    <FormErrorMessage>
-                                      {errors.title.message}
-                                    </FormErrorMessage>
-                                  )}
-                                </FormControl>
-                                <FormControl isRequired>
-                                  <FormLabel>Nội dung</FormLabel>
-                                  <Textarea
-                                    {...register("content", {
-                                      required: "nhan nhu dieu gi?",
-                                      maxLength: {
-                                        value: 300,
-                                        message: "gioi han",
-                                      },
-                                    })}
-                                  />
-                                  {errors.content && (
-                                    <FormErrorMessage>
-                                      {errors.content.message}
-                                    </FormErrorMessage>
-                                  )}
-                                </FormControl>
-                              </VStack>
-                            </form>
-                          </ModalBody>
-
-                          <ModalFooter justifyContent="space-between" w="full">
-                            <Button
-                              colorScheme="red"
-                              size="sm"
-                              mr={3}
-                              onClick={handleClose}
-                            >
-                              Đóng
-                            </Button>
-                            <Button
-                              isDisabled={isLoading}
-                              form="contact"
-                              type="submit"
-                              variant="outline"
-                              size="sm"
-                              isLoading={isPending}
-                              loadingText="Đang gửi"
-                              colorScheme="green"
-                            >
-                              Send
-                            </Button>
-                          </ModalFooter>
-                        </ModalContent>
-                      </Modal>
-                    </Stack>
-                  </Stack>
-                </Flex>
-              </Box>
-
-              <Box>
-                {navLinks.map((i, index) => (
-                  <Box key={index} pl={8} pr={3}>
-                    <Link
-                      className="text-md font-bold text-primary hover:text-darker dark:text-secondary dark:hover:text-light"
-                      to={`/${i.to}`}
-                    >
-                      {i.title}
-                    </Link>
-                    <UnorderedList className="contacts">
-                      {i.child_links.map((e) => (
-                        <ListItem
-                          key={e.type}
-                          className="text-sm py-1 transition-colors duration-300 last:pb-3 hover:text-primary dark:hover:text-secondary"
+                        <Link
+                          to={`mailto:${item.email}`}
+                          style={{ marginInlineStart: 0 }}
                         >
-                          <Link to={`/${i.to}/${e.type}`}>{e.title}</Link>
-                        </ListItem>
-                      ))}
-                    </UnorderedList>
-                  </Box>
-                ))}
-              </Box>
+                          <Button
+                            size="sm"
+                            variant={{ lg: "ghost", base: "outline" }}
+                            colorScheme="green"
+                            color
+                            fontSize="xs"
+                            fontWeight={500}
+                            rightIcon={<MdOutlineMarkEmailUnread />}
+                          >
+                            Gửi email
+                          </Button>
+                        </Link>
+                      </ButtonGroup>
+                    </Box>
+                  ))}
+                </VStack>
+              )}
             </Box>
-          </Flex>
-        </>
-      )}
+            <div className="flex self-center">
+              <ChakraTablePagination news count={count} />
+            </div>
+          </VStack>
+
+          {/* sider */}
+          <Box
+            borderWidth={1.3}
+            m={2}
+            mt={{ base: 2, lg: "16px" }}
+            className="dark:bg-dark"
+            minH={300}
+            w={{ base: "auto", md: 300 }}
+            rounded="md"
+          >
+            <Box
+              roundedTop="lg"
+              as="section"
+              width="full"
+              bgImage="/contact.png"
+              bgSize="cover"
+              bgRepeat="no-repeat"
+            >
+              <Flex
+                backdropFilter="blur(2px)"
+                align={"center"}
+                justify={"center"}
+                py={3}
+                bg="transparent"
+              >
+                <Stack rounded={"xl"} p={8} pb={3} spacing={8} align={"center"}>
+                  <Stack spacing={4} direction={{ base: "column" }} w={"full"}>
+                    <Heading
+                      fontSize="x-large"
+                      fontWeight={600}
+                      textAlign="center"
+                      color="black"
+                    >
+                      Liên hệ
+                    </Heading>
+                    <Input
+                      borderColor="black"
+                      borderWidth={1.5}
+                      size="sm"
+                      fontSize="xs"
+                      p={4}
+                      _hover={{ borderColor: "primary" }}
+                      type="email"
+                      placeholder={"Email của bạn"}
+                      _placeholder={{
+                        color: "black",
+                        fontSize: "xs",
+                      }}
+                      rounded={"full"}
+                      color="black"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Button
+                      size="sm"
+                      rounded={"full"}
+                      colorScheme="green"
+                      flex={"1 0 auto"}
+                      maxW={150}
+                      fontWeight={500}
+                      fontSize="xs"
+                      p={4}
+                      mx="auto"
+                      rightIcon={<FaRegPaperPlane />}
+                      onClick={handleOpen}
+                    >
+                      Subscribe
+                    </Button>
+
+                    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                      <ModalOverlay zIndex={10000} />
+                      <ModalContent className="modal-media" mx={2}>
+                        <ModalHeader>Thông tin liên hệ</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                          <form onSubmit={handleSubmit(onSubmit)} id="contact">
+                            <VStack gap={2} w="full">
+                              <Flex
+                                flexDirection={{ base: "column", md: "row" }}
+                                w="full"
+                                gap={{ base: 0, md: 2.5 }}
+                              >
+                                <FormControl isRequired>
+                                  <FormLabel>Họ và tên</FormLabel>
+                                  <Input
+                                    {...register("name", {
+                                      required: "Vui lòng cung cấp họ tên",
+                                    })}
+                                  />
+                                  {errors.name && (
+                                    <FormErrorMessage>
+                                      {errors.name.message}
+                                    </FormErrorMessage>
+                                  )}
+                                </FormControl>
+                                <FormControl>
+                                  <FormLabel>Số điện thoại</FormLabel>
+                                  <Input {...register("phone")} />
+                                  {errors.phone && (
+                                    <FormErrorMessage>
+                                      {errors.phone.message}
+                                    </FormErrorMessage>
+                                  )}
+                                </FormControl>
+                              </Flex>
+                              <FormControl isRequired>
+                                <FormLabel>Email</FormLabel>
+                                <Input isDisabled value={email} />
+                              </FormControl>
+                              <FormControl isRequired>
+                                <FormLabel>Tiêu đề</FormLabel>
+                                <Input
+                                  {...register("title", {
+                                    required: "Vui lòng nhập tiêu đề",
+                                    maxLength: {
+                                      value: 200,
+                                      message: "Vượt quá giới hạn ký tự",
+                                    },
+                                  })}
+                                />
+                                {errors.title && (
+                                  <FormErrorMessage>
+                                    {errors.title.message}
+                                  </FormErrorMessage>
+                                )}
+                              </FormControl>
+                              <FormControl isRequired>
+                                <FormLabel>Nội dung</FormLabel>
+                                <Textarea
+                                  {...register("content", {
+                                    required:
+                                      "Bạn nhắn nhủ điều gì đến BQT web?",
+                                    maxLength: {
+                                      value: 300,
+                                      message: "Vượt quá giới hạn ký tự",
+                                    },
+                                  })}
+                                />
+                                {errors.content && (
+                                  <FormErrorMessage>
+                                    {errors.content.message}
+                                  </FormErrorMessage>
+                                )}
+                              </FormControl>
+                            </VStack>
+                          </form>
+                        </ModalBody>
+
+                        <ModalFooter justifyContent="space-between" w="full">
+                          <Button
+                            colorScheme="red"
+                            size="sm"
+                            mr={3}
+                            onClick={handleClose}
+                          >
+                            Đóng
+                          </Button>
+                          <Button
+                            isDisabled={isLoading}
+                            form="contact"
+                            type="submit"
+                            variant="outline"
+                            size="sm"
+                            isLoading={isPending}
+                            loadingText="Đang gửi"
+                            colorScheme="green"
+                          >
+                            Gửi
+                          </Button>
+                        </ModalFooter>
+                      </ModalContent>
+                    </Modal>
+                  </Stack>
+                </Stack>
+              </Flex>
+            </Box>
+
+            <Box py={5}>
+              {navLinks.map((i, index) => (
+                <Box key={index} pl={8} pr={3}>
+                  <Link
+                    className="text-md font-bold text-primary hover:text-darker dark:text-secondary dark:hover:text-light"
+                    to={`/${i.to}`}
+                  >
+                    {i.title}
+                  </Link>
+                  <UnorderedList className="contacts">
+                    {i.child_links.map((e) => (
+                      <ListItem
+                        key={e.type}
+                        className="py-1 text-sm transition-colors duration-300 last:pb-3 hover:text-primary dark:hover:text-secondary"
+                      >
+                        <Link to={`/${i.to}/${e.type}`}>{e.title}</Link>
+                      </ListItem>
+                    ))}
+                  </UnorderedList>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Flex>
+      </>
     </Box>
   );
 }

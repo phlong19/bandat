@@ -14,11 +14,13 @@ import {
   Radio,
   RadioGroup,
   AccordionIcon,
+  Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUpdateOthers } from "./useUpdateOthers";
 import { BiSave } from "react-icons/bi";
+import { convertSex } from "../../utils/helper";
 
 function OtherInformations({ data, color, id }) {
   const [newSex, setNewSex] = useState(convertSex(data?.sex));
@@ -26,11 +28,13 @@ function OtherInformations({ data, color, id }) {
   const { handleSubmit, register } = useForm({
     defaultValues: {
       birthday: data?.birthday,
+      bio: data?.bio,
     },
   });
 
   function onSubmit(data) {
     let sex;
+    let date = data?.birthday;
     // convert sex option
     switch (newSex) {
       case "1": // male
@@ -44,7 +48,11 @@ function OtherInformations({ data, color, id }) {
         break;
     }
 
-    mutate({ ...data, sex, userID: id });
+    if (!date) {
+      date = null;
+    }
+
+    mutate({ ...data, birthday: date, sex, userID: id });
   }
 
   return (
@@ -58,7 +66,7 @@ function OtherInformations({ data, color, id }) {
                   Các thông tin khác
                 </Heading>
                 <Text pt="2" textAlign="left" fontSize="xs" color={color}>
-                  (Tùy chọn) Chỉ hiển thị trong phần thông tin cá nhân.
+                  (Tùy chọn) Chỉ hiển thị trong trang thông tin cá nhân.
                 </Text>
               </Box>
               <AccordionIcon />
@@ -66,7 +74,7 @@ function OtherInformations({ data, color, id }) {
           </h2>
           <AccordionPanel px={0} pb={0} pt={4}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid templateColumns="repeat(2, 1fr)">
+              <Grid templateColumns="repeat(2, 1fr)" rowGap={2} columnGap={3}>
                 {/* sex */}
                 <Flex gap={4}>
                   <Box>
@@ -88,7 +96,7 @@ function OtherInformations({ data, color, id }) {
                 {/* birth */}
                 <Box>
                   <Text fontSize="sm">Ngày sinh</Text>
-
+                  <Text fontSize="xs">*Lưu ý: Định dạng tháng/ngày/năm</Text>
                   <Input
                     type="date"
                     w={{ sm: "80%", lg: "60%", xl: "40%", "2xl": "30%" }}
@@ -96,9 +104,14 @@ function OtherInformations({ data, color, id }) {
                     {...register("birthday")}
                   />
                 </Box>
+                {/* bio */}
+                <Box>
+                  <Text>Giới thiệu ngắn</Text>
+                  <Textarea {...register("bio")} mt={1} fontSize="sm" />
+                </Box>
               </Grid>
 
-              <Box w="100%" textAlign="end" mt={4}>
+              <Box w="100%" textAlign="end" mt={2}>
                 <Button
                   size="xs"
                   fontWeight="400"
@@ -121,14 +134,3 @@ function OtherInformations({ data, color, id }) {
 }
 
 export default OtherInformations;
-
-function convertSex(value) {
-  switch (value) {
-    case true:
-      return "1";
-    case false:
-      return "2";
-    default:
-      return "3";
-  }
-}

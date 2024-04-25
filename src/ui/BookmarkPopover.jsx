@@ -55,7 +55,7 @@ function BookmarkPopover() {
     );
   }
 
-  if (count < 1 || ids.length == 0) {
+  if (count < 1 || ids.length == 0 || !data || data?.length < 1) {
     return (
       <Center minH={300}>
         <Text>Hiện không lưu bài viết nào.</Text>

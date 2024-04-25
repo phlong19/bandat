@@ -19,7 +19,7 @@ import EmptyList from "../../ui/EmptyList";
 import { sortList } from "../../constants/navlink";
 import SkeletonList from "../../ui/SkeletonList";
 
-function List({ purType, data, count = 0, isLoading }) {
+function List({ purType, data, count = 0, isLoading, userpage = false }) {
   const { mapView, setMapView } = useMapView();
   const { data: addressData } = useSearchbar();
   const location = useLocation();
@@ -67,24 +67,27 @@ function List({ purType, data, count = 0, isLoading }) {
       <AnimatePresence presenceAffectsLayout>
         <motion.div
           animate={listAnimationControl}
-          className={`z-10 h-full min-h-[90dvh] w-full ${
-            mapView ? "overflow-y-auto" : ""
-          }`}
+          className={`${
+            !userpage ? "min-h-[90dvh]" : "h-fit"
+          } z-10 h-full w-full ${mapView ? "overflow-y-auto" : ""}`}
         >
-          <div className="pt-4 md:pt-8">
-            <Searchbar />
-          </div>
+          {!userpage && (
+            <div className="pt-4 md:pt-8">
+              <Searchbar />
+            </div>
+          )}
 
           <h2
             className={`${
               search ? "text-base" : "text-lg"
             } mx-auto max-w-[1500px] pt-3 font-lexend font-medium`}
           >
-            {!search
-              ? purType
-                ? "Mua bán" + " nhà đất trên toàn quốc"
-                : "Cho thuê" + " nhà đất trên toàn quốc"
-              : renderQueryLabel(search, addressData?.city)}
+            {!userpage &&
+              (!search
+                ? purType
+                  ? "Mua bán" + " nhà đất trên toàn quốc"
+                  : "Cho thuê" + " nhà đất trên toàn quốc"
+                : renderQueryLabel(search, addressData?.city))}
           </h2>
           <div className="mx-auto flex max-w-[1500px] items-center justify-between">
             {/* counter */}
@@ -95,22 +98,24 @@ function List({ purType, data, count = 0, isLoading }) {
             {/* toggle grid & map views */}
             {count > 0 && (
               <Flex gap={3} align="center">
-                <Select
-                  value={searchParams.get("sort") || sortList[0].value}
-                  size="xs"
-                  rounded="md"
-                  minW="160px"
-                  onChange={(e) => {
-                    searchParams.set("sort", e.target.value);
-                    setSearchParams(searchParams);
-                  }}
-                >
-                  {sortList.map((i) => (
-                    <option key={i.value} value={i.value}>
-                      {i.label}
-                    </option>
-                  ))}
-                </Select>
+                {!userpage && (
+                  <Select
+                    value={searchParams.get("sort") || sortList[0].value}
+                    size="xs"
+                    rounded="md"
+                    minW="160px"
+                    onChange={(e) => {
+                      searchParams.set("sort", e.target.value);
+                      setSearchParams(searchParams);
+                    }}
+                  >
+                    {sortList.map((i) => (
+                      <option key={i.value} value={i.value}>
+                        {i.label}
+                      </option>
+                    ))}
+                  </Select>
+                )}
                 <div className="hidden items-center gap-2 lg:flex">
                   <span className="w-max font-lexend text-lg font-semibold">
                     Bản đồ:
@@ -119,7 +124,7 @@ function List({ purType, data, count = 0, isLoading }) {
                     size="sm"
                     onChange={() => setMapView((s) => !s)}
                     isChecked={mapView}
-                    key={purType}
+                    key={!userpage ? purType : Math.random()}
                     colorScheme="green"
                   />
                 </div>
@@ -140,10 +145,15 @@ function List({ purType, data, count = 0, isLoading }) {
                 } mt-3 space-y-4 lg:grid lg:space-y-0`}
               >
                 {data.map((item) => (
-                  <ListItem key={item.id} data={item} purType={purType} />
+                  <ListItem
+                    key={item.id}
+                    data={item}
+                    purType={!userpage ? purType : item.purType}
+                    author={!userpage}
+                  />
                 ))}
               </motion.div>
-              <ChakraTablePagination count={count} />
+              <ChakraTablePagination count={count} news={userpage} />
             </>
           ) : (
             <EmptyList />
@@ -157,7 +167,7 @@ function List({ purType, data, count = 0, isLoading }) {
             initial={{ x: "100%", width: 0, opacity: 0, display: "none" }}
             animate={mapAnimationControl}
           >
-            <Map data={data} purType={purType} />
+            <Map data={data} userpage={userpage} />
           </motion.div>
         )}
       </AnimatePresence>
