@@ -22,6 +22,7 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const {
+    setError,
     register,
     handleSubmit,
     formState: { errors },
@@ -29,9 +30,12 @@ function LoginForm() {
   const { login, isLoggingIn } = useLogin();
 
   function onSubmit(data) {
-    const check = checkInputType(data.emailOrPhone);
+    const check = checkInputType(data?.emailOrPhone);
 
-    if (check !== "unknown") {
+    if (check == "unknown") {
+      // TODO
+      return setError("emailOrPhone", "Vui lòng nhập Email hoặc số điện thoại");
+    } else {
       login(data);
     }
   }
@@ -77,7 +81,7 @@ function LoginForm() {
                     required: "nhap email",
                   }),
                 }}
-                id="email"
+                id="emailOrPhone"
               />
 
               <FormInput

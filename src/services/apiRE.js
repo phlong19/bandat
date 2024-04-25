@@ -487,8 +487,12 @@ export async function getBookmarkedPosts(ids) {
     .from("REDirectory")
     .select(
       `*,
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName),
       images: REMedias(*),
-      profile: Profile(id, fullName,avatar)
+      profile: Profile(id, fullName,avatar),
+      type: REType(*)
     `,
       { count: "exact" },
     )

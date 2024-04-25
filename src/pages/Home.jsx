@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   Box,
@@ -91,6 +91,10 @@ function Home() {
     reset();
     onClose();
   }
+
+  useEffect(() => {
+    document.title = "LandHub - Website số 1 về mua bán, cho thuê bất động sản";
+  }, []);
 
   return (
     <Box py={5}>

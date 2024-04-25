@@ -84,17 +84,19 @@ function MobileAction({ onClose }) {
             />
           </li>
         ))}
-        <li>
-          <NavLink
-            className="flex items-center gap-4 py-3 pl-4 transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
-            onClick={logout}
-          >
-            <span>
-              <FaDoorOpen className="text-xl" />
-            </span>
-            Đăng xuất
-          </NavLink>
-        </li>
+        {isAuthenticated && (
+          <li>
+            <NavLink
+              className="flex items-center gap-4 py-3 pl-4 transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+              onClick={logout}
+            >
+              <span>
+                <FaDoorOpen className="text-xl" />
+              </span>
+              Đăng xuất
+            </NavLink>
+          </li>
+        )}
       </ul>
     </div>
   );

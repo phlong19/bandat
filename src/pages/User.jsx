@@ -81,6 +81,11 @@ function User() {
     }
   }, [id, navigate, error, page, searchParams, setSearchParams]);
 
+  useEffect(() => {
+    if (data?.fullName)
+      document.title = `LandHub - ${data.fullName} | Cá nhân môi giới bất động sản`;
+  }, [data?.fullName]);
+
   async function handleClick(e) {
     e.stopPropagation();
     const link = window.location.href;
