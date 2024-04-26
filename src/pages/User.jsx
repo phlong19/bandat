@@ -216,10 +216,12 @@ function User() {
                       label="Giới tính"
                       value={convertSexToText(convertSex(data.sex))}
                     />
-                    <InformationItem
-                      label="Ngày sinh"
-                      value={formatDate(data.birthday)}
-                    />
+                    {data?.birthday && (
+                      <InformationItem
+                        label="Ngày sinh"
+                        value={formatDate(data?.birthday)}
+                      />
+                    )}
                     <InformationItem
                       label="Tuổi người dùng"
                       value={getAge(data.birthday)}

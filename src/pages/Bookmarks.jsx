@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import BreadCrumb from "../ui/BreadCrumb";
 import { navLinks } from "../constants/navlink";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { getBookmarkedPosts } from "../services/apiRE";
 import { getCookie } from "../utils/reuse";
 import List from "../features/list/List";
@@ -22,6 +22,8 @@ function Bookmarks() {
   const accent = useColorModeValue("primary", "secondary");
   const [values, setValues] = useState(getCookie());
   const ids = values?.split(",") || [];
+  const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
 
   const {
     data: { data, count } = {},
@@ -29,9 +31,13 @@ function Bookmarks() {
     refetch,
   } = useQuery({
     queryKey: ["bookmark-list", ids],
-    queryFn: () => getBookmarkedPosts(ids),
+    queryFn: () => getBookmarkedPosts(ids, false, page),
     enabled: ids[0] !== "",
   });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -62,16 +68,22 @@ function Bookmarks() {
           gap={2}
           w="full"
           justify="center"
-          flexDirection={{ base: "column", md: "row" }}
+          flexDirection={{ base: "column", lg: "row" }}
           bg={bg}
         >
           <Box pt={5} maxH={{ base: "auto", xl: count < 5 ? 760 : "850" }}>
             <Heading color={accent} size="md" pl={3}>
-              Danh sách bài đăng
+              Danh sách bài đăng đã lưu
             </Heading>
-            <List data={data} isLoading={isLoading} count={count} userpage />
+            <List
+              data={data}
+              isLoading={isLoading}
+              count={count}
+              userpage
+              bmk
+            />
           </Box>
-          <Box py={5}>
+          <Box py={5} minW={{ base: "full", lg: 300, xl: 400 }}>
             {navLinks.map((i, index) => (
               <Box key={index} pl={8} pr={3}>
                 <Link

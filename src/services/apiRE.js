@@ -482,8 +482,8 @@ export async function getRelatedPostsAuthor(currentPostID, authorID) {
 }
 
 // get bookmarked posts
-export async function getBookmarkedPosts(ids) {
-  const { data, count, error } = await supabase
+export async function getBookmarkedPosts(ids, limit = false, page) {
+  let query = supabase
     .from("REDirectory")
     .select(
       `*,
@@ -498,8 +498,20 @@ export async function getBookmarkedPosts(ids) {
     )
     .in("id", ids)
     .gt("expriryDate", new Date().toISOString())
-    .eq("images.isImage", true)
-    .limit(5);
+    .eq("images.isImage", true);
+
+  if (limit) {
+    query = query.limit(5);
+  }
+
+  // pagination
+  if (!limit) {
+    const start = (page - 1) * LIMIT_PER_PAGE;
+    const end = start + LIMIT_PER_PAGE - 1;
+    query = query.limit(LIMIT_PER_PAGE).range(start, end);
+  }
+
+  const { data, count, error } = await query;
 
   if (error) {
     console.log(error);

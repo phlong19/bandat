@@ -1,13 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import Header from "../ui/Header";
 import Footer from "../ui/Footer";
 
-import { useCheckListPage } from "../hooks/useCheckListPage";
 import { useMapView } from "../context/MapViewContext";
 
 function AppLayout() {
-  const isListingPage = useCheckListPage();
+  const { pathname } = useLocation();
+  const isListingPage =
+    pathname.includes("/nha-dat-") && !pathname.includes("/nguoi-dung/");
   const { mapView } = useMapView();
 
   return (
@@ -21,7 +22,13 @@ function AppLayout() {
                   ? "lg:h-[calc(100vh-72px)] lg:max-h-[calc(100vh-72px)]"
                   : ""
               }`
-            : "min-h-screen"
+            : // : "min-h-screen"
+              `${
+                !pathname.includes("/tin-da-luu") &&
+                !pathname.includes("/danh-ba/nguoi-dung")
+                  ? "min-h-screen"
+                  : ""
+              }`
         } relative w-full bg-light text-dark dark:bg-dark dark:text-light lg:mt-[72px]`}
       >
         <Outlet />
