@@ -56,6 +56,7 @@ import FormActions from "./FormActions";
 import unidecode from "unidecode";
 import Files360Dropzone from "./Files360Dropzone";
 import ReportTable from "../table/ReportTable";
+import MapLocationPick from "./MapLocationPick";
 
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
@@ -96,6 +97,9 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
   const [cityID, setCityID] = useState(editData?.cityID || NaN);
   const [disID, setDisID] = useState(editData?.disID || NaN);
   const [wardID, setWardID] = useState(editData?.wardID || NaN);
+  const [position, setPosition] = useState(
+    edit ? { lat: editData.lat, lng: editData.long } : null,
+  );
 
   // custom hooks
   const { isCreating, create } = useCreateRE();
@@ -171,6 +175,8 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
         userID,
         docs,
         slug,
+        lat: position.lat || null,
+        long: position.lng || null,
       });
     } else {
       update({
@@ -196,6 +202,8 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           videos: addVideosRef.current,
         },
         oldFiles360: existed360,
+        lat: position.lat || null,
+        long: position.lng || null,
       });
     }
   }
@@ -271,6 +279,9 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
               {...register("address")}
             />
           </FormControl>
+          {/* map location picker */}
+          <MapLocationPick position={position} setPosition={setPosition} />
+
           {/* title */}
           <NameInput
             register={register("name", {
