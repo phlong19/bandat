@@ -135,6 +135,7 @@ export async function getSinglePost(slug) {
 // create
 export async function createPost(newData) {
   const { files, docs, reType, files360, ...reData } = newData;
+  let { lat, long } = reData;
 
   // get re type id, ex: nha-rieng = 1
   const { data: REType, error } = await supabase
@@ -156,7 +157,11 @@ export async function createPost(newData) {
     reData.address,
   );
 
-  const { lat, long } = await getLatLong(fullAddress);
+  if (!lat && !long) {
+    const pos = await getLatLong(fullAddress);
+    lat = pos.lat;
+    long = pos.long;
+  }
 
   // post
   const { data, error: createError } = await supabase
@@ -208,6 +213,8 @@ export async function updatePost(newData) {
     ...reData
   } = newData;
 
+  let { lat, long } = reData;
+
   // check authorization
   // if not admin AND not author => cook
   if (level < ADMIN_LEVEL && userID !== authorID) {
@@ -232,7 +239,12 @@ export async function updatePost(newData) {
     reData.wardID,
     reData.address,
   );
-  const { lat, long } = await getLatLong(fullAddress);
+
+  if (!lat && !long) {
+    const pos = await getLatLong(fullAddress);
+    lat = pos.lat;
+    long = pos.long;
+  }
 
   // update post
   const { data, error } = await supabase
