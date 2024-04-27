@@ -21,12 +21,12 @@ import {
 import { resizeMap } from "../../utils/reuse";
 import { createPortal } from "react-dom";
 import { AiOutlineClear } from "react-icons/ai";
-import { TbLock, TbLockOpen } from "react-icons/tb";
+import { Tb360, TbLock, TbLockOpen } from "react-icons/tb";
 import toast from "react-hot-toast";
 
-function MapLocationPick({ position, setPosition }) {
+function MapLocationPick({ position, setPosition, edit }) {
   const [draggable, setDraggable] = useState(false);
-
+  const originalPosition = useRef(edit ? position : null);
   const [isReady, setIsReady] = useState(false);
   const mapRef = useRef(null);
   const id = useRef("map-reform");
@@ -70,51 +70,50 @@ function MapLocationPick({ position, setPosition }) {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {id.current &&
-              position &&
               isReady &&
               createPortal(
-                <Flex direction="column" bg="white">
-                  <Tooltip label="Xóa tất cả đánh dấu">
-                    <IconButton
-                      minW={1}
-                      boxSize="30px"
-                      variant="solid"
-                      zIndex={10000}
+                <Flex direction="column">
+                  {position && (
+                    <>
+                      <ControlIconButton
+                        border={false}
+                        label="Xóa tất cả đánh dấu"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setPosition(null);
+                          toast.success("Đã xóa vị trí lựa chọn");
+                        }}
+                        icon={<AiOutlineClear />}
+                      />
+                      <ControlIconButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          toggleDraggable();
+                          toast.success(
+                            !draggable
+                              ? "Đã mở khóa, có thể kéo đánh dấu / chọn vị trí"
+                              : "Đã khóa vị trí",
+                          );
+                        }}
+                        label="Mở / Khóa đánh dấu"
+                        icon={draggable ? <TbLockOpen /> : <TbLock />}
+                      />
+                    </>
+                  )}
+                  {edit && (
+                    <ControlIconButton
+                      label="Đặt lại vị trí"
                       onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
-                        setPosition(null);
-                        toast.success("Đã xóa vị trí lựa chọn");
+                        setPosition(originalPosition.current);
+                        toast.success("Đã đặt lại vị trí về ban đầu");
                       }}
-                      color="black"
-                      rounded="none"
-                      m={0}
-                      icon={<AiOutlineClear />}
+                      icon={<Tb360 />}
                     />
-                  </Tooltip>
-                  <Tooltip label="Mở / Khóa đánh dấu">
-                    <IconButton
-                      color="black"
-                      borderTop="1px solid lightgrey"
-                      minW={1}
-                      boxSize="30px"
-                      variant="solid"
-                      zIndex={10000}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        toggleDraggable();
-                        toast.success(
-                          !draggable
-                            ? "Đã mở khóa, có thể kéo đánh dấu / chọn vị trí"
-                            : "Đã khóa vị trí",
-                        );
-                      }}
-                      rounded="none"
-                      m={0}
-                      icon={draggable ? <TbLockOpen /> : <TbLock />}
-                    />
-                  </Tooltip>
+                  )}
                 </Flex>,
                 document.querySelector(classname),
               )}
@@ -170,5 +169,26 @@ function DraggableMarker({ position, setPosition, draggable }) {
         </span>
       </Popup>
     </Marker>
+  );
+}
+
+function ControlIconButton({ onClick, icon, label, border = true }) {
+  return (
+    <Tooltip label={label}>
+      <IconButton
+        bg="white"
+        minW={1}
+        boxSize="30px"
+        variant="solid"
+        borderTop={border && "1px solid lightgrey"}
+        zIndex={10000}
+        onClick={onClick}
+        _hover={{ bg: "#f4f4f4" }}
+        color="black"
+        rounded="none"
+        m={0}
+        icon={icon}
+      />
+    </Tooltip>
   );
 }

@@ -280,7 +280,11 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             />
           </FormControl>
           {/* map location picker */}
-          <MapLocationPick position={position} setPosition={setPosition} />
+          <MapLocationPick
+            edit={edit}
+            position={position}
+            setPosition={setPosition}
+          />
 
           {/* title */}
           <NameInput
