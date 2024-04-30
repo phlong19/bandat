@@ -63,7 +63,7 @@ function VerifyPhone({ phoneNum }) {
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              nhập mã 6 số được gửi về thiết bị 📱
+              Nhập mã 6 số được gửi về thiết bị 📱
             </Text>
           </Stack>
 
@@ -106,7 +106,7 @@ function VerifyPhone({ phoneNum }) {
                   mx="auto"
                   colorScheme="green"
                   isLoading={isPending}
-                  loadingText="Chờ xíu"
+                  loadingText="Đang xác nhận..."
                   type="submit"
                 >
                   Xác nhận
@@ -115,7 +115,7 @@ function VerifyPhone({ phoneNum }) {
             </Stack>
             {/* re send */}
             <Center alignItems="center" pb={3} mt={5} gap={3}>
-              <Text>Bạn có thể gửi lại mã sau {formattedSeconds}</Text>
+              <Text>Bạn có thể gửi lại mã sau {formattedSeconds} giây</Text>
               <Button
                 isLoading={isSending}
                 isDisabled={!isComplete}
@@ -129,7 +129,7 @@ function VerifyPhone({ phoneNum }) {
                   setIsComplete(false);
                 }}
               >
-                Gửi lại
+                Gửi lại mã
               </Button>
             </Center>
           </Box>

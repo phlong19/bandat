@@ -56,7 +56,7 @@ export default function LoginMagicLink() {
               <Logo size="w-40" />
             </Box>
             <Heading fontSize={"2xl"} textAlign={"center"}>
-              dang nhap bang email
+            Đằng nhập bằng email
             </Heading>
           </Stack>
           <Box
@@ -70,8 +70,8 @@ export default function LoginMagicLink() {
                 label="Email"
                 errors={errors}
                 hookForm={{
-                  ...register("email", {
-                    required: "nhap email vao",
+                  ...register("Email", {
+                    required: "Chưa nhập email",
                   }),
                 }}
                 id="email"
@@ -82,21 +82,21 @@ export default function LoginMagicLink() {
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
                 isLoading={isPending}
-                loadingText="Đợi xíu"
+                loadingText="Đang gửi..."
                 colorScheme="green"
                 type="submit"
               >
-                Gửi request
+                Gửi Request
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>
-                  Chưa có tài khoản?{" "}
+                  Chưa có tài khoản{" "}?
                   <ChakraLink as={Link} to="/dang-ky" color={accent}>
                     Đăng ký ngay
                   </ChakraLink>
                 </Text>
                 <Text align={"center"}>
-                  Đã có tài khoản?{" "}
+                  Đã có tài khoản{" "}?
                   <ChakraLink as={Link} color={accent} to="/dang-nhap">
                     Đăng nhập
                   </ChakraLink>

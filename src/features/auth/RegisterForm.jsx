@@ -47,7 +47,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
       setPhone(data.phone);
       signup(data);
     } else {
-      toast.error("mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so");
+      toast.error("Mật khẩu cần ít nhất 1 chữ in hoa, 1 ký tự đặc biệt, và 1 chữ số");
     }
   }
 
@@ -78,7 +78,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              để bắt đầu sử dụng dịch vụ của Landhub ✌️
+              Để bắt đầu sử dụng dịch vụ của Landhub ✌️
             </Text>
           </Stack>
           <Box
@@ -93,9 +93,9 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                   label="Họ và tên"
                   id="fullName"
                   hookForm={{
-                    ...register("fullName", {
-                      required: "ten may la gi",
-                      minLength: { message: "deo du 8 ky tu", value: 8 },
+                    ...register("Tên đầy đủ", {
+                      required: "Cần nhập tên đầy đủ",
+                      minLength: { message: "Không đủ 8 ký tự", value: 8 },
                     }),
                   }}
                   errors={errors}
@@ -106,7 +106,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                   id="phone"
                   type="number"
                   hookForm={{
-                    ...register("phone", {
+                    ...register("Số điện thoại", {
                       required: account.requiredPhone,
                       minLength: phoneLength,
                       maxLength: phoneLength,
@@ -124,9 +124,9 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 setShowPassword={setShowPassword}
                 showPassword={showPassword}
                 hookForm={{
-                  ...register("password", {
-                    required: "nhap cmm mat khau vao",
-                    minLength: { message: "kh du 8", value: 8 },
+                  ...register("Mật khẩu", {
+                    required: "Cần nhập mật khẩu",
+                    minLength: { message: "Mật khẩu không đủ 8 ký tự", value: 8 },
                   }),
                 }}
                 errors={errors}
@@ -141,12 +141,12 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 errors={errors}
                 hookForm={{
                   ...register("confirmPassword", {
-                    required: "dm kh xac nhan mk ak",
+                    required: "Xác nhận mật khẩu",
                     minLength: { message: "kh du 8", value: 8 },
                     validate: (value) => {
                       return (
                         value === getValues("password") ||
-                        "Password does not match"
+                        "Mật khẩu nhập không khớp"
                       );
                     },
                   }),
@@ -158,20 +158,20 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 mx="auto"
                 colorScheme="green"
                 isLoading={isLoading}
-                loadingText="Chờ xíu"
+                loadingText="Vui lòng đợi..."
                 type="submit"
               >
                 Đăng ký
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>
-                  Đã có tài khoản?{" "}
+                  Đã có tài khoản?{" "}?
                   <ChakraLink as={Link} color={accent} to="/dang-nhap">
                     Đăng nhập
                   </ChakraLink>
                 </Text>
                 <Text align={"center"}>
-                  Bạn quên mật khẩu?{" "}
+                  Bạn quên mật khẩu?{" "}?
                   <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
                     Trợ giúp
                   </ChakraLink>

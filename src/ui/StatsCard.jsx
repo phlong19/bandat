@@ -2,19 +2,19 @@ import { Container, Text, Center, Box, SimpleGrid } from "@chakra-ui/react";
 
 const statData = [
   {
-    label: "Weekly downloads",
+    label: "Số người đăng ký",
     score: "3.2M",
   },
   {
-    label: "Stars on GitHub",
+    label: "Số bài đăng đã được đăng tải",
     score: "77k",
   },
   {
-    label: "Contributors",
+    label: "Số căn nhà đã được giao dịch thành công",
     score: "2.4k",
   },
   {
-    label: "Followers on Twitter",
+    label: "Số lượng tin tức đã được đăng tải",
     score: "17k",
   },
 ];
@@ -26,7 +26,7 @@ function StatsCard() {
         <Box textAlign="center">
           <Text fontWeight="extrabold" fontSize="x-large" mb={2}>
             <Box as="span" display="inline-block" position="relative">
-              Trusted by Developers
+              Được tin dùng bởi người sử dụng và doanh nghiệp
               <Box
                 as="span"
                 display="block"
@@ -38,8 +38,7 @@ function StatsCard() {
             </Box>
           </Text>
           <Text>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+          LandHUB 
           </Text>
         </Box>
       </Center>

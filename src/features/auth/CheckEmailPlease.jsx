@@ -38,14 +38,14 @@ function ResetPassword() {
               <Logo size="w-40" />
             </Box>
             <Heading fontSize={"2xl"} textAlign={"center"}>
-              Check email pls
+            Kiểm tra hộp thư email
             </Heading>
             <Text
               textAlign="center"
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              just one step, click the confirmation link in the email
+            Còn 1 bước cuối, nhấn vào link được gửi đến email
             </Text>
           </Stack>
 
@@ -55,11 +55,11 @@ function ResetPassword() {
               mx="auto"
               as={Link}
               to="/"
-              loadingText="Đợi xíu"
+              loadingText="Đang về trang chủ..."
               colorScheme="green"
               leftIcon={<HiHome color={useColorModeValue("white", "darker")} />}
             >
-              ve trang chu
+            Về trang chủ
             </Button>
           </Stack>
         </Box>

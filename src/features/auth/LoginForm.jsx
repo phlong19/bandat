@@ -53,13 +53,13 @@ function LoginForm() {
               <Logo size="w-40" />
             </Box>
             <Heading fontSize={"2xl"} textAlign={"center"}>
-              Đăng nhập
+            Đăng nhập
             </Heading>
             <Text
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              để trải nghiệm mọi dịch vụ của Landhub ✌️
+            Để trải nghiệm mọi dịch vụ của LandHUB ✌️
             </Text>
           </Stack>
           <Box
@@ -73,8 +73,8 @@ function LoginForm() {
                 label="Email"
                 errors={errors}
                 hookForm={{
-                  ...register("emailOrPhone", {
-                    required: "nhap email",
+                  ...register("Email/SĐT", {
+                    required: "Cần nhập Email hoặc SĐT",
                   }),
                 }}
                 id="email"
@@ -84,8 +84,8 @@ function LoginForm() {
                 label="Mật khẩu"
                 errors={errors}
                 hookForm={{
-                  ...register("password", {
-                    required: "nhap mk vao",
+                  ...register("Mật khẩu", {
+                    required: "Cần nhập mật khẩu",
                   }),
                 }}
                 id="password"
@@ -106,7 +106,7 @@ function LoginForm() {
                   />
                 }
                 isLoading={isLoggingIn}
-                loadingText="Đợi xíu"
+                loadingText="Đang đăng nhập..."
                 colorScheme="green"
                 type="submit"
               >
@@ -114,15 +114,15 @@ function LoginForm() {
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>
-                  Chưa có tài khoản?{" "}
+                  Chưa có tài khoản{" "}?
                   <ChakraLink as={Link} to="/dang-ky" color={accent}>
                     Đăng ký ngay
                   </ChakraLink>
                 </Text>
                 <Text align={"center"}>
-                  Bạn quên mật khẩu?{" "}
+                  Bạn quên mật khẩu{" "}?
                   <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
-                    Trợ giúp
+                  Trợ giúp
                   </ChakraLink>
                 </Text>
               </Stack>

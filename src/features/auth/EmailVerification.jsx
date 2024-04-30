@@ -67,7 +67,7 @@ function EmailVerification() {
                 label="Email"
                 errors={errors}
                 hookForm={{
-                  ...register("email", {
+                  ...register("Email", {
                     required: "Chưa nhập email",
                   }),
                 }}
@@ -79,7 +79,7 @@ function EmailVerification() {
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
                 isLoading={isSending}
-                loadingText="Loading..."
+                loadingText="Đang gửi..."
                 colorScheme="green"
                 type="submit"
               >

@@ -26,7 +26,7 @@ export const homeText = [
 ];
 
 export const emptyREList =
-  "Chưa đăng bài viết nào, dang bai di hoac thay doi sort/ filter";
+  "Chưa đăng bài viết nào, hãy đăng bài viết đầu tiên của bạn!";
 
 export const error = {
   // general
@@ -133,7 +133,7 @@ export const reform = {
   // submit errors
   missingAddress: "Chưa chọn địa chỉ",
   missingDes: `Vui lòng mô tả chi tiết ít nhất ${minDesLength} kí tự`,
-  missingImages: `Số lượng ảnh cung cấp ít nhất là ${BASE_MEDIA_UPLOAD}`,
+  missingImages: `Số lượng ảnh cung cấp ít nhất là ${BASE_MEDIA_UPLOAD} ảnh`,
   minPrice: "Giá trị nhập quá nhỏ",
 
   // form errors
@@ -174,12 +174,12 @@ export const newsForm = {
   requiredMessage: "Vui lòng điền đầy đủ các trường thông tin",
 
   // form errors
-  minTitle: `Tiêu đề ít nhất ${minTitle}`,
-  maxTitle: `Tiêu đề nhiều nhất ${maxTitle}`,
-  minSummary: `Tóm tắt ít nhất ${minSummary}`,
-  maxSummary: `Tóm tắt nhiều nhất ${maxSummary}`,
-  minContent: `Nội dung ít nhất ${minContent}`,
-  maxContent: `Nội dung nhiều nhất ${maxContent}`,
+  minTitle: `Tiêu đề ít nhất ${minTitle} ký tự`,
+  maxTitle: `Tiêu đề nhiều nhất ${maxTitle} ký tự`,
+  minSummary: `Tóm tắt ít nhất ${minSummary} ký tự`,
+  maxSummary: `Tóm tắt nhiều nhất ${maxSummary} ký tự`,
+  minContent: `Nội dung ít nhất ${minContent} ký tự`,
+  maxContent: `Nội dung nhiều nhất ${maxContent} ký tự`,
 
   // thumbnail
   overFile: "Chỉ chấp nhận 1 file thumbnail",

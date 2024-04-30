@@ -56,12 +56,12 @@ function Home() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data) => createContact(data),
     onSuccess: () => {
-      toast.success("da gui thong tin, cam on ?");
+      toast.success("Đã gửi thông tin thành công");
       handleClose();
     },
     onError: (err) => {
       console.log(err);
-      toast.error("xay ra loi");
+      toast.error("Xảy ra lỗi");
     },
     onSettled: () => {
       handleClose();
@@ -81,7 +81,7 @@ function Home() {
 
   function handleOpen() {
     if (!email || !validator.isEmail(email)) {
-      return toast.error("vui long nhap email");
+      return toast.error("Vui lòng nhập email");
     }
     onOpen();
   }
@@ -236,7 +236,7 @@ function Home() {
                     textAlign="center"
                     color={useColorModeValue("whiteAlpha.900", "white")}
                   >
-                    Báo lỗi liên hệ hòm thư góp ý các kiểu đà điểu vào đây hết
+                  Vui lòng gửi những góp ý của bạn dưới đây, cảm ơn!
                   </Text>
                 </Stack>
                 <Stack
@@ -261,7 +261,7 @@ function Home() {
                     rightIcon={<FaRegPaperPlane />}
                     onClick={handleOpen}
                   >
-                    Subscribe
+                  Gửi góp ý
                   </Button>
 
                   <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -281,7 +281,7 @@ function Home() {
                                 <FormLabel>Họ và tên</FormLabel>
                                 <Input
                                   {...register("name", {
-                                    required: "vui long nhap ten",
+                                    required: "Vui lòng nhập tên đầy đủ",
                                   })}
                                 />
                                 {errors.name && (
@@ -308,10 +308,10 @@ function Home() {
                               <FormLabel>Tiêu đề</FormLabel>
                               <Input
                                 {...register("title", {
-                                  required: "nhap tieu de",
+                                  required: "Cần nhập tiêu đề bài viết góp ý",
                                   maxLength: {
                                     value: 200,
-                                    message: "gioi han",
+                                    message: "Giới hạn 200 ký tự cho phép",
                                   },
                                 })}
                               />
@@ -325,10 +325,10 @@ function Home() {
                               <FormLabel>Nội dung</FormLabel>
                               <Textarea
                                 {...register("content", {
-                                  required: "nhan nhu dieu gi?",
+                                  required: "Cần nhập nội dung góp ý",
                                   maxLength: {
                                     value: 300,
-                                    message: "gioi han",
+                                    message: "Giới hạn 300 ký tự cho phép",
                                   },
                                 })}
                               />
@@ -358,7 +358,7 @@ function Home() {
                           variant="outline"
                           size="sm"
                           isLoading={isPending}
-                          loadingText="Đang gửi"
+                          loadingText="Đang gửi..."
                           colorScheme="green"
                         >
                           Send
