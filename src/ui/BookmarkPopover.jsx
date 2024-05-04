@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   Center,
   Box,
+  Link as ChakraLink,
   Flex,
   Spinner,
   Avatar,
@@ -30,7 +31,7 @@ function BookmarkPopover() {
     refetch,
   } = useQuery({
     queryKey: ["bookmark-list", ids],
-    queryFn: () => getBookmarkedPosts(ids),
+    queryFn: () => getBookmarkedPosts(ids, true),
     enabled: ids[0] !== "",
   });
 
@@ -65,7 +66,7 @@ function BookmarkPopover() {
 
   return (
     <Flex flexDirection="column" gap={3}>
-      {data.map((i, index) => (
+      {data.slice(0, 5).map((i, index) => (
         <Box key={i.id} title={i.name}>
           <Link
             to={`/nha-dat/${i.slug}`}
@@ -109,6 +110,12 @@ function BookmarkPopover() {
           {index != count - 1 && <Divider my={1} borderBottomWidth={2} />}
         </Box>
       ))}
+
+      <Box>
+        <ChakraLink to="/tin-da-luu" as={Link} fontSize="13px">
+          Xem đầy đủ
+        </ChakraLink>
+      </Box>
     </Flex>
   );
 }

@@ -135,6 +135,7 @@ export async function getSinglePost(slug) {
 // create
 export async function createPost(newData) {
   const { files, docs, reType, files360, ...reData } = newData;
+  let { lat, long } = reData;
 
   // get re type id, ex: nha-rieng = 1
   const { data: REType, error } = await supabase
@@ -156,7 +157,11 @@ export async function createPost(newData) {
     reData.address,
   );
 
-  const { lat, long } = await getLatLong(fullAddress);
+  if (!lat && !long) {
+    const pos = await getLatLong(fullAddress);
+    lat = pos.lat;
+    long = pos.long;
+  }
 
   // post
   const { data, error: createError } = await supabase
@@ -208,6 +213,8 @@ export async function updatePost(newData) {
     ...reData
   } = newData;
 
+  let { lat, long } = reData;
+
   // check authorization
   // if not admin AND not author => cook
   if (level < ADMIN_LEVEL && userID !== authorID) {
@@ -232,7 +239,12 @@ export async function updatePost(newData) {
     reData.wardID,
     reData.address,
   );
-  const { lat, long } = await getLatLong(fullAddress);
+
+  if (!lat && !long) {
+    const pos = await getLatLong(fullAddress);
+    lat = pos.lat;
+    long = pos.long;
+  }
 
   // update post
   const { data, error } = await supabase
@@ -482,20 +494,36 @@ export async function getRelatedPostsAuthor(currentPostID, authorID) {
 }
 
 // get bookmarked posts
-export async function getBookmarkedPosts(ids) {
-  const { data, count, error } = await supabase
+export async function getBookmarkedPosts(ids, limit = false, page) {
+  let query = supabase
     .from("REDirectory")
     .select(
       `*,
+      city: CityDirectory (cityName),
+      dis: DistrictDirectory (disName),
+      ward: WardDirectory (wardName),
       images: REMedias(*),
-      profile: Profile(id, fullName,avatar)
+      profile: Profile(id, fullName,avatar),
+      type: REType(*)
     `,
       { count: "exact" },
     )
     .in("id", ids)
     .gt("expriryDate", new Date().toISOString())
-    .eq("images.isImage", true)
-    .limit(5);
+    .eq("images.isImage", true);
+
+  if (limit) {
+    query = query.limit(5);
+  }
+
+  // pagination
+  if (!limit) {
+    const start = (page - 1) * LIMIT_PER_PAGE;
+    const end = start + LIMIT_PER_PAGE - 1;
+    query = query.limit(LIMIT_PER_PAGE).range(start, end);
+  }
+
+  const { data, count, error } = await query;
 
   if (error) {
     console.log(error);

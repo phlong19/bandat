@@ -15,7 +15,7 @@ function ReportTable({ id }) {
     enabled: Boolean(id),
   });
 
-  if (data.length < 1) {
+  if (!data && data?.length < 1) {
     return null;
   }
 

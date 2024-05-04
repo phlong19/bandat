@@ -81,6 +81,11 @@ function User() {
     }
   }, [id, navigate, error, page, searchParams, setSearchParams]);
 
+  useEffect(() => {
+    if (data?.fullName)
+      document.title = `LandHub - ${data.fullName} | Cá nhân môi giới bất động sản`;
+  }, [data?.fullName]);
+
   async function handleClick(e) {
     e.stopPropagation();
     const link = window.location.href;
@@ -211,10 +216,12 @@ function User() {
                       label="Giới tính"
                       value={convertSexToText(convertSex(data.sex))}
                     />
-                    <InformationItem
-                      label="Ngày sinh"
-                      value={formatDate(data.birthday)}
-                    />
+                    {data?.birthday && (
+                      <InformationItem
+                        label="Ngày sinh"
+                        value={formatDate(data?.birthday)}
+                      />
+                    )}
                     <InformationItem
                       label="Tuổi người dùng"
                       value={getAge(data.birthday)}

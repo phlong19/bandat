@@ -5,12 +5,14 @@ import L from "leaflet";
 import ListItem from "../features/list/ListItem";
 import ViewInMap from "./ViewInMap";
 import { useMapView } from "../context/MapViewContext";
+import { resizeMap } from "../utils/reuse";
 
 function Map({ data, userpage }) {
   const { mapView } = useMapView();
   const mapRef = useRef(null);
   const [selectedMarker, setSelectedMarker] = useState(0);
   const mapRoot = useRef({});
+  const id = useRef("map-container");
 
   useEffect(() => {
     const renderTimeout = setTimeout(() => {
@@ -47,7 +49,7 @@ function Map({ data, userpage }) {
 
   return (
     <MapContainer
-      id="map-container"
+      id={id.current}
       center={[16.363147, 105.713807]}
       zoom={6}
       className={`h-full rounded-lg ${
@@ -57,7 +59,7 @@ function Map({ data, userpage }) {
       }`}
       scrollWheelZoom={true}
       ref={mapRef}
-      whenReady={() => resizeMap(mapRef)}
+      whenReady={() => resizeMap(mapRef, id.current)}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -98,13 +100,3 @@ const defaultIcon = new L.Icon({
   iconUrl: "/defaultIcon.png",
   iconSize: [20, 30],
 });
-
-function resizeMap(mapRef) {
-  const resizeObserver = new ResizeObserver(() =>
-    mapRef.current?.invalidateSize(),
-  );
-  const container = document.getElementById("map-container");
-  if (container) {
-    resizeObserver.observe(container);
-  }
-}

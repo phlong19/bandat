@@ -126,6 +126,10 @@ function Contacts() {
     return () => clearTimeout(timer);
   }, [search]);
 
+  useEffect(() => {
+    document.title = "Danh bạ môi giới nhà đất - Các cá nhân môi giới nhà đất";
+  }, []);
+
   const list = search.length < 3 ? users : data;
   const count = search.length < 3 ? normalCount : queryCount;
 

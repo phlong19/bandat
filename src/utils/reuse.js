@@ -53,3 +53,14 @@ export function deleteCookie(id) {
 
   return setCookie(updatedCookieString, 14);
 }
+
+// resize map
+export function resizeMap(mapRef, id) {
+  const resizeObserver = new ResizeObserver(() =>
+    mapRef.current?.invalidateSize(),
+  );
+  const container = document.getElementById(id);
+  if (container) {
+    resizeObserver.observe(container);
+  }
+}

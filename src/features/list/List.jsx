@@ -19,7 +19,14 @@ import EmptyList from "../../ui/EmptyList";
 import { sortList } from "../../constants/navlink";
 import SkeletonList from "../../ui/SkeletonList";
 
-function List({ purType, data, count = 0, isLoading, userpage = false }) {
+function List({
+  purType,
+  data,
+  count = 0,
+  isLoading,
+  userpage = false,
+  bmk = false,
+}) {
   const { mapView, setMapView } = useMapView();
   const { data: addressData } = useSearchbar();
   const location = useLocation();
@@ -116,18 +123,20 @@ function List({ purType, data, count = 0, isLoading, userpage = false }) {
                     ))}
                   </Select>
                 )}
-                <div className="hidden items-center gap-2 lg:flex">
-                  <span className="w-max font-lexend text-lg font-semibold">
-                    Bản đồ:
-                  </span>
-                  <Switch
-                    size="sm"
-                    onChange={() => setMapView((s) => !s)}
-                    isChecked={mapView}
-                    key={!userpage ? purType : Math.random()}
-                    colorScheme="green"
-                  />
-                </div>
+                {!bmk && (
+                  <div className="hidden items-center gap-2 lg:flex">
+                    <span className="w-max font-lexend text-lg font-semibold">
+                      Bản đồ:
+                    </span>
+                    <Switch
+                      size="sm"
+                      onChange={() => setMapView((s) => !s)}
+                      isChecked={mapView}
+                      key={!userpage ? purType : Math.random()}
+                      colorScheme="green"
+                    />
+                  </div>
+                )}
               </Flex>
             )}
           </div>
