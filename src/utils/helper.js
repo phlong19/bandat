@@ -65,6 +65,9 @@ export function parseCurrency(input) {
 
 // hidden last 3-digit of phone number
 export function hiddenLast3PhoneNum(input) {
+  if (!input) {
+    return "Không có SĐT";
+  }
   return "0" + input.toString().slice(0, 6) + "***";
 }
 
