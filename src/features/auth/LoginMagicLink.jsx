@@ -70,7 +70,7 @@ export default function LoginMagicLink() {
                 label="Email"
                 errors={errors}
                 hookForm={{
-                  ...register("Email", {
+                  ...register("email", {
                     required: "Chưa nhập email",
                   }),
                 }}

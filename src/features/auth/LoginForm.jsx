@@ -77,7 +77,7 @@ function LoginForm() {
                 label="Email"
                 errors={errors}
                 hookForm={{
-                  ...register("Email/SĐT", {
+                  ...register("emailOrPhone", {
                     required: "Cần nhập Email hoặc SĐT",
                   }),
                 }}
@@ -88,7 +88,7 @@ function LoginForm() {
                 label="Mật khẩu"
                 errors={errors}
                 hookForm={{
-                  ...register("Mật khẩu", {
+                  ...register("password", {
                     required: "Cần nhập mật khẩu",
                   }),
                 }}

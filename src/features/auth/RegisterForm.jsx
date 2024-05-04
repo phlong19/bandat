@@ -93,7 +93,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                   label="Họ và tên"
                   id="fullName"
                   hookForm={{
-                    ...register("Tên đầy đủ", {
+                    ...register("fullName", {
                       required: "Cần nhập tên đầy đủ",
                       minLength: { message: "Không đủ 8 ký tự", value: 8 },
                     }),
@@ -106,7 +106,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                   id="phone"
                   type="number"
                   hookForm={{
-                    ...register("Số điện thoại", {
+                    ...register("phone", {
                       required: account.requiredPhone,
                       minLength: phoneLength,
                       maxLength: phoneLength,
@@ -124,7 +124,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 setShowPassword={setShowPassword}
                 showPassword={showPassword}
                 hookForm={{
-                  ...register("Mật khẩu", {
+                  ...register("password", {
                     required: "Cần nhập mật khẩu",
                     minLength: { message: "Mật khẩu không đủ 8 ký tự", value: 8 },
                   }),
