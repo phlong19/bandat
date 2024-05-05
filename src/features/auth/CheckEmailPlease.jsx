@@ -55,7 +55,7 @@ function ResetPassword() {
               mx="auto"
               as={Link}
               to="/"
-              loadingText="Đang về trang chủ..."
+              loadingText="Loading..."
               colorScheme="green"
               leftIcon={<HiHome color={useColorModeValue("white", "darker")} />}
             >

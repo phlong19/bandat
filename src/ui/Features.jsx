@@ -25,8 +25,8 @@ function Features() {
   const color = useColorModeValue("gray.600", "gray.400");
   return (
     <Box p={4}>
-      <Stack spacing={4} as={Container} maxW={"3xl"} textAlign={"center"}>
-        <Heading fontSize={"3xl"} mt={3}>
+      {/* <Stack spacing={4} as={Container} maxW={"3xl"} textAlign={"center"}>
+       <Heading fontSize={"3xl"} mt={3}>
           cho nay co the list cmn ra tinh nang app luon
         </Heading>
         <Text color={color} fontSize={"xl"}>
@@ -50,7 +50,7 @@ function Features() {
             </HStack>
           ))}
         </SimpleGrid>
-      </Container>
+      </Container> */}
     </Box>
   );
 }

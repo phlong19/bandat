@@ -106,7 +106,7 @@ function VerifyPhone({ phoneNum }) {
                   mx="auto"
                   colorScheme="green"
                   isLoading={isPending}
-                  loadingText="Đang xác nhận..."
+                  loadingText="Loading..."
                   type="submit"
                 >
                   Xác nhận

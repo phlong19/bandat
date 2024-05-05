@@ -79,7 +79,7 @@ function EmailVerification() {
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
                 isLoading={isSending}
-                loadingText="Đang gửi..."
+                loadingText="Loading..."
                 colorScheme="green"
                 type="submit"
               >

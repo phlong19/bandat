@@ -82,21 +82,21 @@ export default function LoginMagicLink() {
                 w={{ base: "full", sm: "150px" }}
                 mx="auto"
                 isLoading={isPending}
-                loadingText="Đang gửi..."
+                loadingText="Loading..."
                 colorScheme="green"
                 type="submit"
               >
-                Gửi Request
+              Gửi Request
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>
-                  Chưa có tài khoản{" "}?
+                  Chưa có tài khoản? {" "}
                   <ChakraLink as={Link} to="/dang-ky" color={accent}>
                     Đăng ký ngay
                   </ChakraLink>
                 </Text>
                 <Text align={"center"}>
-                  Đã có tài khoản{" "}?
+                  Đã có tài khoản? {" "}
                   <ChakraLink as={Link} color={accent} to="/dang-nhap">
                     Đăng nhập
                   </ChakraLink>

@@ -3,19 +3,19 @@ import { Container, Text, Center, Box, SimpleGrid } from "@chakra-ui/react";
 const statData = [
   {
     label: "Số người đăng ký",
-    score: "3.2M",
+    score: "10+",
   },
   {
     label: "Số bài đăng đã được đăng tải",
-    score: "77k",
+    score: "120+",
   },
   {
     label: "Số căn nhà đã được giao dịch thành công",
-    score: "2.4k",
+    score: "10+",
   },
   {
     label: "Số lượng tin tức đã được đăng tải",
-    score: "17k",
+    score: "10+",
   },
 ];
 
@@ -26,7 +26,7 @@ function StatsCard() {
         <Box textAlign="center">
           <Text fontWeight="extrabold" fontSize="x-large" mb={2}>
             <Box as="span" display="inline-block" position="relative">
-              Được tin dùng bởi người sử dụng và doanh nghiệp
+              Được tin dùng bởi nhà môi giới và doanh nghiệp
               <Box
                 as="span"
                 display="block"
@@ -38,7 +38,7 @@ function StatsCard() {
             </Box>
           </Text>
           <Text>
-          LandHUB 
+          LandHub 
           </Text>
         </Box>
       </Center>

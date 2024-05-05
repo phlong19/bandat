@@ -110,7 +110,7 @@ function LoginForm() {
                   />
                 }
                 isLoading={isLoggingIn}
-                loadingText="Đang đăng nhập..."
+                loadingText="Loading..."
                 colorScheme="green"
                 type="submit"
               >
@@ -118,13 +118,13 @@ function LoginForm() {
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>
-                  Chưa có tài khoản{" "}?
+                  Chưa có tài khoản? {" "}
                   <ChakraLink as={Link} to="/dang-ky" color={accent}>
                     Đăng ký ngay
                   </ChakraLink>
                 </Text>
                 <Text align={"center"}>
-                  Bạn quên mật khẩu{" "}?
+                  Bạn quên mật khẩu? {" "}
                   <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
                   Trợ giúp
                   </ChakraLink>

@@ -47,7 +47,7 @@ export const error = {
   notVerifyEmail: "Chưa xác thực mail",
   notHavePhone: "Vui lòng cập nhật số điện thoại",
   duplicateEmail: "Địa chỉ email đã tồn tại",
-  cantSendEmailResetPassword: "Không thể gửi email",
+  cantSendEmailResetPassword: "Không thể gửi mail lúc này, vui lòng thử lại sau!",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng",
@@ -147,7 +147,7 @@ export const reform = {
   // helpers
   noPhone:
     "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
-  requiredDocs: "Vui lòng chọn ít nhất 1 tai lieu",
+  requiredDocs: "Vui lòng chọn ít nhất 1 tai liệu",
 
   // media
   overFile: "Vượt quá số lượng giới hạn file tải lên",
@@ -162,7 +162,7 @@ export const reform = {
 
   // button submit
   submit: "Submit",
-  save: "Save",
+  save: "Lưu",
   creating: "Đang tạo...",
   saving: "Đang lưu...",
 };
@@ -199,7 +199,7 @@ export const newsForm = {
   imgUrl: "Dán link ảnh tại đây",
   // actions
   submit: "Submit",
-  save: "Save",
+  save: "Lưu",
   creating: "Đang tạo...",
   saving: "Đang lưu...",
 };

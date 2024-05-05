@@ -142,7 +142,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 hookForm={{
                   ...register("confirmPassword", {
                     required: "Xác nhận mật khẩu",
-                    minLength: { message: "kh du 8", value: 8 },
+                    minLength: { message: "Không đủ 8 ký tự", value: 8 },
                     validate: (value) => {
                       return (
                         value === getValues("password") ||
@@ -158,20 +158,20 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 mx="auto"
                 colorScheme="green"
                 isLoading={isLoading}
-                loadingText="Vui lòng đợi..."
+                loadingText="Loading..."
                 type="submit"
               >
                 Đăng ký
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>
-                  Đã có tài khoản?{" "}?
+                  Đã có tài khoản? {" "}
                   <ChakraLink as={Link} color={accent} to="/dang-nhap">
                     Đăng nhập
                   </ChakraLink>
                 </Text>
                 <Text align={"center"}>
-                  Bạn quên mật khẩu?{" "}?
+                  Bạn quên mật khẩu? {" "}
                   <ChakraLink as={Link} color={accent} to="/quen-mat-khau">
                     Trợ giúp
                   </ChakraLink>

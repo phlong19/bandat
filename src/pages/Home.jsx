@@ -362,10 +362,10 @@ function Home() {
                           variant="outline"
                           size="sm"
                           isLoading={isPending}
-                          loadingText="Đang gửi..."
+                          loadingText="Loading..."
                           colorScheme="green"
                         >
-                          Send
+                          Gửi
                         </Button>
                       </ModalFooter>
                     </ModalContent>
