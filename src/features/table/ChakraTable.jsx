@@ -113,17 +113,20 @@ function ChakraTable({
               </Thead>
               <Tbody>{count > 0 && data.map(render)}</Tbody>
             </Table>
-            {count < 1 && (
-              <EmptyTable message={news ? newsForm.empty : emptyREList}>
-                {!news && (
-                  <Link to="/dang-tin">
-                    <Button colorScheme="green" variant="solid">
-                      Tạo bài đăng
-                    </Button>
-                  </Link>
-                )}
-              </EmptyTable>
-            )}
+            {count < 1 &&
+              (re ? (
+                <EmptyTable message={news ? newsForm.empty : emptyREList}>
+                  {!news && (
+                    <Link to="/dang-tin">
+                      <Button colorScheme="green" variant="solid">
+                        Tạo bài đăng
+                      </Button>
+                    </Link>
+                  )}
+                </EmptyTable>
+              ) : (
+                <EmptyTable message="Hãy thử thay đổi bộ lọc, từ khóa tìm kiếm" />
+              ))}
           </CardBody>
           {count > 0 && (
             <ChakraTablePagination

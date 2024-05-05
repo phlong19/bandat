@@ -10,24 +10,34 @@ import {
   Flex,
   Tooltip,
 } from "@chakra-ui/react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   MapContainer,
   Marker,
   Popup,
   TileLayer,
+  useMap,
   useMapEvents,
 } from "react-leaflet";
 import { resizeMap } from "../../utils/reuse";
 import { createPortal } from "react-dom";
 import { AiOutlineClear } from "react-icons/ai";
-import { Tb360, TbLock, TbLockOpen } from "react-icons/tb";
+import {
+  Tb360,
+  TbEyeOff,
+  TbEyeSearch,
+  TbLock,
+  TbLockOpen,
+} from "react-icons/tb";
 import toast from "react-hot-toast";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import "leaflet-geosearch/dist/geosearch.css";
 
 function MapLocationPick({ position, setPosition, edit }) {
   const [draggable, setDraggable] = useState(false);
   const originalPosition = useRef(edit ? position : null);
   const [isReady, setIsReady] = useState(false);
+  const [show, setShow] = useState(true);
   const mapRef = useRef(null);
   const id = useRef("map-reform");
   const classname = ".leaflet-control-zoom.leaflet-bar.leaflet-control";
@@ -73,10 +83,15 @@ function MapLocationPick({ position, setPosition, edit }) {
               isReady &&
               createPortal(
                 <Flex direction="column">
+                  <ControlIconButton
+                    border={false}
+                    label={`${show ? "Ẩn" : "Hiển thị"} thanh tìm kiếm`}
+                    icon={show ? <TbEyeSearch /> : <TbEyeOff />}
+                    onClick={() => setShow((s) => !s)}
+                  />
                   {position && (
                     <>
                       <ControlIconButton
-                        border={false}
                         label="Xóa tất cả đánh dấu"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -87,9 +102,7 @@ function MapLocationPick({ position, setPosition, edit }) {
                         icon={<AiOutlineClear />}
                       />
                       <ControlIconButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
+                        onClick={() => {
                           toggleDraggable();
                           toast.success(
                             !draggable
@@ -97,7 +110,7 @@ function MapLocationPick({ position, setPosition, edit }) {
                               : "Đã khóa vị trí",
                           );
                         }}
-                        label="Mở / Khóa đánh dấu"
+                        label={`${!draggable ? "Mở" : "Khóa"} đánh dấu`}
                         icon={draggable ? <TbLockOpen /> : <TbLock />}
                       />
                     </>
@@ -105,9 +118,7 @@ function MapLocationPick({ position, setPosition, edit }) {
                   {edit && (
                     <ControlIconButton
                       label="Đặt lại vị trí"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
+                      onClick={() => {
                         setPosition(originalPosition.current);
                         toast.success("Đã đặt lại vị trí về ban đầu");
                       }}
@@ -117,6 +128,7 @@ function MapLocationPick({ position, setPosition, edit }) {
                 </Flex>,
                 document.querySelector(classname),
               )}
+            {show && <SearchButton />}
             <DraggableMarker
               position={position}
               setPosition={setPosition}
@@ -182,7 +194,11 @@ function ControlIconButton({ onClick, icon, label, border = true }) {
         variant="solid"
         borderTop={border && "1px solid lightgrey"}
         zIndex={10000}
-        onClick={onClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          onClick();
+        }}
         _hover={{ bg: "#f4f4f4" }}
         color="black"
         rounded="none"
@@ -191,4 +207,30 @@ function ControlIconButton({ onClick, icon, label, border = true }) {
       />
     </Tooltip>
   );
+}
+
+function SearchButton() {
+  const provider = useMemo(() => new OpenStreetMapProvider(), []);
+  const searchControl = useMemo(
+    () =>
+      new GeoSearchControl({
+        provider,
+        style: "bar",
+        autoComplete: true,
+        autoCompleteDelay: 250,
+        showMarker: false,
+        searchLabel: "Nhập địa chỉ tìm kiếm",
+      }),
+    [provider],
+  );
+
+  const map = useMap();
+
+  useEffect(() => {
+    map.addControl(searchControl);
+
+    return () => map.removeControl(searchControl);
+  }, [map, searchControl]);
+
+  return null;
 }

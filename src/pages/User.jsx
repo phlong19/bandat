@@ -175,27 +175,29 @@ function User() {
                         Gửi Email
                       </Button>
                     </Link>
-                    <Link to={`tel:0${data.phone}`}>
-                      <Button
-                        leftIcon={<TbPhoneOutgoing fontSize="15" />}
-                        flex={1}
-                        fontSize={"xs"}
-                        rounded={"full"}
-                        bg={accent}
-                        color="light"
-                        boxShadow={
-                          "0px 1px 25px -5px rgb(82, 170, 94, 48%), 0 10px 10px -5px rgb(121,180,115, 48%)"
-                        }
-                        _hover={{
-                          bg: "green.400",
-                        }}
-                        _focus={{
-                          bg: "green.300",
-                        }}
-                      >
-                        0{data.phone}
-                      </Button>
-                    </Link>
+                    {data.phone && (
+                      <Link to={`tel:0${data.phone}`}>
+                        <Button
+                          leftIcon={<TbPhoneOutgoing fontSize="15" />}
+                          flex={1}
+                          fontSize={"xs"}
+                          rounded={"full"}
+                          bg={accent}
+                          color="light"
+                          boxShadow={
+                            "0px 1px 25px -5px rgb(82, 170, 94, 48%), 0 10px 10px -5px rgb(121,180,115, 48%)"
+                          }
+                          _hover={{
+                            bg: "green.400",
+                          }}
+                          _focus={{
+                            bg: "green.300",
+                          }}
+                        >
+                          0{data.phone}
+                        </Button>
+                      </Link>
+                    )}
                   </Stack>
                 </Box>
               </Center>

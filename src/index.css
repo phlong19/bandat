@@ -232,3 +232,10 @@ ul.slick-dots li.slick-active div#video-thumbnail {
 ul.contacts li::marker {
   color: var(--ql-color);
 }
+
+/* map picker control searchbar */
+.leaflet-control-geosearch.leaflet-geosearch-bar form input.glass,
+.leaflet-control-geosearch.leaflet-geosearch-bar form div.results {
+  color: black;
+  background-color: inherit;
+}

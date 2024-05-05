@@ -253,6 +253,9 @@ export function convertSexToText(id) {
 }
 
 export function getAge(input) {
+  if (!input) {
+    return;
+  }
   const date = new Date(input).getFullYear();
   const today = new Date();
   return String(today.getFullYear() - date);
