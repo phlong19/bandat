@@ -18,7 +18,15 @@ import { useApprovePost } from "./useApprovePost";
 import { useDeactivePost } from "./useDeactivePost";
 import { useDeletePost } from "./useDeletePost";
 
-function MenuActionRE({ userID, authorID, statusID, postID, slug, level }) {
+function MenuActionRE({
+  userID,
+  authorID,
+  statusID,
+  postID,
+  slug,
+  level,
+  purType,
+}) {
   const { approve } = useApprovePost();
   const { markSold } = useMarkSold();
   const { deactive } = useDeactivePost();
@@ -40,7 +48,7 @@ function MenuActionRE({ userID, authorID, statusID, postID, slug, level }) {
         statusID === SELLING_STATUS && (
           <ChakraMenuItemDialog
             color="blue.600"
-            action="Đánh dấu đã bán"
+            action={`Đánh dấu đã ${purType ? "bán" : "thuê"}`}
             icon={<LiaMoneyBillWaveSolid />}
             onAction={() => markSold(postID)}
           />
@@ -70,9 +78,7 @@ function MenuActionRE({ userID, authorID, statusID, postID, slug, level }) {
           color="red"
           action="Xóa"
           icon={<HiOutlineTrash />}
-          onAction={() => {
-            deletePost(postID, level, userID);
-          }}
+          onAction={() => deletePost(postID, level, userID)}
           warning
         />
       )}

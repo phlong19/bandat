@@ -10,6 +10,7 @@ import UserDashboardTable from "../features/dashboard/UserDashboardTable";
 import { useGetRE } from "../features/form/useGetRE";
 import { useAuth } from "../context/UserContext";
 import SkeletonREForm from "../ui/SkeletonREForm";
+import { EDITOR_LEVEL } from "../constants/anyVariables";
 
 function UserDashboard({ form = false }) {
   const activePage = window.location.pathname.includes("dang-tin")
@@ -34,6 +35,12 @@ function UserDashboard({ form = false }) {
       document.title = "Chi tiết bài viết " + post.name;
     }
   }, [post, navigate, isFetching, title, activePage]);
+
+  useEffect(() => {
+    if (level == EDITOR_LEVEL) {
+      return navigate("/quan-ly-tin-tuc");
+    }
+  }, [level, navigate]);
 
   if (isLoading) {
     return (

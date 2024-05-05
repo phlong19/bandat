@@ -45,12 +45,14 @@ function Action({ onClose }) {
         <div className="flex items-center">
           <ChakraPopover title="Tài khoản" avatar data={data}>
             <div className="flex flex-col gap-2.5">
-              <NavLink to="/quan-ly-bai-viet" className="user-item">
-                <span className="text-xl">
-                  <RiListSettingsLine />
-                </span>
-                Quản lý bài viết
-              </NavLink>
+              {level != EDITOR_LEVEL && (
+                <NavLink to="/quan-ly-bai-viet" className="user-item">
+                  <span className="text-xl">
+                    <RiListSettingsLine />
+                  </span>
+                  Quản lý bài viết
+                </NavLink>
+              )}
               <NavLink to="/tai-khoan" className="user-item">
                 <span className="text-xl">
                   <FaRegCircleUser />

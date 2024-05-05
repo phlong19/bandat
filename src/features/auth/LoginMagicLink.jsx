@@ -56,7 +56,7 @@ export default function LoginMagicLink() {
               <Logo size="w-40" />
             </Box>
             <Heading fontSize={"2xl"} textAlign={"center"}>
-              dang nhap bang email
+              Đăng nhập bằng email
             </Heading>
           </Stack>
           <Box
@@ -71,7 +71,7 @@ export default function LoginMagicLink() {
                 errors={errors}
                 hookForm={{
                   ...register("email", {
-                    required: "nhap email vao",
+                    required: "Chưa nhập email",
                   }),
                 }}
                 id="email"
@@ -86,7 +86,7 @@ export default function LoginMagicLink() {
                 colorScheme="green"
                 type="submit"
               >
-                Gửi request
+                Gửi link
               </Button>
               <Stack pt={4}>
                 <Text align={"center"}>

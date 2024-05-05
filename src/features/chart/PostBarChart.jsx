@@ -37,7 +37,7 @@ function PostBarChart({ isFetchingAllData, allData = [] }) {
       // the data fetched already sorted, so just take the first one as start, the last as end
       setDateRange([
         new Date(allData?.[0]?.created_at),
-        new Date(allData?.slice(-1)?.[0].created_at),
+        new Date(allData?.slice(-1)?.[0]?.created_at),
       ]);
     }
   }, [isFetchingAllData, allData]);

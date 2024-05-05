@@ -46,7 +46,7 @@ function RegisterFormV1() {
     if (check) {
       signup(data);
     } else {
-      toast.error("mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so");
+      return toast.error("mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so");
     }
   }
 
@@ -54,7 +54,7 @@ function RegisterFormV1() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full"
-      key={Math.random()}
+      // key={Math.random()}
     >
       <Flex
         mx="auto"
@@ -77,7 +77,7 @@ function RegisterFormV1() {
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              để bắt đầu sử dụng dịch vụ của Landhub ✌️
+              Để bắt đầu sử dụng dịch vụ của LandHub ✌️
             </Text>
           </Stack>
           <Box
@@ -93,8 +93,8 @@ function RegisterFormV1() {
                   id="fullName"
                   hookForm={{
                     ...register("fullName", {
-                      required: "ten may la gi",
-                      minLength: { message: "deo du 8 ky tu", value: 8 },
+                      required: "Cần nhập tên đầy đủ",
+                      minLength: { message: "Ít nhất 8 ký tự", value: 8 },
                     }),
                   }}
                   errors={errors}
@@ -102,7 +102,7 @@ function RegisterFormV1() {
 
                 <FormInput
                   label="Email"
-                  id="phone"
+                  id="email"
                   type="email"
                   hookForm={{
                     ...register("email", {
@@ -121,8 +121,11 @@ function RegisterFormV1() {
                 showPassword={showPassword}
                 hookForm={{
                   ...register("password", {
-                    required: "nhap cmm mat khau vao",
-                    minLength: { message: "kh du 8", value: 8 },
+                    required: "Cần nhập mật khẩu",
+                    minLength: {
+                      message: "Mật khẩu không đủ 8 ký tự",
+                      value: 8,
+                    },
                   }),
                 }}
                 errors={errors}
@@ -137,12 +140,12 @@ function RegisterFormV1() {
                 errors={errors}
                 hookForm={{
                   ...register("confirmPassword", {
-                    required: "dm kh xac nhan mk ak",
-                    minLength: { message: "kh du 8", value: 8 },
+                    required: "Xác nhận mật khẩu",
+                    minLength: { message: "Không đủ 8 ký tự", value: 8 },
                     validate: (value) => {
                       return (
                         value === getValues("password") ||
-                        "Password does not match"
+                        "Mật khẩu nhập không khớp"
                       );
                     },
                   }),

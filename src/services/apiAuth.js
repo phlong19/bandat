@@ -1,6 +1,6 @@
 import supabase from "./supabase";
 import validator from "validator";
-import { landhub, local, USER_LEVEL } from "../constants/anyVariables";
+import { landhub, USER_LEVEL } from "../constants/anyVariables";
 import { error as errorMessage } from "../constants/message";
 import { addDays } from "date-fns";
 
@@ -179,7 +179,10 @@ export async function resendSMSAPI(phone) {
 export async function sendMagicLink(email) {
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: `${landhub}/tai-khoan` },
+    options: {
+      emailRedirectTo: `${landhub}/tai-khoan`,
+      shouldCreateUser: false,
+    },
     // options: { emailRedirectTo: `${local}/tai-khoan` },
   });
 

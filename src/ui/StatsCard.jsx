@@ -1,21 +1,22 @@
 import { Container, Text, Center, Box, SimpleGrid } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 
 const statData = [
   {
-    label: "Weekly downloads",
-    score: "3.2M",
+    label: "Người dùng hoạt động",
+    score: "1tr+",
   },
   {
-    label: "Stars on GitHub",
-    score: "77k",
+    label: "Bài đăng BĐS",
+    score: "12k+",
   },
   {
-    label: "Contributors",
-    score: "2.4k",
+    label: "Số BĐS giao dịch thành công",
+    score: "1k+",
   },
   {
-    label: "Followers on Twitter",
-    score: "17k",
+    label: "Số tin tức đã đăng tải",
+    score: "500+",
   },
 ];
 
@@ -26,21 +27,18 @@ function StatsCard() {
         <Box textAlign="center">
           <Text fontWeight="extrabold" fontSize="x-large" mb={2}>
             <Box as="span" display="inline-block" position="relative">
-              Trusted by Developers
+              LandHub
               <Box
                 as="span"
                 display="block"
                 position="absolute"
-                bg={"blue.600"}
+                bg={"green.500"}
                 w={"100%"}
                 h={"1px"}
               />
             </Box>
           </Text>
-          <Text>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
-          </Text>
+          <Text>Được tin dùng bởi nhà môi giới và doanh nghiệp</Text>
         </Box>
       </Center>
       <SimpleGrid
@@ -51,9 +49,18 @@ function StatsCard() {
       >
         {statData.map((data, i) => (
           <Box key={i} p={{ base: 2, sm: 5 }} textAlign="center">
-            <Text fontWeight="extrabold" fontSize="xx-large">
+            <motion.p
+              initial={{ y: "50px", scale: 0.5, opacity: 0 }}
+              animate={{
+                transition: { duration: 0.8 },
+                opacity: 1,
+                y: "0",
+                scale: 1,
+              }}
+              className="text-[32px] font-extrabold"
+            >
               {data.score}
-            </Text>
+            </motion.p>
             <Text fontSize="sm">{data.label}</Text>
           </Box>
         ))}

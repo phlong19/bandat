@@ -67,6 +67,7 @@ function NewDetails() {
     slug,
   } = data;
 
+  const appId = import.meta.env.VITE_APPID;
   const link = window.location.href;
 
   async function handleCopy(e) {
@@ -161,7 +162,7 @@ function NewDetails() {
                   </Tooltip>
                   {/* messenger */}
                   <Tooltip label="Chia sẻ qua Messenger">
-                    <FacebookMessengerShareButton url={link}>
+                    <FacebookMessengerShareButton appId={appId} url={link}>
                       <Image
                         src="/messenger.png"
                         boxSize={8}

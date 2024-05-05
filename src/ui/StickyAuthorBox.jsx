@@ -44,6 +44,8 @@ function StickyAuthorBox({ postID, author }) {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const check = checkExist(postID);
+  const appId = import.meta.env.VITE_APPID;
+  const link = window.location.href;
 
   async function handleClick(e) {
     e.stopPropagation();
@@ -136,7 +138,7 @@ function StickyAuthorBox({ postID, author }) {
         <HStack py={{ base: 1, md: 3, lg: 3.5 }}>
           {/* fb */}
           <Tooltip label="Chia sẻ lên Facebook">
-            <FacebookShareButton url={window.location.href}>
+            <FacebookShareButton url={link}>
               <FacebookIcon
                 round
                 size={30}
@@ -146,7 +148,7 @@ function StickyAuthorBox({ postID, author }) {
           </Tooltip>
           {/* messenger */}
           <Tooltip label="Chia sẻ qua Messenger">
-            <FacebookMessengerShareButton url={window.location.href}>
+            <FacebookMessengerShareButton appId={appId} url={link}>
               <Image
                 src="/messenger.png"
                 boxSize={8}

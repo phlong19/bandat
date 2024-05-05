@@ -68,7 +68,7 @@ function EmailVerification() {
                 errors={errors}
                 hookForm={{
                   ...register("email", {
-                    required: "nhap email vao",
+                    required: "Chưa nhập email",
                   }),
                 }}
                 id="email"
@@ -85,9 +85,6 @@ function EmailVerification() {
               >
                 Gửi mã xác nhận
               </Button>
-              <Stack pt={4}>
-                <Text align={"center"}>bộ đếm ngược gửi lại mã here</Text>
-              </Stack>
             </Stack>
           </Box>
         </Stack>

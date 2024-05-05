@@ -65,7 +65,7 @@ function ModalPhone({ phone, isConfirmed, color, id }) {
 
   async function onSubmit(formData) {
     if (formData?.phone.toString().length !== phoneLength) {
-      toast.error("khong phai sdt viet nam");
+      return toast.error("Không đúng số điện thoại Việt Nam");
     }
     mutate(
       { ...formData, userID: id },
@@ -147,12 +147,7 @@ function ModalPhone({ phone, isConfirmed, color, id }) {
         </Flex>
       </Flex>
 
-      <Modal
-        isCentered
-        isOpen={isOpen}
-        onClose={handleClose}
-        size="md"
-      >
+      <Modal isCentered isOpen={isOpen} onClose={handleClose} size="md">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Thay đổi số điện thoại</ModalHeader>
@@ -163,7 +158,7 @@ function ModalPhone({ phone, isConfirmed, color, id }) {
                 <InputGroup>
                   <Input
                     {...register("phone", {
-                      required: "vui long nhap so dien thoai",
+                      required: "Không bỏ trống trường này",
                     })}
                     onChange={(e) => {
                       invalid = false;
@@ -193,7 +188,9 @@ function ModalPhone({ phone, isConfirmed, color, id }) {
                   </InputRightElement>
                 </InputGroup>
                 {errors.phone && (
-                  <FormErrorMessage ml={1} fontSize='xs'>{errors.phone.message}</FormErrorMessage>
+                  <FormErrorMessage ml={1} fontSize="xs">
+                    {errors.phone.message}
+                  </FormErrorMessage>
                 )}
               </FormControl>
             </form>

@@ -153,6 +153,14 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+                    <Route
+                      path="role-management"
+                      element={
+                        <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                          <AdminPanel />
+                        </ProtectedRoute>
+                      }
+                    />
                   </Route>
 
                   {/* 404 & unauthorized */}

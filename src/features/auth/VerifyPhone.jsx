@@ -63,7 +63,7 @@ function VerifyPhone({ phoneNum }) {
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              nhập mã 6 số được gửi về thiết bị 📱
+              Nhập mã 6 số được gửi về thiết bị 📱
             </Text>
           </Stack>
 

@@ -9,7 +9,7 @@ import TypePieChart from "../chart/TypePieChart";
 import { useGetREPostData } from "../chart/useGetREPostData";
 
 import { useGetFullList } from "./useGetFullList";
-import { reCaptions } from "../../constants/anyVariables";
+import { EDITOR_LEVEL, reCaptions } from "../../constants/anyVariables";
 
 function UserDashboardTable({ id, level }) {
   const [query, setQuery] = useState("");
@@ -19,28 +19,30 @@ function UserDashboardTable({ id, level }) {
     count: total,
     isLoading: isFetching,
     refetch,
-  } = useGetREPostData();
+  } = useGetREPostData(id, level);
 
   return (
     <Flex flexDirection="column" gap={5}>
-      <SimpleGrid
-        columns={2}
-        gap={2}
-        h={350}
-        minH={350}
-        maxH={350}
-        mb={{ lg: 14, xl: 8 }}
-      >
-        {/* chart 1 */}
-        <PostBarChart allData={data} isFetchingAllData={isFetching} />
-        {/* chart 2 */}
-        <TypePieChart
-          count={total}
-          data={data}
-          isLoading={isFetching}
-          refetch={refetch}
-        />
-      </SimpleGrid>
+      {level != EDITOR_LEVEL && total > 0 && (
+        <SimpleGrid
+          columns={2}
+          gap={2}
+          h={350}
+          minH={350}
+          maxH={350}
+          mb={{ lg: 14, xl: 8 }}
+        >
+          {/* chart 1 */}
+          <PostBarChart allData={data} isFetchingAllData={isFetching} />
+          {/* chart 2 */}
+          <TypePieChart
+            count={total}
+            data={data}
+            isLoading={isFetching}
+            refetch={refetch}
+          />
+        </SimpleGrid>
+      )}
 
       {/* table */}
       <ChakraTable

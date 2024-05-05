@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  useDisclosure,
-  ModalOverlay,
-  Modal,
-  ModalBody,
-  Box,
-  Spinner,
-  ModalContent,
-} from "@chakra-ui/react";
+import { useDisclosure, Box } from "@chakra-ui/react";
 
 import NewsFormModal from "../form/news/NewsFormModal";
 import ChakraTable from "../table/ChakraTable";

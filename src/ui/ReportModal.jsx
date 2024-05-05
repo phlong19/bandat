@@ -128,7 +128,6 @@ function ReportModal({ postID, isOpen, onClose }) {
                   size="sm"
                   borderRadius="5px"
                   placeholder="Nguyen Van A"
-                  value="phan test final"
                 />
                 {errors.name && (
                   <FormErrorMessage>{errors.name.message}</FormErrorMessage>
@@ -139,7 +138,6 @@ function ReportModal({ postID, isOpen, onClose }) {
 
                 <Input
                   size="sm"
-                  value="0846134872"
                   borderRadius="5px"
                   {...register("phone", {
                     required: "dien sdt",
@@ -154,7 +152,6 @@ function ReportModal({ postID, isOpen, onClose }) {
             <FormControl isInvalid={errors.email}>
               <FormLabel fontSize="sm">Email</FormLabel>
               <Input
-                value="nguyenvana@gmail.com"
                 placeholder="nguyenvana@gmail.com"
                 borderRadius="5px"
                 size="sm"
