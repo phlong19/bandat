@@ -20,6 +20,12 @@ import {
   Flex,
   Badge,
   Text,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  Box,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 
 // UI
@@ -61,6 +67,7 @@ import MapLocationPick from "./MapLocationPick";
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
   // other states and derived states goes here
   const [purType, setPurType] = useState(true);
+  const accent = useColorModeValue("primary", "secondary");
   const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
@@ -222,7 +229,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             </Text>
             <Badge
               colorScheme={badgeColor}
-              fontSize="sm"
+              fontSize="xs"
               p="3px 10px"
               borderRadius="lg"
               textTransform="capitalize"
@@ -237,185 +244,236 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           html={`<span className="text-red-500 ml-1">*</span>`}
         />
         <VStack gap={3} my={3}>
-          {/* purType & re type */}
-          <Grid templateColumns="repeat(2, 1fr)" gap={3} w="100%">
-            <FormControl isRequired>
-              <FormLabel>Dạng bán</FormLabel>
-              <Select
-                onChange={(e) => setPurType(e.target.value === "true")}
-                value={editData?.purType}
-              >
-                <option value="true">Bán</option>
-                <option value="false">Cho thuê</option>
-              </Select>
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Loại hình</FormLabel>
-              <Select {...register("reType")} value={editData?.type.type}>
-                {arr.map((opt) => (
-                  <option value={opt.type} key={opt.type}>
-                    {opt.title}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          {/* address */}
-          <AddressSelect
-            isForm
-            cityID={cityID}
-            disID={disID}
-            wardID={wardID}
-            setCityID={setCityID}
-            setDisID={setDisID}
-            setWardID={setWardID}
-          />
-          {/* address - details */}
-          <FormControl isRequired>
-            <FormLabel>Địa chỉ cụ thể</FormLabel>
-            <Input
-              type="text"
-              placeholder="Số nhà - Ngõ - Ngách"
-              {...register("address")}
-            />
-          </FormControl>
-          {/* map location picker */}
-          <MapLocationPick
-            edit={edit}
-            position={position}
-            setPosition={setPosition}
-          />
-
-          {/* title */}
-          <NameInput
-            register={register("name", {
-              required: reform.missingName,
-              value: editData?.name,
-              minLength: { value: minLength, message: reform.nameTooShort },
-              maxLength: {
-                value: maxLength,
-                message: reform.nameTooLong,
-              },
-            })}
-            postId={editData?.id}
-            error={errors.name}
-          />
-          {/* area & price */}
-          <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
-            <ChakraNumberInput
-              register={register}
-              error={errors.area}
-              label="Diện tích"
-              name="area"
-              req={true}
-              placeholder={m2}
-              value={editData?.area}
-            />
-
-            <FormControl isRequired isInvalid={errors.price}>
-              <FormLabel>{`Giá trị ${
-                purType ? "bán" : "thuê / tháng"
-              }`}</FormLabel>
-              <Controller
-                name="price"
-                control={control}
-                rules={{
-                  required: reform.requiredMessage,
-                }}
-                render={({ field: { onChange } }) => (
-                  <Input
-                    as={NumericFormat}
-                    prefix="₫"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    onChange={onChange}
-                    defaultValue={editData?.price}
+          <Accordion w="full" allowMultiple>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box
+                    as="span"
+                    fontWeight={600}
+                    color={accent}
+                    flex="1"
+                    textAlign="left"
+                  >
+                    1. Địa chỉ BĐS
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={3}>
+                <VStack gap={3}>
+                  {/* purType & re type */}
+                  <Grid templateColumns="repeat(2, 1fr)" gap={3} w="100%">
+                    <FormControl isRequired>
+                      <FormLabel>Dạng bán</FormLabel>
+                      <Select
+                        onChange={(e) => setPurType(e.target.value === "true")}
+                        value={editData?.purType}
+                      >
+                        <option value="true">Bán</option>
+                        <option value="false">Cho thuê</option>
+                      </Select>
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel>Loại hình</FormLabel>
+                      <Select
+                        {...register("reType")}
+                        value={editData?.type.type}
+                      >
+                        {arr.map((opt) => (
+                          <option value={opt.type} key={opt.type}>
+                            {opt.title}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  {/* address */}
+                  <AddressSelect
+                    isForm
+                    cityID={cityID}
+                    disID={disID}
+                    wardID={wardID}
+                    setCityID={setCityID}
+                    setDisID={setDisID}
+                    setWardID={setWardID}
                   />
-                )}
-              />
-              {errors.price && (
-                <FormErrorMessage>{errors.price.message}</FormErrorMessage>
-              )}
-            </FormControl>
-          </Grid>
+                  {/* address - details */}
+                  <FormControl isRequired>
+                    <FormLabel>Địa chỉ cụ thể</FormLabel>
+                    <Input
+                      type="text"
+                      placeholder="Số nhà - Ngõ - Ngách"
+                      {...register("address")}
+                    />
+                  </FormControl>
+                  {/* map location picker */}
+                  <MapLocationPick
+                    edit={edit}
+                    position={position}
+                    setPosition={setPosition}
+                  />
+                </VStack>
+              </AccordionPanel>
+            </AccordionItem>
 
-          {/* documents */}
-          <DocumentCheckBoxes
-            setDocs={setDocs}
-            value={existedDocs}
-            deleteDocsRef={deleteDocsRef}
-            addDocsRef={addDocsRef}
-            edit={edit}
-          />
+            <AccordionItem>
+              <AccordionButton>
+                <Heading
+                  w="full"
+                  color={accent}
+                  fontWeight={600}
+                  as="h2"
+                  fontSize="md"
+                  fontFamily="lexend"
+                  textAlign="left"
+                >
+                  2. Các thông tin chính
+                </Heading>
+                <AccordionIcon />
+              </AccordionButton>
 
-          {/* other fields */}
-          <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-            <ChakraNumberInput
-              register={register}
-              error={errors.bed_room}
-              label="Số phòng ngủ"
-              name="bed_room"
-              value={editData?.bed_room}
-              req
-            />
+              <AccordionPanel>
+                <VStack gap={3}>
+                  {/* title */}
+                  <NameInput
+                    register={register("name", {
+                      required: reform.missingName,
+                      value: editData?.name,
+                      minLength: {
+                        value: minLength,
+                        message: reform.nameTooShort,
+                      },
+                      maxLength: {
+                        value: maxLength,
+                        message: reform.nameTooLong,
+                      },
+                    })}
+                    postId={editData?.id}
+                    error={errors.name}
+                  />
+                  {/* area & price */}
+                  <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
+                    <ChakraNumberInput
+                      register={register}
+                      error={errors.area}
+                      label="Diện tích"
+                      name="area"
+                      req={true}
+                      placeholder={m2}
+                      value={editData?.area}
+                    />
 
-            <ChakraNumberInput
-              register={register}
-              error={errors.bath_room}
-              label="Số phòng vệ sinh"
-              name="bath_room"
-              value={editData?.bath_room}
-              req
-            />
+                    <FormControl isRequired isInvalid={errors.price}>
+                      <FormLabel>{`Giá trị ${
+                        purType ? "bán" : "thuê / tháng"
+                      }`}</FormLabel>
+                      <Controller
+                        name="price"
+                        control={control}
+                        rules={{
+                          required: reform.requiredMessage,
+                        }}
+                        render={({ field: { onChange } }) => (
+                          <Input
+                            as={NumericFormat}
+                            prefix="₫"
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            onChange={onChange}
+                            defaultValue={editData?.price}
+                          />
+                        )}
+                      />
+                      {errors.price && (
+                        <FormErrorMessage>
+                          {errors.price.message}
+                        </FormErrorMessage>
+                      )}
+                    </FormControl>
+                  </Grid>
 
-            <ChakraNumberInput
-              register={register}
-              error={errors.floor}
-              label="Số lượng tầng"
-              name="floor"
-              value={editData?.floor}
-            />
-          </Grid>
-          <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-            <ChakraNumberInput
-              register={register}
-              name="facade"
-              error={errors.facade}
-              label="Mặt tiền"
-              value={editData?.facade}
-            />
+                  {/* documents */}
+                  <DocumentCheckBoxes
+                    setDocs={setDocs}
+                    value={existedDocs}
+                    deleteDocsRef={deleteDocsRef}
+                    addDocsRef={addDocsRef}
+                    edit={edit}
+                  />
 
-            <ChakraNumberInput
-              register={register}
-              error={errors.entryLength}
-              label="Đường vào"
-              name="entryLength"
-              value={editData?.entryLength}
-            />
+                  {/* other fields */}
+                  <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
+                    <ChakraNumberInput
+                      register={register}
+                      error={errors.bed_room}
+                      label="Số phòng ngủ"
+                      name="bed_room"
+                      value={editData?.bed_room}
+                      req
+                    />
 
-            <FormControl>
-              <FormLabel>Hướng nhà</FormLabel>
-              <Select
-                {...register("direction")}
-                defaultValue={editData?.direction}
-              >
-                {directions.map((dir) => (
-                  <option value={dir} key={dir}>
-                    {dir}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Flex w="100%">
-            <Checkbox
-              size="md"
-              {...register("fur")}
-              defaultChecked={editData?.fur}
-            >
-              Bất động sản có bao gồm nội thất?
-            </Checkbox>
-          </Flex>
+                    <ChakraNumberInput
+                      register={register}
+                      error={errors.bath_room}
+                      label="Số phòng vệ sinh"
+                      name="bath_room"
+                      value={editData?.bath_room}
+                      req
+                    />
+
+                    <ChakraNumberInput
+                      register={register}
+                      error={errors.floor}
+                      label="Số lượng tầng"
+                      name="floor"
+                      value={editData?.floor}
+                    />
+                  </Grid>
+                  <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
+                    <ChakraNumberInput
+                      register={register}
+                      name="facade"
+                      error={errors.facade}
+                      label="Mặt tiền"
+                      value={editData?.facade}
+                    />
+
+                    <ChakraNumberInput
+                      register={register}
+                      error={errors.entryLength}
+                      label="Đường vào"
+                      name="entryLength"
+                      value={editData?.entryLength}
+                    />
+
+                    <FormControl>
+                      <FormLabel>Hướng nhà</FormLabel>
+                      <Select
+                        {...register("direction")}
+                        defaultValue={editData?.direction}
+                      >
+                        {directions.map((dir) => (
+                          <option value={dir} key={dir}>
+                            {dir}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Flex w="100%">
+                    <Checkbox
+                      size="md"
+                      {...register("fur")}
+                      defaultChecked={editData?.fur}
+                    >
+                      Bất động sản có bao gồm nội thất?
+                    </Checkbox>
+                  </Flex>
+                </VStack>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
           {/* des */}
           <FormControl isRequired isInvalid={errors.des}>
             <FormLabel>Mô tả chi tiết</FormLabel>

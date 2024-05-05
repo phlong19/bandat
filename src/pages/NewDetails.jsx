@@ -101,7 +101,7 @@ function NewDetails() {
           <div className="">
             <div className="pb-4 lg:max-w-[1000px]">
               <div className="mt-5 font-lexend text-base font-medium">
-                <p>{summary}</p>
+                <p className="italic">{summary}</p>
               </div>
               <div className="flex items-center gap-1.5 pt-5">
                 <Avatar avatar={avatar} fullName={fullName} badge={false} />
@@ -117,7 +117,9 @@ function NewDetails() {
                     })}{" "}
                     lúc {getTime(created_at)}
                   </p>
-                  <p className="text-xs">Vào ngày {formatDate(created_at, "d MMMM, yyyy")}</p>
+                  <p className="text-xs">
+                    Vào ngày {formatDate(created_at, "d MMMM, yyyy")}
+                  </p>
                 </div>
               </div>
               <div className="mt-5">{parse(content)}</div>

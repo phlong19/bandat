@@ -6,6 +6,7 @@ import {
   ModalBody,
   Box,
   Spinner,
+  ModalContent,
 } from "@chakra-ui/react";
 
 import NewsFormModal from "../form/news/NewsFormModal";
@@ -30,31 +31,23 @@ function EditorDashboardTable({ id }) {
     <Box gap={4} display="flex" flexDirection="column">
       <ChakraBreadcrumb page="Quản lý tin tức" />
       <ChakraTable
-        isLoading={isLoading || isFetching}
+        isLoading={isFetching}
         data={data}
         captions={newsCaptions}
         render={(item) => (
           <TableNewRow data={item} key={item.id} setSlug={setSlug} />
         )}
         primaryButton={
-          isLoading ? (
-            <Modal size="full">
-              <ModalOverlay />
-              <ModalBody>
-                <Spinner />
-              </ModalBody>
-            </Modal>
-          ) : (
-            <NewsFormModal
-              editData={newData}
-              edit={Boolean(slug)}
-              isOpen={isOpen || Boolean(slug)}
-              onOpen={onOpen}
-              onClose={onClose}
-              setSlug={setSlug}
-              key={newData?.id || "new"}
-            />
-          )
+          <NewsFormModal
+            isLoading={isLoading}
+            editData={newData}
+            edit={Boolean(slug)}
+            isOpen={isOpen || Boolean(slug)}
+            onOpen={onOpen}
+            onClose={onClose}
+            setSlug={setSlug}
+            key={newData?.id || "new"}
+          />
         }
         title="Quản lý danh sách tin tức"
         count={count}

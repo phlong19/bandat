@@ -8,7 +8,7 @@ export function useGetREPostData() {
     refetch,
   } = useQuery({
     queryKey: ["REPost-chart"],
-    queryFn: () => getPostData(null, null),
+    queryFn: () => getPostData(),
     staleTime: 60 * 1000,
   });
 
