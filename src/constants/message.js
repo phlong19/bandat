@@ -21,7 +21,7 @@ export const homeText = [
   1000,
   "Với vị trí thuận tiện?",
   1000,
-  "Hãy cùng tìm kiếm ngôi nhà lý tưởng của bạn",
+  "Hãy cùng tìm kiếm nhé 😁",
   1000,
 ];
 

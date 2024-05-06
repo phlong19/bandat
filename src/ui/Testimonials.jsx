@@ -66,26 +66,23 @@ export default Testimonials;
 // fake
 const data = [
   {
-    message: ` We had an incredible experience working with Chakra Templates and
-  were impressed they made such a big difference in only three weeks.
-  Our team is so grateful for the wonderful improvements they made and
-  their ability to get familiar with the product concept so quickly.`,
+    message: `Nhà đẹp đến mức tôi không muốn làm phim nữa`,
     avatar:
-      "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
-    name: "Jenny Wilson",
-    role: "Vice President",
+      "https://upload.wikimedia.org/wikipedia/commons/2/2a/Tr%E1%BA%A5n_Th%C3%A0nh_191226.png",
+    name: "Trấn Thành",
+    role: "Đạo diễn - Diễn viên - Nhà từ thiện - MC",
   },
   {
-    message: `Doraemon is a fictional character in the Japanese manga and anime series of the same name created by Fujiko F. Fujio. Doraemon is a male robotic earless cat that travels back in time from the 22nd century to aid a preteen boy named Nobita.`,
-    avatar: "https://cdn.popsww.com/blog/sites/2/2021/03/doraemon-tap-97.jpg",
-    name: "duy phan",
-    role: "Vice President",
+    message: `Ừ anh sai! Thì anh sai! Nhưng mà anh sai vì anh đã không biết đến LandHub sớm hơn`,
+    avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSy1ITM85XGB06bZWO9PzGXc2Le8y2IvRFmrsPlxeMCg&s",
+    name: "Thắng",
+    role: "Ca sĩ",
   },
   {
-    message: `Bún chả Hương Liên là một món ăn ngon và đặc trưng của Việt Nam, và tôi có thể nhớ lại kỷ niệm thú vị khi thưởng thức món này tại Hà Nội trong chuyến thăm của mình vào năm 2016. Tôi có thể nhấn mạnh về ý nghĩa của việc thưởng thức ẩm thực và gặp gỡ văn hóa trong quá trình thăm đất nước bạn bè như Việt Nam.`,
+    message: `Thay vì tốn 60 tỷ và 5 triệu tiền nuôi con thà mua mấy căn nhà của LandHub còn hơn`,
     avatar:
-      "https://cdn.britannica.com/43/172743-138-545C299D/overview-Barack-Obama.jpg?w=800&h=450&c=crop",
-    name: "Barrack Obama",
-    role: "Former US President",
+      "https://images2.thanhnien.vn/zoom/686_429/Uploaded/haoph/2021_10_21/jack-va-thien-an-5805.jpeg",
+    name: "Trịnh Trần Phương Tuấn (J97)",
+    role: "Ca sĩ - Nhạc sĩ - Cầu thủ",
   },
 ];

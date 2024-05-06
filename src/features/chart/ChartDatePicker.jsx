@@ -10,6 +10,7 @@ import { RangeDatepicker } from "chakra-dayzed-datepicker";
 
 function ChartDatePicker({
   count,
+  status,
   purType,
   dateRange,
   setDateRange,
@@ -17,7 +18,6 @@ function ChartDatePicker({
 }) {
   const accent = useColorModeValue("primary", "secondary");
   const title = purType ? "Bán" : "Cho thuê";
-
   const props = useMemo(
     () => ({
       dayOfMonthBtnProps: {
@@ -93,7 +93,8 @@ function ChartDatePicker({
           Dữ liệu bài đăng theo dạng bán
         </Heading>
         <Text pr={18}>
-          Số bài đăng {title} BĐS : {count || "---"}
+          Số bài đăng {title} BĐS : {count || "---"}<br></br>
+          Số bài đăng đã {title} BĐS : {count || "---"}
         </Text>
       </Flex>
       <Flex gap={1.5} justify="center" w="full">

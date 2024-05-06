@@ -5,19 +5,19 @@ import { useRef } from "react";
 const statData = [
   {
     label: "Số người đăng ký",
-    score: "10+",
+    score: "20+",
   },
   {
     label: "Số bài đăng đã được đăng tải",
-    score: "120+",
+    score: "130+",
   },
   {
     label: "Số căn nhà đã được giao dịch thành công",
-    score: "10+",
+    score: "100+",
   },
   {
     label: "Số lượng tin tức đã được đăng tải",
-    score: "10+",
+    score: "20+",
   },
 ];
 
@@ -28,7 +28,7 @@ function StatsCard() {
         <Box textAlign="center">
           <Text fontWeight="extrabold" fontSize="x-large" mb={2}>
             <Box as="span" display="inline-block" position="relative">
-              Được tin dùng bởi nhà môi giới và doanh nghiệp
+              Được tin dùng bởi các nhà môi giới và doanh nghiệp
               <Box
                 as="span"
                 display="block"

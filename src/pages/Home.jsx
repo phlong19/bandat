@@ -166,12 +166,11 @@ function Home() {
                   alignSelf={"flex-start"}
                   rounded={"md"}
                 >
-                  Our Story
+                Tiêu chí
                 </Text>
-                <Heading>A digital Product design agency</Heading>
+                <Heading>Đặt quyền lợi của người dùng lên đầu</Heading>
                 <Text color={"gray.500"} fontSize={"lg"}>
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                  diam nonumy eirmod tempor invidunt ut labore
+                LandHub được xây dựng theo 3 tiêu chí lớn
                 </Text>
                 <Stack
                   spacing={4}
@@ -189,18 +188,18 @@ function Home() {
                   <StoryText
                     bg={useColorModeValue("yellow.100", "yellow.900")}
                     color="yellow.500"
-                    label="hi"
+                    label="Giao diên thân thiện với người dùng"
                     icon={IoAnalyticsSharp}
                   />
                   <StoryText
                     bg={useColorModeValue("green.100", "green.900")}
                     color="green.500"
                     icon={IoLogoBitcoin}
-                    label="duy oi"
+                    label="Môi trường an toàn, bảo mật"
                   />
 
                   <StoryText
-                    label="fix di"
+                    label="Cung cấp nhiều tiện ích"
                     bg={useColorModeValue("purple.100", "purple.900")}
                     color="purple.500"
                     icon={IoSearchSharp}
