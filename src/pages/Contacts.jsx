@@ -105,7 +105,6 @@ function Contacts() {
   } = useQuery({
     queryKey: ["users", page],
     queryFn: () => getUsersList(page),
-    enabled: search.length == 0,
   });
 
   // search logic
@@ -113,7 +112,7 @@ function Contacts() {
     useQuery({
       queryKey: ["users-search", page, debouncedSearch],
       queryFn: () => queryUsers(debouncedSearch, page),
-      enabled: debouncedSearch.length >= 3,
+      enabled: search.length >= 3,
     });
 
   useEffect(() => {
@@ -204,85 +203,99 @@ function Contacts() {
                   mx="auto"
                   align="start"
                 >
-                  {list.map((item) => (
-                    <Box
-                      key={item.id}
-                      py={2}
-                      w="full"
-                      minH={100}
-                      display="flex"
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Flex gap={3} w="full" mx="auto" align="center">
-                        <Avatar
-                          boxShadow="xl"
-                          size="lg"
-                          src={item.avatar}
-                          rounded="none"
-                          borderRadius="none"
-                          name={item.fullName}
-                        />
-                        <Box>
-                          <Text
-                            className="hover:text-primary dark:hover:text-secondary"
-                            as={Link}
+                  {list && list.length > 0 ? (
+                    list.map((item) => (
+                      <Box
+                        key={item.id}
+                        py={2}
+                        w="full"
+                        minH={100}
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Flex gap={3} w="full" mx="auto" align="center">
+                          <Avatar
+                            boxShadow="xl"
+                            size="lg"
+                            src={item.avatar}
+                            rounded="none"
+                            borderRadius="none"
+                            name={item.fullName}
+                          />
+                          <Box>
+                            <Text
+                              className="hover:text-primary dark:hover:text-secondary"
+                              as={Link}
+                              to={`/danh-ba/nguoi-dung/${slugify(
+                                unidecode(item.fullName),
+                              )}?u=${item.id}`}
+                            >
+                              {item.fullName}
+                            </Text>
+                            <Text
+                              fontSize="xs"
+                              fontStyle="italic"
+                              color="gray.500"
+                            >
+                              {hiddenLast3PhoneNum(item.phone)}
+                            </Text>
+                          </Box>
+                        </Flex>
+                        <ButtonGroup
+                          alignItems="start"
+                          flexDirection={{ base: "column", lg: "row" }}
+                          gap={2}
+                        >
+                          <Link
                             to={`/danh-ba/nguoi-dung/${slugify(
                               unidecode(item.fullName),
                             )}?u=${item.id}`}
                           >
-                            {item.fullName}
-                          </Text>
-                          <Text
-                            fontSize="xs"
-                            fontStyle="italic"
-                            color="gray.500"
+                            <Button
+                              size="sm"
+                              variant={{ lg: "ghost", base: "outline" }}
+                              colorScheme="green"
+                              color
+                              fontSize="xs"
+                              fontWeight={500}
+                              rightIcon={<BiSolidUserDetail />}
+                            >
+                              Xem thêm
+                            </Button>
+                          </Link>
+                          <Link
+                            to={`mailto:${item.email}`}
+                            style={{ marginInlineStart: 0 }}
                           >
-                            {hiddenLast3PhoneNum(item.phone)}
-                          </Text>
-                        </Box>
-                      </Flex>
-                      <ButtonGroup
-                        alignItems="start"
-                        flexDirection={{ base: "column", lg: "row" }}
-                        gap={2}
+                            <Button
+                              size="sm"
+                              variant={{ lg: "ghost", base: "outline" }}
+                              colorScheme="green"
+                              color
+                              fontSize="xs"
+                              fontWeight={500}
+                              rightIcon={<MdOutlineMarkEmailUnread />}
+                            >
+                              Gửi email
+                            </Button>
+                          </Link>
+                        </ButtonGroup>
+                      </Box>
+                    ))
+                  ) : (
+                    <Flex m="auto" direction="column">
+                      <Heading fontSize="28px">Không có kết quả nào 🙅‍♂️</Heading>
+                      <Text
+                        fontSize="sm"
+                        textAlign="center"
+                        pt={1.5}
+                        color="gray"
                       >
-                        <Link
-                          to={`/danh-ba/nguoi-dung/${slugify(
-                            unidecode(item.fullName),
-                          )}?u=${item.id}`}
-                        >
-                          <Button
-                            size="sm"
-                            variant={{ lg: "ghost", base: "outline" }}
-                            colorScheme="green"
-                            color
-                            fontSize="xs"
-                            fontWeight={500}
-                            rightIcon={<BiSolidUserDetail />}
-                          >
-                            Xem thêm
-                          </Button>
-                        </Link>
-                        <Link
-                          to={`mailto:${item.email}`}
-                          style={{ marginInlineStart: 0 }}
-                        >
-                          <Button
-                            size="sm"
-                            variant={{ lg: "ghost", base: "outline" }}
-                            colorScheme="green"
-                            color
-                            fontSize="xs"
-                            fontWeight={500}
-                            rightIcon={<MdOutlineMarkEmailUnread />}
-                          >
-                            Gửi email
-                          </Button>
-                        </Link>
-                      </ButtonGroup>
-                    </Box>
-                  ))}
+                        Vui lòng thử lại từ khóa tìm kiếm khác.
+                      </Text>
+                    </Flex>
+                  )}
                 </VStack>
               )}
             </Box>
