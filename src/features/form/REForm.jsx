@@ -150,7 +150,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
       });
     }
     // check submit data has files? is the number of images enough?
-    if (!data.files || data.files.images.length < BASE_MEDIA_UPLOAD) {
+    if (!data?.files || data?.files?.images?.length < BASE_MEDIA_UPLOAD) {
       return setError("files", {
         type: "required",
         message: reform.missingImages,
@@ -182,8 +182,8 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
         userID,
         docs,
         slug,
-        lat: position.lat || null,
-        long: position.lng || null,
+        lat: position?.lat || null,
+        long: position?.lng || null,
       });
     } else {
       update({
@@ -209,8 +209,8 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           videos: addVideosRef.current,
         },
         oldFiles360: existed360,
-        lat: position.lat || null,
-        long: position.lng || null,
+        lat: position?.lat || null,
+        long: position?.lng || null,
       });
     }
   }

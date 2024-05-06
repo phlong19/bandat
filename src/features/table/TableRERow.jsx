@@ -37,7 +37,6 @@ function TableRERow({ data, level, userID }) {
   } = data;
 
   let statusBadge = getStatusBadgeColor(statusID);
-  console.log(statusID);
 
   return (
     <Tr className="group">
