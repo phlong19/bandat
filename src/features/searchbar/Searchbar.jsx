@@ -242,7 +242,7 @@ function Searchbar() {
           />
           <InputRightElement width="fit-content">
             {!isTablet ? (
-              <IconButton bg={bg} color={color} icon={<BiSearchAlt />} />
+              <IconButton type="submit" bg={bg} color={color} icon={<BiSearchAlt />} />
             ) : (
               <Button
                 fontSize="sm"
