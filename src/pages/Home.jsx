@@ -61,7 +61,7 @@ function Home() {
     },
     onError: (err) => {
       console.log(err);
-      toast.error("Xảy ra lỗi");
+      toast.error("Đã xảy ra lỗi, vui lòng thử lại sau");
     },
     onSettled: () => {
       handleClose();
@@ -230,7 +230,7 @@ function Home() {
                 <Stack align={"center"} spacing={2}>
                   <Heading
                     textTransform={"uppercase"}
-                    fontSize={"3xl"}
+                    fontSize={"2xl"}
                     color="white"
                   >
                     Liên hệ
@@ -240,11 +240,11 @@ function Home() {
                     textAlign="center"
                     color={useColorModeValue("whiteAlpha.900", "white")}
                   >
-                  Vui lòng gửi những góp ý của bạn dưới đây, cảm ơn!
+                    Vui lòng gửi những góp ý của bạn dưới đây, cảm ơn!
                   </Text>
                 </Stack>
                 <Stack
-                  spacing={4}
+                  spacing={3}
                   direction={{ base: "column", md: "row" }}
                   w={"full"}
                 >
@@ -258,14 +258,14 @@ function Home() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <Button
+                  <Button fontSize='xs'
                     rounded={"full"}
                     colorScheme="green"
                     flex={"1 0 auto"}
                     rightIcon={<FaRegPaperPlane />}
                     onClick={handleOpen}
                   >
-                  Gửi góp ý
+                    Gửi góp ý
                   </Button>
 
                   <Modal isOpen={isOpen} onClose={onClose} isCentered>

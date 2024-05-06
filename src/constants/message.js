@@ -15,11 +15,11 @@ import {
 } from "./anyVariables";
 
 export const homeText = [
-  "Bạn có nhu cầu mua nhà ?",
+  "Bạn có nhu cầu mua nhà?",
   1000,
-  "Với giá phải chăng ?",
+  "Với giá phải chăng?",
   1000,
-  "Và ở vị trí thuận tiện ?",
+  "Với vị trí thuận tiện?",
   1000,
   "Hãy cùng tìm kiếm ngôi nhà lý tưởng của bạn",
   1000,
@@ -47,7 +47,8 @@ export const error = {
   notVerifyEmail: "Chưa xác thực mail",
   notHavePhone: "Vui lòng cập nhật số điện thoại",
   duplicateEmail: "Địa chỉ email đã tồn tại",
-  cantSendEmailResetPassword: "Không thể gửi mail lúc này, vui lòng thử lại sau!",
+  cantSendEmailResetPassword:
+    "Không thể gửi email đăng nhập lúc này, vui lòng thử lại sau!",
 
   // api re
   cantCreate: "Hiện không thể tạo bài đăng",
@@ -59,22 +60,20 @@ export const error = {
   // api news, re-use some of api re
   cantCreateNews: "Không thể tạo bài viết",
   newsExisted: "Đã tồn tại tiêu đề bài viết",
-
   // medias
   cantDeleteMedia: "Không thể xoá file",
   uploadFailed: "Không thể tải file",
   // docs
   cantInsertDocs: "Không thể thêm giấy tờ pháp lý",
   cantDeleteDocs: "Không thể xoá văn bản",
-
   // name edit
-  cantEditName: "Không được chỉnh sửa",
+  cantEditName: "Chỉ có thể chỉnh sửa tiếp sau 30 ngày từ lúc sửa",
 
   // report
   cantCreateReport: "Chưa thể gửi báo cáo",
 
   // bookmark
-  postExist: "Bài đăng đã lưu",
+  postExist: "Bài đăng đã tồn tại trong danh sách tin lưu",
 };
 
 export const success = {
@@ -98,9 +97,9 @@ export const success = {
   createPost: "Tạo bài đăng thành công",
   updatePost: "Sửa bài đăng thành công",
   approvePost: "Duyệt bài thành công",
-  markSold: "Đánh dấu đã bán thành công",
-  deactivePost: "Gỡ bài thành công",
-  deletePost: "Xoá bài thành công",
+  markSold: "Đánh dấu bài đã giao dịch thành công",
+  deactivePost: "Gỡ bài viết thành công",
+  deletePost: "Xoá bài viết thành công",
 
   // api news
   createNews: "Tạo tin tức thành công",
@@ -119,12 +118,12 @@ export const success = {
   updateEmail: "Cập nhật Email thành công, vui lòng xác thực Email!",
 
   // others
-  copyToClipboard: "Sao chép thành công",
+  copyToClipboard: "Đã sao chép vào bộ nhớ tạm",
   createReport: "Gửi báo cáo thành công",
 
   // bookmark
-  addedBookmark: "Thêm thành công",
-  removedBookmark: "Gỡ thành công",
+  addedBookmark: "Đã thêm vào danh sách tin lưu",
+  removedBookmark: "Đã gỡ khỏi danh sách tin lưu",
 };
 
 export const reform = {
@@ -134,7 +133,7 @@ export const reform = {
   missingAddress: "Chưa chọn địa chỉ",
   missingDes: `Vui lòng mô tả chi tiết ít nhất ${minDesLength} kí tự`,
   missingImages: `Số lượng ảnh cung cấp ít nhất là ${BASE_MEDIA_UPLOAD} ảnh`,
-  minPrice: "Giá trị nhập quá nhỏ",
+  minPrice: "Giá trị bất động sản quá nhỏ",
 
   // form errors
   missingName: "Chưa nhập tiêu đề",
@@ -147,13 +146,13 @@ export const reform = {
   // helpers
   noPhone:
     "Vui lòng không chia sẻ số điện thoại, giá bất động sản trong tiêu đề",
-  requiredDocs: "Vui lòng chọn ít nhất 1 tai liệu",
+  requiredDocs: "Vui lòng chọn ít nhất 1 tài liệu",
 
   // media
   overFile: "Vượt quá số lượng giới hạn file tải lên",
-  helperMedia: "Kéo & thả file tại đây, hoặc chọn file trong máy tính",
+  helperMedia: "Kéo & thả file tại đây, hoặc click chọn file trong máy tính",
   acceptMedias: "Yêu cầu định dạng png, jpg, jpeg hoặc mp4",
-  acceptFiles: "Yêu cầu định dạng png, jpg, jpeg & kích thước 2:1",
+  acceptFiles: "Yêu cầu định dạng png, jpg, jpeg & tỉ lệ ảnh 2:1",
   overSize: `Kích thước file vượt quá giới hạn cho phép`,
   ratio: "Tỉ lệ ảnh yêu cầu 2:1",
 
@@ -161,10 +160,10 @@ export const reform = {
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, hãy đảm bảo đúng các thông tin,bài đăng luôn được hiển thị",
 
   // button submit
-  submit: "Submit",
-  save: "Lưu",
-  creating: "Đang tạo...",
-  saving: "Đang lưu...",
+  submit: "Tạo bài viết",
+  save: "Lưu thay đổi",
+  creating: "Đang tạo",
+  saving: "Đang lưu",
 };
 
 export const newsForm = {
@@ -186,7 +185,7 @@ export const newsForm = {
   helperMedia: "Kéo & thả file tại đây, hoặc chọn file trong máy tính",
   acceptFiles: "Yêu cầu định dạng png, jpg, jpeg",
   overSize: `Kích thước file vượt quá giới hạn cho phép`,
-  ratio: "Tỉ lệ ảnh yêu cầu 16x9",
+  ratio: "Tỉ lệ ảnh yêu cầu 16:9",
 
   // submit errors
   missingThumb: "Thiếu ảnh thumbnail",
@@ -196,12 +195,12 @@ export const newsForm = {
   dialogMessage:
     "Bạn có chắc muốn huỷ thay đổi? Mọi thay đổi sẽ không được lưu lại!",
   // content
-  imgUrl: "Dán link ảnh tại đây",
+  imgUrl: "Dán đường dẫn ảnh tại đây",
   // actions
-  submit: "Submit",
+  submit: "Tạo tin tức",
   save: "Lưu",
-  creating: "Đang tạo...",
-  saving: "Đang lưu...",
+  creating: "Đang tạo",
+  saving: "Đang lưu",
 };
 
 // auth + account
@@ -226,6 +225,6 @@ export const account = {
 // display
 // empty list
 export const display = {
-  emptyList: "Không tồn tại kết quả tìm kiếm",
-  emptyHintMessage: "Thử thay đổi bộ lọc",
+  emptyList: "Không tồn tại kết quả nào",
+  emptyHintMessage: "Thử thay đổi bộ lọc, từ khóa tìm kiếm",
 };

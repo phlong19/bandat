@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Image, Flex, Button, Divider } from "@chakra-ui/react";
 
-import { TbNews, TbTableOptions } from "react-icons/tb";
+import { TbBinaryTree, TbNews, TbTableOptions } from "react-icons/tb";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 
 import { useDarkMode } from "../context/DarkModeContext";
@@ -28,17 +28,21 @@ function ManageLinks({ level }) {
         />
       </NavLink>
 
-      <NavLink to="/dang-tin" title="Đăng tin BĐS">
-        <Button variant="ghost" m={0}>
-          <HiOutlinePencilAlt fontSize="22" />
-        </Button>
-      </NavLink>
+      {level != EDITOR_LEVEL && (
+        <>
+          <NavLink to="/dang-tin" title="Đăng tin BĐS">
+            <Button variant="ghost" m={0}>
+              <HiOutlinePencilAlt fontSize="22" />
+            </Button>
+          </NavLink>
 
-      <NavLink to="/quan-ly-bai-viet" title="Quản lý bài viết BĐS">
-        <Button variant="ghost" m={0}>
-          <TbTableOptions fontSize="20" />
-        </Button>
-      </NavLink>
+          <NavLink to="/quan-ly-bai-viet" title="Quản lý bài viết BĐS">
+            <Button variant="ghost" m={0}>
+              <TbTableOptions fontSize="20" />
+            </Button>
+          </NavLink>
+        </>
+      )}
 
       <Divider w="75%" opacity={1} />
       {level >= EDITOR_LEVEL && (
@@ -50,11 +54,18 @@ function ManageLinks({ level }) {
       )}
       <Divider w="75%" opacity={1} />
       {level >= ADMIN_LEVEL && (
-        <NavLink to="/control" title="Quản lý tổng hợp">
-          <Button variant="ghost" m={0}>
-            <BiExtension fontSize="21" />
-          </Button>
-        </NavLink>
+        <>
+          <NavLink to="/control" title="Quản lý tổng hợp">
+            <Button variant="ghost" m={0}>
+              <BiExtension fontSize="21" />
+            </Button>
+          </NavLink>
+          <NavLink to="/role-management" title="Quản lý phân quyền">
+            <Button variant="ghost" m={0}>
+              <TbBinaryTree fontSize="21" />
+            </Button>
+          </NavLink>
+        </>
       )}
     </Flex>
   );

@@ -85,9 +85,6 @@ function EmailVerification() {
               >
                 Gửi mã xác nhận
               </Button>
-              <Stack pt={4}>
-                <Text align={"center"}>Gửi lại mã xác nhận</Text>
-              </Stack>
             </Stack>
           </Box>
         </Stack>

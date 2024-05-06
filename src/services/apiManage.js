@@ -1,5 +1,5 @@
 import supabase from "./supabase";
-import { error as errorMessage } from "../constants/message";
+import { account, error as errorMessage } from "../constants/message";
 import {
   ADMIN_LEVEL,
   LIMIT_PER_PAGE,
@@ -252,6 +252,34 @@ export async function getFullUserList(textQuery, option, page) {
   }
 
   return { data, count };
+}
+
+// get all user data to update level
+export async function getUsers() {
+  const { data, error } = await supabase
+    .from("Profile")
+    .select(`id, fullName, level`);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.fetchError);
+  }
+
+  return data;
+}
+
+export async function updateUserRole(userID, level) {
+  const { error } = await supabase
+    .from("Profile")
+    .update({ level })
+    .eq("userID", userID);
+
+  if (error) {
+    console.log(error);
+    throw new Error(account.cantUpdate);
+  }
+
+  return null;
 }
 
 // get contacts

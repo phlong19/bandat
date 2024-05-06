@@ -1,5 +1,6 @@
 import supabase from "./supabase";
 import { error as errorMessage } from "../constants/message";
+import { ADMIN_LEVEL } from "../constants/anyVariables";
 
 export async function getProfileData() {
   const { data, count, error } = await supabase
@@ -14,7 +15,7 @@ export async function getProfileData() {
   return { data, count };
 }
 
-export async function getPostData() {
+export async function getPostData(userID, level) {
   let query = supabase.from("REDirectory").select(
     `id,
      purType, 
@@ -26,6 +27,10 @@ export async function getPostData() {
     `,
     { count: "exact" },
   );
+
+  if (level < ADMIN_LEVEL) {
+    query = query.eq("userID", userID);
+  }
 
   const { data, count, error } = await query.order("created_at", {
     ascending: true,

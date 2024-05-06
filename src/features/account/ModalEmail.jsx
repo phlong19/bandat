@@ -45,7 +45,7 @@ function ModalEmail({ color, email, isConfirmed }) {
       console.log(data);
       mutate({ ...data });
     } else {
-      setError("email", "email khong hop le");
+      setError("email", { type: "validate", message: "email khong hop le" });
     }
   }
 
@@ -109,7 +109,9 @@ function ModalEmail({ color, email, isConfirmed }) {
                 <Input
                   type="email"
                   placeholder="nhập Email của bạn"
-                  {...register("email", { required: "vui long nhap email" })}
+                  {...register("email", {
+                    required: "Không bỏ trống trường này",
+                  })}
                 />
                 {errors.email && (
                   <FormErrorMessage>{errors.email.message}</FormErrorMessage>
@@ -122,7 +124,8 @@ function ModalEmail({ color, email, isConfirmed }) {
             <Button onClick={handleClose} size="sm" variant="outline">
               Hủy
             </Button>
-            <Button size="sm"
+            <Button
+              size="sm"
               colorScheme="green"
               mr={3}
               isLoading={isPending}

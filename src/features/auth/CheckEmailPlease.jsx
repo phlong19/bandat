@@ -38,14 +38,14 @@ function ResetPassword() {
               <Logo size="w-40" />
             </Box>
             <Heading fontSize={"2xl"} textAlign={"center"}>
-            Kiểm tra hộp thư email
+              Vui lòng kiểm tra email
             </Heading>
             <Text
               textAlign="center"
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-            Còn 1 bước cuối, nhấn vào link được gửi đến email
+              Chỉ còn 1 bước cuối, nhấn vào đường dẫn được gửi đến email
             </Text>
           </Stack>
 
@@ -59,7 +59,7 @@ function ResetPassword() {
               colorScheme="green"
               leftIcon={<HiHome color={useColorModeValue("white", "darker")} />}
             >
-            Về trang chủ
+              Về trang chủ
             </Button>
           </Stack>
         </Box>

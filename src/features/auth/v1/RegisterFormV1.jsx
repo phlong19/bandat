@@ -54,7 +54,7 @@ function RegisterFormV1() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full"
-      key={Math.random()}
+      // key={Math.random()}
     >
       <Flex
         mx="auto"
@@ -77,7 +77,7 @@ function RegisterFormV1() {
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              Để bắt đầu sử dụng dịch vụ của Landhub ✌️
+              Để bắt đầu sử dụng dịch vụ của LandHub ✌️
             </Text>
           </Stack>
           <Box
@@ -102,7 +102,7 @@ function RegisterFormV1() {
 
                 <FormInput
                   label="Email"
-                  id="phone"
+                  id="email"
                   type="email"
                   hookForm={{
                     ...register("email", {

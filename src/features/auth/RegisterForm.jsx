@@ -47,7 +47,9 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
       setPhone(data.phone);
       signup(data);
     } else {
-      toast.error("Mật khẩu cần ít nhất 1 chữ in hoa, 1 ký tự đặc biệt, và 1 chữ số");
+      return toast.error(
+        "Mật khẩu cần ít nhất 1 chữ in hoa, 1 ký tự đặc biệt, và 1 chữ số",
+      );
     }
   }
 
@@ -78,7 +80,7 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-              Để bắt đầu sử dụng dịch vụ của Landhub ✌️
+              Để bắt đầu sử dụng dịch vụ của LandHub ✌️
             </Text>
           </Stack>
           <Box
@@ -95,7 +97,10 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                   hookForm={{
                     ...register("fullName", {
                       required: "Cần nhập tên đầy đủ",
-                      minLength: { message: "Không đủ 8 ký tự", value: 8 },
+                      minLength: {
+                        message: "Tên đầy đủ cần ít nhất 8 ký tự",
+                        value: 8,
+                      },
                     }),
                   }}
                   errors={errors}
@@ -126,7 +131,10 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 hookForm={{
                   ...register("password", {
                     required: "Cần nhập mật khẩu",
-                    minLength: { message: "Mật khẩu không đủ 8 ký tự", value: 8 },
+                    minLength: {
+                      message: "Mật khẩu cần ít nhất 8 ký tự",
+                      value: 8,
+                    },
                   }),
                 }}
                 errors={errors}
@@ -141,12 +149,15 @@ function RegisterForm({ setPhone, setProgress, setStep }) {
                 errors={errors}
                 hookForm={{
                   ...register("confirmPassword", {
-                    required: "Xác nhận mật khẩu",
-                    minLength: { message: "Không đủ 8 ký tự", value: 8 },
+                    required: "Nhập lại mật khẩu",
+                    minLength: {
+                      message: "Mật khẩu cần ít nhất 8 ký tự",
+                      value: 8,
+                    },
                     validate: (value) => {
                       return (
                         value === getValues("password") ||
-                        "Mật khẩu nhập không khớp"
+                        "Mật khẩu nhập lại không khớp"
                       );
                     },
                   }),

@@ -14,7 +14,6 @@ export function useRegisterV1() {
       navigate("/kiem-tra-email");
     },
     onError: (err) => {
-      console.log(err);
       toast.error(err.message);
     },
   });

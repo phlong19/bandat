@@ -1,4 +1,5 @@
 import { Container, Text, Center, Box, SimpleGrid } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 
 const statData = [
   {
@@ -31,7 +32,7 @@ function StatsCard() {
                 as="span"
                 display="block"
                 position="absolute"
-                bg={"blue.600"}
+                bg={"green.500"}
                 w={"100%"}
                 h={"1px"}
               />
@@ -50,9 +51,18 @@ function StatsCard() {
       >
         {statData.map((data, i) => (
           <Box key={i} p={{ base: 2, sm: 5 }} textAlign="center">
-            <Text fontWeight="extrabold" fontSize="xx-large">
+            <motion.p
+              initial={{ y: "50px", scale: 0.5, opacity: 0 }}
+              animate={{
+                transition: { duration: 0.8 },
+                opacity: 1,
+                y: "0",
+                scale: 1,
+              }}
+              className="text-[32px] font-extrabold"
+            >
               {data.score}
-            </Text>
+            </motion.p>
             <Text fontSize="sm">{data.label}</Text>
           </Box>
         ))}

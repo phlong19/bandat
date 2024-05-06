@@ -34,7 +34,10 @@ function LoginForm() {
 
     if (check == "unknown") {
       // TODO
-      return setError("emailOrPhone", "Vui lòng nhập Email hoặc số điện thoại");
+      return setError("emailOrPhone", {
+        type: "required",
+        message: "Vui lòng nhập Email hoặc số điện thoại",
+      });
     } else {
       login(data);
     }
@@ -63,7 +66,7 @@ function LoginForm() {
               fontSize={"md"}
               color={useColorModeValue("gray.600", "gray.300")}
             >
-            Để trải nghiệm mọi dịch vụ của LandHUB ✌️
+              Để trải nghiệm mọi dịch vụ của LandHub ✌️
             </Text>
           </Stack>
           <Box
@@ -90,6 +93,10 @@ function LoginForm() {
                 hookForm={{
                   ...register("password", {
                     required: "Cần nhập mật khẩu",
+                    minLength: {
+                      message: "Mật khẩu ít nhất 8 kí tự",
+                      value: 8,
+                    },
                   }),
                 }}
                 id="password"

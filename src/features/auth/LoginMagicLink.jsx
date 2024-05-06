@@ -72,6 +72,7 @@ export default function LoginMagicLink() {
                 hookForm={{
                   ...register("email", {
                     required: "Chưa nhập email",
+                    required: "Chưa nhập email",
                   }),
                 }}
                 id="email"

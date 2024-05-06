@@ -21,6 +21,7 @@ import { useUpdateUsername } from "./useUpdateUsername";
 import { useForm } from "react-hook-form";
 import { maxName, minName } from "../../constants/anyVariables";
 import { account } from "../../constants/message";
+import toast from "react-hot-toast";
 
 function ModalUsername({ color, name, id }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,7 +35,7 @@ function ModalUsername({ color, name, id }) {
 
   function onSubmit(data) {
     if (!data.fullName) {
-      return false;
+      return toast.error("Vui lòng nhập tên người dùng");
     }
     mutate(
       { ...data, userID: id },
@@ -73,11 +74,7 @@ function ModalUsername({ color, name, id }) {
           </Button>
         </Flex>
       </Flex>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        isCentered
-      >
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Sửa đổi tên người dùng</ModalHeader>
@@ -88,6 +85,7 @@ function ModalUsername({ color, name, id }) {
                 <Input
                   placeholder="Nguyen Van A"
                   {...register("fullName", {
+                    required: "Không bỏ trống trường này",
                     minLength: {
                       value: minName,
                       message: account.minName,

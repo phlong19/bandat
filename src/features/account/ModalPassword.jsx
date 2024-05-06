@@ -48,7 +48,9 @@ function ModalPassword({ color }) {
         minSymbols: 1,
       })
     ) {
-      return toast.error("mk khong du manh, it nhat 1 ky tu, 1 so, 1 chu hoa");
+      return toast.error(
+        "Mật khẩu không đủ mạnh, ít nhất 1 ký tự đặc biệt, 1 chữ số, 1 chữ in hoa",
+      );
     }
 
     mutate({ ...data });
@@ -96,7 +98,7 @@ function ModalPassword({ color }) {
                     placeholder="password"
                     type={showPassword ? "text" : "password"}
                     {...register("password", {
-                      required: "vui long nhap mk",
+                      required: "Vui lòng nhập mật khẩu",
                     })}
                   />
                   <InputRightElement>
@@ -118,11 +120,11 @@ function ModalPassword({ color }) {
                     placeholder="confirm password"
                     type={showCfPassword ? "text" : "password"}
                     {...register("confirmPassword", {
-                      required: "vui long xac nhan mk",
+                      required: "Vui lòng nhập xác nhận mật khẩu",
                       validate: (value) => {
                         return (
                           value === getValues("password") ||
-                          "password does not match"
+                          "Mật khẩu không khớp"
                         );
                       },
                     })}
