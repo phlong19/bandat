@@ -56,19 +56,19 @@ function ReportModal({ postID, isOpen, onClose }) {
   function onSubmit(data) {
     // require at least one box
     if (!isAtLeastOneChecked(data)) {
-      return setErr("vui long chon 1 loi hoac dien vao textbox duoi");
+      return setErr("Yêu cầu chọn ít nhất 1, hoặc điền vào trường dưới đây");
     }
     // validation
     const phone = data.phone.toString();
     if (!validator.isEmail(data.email)) {
       return setError("email", {
         type: "validate",
-        message: "khong phai email",
+        message: "Không đúng định dạng email",
       });
     } else if (!validator.isMobilePhone(phone, "vi-VN")) {
       return setError("phone", {
         type: "validate",
-        message: "sdt kh phai viet nam",
+        message: "Yêu cầu SĐT Việt Nam",
       });
     }
 
@@ -113,6 +113,7 @@ function ReportModal({ postID, isOpen, onClose }) {
             <FormControl isInvalid={err}>
               <FormLabel fontSize="sm">Phản hồi khác</FormLabel>
               <Textarea
+                placeholder="Mô tả lỗi"
                 fontSize="sm"
                 {...register("otherReport", {
                   maxLength: { value: 300, message: "qua dai" },
@@ -121,10 +122,10 @@ function ReportModal({ postID, isOpen, onClose }) {
               />
             </FormControl>
             <SimpleGrid columns={2} pt={2} gap={2}>
-              <FormControl isInvalid={errors.name}>
+              <FormControl isInvalid={errors.name} isRequired>
                 <FormLabel fontSize="sm">Họ và tên</FormLabel>
                 <Input
-                  {...register("name", { required: "dien ho ten" })}
+                  {...register("name", { required: "Vui lòng nhập họ tên" })}
                   size="sm"
                   borderRadius="5px"
                   placeholder="Nguyen Van A"
@@ -133,14 +134,14 @@ function ReportModal({ postID, isOpen, onClose }) {
                   <FormErrorMessage>{errors.name.message}</FormErrorMessage>
                 )}
               </FormControl>
-              <FormControl isInvalid={errors.phone}>
+              <FormControl isInvalid={errors.phone} isRequired>
                 <FormLabel fontSize="sm">Số điện thoại</FormLabel>
 
                 <Input
                   size="sm"
                   borderRadius="5px"
                   {...register("phone", {
-                    required: "dien sdt",
+                    required: "Vui lòng điền SĐT",
                   })}
                 />
 
@@ -149,13 +150,13 @@ function ReportModal({ postID, isOpen, onClose }) {
                 )}
               </FormControl>
             </SimpleGrid>
-            <FormControl isInvalid={errors.email}>
+            <FormControl isInvalid={errors.email} isRequired>
               <FormLabel fontSize="sm">Email</FormLabel>
               <Input
                 placeholder="nguyenvana@gmail.com"
                 borderRadius="5px"
                 size="sm"
-                {...register("email", { required: "dien email" })}
+                {...register("email", { required: "Vui lòng nhập email" })}
               />
             </FormControl>
 
@@ -164,7 +165,7 @@ function ReportModal({ postID, isOpen, onClose }) {
               <Textarea
                 fontSize="sm"
                 {...register("description", {
-                  maxLength: { value: 300, message: "qua dai" },
+                  maxLength: { value: 300, message: "Vượt quá 300 kí tự" },
                 })}
               />
             </FormControl>
