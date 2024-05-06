@@ -10,9 +10,10 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { TbCheck } from "react-icons/tb";
 
-// Replace test data with your own
+// test
 const features = Array.apply(null, Array(8)).map(function (x, i) {
   return {
     id: i + 1,
@@ -20,6 +21,34 @@ const features = Array.apply(null, Array(8)).map(function (x, i) {
     text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam.",
   };
 });
+
+const container = {
+  offscreen: { opacity: 0 },
+  onscreen: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemChildren = {
+  offscreen: {
+    y: 100,
+    opacity: 0,
+    scale: 0,
+  },
+  onscreen: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring",
+      bounce: 0.3,
+      duration: 1,
+    },
+  },
+};
 
 function Features() {
   const color = useColorModeValue("gray.600", "gray.400");
@@ -37,9 +66,22 @@ function Features() {
       </Stack>
 
       <Container maxW={"6xl"} mt={10}>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+        <SimpleGrid
+          columns={{ base: 1, md: 2, lg: 4 }}
+          spacing={10}
+          as={motion.div}
+          variants={container}
+          initial="offscreen"
+          whileInView="onscreen"
+          viewport={{ once: false }}
+        >
           {features.map((feature) => (
-            <HStack key={feature.id} align={"top"}>
+            <HStack
+              key={feature.id}
+              align={"top"}
+              as={motion.div}
+              variants={itemChildren}
+            >
               <Box color={"green.400"} px={2}>
                 <Icon as={TbCheck} fontSize="lg" />
               </Box>

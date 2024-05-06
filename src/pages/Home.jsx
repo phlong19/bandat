@@ -29,6 +29,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  useColorMode,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
 
@@ -47,11 +48,58 @@ import validator from "validator";
 import { useForm } from "react-hook-form";
 import { createContact } from "../services/apiGeneral";
 import { useAuth } from "../context/UserContext";
+import { motion } from "framer-motion";
+
+const variants = {
+  offscreen: {
+    y: 300,
+  },
+  onscreen: {
+    y: 20,
+    rotate: -9,
+    transition: {
+      type: "spring",
+      bounce: 0.5,
+      duration: 1,
+    },
+  },
+};
+
+const containerStoryVar = {
+  offscreen: { opacity: 0 },
+  onscreen: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const storyVar = {
+  offscreen: {
+    x: -70,
+  },
+  onscreen: {
+    x: 0,
+    transition: {
+      type: "spring",
+      bounce: 0.2,
+      duration: 1,
+    },
+  },
+};
 
 function Home() {
   const { data: profile, isLoading } = useAuth();
   const { onClose, onOpen, isOpen } = useDisclosure();
   const [email, setEmail] = useState(null);
+  const { colorMode } = useColorMode();
+
+  // gradient
+  const top =
+    colorMode == "light" ? `rgba(245,245,245, 0.7)` : `rgba(66,66,66,0.6)`;
+  const bottom =
+    colorMode == "light" ? `rgba(66,66,66,0.6)` : `rgba(0,0,0,0.6)`;
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data) => createContact(data),
@@ -132,67 +180,44 @@ function Home() {
                       borderColor={useColorModeValue("gray.100", "gray.700")}
                     />
                   }
+                  as={motion.div}
+                  initial="offscreen"
+                  whileInView="onscreen"
+                  viewport={{ once: false }}
+                  variants={containerStoryVar}
                 >
-                  <Stack direction={"row"} align={"center"}>
-                    <Flex
-                      w={8}
-                      h={8}
-                      align={"center"}
-                      justify={"center"}
-                      rounded={"full"}
-                      bg={useColorModeValue("yellow.100", "yellow.900")}
-                    >
-                      <Icon
-                        as={IoAnalyticsSharp}
-                        color={"yellow.500"}
-                        w={5}
-                        h={5}
-                      />
-                    </Flex>
-                    <Text fontWeight={600}>hello</Text>
-                  </Stack>
-                  <Stack direction={"row"} align={"center"}>
-                    <Flex
-                      w={8}
-                      h={8}
-                      align={"center"}
-                      justify={"center"}
-                      rounded={"full"}
-                      bg={useColorModeValue("green.100", "green.900")}
-                    >
-                      <Icon
-                        as={IoLogoBitcoin}
-                        color={"green.500"}
-                        w={5}
-                        h={5}
-                      />
-                    </Flex>
-                    <Text fontWeight={600}>Business Planning</Text>
-                  </Stack>
+                  <StoryText
+                    bg={useColorModeValue("yellow.100", "yellow.900")}
+                    color="yellow.500"
+                    label="hi"
+                    icon={IoAnalyticsSharp}
+                  />
+                  <StoryText
+                    bg={useColorModeValue("green.100", "green.900")}
+                    color="green.500"
+                    icon={IoLogoBitcoin}
+                    label="duy oi"
+                  />
 
-                  <Stack direction={"row"} align={"center"}>
-                    <Flex
-                      w={8}
-                      h={8}
-                      align={"center"}
-                      justify={"center"}
-                      rounded={"full"}
-                      bg={useColorModeValue("purple.100", "purple.900")}
-                    >
-                      <Icon
-                        as={IoSearchSharp}
-                        color={"purple.500"}
-                        w={5}
-                        h={5}
-                      />
-                    </Flex>
-                    <Text fontWeight={600}>Market Analysis</Text>
-                  </Stack>
+                  <StoryText
+                    label="fix di"
+                    bg={useColorModeValue("purple.100", "purple.900")}
+                    color="purple.500"
+                    icon={IoSearchSharp}
+                  />
                 </Stack>
               </Stack>
-              <Flex>
+              <Flex
+                as={motion.div}
+                initial="offscreen"
+                whileInView="onscreen"
+                viewport={{ once: false }}
+              >
                 <Image
+                  ml={5}
+                  as={motion.img}
                   rounded={"md"}
+                  variants={variants}
                   alt={"feature image"}
                   src={
                     "https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
@@ -209,7 +234,9 @@ function Home() {
         <Features />
         {/* CTA */}
         <Center
-          bg="url('/cta.jpg')"
+          mt={5}
+          bgGradient={`linear-gradient(to bottom, ${top} 0%,${bottom} 100%), url('/cta.jpg');`}
+          // bg="url('/cta.jpg')"
           bgRepeat="no-repeat"
           maxW="1200px"
           mx="auto"
@@ -217,7 +244,7 @@ function Home() {
           bgSize="cover"
           color="whiteAlpha.800"
         >
-          <Box as="section" width="full" backdropFilter="blur(3px)">
+          <Box as="section" opacity={1} width="full" backdropFilter="blur(3px)">
             <Flex align={"center"} justify={"center"} py={3} bg="transparent">
               <Stack
                 boxShadow={"sm"}
@@ -258,7 +285,8 @@ function Home() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <Button fontSize='xs'
+                  <Button
+                    fontSize="xs"
                     rounded={"full"}
                     colorScheme="green"
                     flex={"1 0 auto"}
@@ -478,3 +506,26 @@ const NotificationIcon = createIcon({
     </g>
   ),
 });
+
+function StoryText({ bg, label, icon, color }) {
+  return (
+    <Stack
+      as={motion.div}
+      direction={"row"}
+      align={"center"}
+      variants={storyVar}
+    >
+      <Flex
+        w={8}
+        h={8}
+        align={"center"}
+        justify={"center"}
+        rounded={"full"}
+        bg={bg}
+      >
+        <Icon as={icon} color={color} w={5} h={5} />
+      </Flex>
+      <Text fontWeight={600}>{label}</Text>
+    </Stack>
+  );
+}

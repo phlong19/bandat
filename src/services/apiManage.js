@@ -269,17 +269,27 @@ export async function getUsers() {
 }
 
 export async function updateUserRole(userID, level) {
-  const { error } = await supabase
+  if (!userID || !level) {
+    return false;
+  }
+
+  const { data, error } = await supabase
     .from("Profile")
     .update({ level })
-    .eq("userID", userID);
+    .eq("id", userID)
+    .select(`*`)
+    .single();
 
   if (error) {
     console.log(error);
     throw new Error(account.cantUpdate);
   }
 
-  return null;
+  if (!data?.id) {
+    throw new Error("Không thể tìm thấy người dùng để cập nhật");
+  }
+
+  return data;
 }
 
 // get contacts

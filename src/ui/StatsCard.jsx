@@ -1,5 +1,6 @@
 import { Container, Text, Center, Box, SimpleGrid } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const statData = [
   {
@@ -51,18 +52,7 @@ function StatsCard() {
       >
         {statData.map((data, i) => (
           <Box key={i} p={{ base: 2, sm: 5 }} textAlign="center">
-            <motion.p
-              initial={{ y: "50px", scale: 0.5, opacity: 0 }}
-              animate={{
-                transition: { duration: 0.8 },
-                opacity: 1,
-                y: "0",
-                scale: 1,
-              }}
-              className="text-[32px] font-extrabold"
-            >
-              {data.score}
-            </motion.p>
+            <StatScore score={data.score} />
             <Text fontSize="sm">{data.label}</Text>
           </Box>
         ))}
@@ -72,3 +62,23 @@ function StatsCard() {
 }
 
 export default StatsCard;
+
+function StatScore({ score }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false });
+
+  return (
+    <motion.p
+      style={{
+        transform: isInView ? "none" : "translateY(200px)",
+        opacity: isInView ? 1 : 0,
+        transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.2s",
+        scale: isInView ? 1 : 0,
+      }}
+      ref={ref}
+      className="text-[32px] font-extrabold"
+    >
+      {score}
+    </motion.p>
+  );
+}
