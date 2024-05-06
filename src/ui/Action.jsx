@@ -14,6 +14,7 @@ import { useAuth } from "../context/UserContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
 import { useLogout } from "../features/auth/useLogout";
 import BookmarkPopover from "./BookmarkPopover";
+import { TbBinaryTree } from "react-icons/tb";
 
 function Action({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
@@ -68,12 +69,21 @@ function Action({ onClose }) {
                 </NavLink>
               )}
               {level >= ADMIN_LEVEL && (
-                <NavLink to="/control" className="user-item">
-                  <span className="text-xl">
-                    <LiaBibleSolid />
-                  </span>
-                  Admin Panel
-                </NavLink>
+                <>
+                  <NavLink to="/control" className="user-item">
+                    <span className="text-xl">
+                      <LiaBibleSolid />
+                    </span>
+                    Admin Panel
+                  </NavLink>
+
+                  <NavLink to="/role-management" className="user-item">
+                    <span className="text-xl">
+                      <TbBinaryTree />
+                    </span>
+                    Phân quyền tài khoản
+                  </NavLink>
+                </>
               )}
               <NavLink onClick={logout} className="user-item">
                 <span className="text-xl">

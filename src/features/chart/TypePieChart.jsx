@@ -9,12 +9,14 @@ import {
   Button,
   Text,
   Spinner,
+  VStack,
 } from "@chakra-ui/react";
 
-import { getCoreNameType } from "../../utils/helper";
+import { formatCurrency, getCoreNameType } from "../../utils/helper";
+import { SOLD_STATUS } from "../../constants/anyVariables";
 
 // top
-const top = 7;
+let top = 7;
 
 function TypePieChart({ data, count, isLoading, refetch }) {
   const accent = useColorModeValue("primary", "secondary");
@@ -67,7 +69,9 @@ function TypePieChart({ data, count, isLoading, refetch }) {
   }
 
   let chartData;
-  if (!isLoading && data.length > 0) {
+  let countSoldPosts = 0;
+  let sum = 0;
+  if (!isLoading && data?.length > 0) {
     // calc top re type
     const groupedData = data.reduce((group, cur) => {
       const key = cur.REType_ID;
@@ -84,9 +88,19 @@ function TypePieChart({ data, count, isLoading, refetch }) {
       return group;
     }, {});
 
+    const keyLength = Object.keys(groupedData).length;
+    if (keyLength < top) {
+      top = keyLength;
+    }
+
     chartData = Object.values(groupedData)
       .sort((a, b) => a.total - b.total)
       .slice(-top);
+
+    // calc & sum sold posts
+    const soldPosts = data.filter((i) => i.status === SOLD_STATUS && i.purType);
+    countSoldPosts = soldPosts.length;
+    sum = soldPosts.reduce((acc, cur) => (acc += cur.price), 0);
   }
 
   return (
@@ -100,7 +114,17 @@ function TypePieChart({ data, count, isLoading, refetch }) {
         >
           Top {top} loại hình nhà đất
         </Heading>
-        <Text pr={18}>Tổng số bài đăng BĐS: {count}</Text>
+        <VStack gap={0} justify="end">
+          <Text ml="auto" fontSize="xs">
+            Tổng số bài đăng BĐS: {count}
+          </Text>
+          <Text ml="auto" fontSize="xs">
+            Tổng số BĐS đã bán: {countSoldPosts}
+          </Text>
+          <Text ml="auto" fontSize="xs">
+            Tổng giá trị BĐS đã bán: {formatCurrency(sum)}
+          </Text>
+        </VStack>
       </Flex>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>

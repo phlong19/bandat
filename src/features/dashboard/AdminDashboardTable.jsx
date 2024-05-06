@@ -59,6 +59,9 @@ function AdminDashboardTable({ sub }) {
   // state
   const [currentUser, setCurrentUser] = useState({});
   const [selectedLevel, setSelectedLevel] = useState(1);
+  const [show, setShow] = useState(false);
+  const [hoverId, setHoverId] = useState("");
+  const [search, setSearch] = useState("");
 
   // lib hooks
   const queryClient = useQueryClient();
@@ -99,6 +102,16 @@ function AdminDashboardTable({ sub }) {
     document.getElementById("input").value = "";
     setCurrentUser({});
     setSelectedLevel(1);
+    setSearch("");
+  }
+
+  function setUser(e) {
+    if (currentUser?.id == e.target.id) {
+      return false;
+    }
+    setCurrentUser(usersList.find((i) => i.id === e.target.id));
+    setShow(false);
+    setSearch("");
   }
 
   return (
@@ -127,14 +140,24 @@ function AdminDashboardTable({ sub }) {
                 <Text minW="fit-content" mb={1.5}>
                   Chọn người dùng
                 </Text>
-                <Box pos="relative" w="full" className="group">
+                <Box
+                  onMouseEnter={() => setShow(true)}
+                  onMouseLeave={() => setShow(false)}
+                  pos="relative"
+                  w="full"
+                >
                   <InputGroup>
                     <Input
+                      title="Chọn hoặc gõ để tìm kiếm"
+                      placeholder="Chọn hoặc gõ để tìm kiếm"
+                      _placeholder={{ fontSize: "sm" }}
                       maxW="40%"
                       id="input"
                       mb={1.5}
-                      value={currentUser?.fullName}
+                      value={currentUser?.fullName || search}
+                      onInput={(e) => setSearch(e.target.value)}
                     />
+
                     <InputRightElement ml={2} position="relative">
                       <Tooltip label="Clear">
                         <Button
@@ -151,60 +174,54 @@ function AdminDashboardTable({ sub }) {
                     </InputRightElement>
                   </InputGroup>
 
-                  <Container
-                    className="invisible hover:visible group-hover:visible"
-                    p={1}
-                    zIndex={1000}
-                    border="1px solid"
-                    borderColor={border}
-                    rounded="md"
-                    position="absolute"
-                    minW="40%"
-                    w="40%"
-                    bg={bg}
-                    maxW="40%"
-                    h={200}
-                    overflowY="auto"
-                  >
-                    {usersList.slice(0, LIMIT_PER_PAGE).map((i) => (
-                      <Container
-                        key={i.id}
-                        id={i.id}
-                        p={1.5}
-                        cursor="grab"
-                        _hover={{ bg: "white", _dark: { bg: "dark" } }}
-                        datavalue={i.id}
-                        onClick={(e) =>
-                          setCurrentUser(
-                            usersList.find((i) => i.id === e.target.id),
-                          )
-                        }
-                      >
-                        {i.fullName} -{" "}
-                        <Badge
-                          colorScheme={getStatusBadgeProfile(i.level)}
-                          fontSize="xs"
-                          p="3px 10px"
-                          borderRadius="lg"
-                          textTransform="capitalize"
-                        >
-                          {i.level === USER_LEVEL
-                            ? "User"
-                            : i.level === ADMIN_LEVEL
-                              ? "Admin"
-                              : "Editor"}
-                        </Badge>
-                      </Container>
-                    ))}
+                  {show && (
                     <Container
-                      key={Math.random()}
-                      p={1.5}
-                      cursor="default"
-                      color={accent}
+                      p={1}
+                      zIndex={1000}
+                      border="1px solid"
+                      borderColor={border}
+                      rounded="md"
+                      position="absolute"
+                      w="full"
+                      bg={bg}
+                      h={search?.length < 3 ? 200 : "fit-content"}
+                      overflowY="auto"
                     >
-                      ... Tìm kiếm để xem thêm
+                      {search.length >= 3
+                        ? fullTextSearch(usersList, search).map((i) => (
+                            <UserOption
+                              i={i}
+                              key={i.id}
+                              currentUser={currentUser}
+                              hoverId={hoverId}
+                              setHoverId={setHoverId}
+                              setUser={setUser}
+                            />
+                          ))
+                        : usersList
+                            .slice(0, LIMIT_PER_PAGE)
+                            .map((i) => (
+                              <UserOption
+                                i={i}
+                                key={i.id}
+                                currentUser={currentUser}
+                                hoverId={hoverId}
+                                setHoverId={setHoverId}
+                                setUser={setUser}
+                              />
+                            ))}
+                      {!search && (
+                        <Container
+                          key={Math.random()}
+                          p={1.5}
+                          cursor="default"
+                          color={accent}
+                        >
+                          ... Tìm kiếm để xem thêm
+                        </Container>
+                      )}
                     </Container>
-                  </Container>
+                  )}
                 </Box>
               </Flex>
               {currentUser?.id && (
@@ -318,3 +335,60 @@ function AdminDashboardTable({ sub }) {
 }
 
 export default AdminDashboardTable;
+
+// Function to perform a full-text search in an array of strings
+function fullTextSearch(array, searchTerm) {
+  // Convert search term and array strings to lowercase for case-insensitive search
+  let query = searchTerm.toLowerCase();
+
+  // Normalize Vietnamese text to remove diacritics
+  function normalizeVietnamese(text) {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  // Perform search
+  const results = array.filter((item) => {
+    // Normalize item string for comparison
+    const normalizedItem = normalizeVietnamese(item.fullName.toLowerCase());
+    // Check if the normalized item contains the normalized search term
+    return normalizedItem.includes(normalizeVietnamese(query));
+  });
+
+  return results;
+}
+
+function UserOption({ i, currentUser, setHoverId, setUser, hoverId }) {
+  return (
+    <Container
+      onMouseEnter={(e) => setHoverId(e.target.id)}
+      onMouseLeave={() => setHoverId("")}
+      key={i.id}
+      id={i.id}
+      p={1.5}
+      cursor={
+        currentUser?.id && currentUser?.id == hoverId ? "not-allowed" : "grab"
+      }
+      _hover={{ bg: "white", _dark: { bg: "dark" } }}
+      datavalue={i.id}
+      onClick={(e) => setUser(e)}
+    >
+      {i.fullName} -{" "}
+      <Badge
+        zIndex={800}
+        onClick={(e) => setUser(e)}
+        id={i.id}
+        colorScheme={getStatusBadgeProfile(i.level)}
+        fontSize="xs"
+        p="3px 10px"
+        borderRadius="lg"
+        textTransform="capitalize"
+      >
+        {i.level === USER_LEVEL
+          ? "User"
+          : i.level === ADMIN_LEVEL
+            ? "Admin"
+            : "Editor"}
+      </Badge>
+    </Container>
+  );
+}

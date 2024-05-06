@@ -4,20 +4,20 @@ import { useRef } from "react";
 
 const statData = [
   {
-    label: "Người dùng hoạt động",
-    score: "1tr+",
+    label: "Số người đăng ký",
+    score: "20+",
   },
   {
-    label: "Bài đăng BĐS",
-    score: "12k+",
+    label: "Số bài đăng đã được đăng tải",
+    score: "130+",
   },
   {
-    label: "Số BĐS giao dịch thành công",
-    score: "1k+",
+    label: "Số BĐS đã giao dịch thành công",
+    score: "100+",
   },
   {
-    label: "Số tin tức đã đăng tải",
-    score: "500+",
+    label: "Số tin tức đã được đăng tải",
+    score: "20+",
   },
 ];
 
@@ -39,7 +39,7 @@ function StatsCard() {
               />
             </Box>
           </Text>
-          <Text>Được tin dùng bởi nhà môi giới và doanh nghiệp</Text>
+          <Text>Được tin dùng bởi các nhà môi giới và doanh nghiệp</Text>
         </Box>
       </Center>
       <SimpleGrid

@@ -21,7 +21,7 @@ export const homeText = [
   1000,
   "Với vị trí thuận tiện?",
   1000,
-  "Duy ơi sửa cái này đi",
+  "Hãy cùng tìm kiếm nhé 😁",
   1000,
 ];
 
@@ -104,9 +104,9 @@ export const success = {
   // api news
   createNews: "Tạo tin tức thành công",
   updateNews: "Cập nhật thành công",
-  approveNews: "Duyệt tin tức thành công thành công",
-  deleteNews: "Xoá tin tức thành công",
-  deactiveNews: "Gỡ tin tức thành công",
+  approveNews: "Duyệt tin tức thành công",
+  deleteNews: "Đã xoá tin tức thành công",
+  deactiveNews: "Đã gỡ tin tức thành công",
 
   // api account
   updateAddress: "Cập nhật địa chỉ thành công!",
