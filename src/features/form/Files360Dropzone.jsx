@@ -21,7 +21,7 @@ function Files360Dropzone({ onChange, files, setFiles, setValue }) {
   const borderColor = useColorModeValue("gray.300", "#ffffff29");
 
   const limit = useRef(1);
-  
+
   const onDrop = useCallback(
     (acceptedFiles) => {
       setError(false);
@@ -151,19 +151,29 @@ function Files360Dropzone({ onChange, files, setFiles, setValue }) {
           })}
         >
           <input {...getInputProps({ onChange })} />
-          <VStack fontSize="sm" color="gray.500">
+          <VStack
+            fontSize={{ base: "xs", md: "sm" }}
+            textAlign={{ base: "center", md: "left" }}
+            color="gray.500"
+          >
             {!error ? (
               <Text>{reform.helperMedia}</Text>
             ) : (
-              <Text fontSize="sm" color="red.500">
+              <Text
+                fontSize={{ base: "xs", md: "sm" }}
+                textAlign={{ base: "center", md: "left" }}
+                color="red.500"
+              >
                 {error}
               </Text>
             )}
-            <Text>{reform.acceptFiles}</Text>
+            <Text fontStyle="italic" textAlign={{ base: "center", md: "left" }}>
+              {reform.acceptFiles}
+            </Text>
           </VStack>
         </Box>
       )}
-      <Flex gap={1} wrap="wrap" my={3} justify='center' align='center'>
+      <Flex gap={1} wrap="wrap" my={3} justify="center" align="center">
         {thumbnail}
       </Flex>
     </Flex>

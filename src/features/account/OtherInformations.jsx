@@ -74,7 +74,15 @@ function OtherInformations({ data, color, id }) {
           </h2>
           <AccordionPanel px={0} pb={0} pt={4}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid templateColumns="repeat(2, 1fr)" rowGap={2} columnGap={3}>
+              <Grid
+                templateColumns={{
+                  base: "repeat(1, 1fr)",
+                  md: "repeat(2, 1fr)",
+                }}
+                px={1}
+                rowGap={2}
+                columnGap={3}
+              >
                 {/* sex */}
                 <Flex gap={4}>
                   <Box>
@@ -98,6 +106,8 @@ function OtherInformations({ data, color, id }) {
                   <Text fontSize="sm">Ngày sinh</Text>
                   <Text fontSize="xs">*Lưu ý: Định dạng tháng/ngày/năm</Text>
                   <Input
+                    rounded={{ base: "lg", md: "md" }}
+                    size={{ base: "sm", md: "md" }}
                     type="date"
                     w={{ sm: "80%", lg: "60%", xl: "40%", "2xl": "30%" }}
                     mt={2}

@@ -219,8 +219,15 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
     <>
       {edit && <GoBackButton />}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
-        <Flex justify="space-between" align="center" pt="18" pb={2}>
-          <Heading size="md" noOfLines={1}>
+        <Flex
+          justify="space-between"
+          flexDirection={{ base: "column", md: "row" }}
+          gap={{ base: 2, md: 0 }}
+          align="center"
+          pt="18"
+          pb={2}
+        >
+          <Heading size={{ base: "sm", md: "md" }} noOfLines={1}>
             {!edit ? "Tạo" : "Sửa"} bài đăng bán bất động sản
           </Heading>
           <Flex gap={3} align="center">
@@ -230,7 +237,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             <Badge
               colorScheme={badgeColor}
               fontSize="xs"
-              p="3px 10px"
+              p={{ base: "1.5px 8px", md: "3px 10px" }}
               borderRadius="lg"
               textTransform="capitalize"
             >
@@ -254,6 +261,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                     color={accent}
                     flex="1"
                     textAlign="left"
+                    fontSize={{ base: "sm", md: "md" }}
                   >
                     1. Địa chỉ BĐS
                   </Box>
@@ -324,9 +332,9 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                   color={accent}
                   fontWeight={600}
                   as="h2"
-                  fontSize="md"
                   fontFamily="lexend"
                   textAlign="left"
+                  fontSize={{ base: "sm", md: "md" }}
                 >
                   2. Các thông tin chính
                 </Heading>
@@ -448,7 +456,9 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                     />
 
                     <FormControl>
-                      <FormLabel>Hướng nhà</FormLabel>
+                      <FormLabel fontSize={{ base: "sm", md: "md" }}>
+                        Hướng nhà
+                      </FormLabel>
                       <Select
                         {...register("direction")}
                         defaultValue={editData?.direction}
@@ -463,7 +473,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                   </Grid>
                   <Flex w="100%">
                     <Checkbox
-                      size="md"
+                      size={{ base: "sm", md: "md" }}
                       {...register("fur")}
                       defaultChecked={editData?.fur}
                     >
@@ -503,7 +513,12 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             />
           </FormControl>
           {/* file input */}
-          <Flex width="full" gap={3} align="end">
+          <Flex
+            width="full"
+            flexDirection={{ base: "column", md: "row" }}
+            gap={3}
+            align={{ base: "start", md: "end" }}
+          >
             <FormControl isRequired isInvalid={errors.files}>
               <FormLabel>Hình ảnh, video bất động sản</FormLabel>
               <Checkbox
@@ -547,6 +562,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
               <FormControl
                 isInvalid={false}
                 w={files360.length < 1 ? "70%" : "30%"}
+                minW={{ base: "full", md: "auto" }}
               >
                 <FormLabel>Hình ảnh 360°</FormLabel>
                 <FormHelperText mb={2}>{files360.length}/1 ảnh</FormHelperText>

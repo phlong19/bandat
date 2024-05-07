@@ -239,3 +239,7 @@ ul.contacts li::marker {
   color: black;
   background-color: inherit;
 }
+
+div.content-render.detail img {
+  min-width: 100%;
+}

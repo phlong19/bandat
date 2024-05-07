@@ -61,7 +61,7 @@ function AdminChart() {
     <>
       <Flex justify="space-between">
         <Heading
-          fontSize="md"
+          fontSize={{ base: "sm", md: "md" }}
           fontFamily="lexend"
           fontWeight="500"
           color={accent}

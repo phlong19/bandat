@@ -74,7 +74,7 @@ function RegisterFormV1() {
               Đăng ký
             </Heading>
             <Text
-              fontSize={"md"}
+              fontSize={{ base: "sm", md: "md" }}
               color={useColorModeValue("gray.600", "gray.300")}
             >
               Để bắt đầu sử dụng dịch vụ của LandHub ✌️

@@ -50,7 +50,7 @@ function ChakraTable({
       <CardHeader pt="25" pl="25">
         <Flex justify="space-between" align="center">
           <Text
-            fontSize="xl"
+            fontSize={{ base: "md", lg: "xl" }}
             color={modeBaseColor}
             fontWeight="600"
             fontFamily="roboto"
@@ -59,7 +59,12 @@ function ChakraTable({
           >
             {title}
           </Text>
-          <Flex gap={2} align="center" minW={{ sm: "50%", lg: "60%" }}>
+          <Flex
+            gap={2}
+            align="center"
+            flexDirection={{ base: "column", lg: "row" }}
+            minW={{ sm: "50%", lg: "60%" }}
+          >
             {profile && (
               <TextSearch
                 setQuery={setQuery}

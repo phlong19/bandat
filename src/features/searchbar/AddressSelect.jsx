@@ -36,7 +36,11 @@ function AddressSelect({
 
   return (
     <Flex w="100%" gap={1.5}>
-      <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
+      <Grid
+        templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+        gap={3}
+        w="100%"
+      >
         <FormControl isRequired={isForm}>
           <FormLabel>Tỉnh, Thành phố</FormLabel>
 

@@ -25,11 +25,11 @@ function UserDashboardTable({ id, level }) {
     <Flex flexDirection="column" gap={5}>
       {level != EDITOR_LEVEL && total > 0 && (
         <SimpleGrid
-          columns={2}
+          columns={{ base: 1, lg: 2 }}
           gap={2}
-          h={350}
-          minH={350}
-          maxH={350}
+          h={{ base: 1000, lg: 350 }}
+          minH={{ base: 1000, lg: 350 }}
+          maxH={{ base: 1000, lg: 350 }}
           mb={{ lg: 14, xl: 8 }}
         >
           {/* chart 1 */}

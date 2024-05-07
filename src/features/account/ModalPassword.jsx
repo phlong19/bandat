@@ -69,6 +69,8 @@ function ModalPassword({ color }) {
           </Text>
         </Box>
         <Button
+        minW='fit-content'
+          fontSize={{ base: "10px", sm: "xs" }}
           size="xs"
           fontWeight="400"
           colorScheme="green"

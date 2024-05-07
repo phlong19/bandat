@@ -38,17 +38,14 @@ import StatsCard from "../ui/StatsCard";
 import Features from "../ui/Features";
 import Testimonials from "../ui/Testimonials";
 
-import {
-  IoLogoBitcoin,
-  IoSearchSharp,
-  IoAnalyticsSharp,
-} from "react-icons/io5";
-import { FaRegPaperPlane } from "react-icons/fa6";
+import { FaChalkboardUser, FaRegPaperPlane } from "react-icons/fa6";
 import validator from "validator";
 import { useForm } from "react-hook-form";
 import { createContact } from "../services/apiGeneral";
 import { useAuth } from "../context/UserContext";
 import { motion } from "framer-motion";
+import { TbTool } from "react-icons/tb";
+import { AiOutlineSafety } from "react-icons/ai";
 
 const variants = {
   offscreen: {
@@ -60,7 +57,7 @@ const variants = {
     transition: {
       type: "spring",
       bounce: 0.5,
-      duration: 1,
+      duration: 1.5,
     },
   },
 };
@@ -166,12 +163,13 @@ function Home() {
                   alignSelf={"flex-start"}
                   rounded={"md"}
                 >
-                  Our Story
+                  Tiêu chí
                 </Text>
-                <Heading>A digital Product design agency</Heading>
+                <Heading fontSize={30}>
+                  Đặt quyền lợi của người dùng lên hàng đầu
+                </Heading>
                 <Text color={"gray.500"} fontSize={"lg"}>
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                  diam nonumy eirmod tempor invidunt ut labore
+                  LandHub được xây dựng dựa theo 3 tiêu chí lớn
                 </Text>
                 <Stack
                   spacing={4}
@@ -189,21 +187,21 @@ function Home() {
                   <StoryText
                     bg={useColorModeValue("yellow.100", "yellow.900")}
                     color="yellow.500"
-                    label="hi"
-                    icon={IoAnalyticsSharp}
+                    label="Giao diện thân thiện với người dùng"
+                    icon={FaChalkboardUser}
                   />
                   <StoryText
                     bg={useColorModeValue("green.100", "green.900")}
                     color="green.500"
-                    icon={IoLogoBitcoin}
-                    label="duy oi"
+                    icon={AiOutlineSafety}
+                    label="Môi trường an toàn, bảo mật"
                   />
 
                   <StoryText
-                    label="fix di"
+                    label="Cung cấp nhiều tiện ích"
                     bg={useColorModeValue("purple.100", "purple.900")}
                     color="purple.500"
-                    icon={IoSearchSharp}
+                    icon={TbTool}
                   />
                 </Stack>
               </Stack>

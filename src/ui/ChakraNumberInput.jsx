@@ -21,7 +21,7 @@ function ChakraNumberInput({
 }) {
   return (
     <FormControl isRequired={req} isInvalid={error}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel fontSize={{ base: "sm", md: "md" }}>{label}</FormLabel>
       <NumberInput min={0} defaultValue={value}>
         <NumberInputField
           {...register(`${name}`, {

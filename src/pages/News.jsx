@@ -74,7 +74,7 @@ function News() {
                 <div className="group mb-5 rounded-md bg-light shadow-md dark:bg-dark lg:flex lg:max-w-[800px] lg:items-center lg:border-b lg:bg-light lg:py-3 lg:shadow-none ">
                   <img
                     src={item.thumbnail}
-                    className="ml-3 h-[250px] w-full rounded-md object-cover lg:h-[150px] lg:w-[260px] lg:min-w-[260px] lg:max-w-[260px]"
+                    className="h-[250px] w-full rounded-md object-cover md:ml-3 lg:h-[150px] lg:w-[260px] lg:min-w-[260px] lg:max-w-[260px]"
                   />
                   <div className="p-3">
                     <h1 className="py-2 font-montserrat text-base font-semibold transition-colors duration-300 group-hover:text-primary dark:group-hover:text-secondary lg:py-1 lg:text-lg lg:font-bold">

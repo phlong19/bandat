@@ -59,10 +59,17 @@ function ModalUsername({ color, name, id }) {
             Tên hiển thị trong bài đăng và với người dùng khác.
           </Text>
         </Box>
-        <Flex gap="5rem">
-          <Text>{name}</Text>
+        <Flex
+          w={{ base: "fit-content", sm: "auto" }}
+          gap={{ base: 3, md: 4, lg: 5, xl: "5rem" }}
+          flexDirection={{ base: "column", md: "row" }}
+        >
+          <Text fontSize={{ base: "xs", sm: "sm" }}>{name}</Text>
           <Button
+            maxW="fit-content"
+            ml="auto"
             size="xs"
+            fontSize={{ base: "10px", sm: "xs" }}
             fontWeight="400"
             colorScheme="green"
             variant="outline"

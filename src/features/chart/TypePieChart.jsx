@@ -105,7 +105,7 @@ function TypePieChart({ data, count, isLoading, refetch }) {
 
   return (
     <Box maxH={350}>
-      <Flex justify="space-between" pl={12}>
+      <Flex justify="space-between" pl={{ base: 0, md: 12 }}>
         <Heading
           fontSize="md"
           fontFamily="lexend"

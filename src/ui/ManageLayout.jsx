@@ -12,7 +12,7 @@ function ManageLayout() {
         minH="100dvh"
         overflowY="scroll"
         scrollBehavior="smooth"
-        px="6"
+        px={{ base: 2, md: "6" }}
         py="30"
       >
         <Outlet />

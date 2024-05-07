@@ -101,7 +101,10 @@ function ModalPhone({ phone, isConfirmed, color, id }) {
           </Text>
         </Box>
 
-        <Flex gap={20}>
+        <Flex
+          gap={{ base: 3, md: 4, lg: 5, xl: 20 }}
+          flexDirection={{ base: "column", md: "row" }}
+        >
           <Box>
             {phone ? (
               <>
@@ -135,6 +138,7 @@ function ModalPhone({ phone, isConfirmed, color, id }) {
 
           <Button
             size="xs"
+            fontSize={{ base: "10px", sm: "xs" }}
             fontWeight="400"
             colorScheme="green"
             variant="outline"

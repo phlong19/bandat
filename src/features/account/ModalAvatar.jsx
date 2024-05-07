@@ -57,8 +57,10 @@ function ModalAvatar({ data, color, level, id }) {
               mobile
             />
             <Box>
-              <Text fontWeight={600}>Loại tài khoản</Text>
-              <Text fontSize="sm" color={color}>
+              <Text fontSize={{ base: "xs", md: "sm" }} fontWeight={600}>
+                Loại tài khoản
+              </Text>
+              <Text fontSize={{ base: "xs", md: "sm" }} color={color}>
                 {level > EDITOR_LEVEL
                   ? "Quản trị viên"
                   : level == EDITOR_LEVEL
@@ -69,6 +71,7 @@ function ModalAvatar({ data, color, level, id }) {
           </Flex>
           <Button
             size="xs"
+            fontSize={{ base: "10px", sm: "xs" }}
             fontWeight="400"
             colorScheme="green"
             variant="outline"

@@ -67,14 +67,6 @@ function AccountManagement() {
     updateAdd({ userID: id, cityID, disID, wardID, ...data });
   }
 
-  if (isLoading) {
-    return (
-      <Center minH="90dvh">
-        <Spinner />
-      </Center>
-    );
-  }
-
   const isConfirmed = Boolean(user.confirmed_at);
 
   return (
@@ -85,93 +77,99 @@ function AccountManagement() {
           <Heading size="md">Thông tin tài khoản</Heading>
         </CardHeader>
 
-        <CardBody pt={3}>
-          <Stack divider={<StackDivider />} spacing="4">
-            {/* avatar */}
-            <ModalAvatar data={data} level={level} color={color} id={id} />
-            {/* phone */}
-            <ModalPhone
-              color={color}
-              id={id}
-              phone={data?.phone}
-              isConfirmed={user?.phone_confirmed_at}
-            />
-            {/* email */}
-            <ModalEmail
-              color={color}
-              email={email}
-              isConfirmed={isConfirmed}
-              id={id}
-            />
-            {/* password */}
-            <ModalPassword color={color} id={id} />
-            {/* username */}
-            <ModalUsername color={color} name={data.fullName} id={id} />
-            {/* address */}
-            <Flex align="center" justify="space-between">
-              <Accordion allowToggle w="100%">
-                <AccordionItem border="none">
-                  <h2>
-                    <AccordionButton pl={0} justifyContent="space-between">
-                      <Box>
-                        <Heading
-                          size="xs"
-                          textAlign="left"
-                          textTransform="capitalize"
-                        >
-                          Địa chỉ
-                        </Heading>
-                        <Text pt="2" fontSize="xs" color={color}>
-                          Địa chỉ hiển thị với người dùng khác.
-                        </Text>
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
+        {isLoading ? (
+          <Center minH="90dvh">
+            <Spinner />
+          </Center>
+        ) : (
+          <CardBody pt={3}>
+            <Stack divider={<StackDivider />} spacing="4">
+              {/* avatar */}
+              <ModalAvatar data={data} level={level} color={color} id={id} />
+              {/* phone */}
+              <ModalPhone
+                color={color}
+                id={id}
+                phone={data?.phone}
+                isConfirmed={user?.phone_confirmed_at}
+              />
+              {/* email */}
+              <ModalEmail
+                color={color}
+                email={email}
+                isConfirmed={isConfirmed}
+                id={id}
+              />
+              {/* password */}
+              <ModalPassword color={color} id={id} />
+              {/* username */}
+              <ModalUsername color={color} name={data.fullName} id={id} />
+              {/* address */}
+              <Flex align="center" justify="space-between">
+                <Accordion allowToggle w="100%">
+                  <AccordionItem border="none">
+                    <h2>
+                      <AccordionButton pl={0} justifyContent="space-between">
+                        <Box>
+                          <Heading
+                            size="xs"
+                            textAlign="left"
+                            textTransform="capitalize"
+                          >
+                            Địa chỉ
+                          </Heading>
+                          <Text pt="2" fontSize="xs" color={color}>
+                            Địa chỉ hiển thị với người dùng khác.
+                          </Text>
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
 
-                  <AccordionPanel px={0} pb={0} pt={4}>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      <AddressSelect
-                        cityID={cityID}
-                        disID={disID}
-                        wardID={wardID}
-                        setCityID={setCityID}
-                        setDisID={setDisID}
-                        setWardID={setWardID}
-                      />
-                      <FormControl mt={3}>
-                        <FormLabel fontSize="sm">
-                          (Tùy chọn) Địa chỉ cụ thể
-                        </FormLabel>
-                        <Input
-                          fontSize="sm"
-                          w={{ lg: "30%" }}
-                          placeholder="Số nhà, ngõ ngách, thôn xóm"
-                          {...register("address")}
+                    <AccordionPanel px={0} pb={0} pt={4}>
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        <AddressSelect
+                          cityID={cityID}
+                          disID={disID}
+                          wardID={wardID}
+                          setCityID={setCityID}
+                          setDisID={setDisID}
+                          setWardID={setWardID}
                         />
-                      </FormControl>
-                      <Box w="100%" textAlign="end" mt={4}>
-                        <Button
-                          size="xs"
-                          fontWeight="400"
-                          colorScheme="green"
-                          variant="outline"
-                          borderWidth={1.5}
-                          rightIcon={<BiSave />}
-                          type="submit"
-                          isLoading={isUpdatingAdd}
-                        >
-                          Lưu
-                        </Button>
-                      </Box>
-                    </form>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-            </Flex>
-            <OtherInformations data={data} color={color} id={id} />
-          </Stack>
-        </CardBody>
+                        <FormControl mt={3}>
+                          <FormLabel fontSize="sm">
+                            (Tùy chọn) Địa chỉ cụ thể
+                          </FormLabel>
+                          <Input
+                            fontSize="sm"
+                            w={{ lg: "30%" }}
+                            placeholder="Số nhà, ngõ ngách, thôn xóm"
+                            {...register("address")}
+                          />
+                        </FormControl>
+                        <Box w="100%" textAlign="end" mt={4}>
+                          <Button
+                            size="xs"
+                            fontWeight="400"
+                            colorScheme="green"
+                            variant="outline"
+                            borderWidth={1.5}
+                            rightIcon={<BiSave />}
+                            type="submit"
+                            isLoading={isUpdatingAdd}
+                          >
+                            Lưu
+                          </Button>
+                        </Box>
+                      </form>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+              </Flex>
+              <OtherInformations data={data} color={color} id={id} />
+            </Stack>
+          </CardBody>
+        )}
       </Card>
     </Box>
   );

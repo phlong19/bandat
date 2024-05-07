@@ -93,7 +93,7 @@ function ChartDatePicker({
           Dữ liệu bài đăng theo dạng bán
         </Heading>
         <Text pr={18}>
-          Số bài đăng {title} BĐS : {count || "---"}
+          Số bài đăng {title.toLocaleLowerCase()} BĐS : {count || "---"}
         </Text>
       </Flex>
       <Flex gap={1.5} justify="center" w="full">

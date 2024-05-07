@@ -56,6 +56,7 @@ export const navLinks = [
 export const mobileNavLinks = {
   base: [
     { title: "Đăng tin", icon: "PenToSquare", to: "dang-tin" },
+    { title: "Quản lý bài viết", icon: "ListUl", to: "quan-ly-bai-viet" },
     { title: "Tin đăng đã lưu", icon: "Heart", to: "tin-da-luu" },
     { title: "Trang chủ", icon: "House", to: "/" },
     { title: "Nhà đất bán", icon: "HouseFlag", to: "nha-dat-ban" },
@@ -81,6 +82,12 @@ export const mobileNavLinks = {
       title: "Admin Panel",
       icon: "BookBible",
       to: "control",
+    },
+    {
+      access: ADMIN_LEVEL,
+      title: "Phân quyền",
+      icon: "CodeBranch",
+      to: "role-management",
     },
   ],
 };

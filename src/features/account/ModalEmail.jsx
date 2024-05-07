@@ -60,9 +60,13 @@ function ModalEmail({ color, email, isConfirmed }) {
             Email kết nối với tài khoản.
           </Text>
         </Box>
-        <Flex gap={20}>
+        <Flex
+          w={{ base: "fit-content", sm: "auto" }}
+          gap={{ base: 3, md: 4, lg: 5, xl: 20 }}
+          flexDirection={{ base: "column", md: "row" }}
+        >
           <Box>
-            <Text>{email}</Text>
+            <Text fontSize={{ base: "xs", md: "sm" }}>{email}</Text>
             {isConfirmed ? (
               <Badge
                 colorScheme="green"
@@ -86,7 +90,10 @@ function ModalEmail({ color, email, isConfirmed }) {
             )}
           </Box>
           <Button
+            maxW="fit-content"
+            ml="auto"
             size="xs"
+            fontSize={{ base: "10px", sm: "xs" }}
             fontWeight="400"
             colorScheme="green"
             variant="outline"

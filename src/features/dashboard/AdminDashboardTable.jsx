@@ -123,6 +123,7 @@ function AdminDashboardTable({ sub }) {
 
       {sub ? (
         <Box
+          mb={{ base: "200px", md: 2 }}
           border={isQuerying ? "none" : "1px solid gray"}
           p={3}
           borderRadius="md"
@@ -135,8 +136,12 @@ function AdminDashboardTable({ sub }) {
               <Spinner />
             </Center>
           ) : (
-            <Stack direction="column" spacing={3}>
-              <Flex align="center" gap={3}>
+            <Stack direction="column" spacing={{ base: 1.5, md: 3 }}>
+              <Flex
+                flexDirection={{ base: "column", md: "row" }}
+                align={{ base: "start", md: "center" }}
+                gap={{ base: 1.5, md: 3 }}
+              >
                 <Text minW="fit-content" mb={1.5}>
                   Chọn người dùng
                 </Text>
@@ -148,10 +153,14 @@ function AdminDashboardTable({ sub }) {
                 >
                   <InputGroup>
                     <Input
+                      onClick={() => {
+                        const el = document.getElementById("input");
+                        el.scrollIntoView({ behavior: "smooth" });
+                      }}
                       title="Chọn hoặc gõ để tìm kiếm"
                       placeholder="Chọn hoặc gõ để tìm kiếm"
                       _placeholder={{ fontSize: "sm" }}
-                      maxW="40%"
+                      maxW={{ base: "full", lg: "40%" }}
                       id="input"
                       mb={1.5}
                       value={currentUser?.fullName || search}
@@ -225,9 +234,15 @@ function AdminDashboardTable({ sub }) {
                 </Box>
               </Flex>
               {currentUser?.id && (
-                <Flex gap={3} pt={1} align="center">
+                <Flex
+                  flexDirection={{ base: "column", md: "row" }}
+                  gap={{ base: 1.5, md: 3 }}
+                  pt={1}
+                  align={{ base: "start", md: "center" }}
+                >
                   <Text>Cập nhật thành:</Text>
                   <RadioGroup
+                    size={{ base: "sm", md: "md" }}
                     onChange={(e) => setSelectedLevel(Number(e))}
                     value={selectedLevel}
                   >
@@ -257,11 +272,12 @@ function AdminDashboardTable({ sub }) {
               <Button
                 isLoading={isPending}
                 isDisabled={!currentUser?.id}
-                size="sm"
+                size={{ base: "xs", md: "sm" }}
                 fontSize="sm"
                 w="fit-content"
                 leftIcon={<LiaSave fontSize={16} />}
                 ml="auto"
+                fontWeight={500}
                 colorScheme="green"
                 onClick={handleSave}
               >
@@ -302,7 +318,12 @@ function AdminDashboardTable({ sub }) {
             viewOnly
             profile={false}
           />
-          <Flex gap={3} w="full" maxH="55dvh">
+          <Flex
+            gap={3}
+            w="full"
+            flexDirection={{ base: "column", lg: "row" }}
+            maxH="55dvh"
+          >
             <ChakraTable
               isLoading={isLoading}
               page="doc-page"

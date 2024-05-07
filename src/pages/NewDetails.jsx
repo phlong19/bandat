@@ -81,7 +81,7 @@ function NewDetails() {
       <BreadCrumb Hline={Hline} />
 
       <div className="mt-5">
-        <Flex my={2} ml={2}>
+        <Flex my={2} ml={{ base: 2, lg: 4, xl: 5 }}>
           <GoBackButton />
         </Flex>
         <Center w="100%">
@@ -123,7 +123,7 @@ function NewDetails() {
                   </p>
                 </div>
               </div>
-              <div className="mt-5">{parse(content)}</div>
+              <div className="content-render detail mt-5">{parse(content)}</div>
 
               <div className="disclaimer pt-3 italic">
                 <span className="font-bold">

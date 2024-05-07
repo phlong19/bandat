@@ -175,15 +175,25 @@ function FilesDropzone({
         })}
       >
         <input {...getInputProps({ onChange })} />
-        <VStack fontSize="sm" color="gray.500">
+        <VStack
+          fontSize={{ base: "xs", md: "sm" }}
+          textAlign={{ base: "center", md: "left" }}
+          color="gray.500"
+        >
           {!error ? (
             <Text>{reform.helperMedia}</Text>
           ) : (
-            <Text fontSize="sm" color="red.500">
+            <Text
+              fontSize={{ base: "xs", md: "sm" }}
+              textAlign={{ base: "center", md: "left" }}
+              color="red.500"
+            >
               {error}
             </Text>
           )}
-          <Text fontStyle="italic">{reform.acceptMedias}</Text>
+          <Text fontStyle="italic" textAlign={{ base: "center", md: "left" }}>
+            {reform.acceptMedias}
+          </Text>
         </VStack>
       </Box>
       <Flex gap={1} wrap="wrap" my={3}>

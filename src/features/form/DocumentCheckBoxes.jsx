@@ -84,7 +84,10 @@ function DocumentCheckBoxes({
         </h2>
         <AccordionPanel pb={4} px={0}>
           {!isLoading && data.length > 0 && (
-            <Grid templateColumns="repeat(2, 1fr)">
+            <Grid
+              gap={{ base: 1.5, sm: 0 }}
+              templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
+            >
               {data.map((doc) => (
                 <Checkbox
                   key={doc.doc_id}
