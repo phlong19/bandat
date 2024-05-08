@@ -46,7 +46,9 @@ function RegisterFormV1() {
     if (check) {
       signup(data);
     } else {
-      return toast.error("mat khau it nhat 1 viet hoa, 1 ky tu dac biet, 1 so");
+      return toast.error(
+        "Mật khẩu cần ít nhất 1 chữ thường, 1 in hoa, 1 ký tự đặc biệt, và 1 chữ số",
+      );
     }
   }
 
