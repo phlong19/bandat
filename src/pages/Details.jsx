@@ -198,7 +198,7 @@ function Details() {
             <Image
               boxSize="40px"
               filter="grayscale(1)"
-              src={newMedia[i].mediaLink}
+              src={newMedia[i]?.mediaLink}
             />
           )}
         </a>
@@ -252,19 +252,19 @@ function Details() {
                 <ReactPhotoSphereViewer
                   touchmoveTwoFingers
                   loadingTxt="Đang tải"
-                  src={image360[0].mediaLink}
+                  src={image360[0]?.mediaLink}
                   width="100%"
                 />
               </AspectRatio>
             )}
             {videos.map((media) => (
               <AspectRatio key={media.id}>
-                <video src={media.mediaLink} controls />
+                <video src={media?.mediaLink} controls />
               </AspectRatio>
             ))}
             {images.map((media) => (
               <AspectRatio key={media.id} ratio={4 / 3} w="full">
-                <Image src={media.mediaLink} objectFit="contain" />
+                <Image src={media?.mediaLink} objectFit="contain" />
               </AspectRatio>
             ))}
           </Slider>
@@ -275,7 +275,7 @@ function Details() {
               {image360.length > 0 ? (
                 <AspectRatio ratio={16 / 9} w="full" _before="none">
                   <ReactPhotoSphereViewer
-                    src={image360[0].mediaLink}
+                    src={image360[0]?.mediaLink}
                     width="100%"
                   />
                 </AspectRatio>
@@ -284,7 +284,7 @@ function Details() {
                   {videos.length > 0 ? (
                     <video
                       className="rounded-l-lg"
-                      src={videos[0].mediaLink}
+                      src={videos[0]?.mediaLink}
                       controls
                     />
                   ) : (
@@ -294,9 +294,9 @@ function Details() {
                       rounded="none"
                     >
                       <Image
-                        id={images[0].id}
+                        id={images[0]?.id}
                         roundedLeft="lg"
-                        src={images[0].mediaLink}
+                        src={images[0]?.mediaLink}
                       />
                     </Button>
                   )}
@@ -315,18 +315,18 @@ function Details() {
               {videos.length > 1 ? (
                 <>
                   <AspectRatio _before="none">
-                    <video src={videos[1].mediaLink} controls />
+                    <video src={videos[1]?.mediaLink} controls />
                   </AspectRatio>
                   {images.slice(0, 2).map((media, i) => (
-                    <AspectRatio key={media.id} _before="none">
+                    <AspectRatio key={media?.id} _before="none">
                       <Button
                         variant="unstyled"
                         onClick={(e) => handleOpen(e)}
                         rounded="none"
                       >
                         <Image
-                          id={media.id}
-                          src={media.mediaLink}
+                          id={media?.id}
+                          src={media?.mediaLink}
                           borderTopRightRadius={i === 0 ? "lg" : "none"}
                         />
                       </Button>
@@ -337,15 +337,15 @@ function Details() {
                 // or else diplay 4 images
                 // first 3
                 images.slice(1, 4).map((media, i) => (
-                  <AspectRatio key={media.id} _before="none">
+                  <AspectRatio key={media?.id} _before="none">
                     <Button
                       variant="unstyled"
                       onClick={(e) => handleOpen(e)}
                       rounded="none"
                     >
                       <Image
-                        id={media.id}
-                        src={media.mediaLink}
+                        id={media?.id}
+                        src={media?.mediaLink}
                         borderTopRightRadius={i === 1 ? "lg" : "none"}
                       />
                     </Button>
@@ -376,8 +376,8 @@ function Details() {
                     borderBottomRightRadius="lg"
                   >
                     <Image
-                      src={images[4].mediaLink}
-                      id={images[4].id}
+                      src={images[4]?.mediaLink}
+                      id={images[4]?.id}
                       filter="grayscale(1)"
                     />
                     <Box
