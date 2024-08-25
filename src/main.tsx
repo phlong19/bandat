@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
+import App from "./App.tsx";
 import "./index.css";
 
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallBack from "./ui/ErrorFallBack.jsx";
+import ErrorFallBack from "./ui/ErrorFallBack.js";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ErrorBoundary
       FallbackComponent={ErrorFallBack}

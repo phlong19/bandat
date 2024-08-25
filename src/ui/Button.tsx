@@ -1,5 +1,18 @@
 import { NavLink } from "react-router-dom";
 
+interface Props {
+  children?: React.ReactNode;
+  disabled?: boolean;
+  variant?: "light" | "fill";
+  to?: string;
+  onClick?: () => void;
+  icon?: JSX.Element;
+
+  width?: boolean;
+  basePY?: boolean;
+  widthBase?: boolean;
+}
+
 function Button({
   children,
   disabled,
@@ -10,7 +23,7 @@ function Button({
   width = false,
   basePY = true,
   widthBase = true,
-}) {
+}: Props) {
   const base = `${icon ? "gap-2" : "gap-0"} ${
     width ? "md:w-32" : "xl:w-auto"
   } ${widthBase ? "w-1/2" : ""} ${

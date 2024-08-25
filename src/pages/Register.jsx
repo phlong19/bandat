@@ -12,7 +12,7 @@ function Register() {
   return (
     <>
       {password !== pass && <RegisterFormV1 />}
-      <button
+      {/* <button
         className="absolute bottom-0 left-0 text-dark opacity-0 hover:opacity-100 dark:text-white"
         onClick={() => setShow((s) => !s)}
       >
@@ -30,7 +30,7 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}
         />
       )}
-      {password === pass && <MultiStepForm />}
+      {password === pass && <MultiStepForm />} */}
     </>
   );
 }

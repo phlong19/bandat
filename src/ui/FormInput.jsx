@@ -26,7 +26,7 @@ function FormInput({
         type={newType}
         id={id}
         placeholder=" "
-        className="w-full rounded-lg border-2 border-dark/80 bg-white px-4 py-3 font-roboto text-base outline-none invalid:border-red-500 focus:border-primary dark:border-white dark:bg-dark dark:focus:border-secondary"
+        className="w-full rounded-lg border-2 border-dark/80 bg-white px-4 py-3 font-lexend text-base outline-none invalid:border-red-500 focus:border-primary dark:border-white dark:bg-dark dark:focus:border-secondary"
         {...hookForm}
         onKeyDown={(e) => {
           if (e.key === "Enter") e.preventDefault();
