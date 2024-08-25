@@ -1,16 +1,11 @@
 import { SlLocationPin } from "react-icons/sl";
 import { FiPhoneCall, FiHeadphones } from "react-icons/fi";
 import { TbUserQuestion } from "react-icons/tb";
-import {
-  FaFacebook,
-  FaSquareXTwitter,
-  FaGithub,
-  FaInstagram,
-} from "react-icons/fa6";
+import { FaFacebook, FaSquareXTwitter, FaYoutube } from "react-icons/fa6";
 
 import Button from "./Button";
 import Logo from "./Logo";
-import { currentYear, fb, git, ins, x } from "../constants/anyVariables";
+import { currentYear, fb, ytb, x, zalo } from "../constants/anyVariables";
 
 function Footer() {
   return (
@@ -48,51 +43,29 @@ function Footer() {
               1900 9069
             </Button>
           </span>
-          <div className="mt-6 border-b border-dark pb-5 text-left text-base dark:border-light lg:border-none">
-            <h3>Tải ứng dụng</h3>
-            <ul className="mt-3 items-center gap-1 xs:flex sm:gap-0">
-              <li className="w-1/2 md:-ml-2 md:w-1/3 lg:w-1/2">
-                <a href="#">
-                  <img
-                    src="/google-play.png"
-                    alt="google play"
-                    className="max-w-36 xl:max-w-40"
-                  />
-                </a>
-              </li>
-              <li className="w-1/2 md:w-1/3 lg:w-1/2">
-                <a href="#">
-                  <img
-                    src="/app_store.png"
-                    alt="app store"
-                    className="mt-[3.5px] max-w-36 dark:contrast-150 sm:mt-0 xl:max-w-40"
-                  />
-                </a>
-              </li>
-            </ul>
-          </div>
+
           {/* socials media, mobile hidden */}
-          <div className="hidden lg:mt-32 lg:block xl:mt-0">
+          <div className="flex flex-col items-center justify-center pt-3.5 lg:mt-32 lg:block xl:mt-0">
             <h3 className="text-xl font-bold">Kết nối với chúng tôi qua</h3>
             <ul className="flex gap-3 pb-3 pt-4 text-2xl text-primary dark:text-secondary">
               <li>
-                <a href={fb}>
-                  <FaFacebook />
+                <a href={zalo}>
+                  <img src="/zalo.png" alt="" className="w-[23px]" />
                 </a>
               </li>
               <li>
-                <a href={x}>
-                  <FaSquareXTwitter />
+                <a href={fb} target="_blank" rel="noreferrer">
+                  <FaFacebook color="#1877F2" />
                 </a>
               </li>
               <li>
-                <a href={ins}>
-                  <FaInstagram />
+                <a href={x} target="_blank" rel="noreferrer">
+                  <FaSquareXTwitter color="black" />
                 </a>
               </li>
               <li>
-                <a href={git}>
-                  <FaGithub />
+                <a href={ytb} target="_blank" rel="noreferrer">
+                  <FaYoutube color="red" />
                 </a>
               </li>
             </ul>
@@ -189,15 +162,6 @@ function Footer() {
             Copyright © {currentYear - 1} - {currentYear} LandHub.com.vn.
           </p>
         </div>
-        <p className="bg-transparent md:absolute md:right-14 md:-mt-16 lg:bottom-1 lg:right-0 lg:max-w-[1200px]">
-          <a href="http://online.gov.vn/">
-            <img
-              src="/da-dang-ky-bct.png"
-              alt="Registered with Ministry of Industry and Trade (MOIT)"
-              className="h-14 md:h-16"
-            />
-          </a>
-        </p>
       </div>
     </footer>
   );

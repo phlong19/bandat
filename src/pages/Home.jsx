@@ -89,7 +89,7 @@ const storyVar = {
 function Home() {
   const { data: profile, isLoading } = useAuth();
   const { onClose, onOpen, isOpen } = useDisclosure();
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState('');
   const { colorMode } = useColorMode();
 
   // gradient

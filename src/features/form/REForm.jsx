@@ -61,7 +61,6 @@ import { useUpdateRE } from "./useUpdateRE";
 import FormActions from "./FormActions";
 import unidecode from "unidecode";
 import Files360Dropzone from "./Files360Dropzone";
-import ReportTable from "../table/ReportTable";
 import MapLocationPick from "./MapLocationPick";
 
 function REForm({ currentUserLevel, userID, edit = false, editData }) {
@@ -614,8 +613,6 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           )}
         </VStack>
       </form>
-
-      {edit && <ReportTable id={editData.id} />}
     </>
   );
 }

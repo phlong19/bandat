@@ -11,7 +11,6 @@ import {
   Image,
   Link as ChakraLink,
   useColorModeValue,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { toast } from "react-hot-toast";
 import {
@@ -22,13 +21,11 @@ import {
 import { Link } from "react-router-dom";
 
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
-import { PiWarning } from "react-icons/pi";
 
 import { hiddenLast3PhoneNum } from "../utils/helper";
 import { error, success } from "../constants/message";
 import { checkExist, deleteCookie, setCookie } from "../utils/reuse";
 import Avatar from "./Avatar";
-import ReportModal from "./ReportModal";
 import unidecode from "unidecode";
 import slugify from "react-slugify";
 
@@ -40,9 +37,7 @@ function StickyAuthorBox({ postID, author }) {
 
   const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
-  const [report, setReport] = useState(false);
 
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const check = checkExist(postID);
   const appId = import.meta.env.VITE_APPID;
   const link = window.location.href;
@@ -156,18 +151,7 @@ function StickyAuthorBox({ postID, author }) {
               />
             </FacebookMessengerShareButton>
           </Tooltip>
-          <Tooltip label="Báo xấu">
-            <IconButton
-              size="sm"
-              rounded="full"
-              onMouseEnter={() => setReport(true)}
-              onMouseLeave={() => setReport(false)}
-              color={report ? "#d6ba17f8" : ""}
-              icon={<PiWarning />}
-              onClick={onOpen}
-            />
-          </Tooltip>
-          <ReportModal isOpen={isOpen} onClose={onClose} postID={postID} />
+
           <Tooltip label="Lưu vào tin của bạn">
             <IconButton
               size="sm"

@@ -39,11 +39,11 @@ function VideoBackgroundWithSearch() {
       justifyContent="center"
       alignItems="center"
       position="relative"
-      height="100vh"
+      height="500"
       width="100%"
     >
       {/* background */}
-      <motion.video
+      {/* <motion.video
         key={currentVid}
         src={currentVid}
         autoPlay
@@ -54,7 +54,7 @@ function VideoBackgroundWithSearch() {
         transition={{ duration: 0.5 }}
         onEnded={handleChangeVid}
         className="absolute h-full w-full object-cover blur-[10px]"
-      />
+      /> */}
 
       <Box
         position="absolute"

@@ -1,7 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.cdnfonts.com/css/cascadia-code");
 
 /* leaflet */
 @import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
@@ -178,6 +185,15 @@ a.active button.chakra-button {
   border-color: inherit;
 }
 
+.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  color: var(--ql-color);
+}
+
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  max-height: 280px;
+  overflow: auto;
+}
+
 .ql-picker.ql-font .ql-picker-label[data-value="Roboto"]::before,
 .ql-picker.ql-font .ql-picker-item[data-value="Roboto"]::before {
   font-family: "Roboto", sans-serif;
@@ -190,11 +206,102 @@ a.active button.chakra-button {
   content: "Lexend" !important;
 }
 
+.ql-picker.ql-font .ql-picker-label[data-value="Montserrat"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Montserrat"]::before {
+  font-family: "Montserrat", sans-serif;
+  content: "Montserrat" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Oswald"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Oswald"]::before {
+  font-family: "Oswald", sans-serif;
+  content: "Oswald" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Playfair"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Playfair"]::before {
+  font-family: "Playfair Display", serif;
+  content: "Playfair Display" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Open"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Open"]::before {
+  font-family: "Open Sans", sans-serif;
+  content: "Open Sans" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Inter"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Inter"]::before {
+  font-family: "Inter", sans-serif;
+  content: "Inter" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Alegreya"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Alegreya"]::before {
+  font-family: "Alegreya", serif;
+  content: "Alegreya" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Rale"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Rale"]::before {
+  font-family: "Raleway", sans-serif;
+  content: "Raleway" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Merri"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Merri"]::before {
+  font-family: "Merriweather", serif;
+  content: "Merriweather" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Cas"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Cas"]::before {
+  font-family: "Cascadia Code", sans-serif;
+  content: "Cascadia" !important;
+}
+
+.ql-font-Cas {
+  font-family: "Cascadia Code", sans-serif;
+}
+
+.ql-font-Merri {
+  font-family: "Merriweather", serif;
+}
+
+.ql-font-Rale {
+  font-family: "Raleway", sans-serif;
+}
+
+.ql-font-Alegreya {
+  font-family: "Alegreya", serif;
+}
+
 .ql-font-Roboto {
   font-family: "Roboto", sans-serif;
 }
+
 .ql-font-Lexend {
   font-family: "Lexend", sans-serif;
+}
+
+.ql-font-Montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+
+.ql-font-Playfair {
+  font-family: "Playfair Display", serif;
+}
+
+.ql-font-Oswald {
+  font-family: "Oswald", sans-serif;
+}
+
+.ql-font-Open {
+  font-family: "Open Sans", sans-serif;
+}
+
+.ql-font-Inter {
+  font-family: "Inter", sans-serif;
 }
 
 /* react slick custom dots */

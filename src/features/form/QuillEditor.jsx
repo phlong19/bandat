@@ -19,16 +19,34 @@ const formats = [
   "indent",
   "link",
   "image",
+  "video",
   "code-block",
   "script",
   "align",
 ];
 
 const Font = Quill.import("formats/font");
-Font.whitelist = ["Roboto", "Lexend"];
+Font.whitelist = [
+  "Roboto",
+  "Lexend",
+  "Montserrat",
+  "Playfair",
+  "Oswald",
+  "Inter",
+  "Open",
+  "Alegreya",
+  "Rale",
+  "Merri",
+  "Cas",
+];
 Quill.register(Font, true);
 
-function QuillEditor({ onChange, allowImage = true, value }) {
+function QuillEditor({
+  onChange,
+  allowImage = true,
+  value,
+  allowVideo = false,
+}) {
   const quill = useRef(null);
 
   // image handler
@@ -44,6 +62,7 @@ function QuillEditor({ onChange, allowImage = true, value }) {
   }, []);
 
   const imageModule = allowImage ? "image" : "";
+  const videoModule = allowVideo ? "video" : "";
 
   // modules
   const modules = {
@@ -59,7 +78,7 @@ function QuillEditor({ onChange, allowImage = true, value }) {
           { indent: "-1" },
           { indent: "+1" },
         ],
-        ["link", imageModule],
+        ["link", imageModule, videoModule],
         ["code-block", { script: "super" }],
         ["clean"],
       ],

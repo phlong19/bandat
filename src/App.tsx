@@ -69,7 +69,12 @@ function App() {
                 <Routes>
                   <Route element={<AppLayout />}>
                     <Route index element={<Home />} />
-                    <Route path="nha-dat-ban" element={<ListingPage />} />
+
+                    {/* TODO: fix paths */}
+                    <Route
+                      path="thuc-pham-chuc-nang"
+                      element={<ListingPage />}
+                    />
                     {/* base on type to filter query data */}
                     <Route path="nha-dat-ban/:type" element={<ListingPage />} />
                     <Route path="nha-dat-cho-thue" element={<ListingPage />} />
@@ -78,6 +83,7 @@ function App() {
                       element={<ListingPage />}
                     />
                     <Route path="nha-dat/:land" element={<Details />} />
+
                     <Route path="tin-da-luu" element={<Bookmarks />} />
                     <Route path="tin-tuc" element={<News />} />
                     <Route path="tin-tuc/:title" element={<NewDetails />} />

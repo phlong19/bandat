@@ -172,9 +172,8 @@ function AdminDashboardTable({ sub }) {
                         <Button
                           size="md"
                           fontSize="sm"
-                          variant="ghost"
+                          variant="outline"
                           colorScheme="green"
-                          color={"white"}
                           onClick={reset}
                         >
                           x
@@ -196,8 +195,9 @@ function AdminDashboardTable({ sub }) {
                       h={search?.length < 3 ? 200 : "fit-content"}
                       overflowY="auto"
                     >
-                      {search.length >= 3
-                        ? fullTextSearch(usersList, search).map((i) => (
+                      {search.length >= 3 ? (
+                        fullTextSearch(usersList, search)?.length > 0 ? (
+                          fullTextSearch(usersList, search).map((i) => (
                             <UserOption
                               i={i}
                               key={i.id}
@@ -207,18 +207,25 @@ function AdminDashboardTable({ sub }) {
                               setUser={setUser}
                             />
                           ))
-                        : usersList
-                            .slice(0, LIMIT_PER_PAGE)
-                            .map((i) => (
-                              <UserOption
-                                i={i}
-                                key={i.id}
-                                currentUser={currentUser}
-                                hoverId={hoverId}
-                                setHoverId={setHoverId}
-                                setUser={setUser}
-                              />
-                            ))}
+                        ) : (
+                          <Center minHeight={200}>
+                            <Text>Không tìm thấy người dùng</Text>
+                          </Center>
+                        )
+                      ) : (
+                        usersList
+                          .slice(0, LIMIT_PER_PAGE)
+                          .map((i) => (
+                            <UserOption
+                              i={i}
+                              key={i.id}
+                              currentUser={currentUser}
+                              hoverId={hoverId}
+                              setHoverId={setHoverId}
+                              setUser={setUser}
+                            />
+                          ))
+                      )}
                       {!search && (
                         <Container
                           key={Math.random()}

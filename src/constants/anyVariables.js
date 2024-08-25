@@ -7,11 +7,11 @@ export const LIMIT_PER_PAGE = 12;
 export const LIMIT_NEWS = 8;
 
 // min & max files can be uploaded
-const BASE_MEDIA_UPLOAD = 4;
-const LIMIT_IMG_UPLOAD = 8;
+const BASE_MEDIA_UPLOAD = 1;
+const LIMIT_IMG_UPLOAD = 10;
 const LIMIT_VID_UPLOAD = 2;
-const MAX_SIZE_UPLOAD = 5242880;
-const MAX_SIZE_AVATAR = 3145728;
+const MAX_SIZE_UPLOAD = 10485760;
+const MAX_SIZE_AVATAR = 5242880;
 const ratio = 2 / 1;
 export {
   BASE_MEDIA_UPLOAD,
@@ -31,10 +31,10 @@ export { USER_LEVEL, EDITOR_LEVEL, ADMIN_LEVEL };
 
 // social media links
 const fb = "";
-const ins = "";
+const ytb = "";
 const x = "";
-const git = "https://github.com/phlong19/bandat/";
-export { fb, ins, x, git };
+const zalo = "";
+export { fb, ytb, x, zalo };
 
 // purType page title
 const purTypeTrue = `Mua Bán Nhà Đất Việt Nam Giá Rẻ, Mới Nhất ${currentYear}`;
@@ -50,19 +50,19 @@ const m2 = "m²";
 export { billion, million, m2 };
 
 // title & des length
-const minLength = 40;
-const maxLength = 130;
+const minLength = 1;
+const maxLength = 500;
 const minDesLength = 150;
-const maxDesLength = 3000;
+const maxDesLength = 10000;
 export { minLength, maxLength, minDesLength, maxDesLength };
 
 // news
 const minTitle = 30;
-const maxTitle = 150;
-const minSummary = 150;
-const maxSummary = 250;
+const maxTitle = 500;
+const minSummary = 50;
+const maxSummary = 500;
 const minContent = 300;
-const maxContent = 7000;
+const maxContent = 10000;
 export { minTitle, maxTitle, minSummary, maxSummary, minContent, maxContent };
 
 // table captions
@@ -108,23 +108,6 @@ export const profileCaptions = [
   "Ngày sinh",
   "Ngày tạo",
 ];
-
-export const reportCaptions = [
-  "Thông tin",
-  "Sai địa chỉ",
-  "Không liên lạc được",
-  "Trùng lặp",
-  "Không tồn tại",
-  "Thông tin sai",
-  "Ảnh có vấn đề",
-  "Đã bán",
-  "Báo cáo khác",
-  "Ghi chú",
-  "Người dùng",
-  "Ngày báo cáo",
-];
-
-export const maxAreaSearch = 500;
 
 // auth
 const minName = 8;
