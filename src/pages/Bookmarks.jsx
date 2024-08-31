@@ -13,9 +13,9 @@ import {
 import BreadCrumb from "../ui/BreadCrumb";
 import { navLinks } from "../constants/navlink";
 import { Link, useSearchParams } from "react-router-dom";
-import { getBookmarkedPosts } from "../services/apiRE";
 import { getCookie } from "../utils/reuse";
 import List from "../features/list/List";
+import { getBookmarkProducts } from "../services/apiProduct";
 
 function Bookmarks() {
   const bg = useColorModeValue("white", "darker");
@@ -31,7 +31,7 @@ function Bookmarks() {
     refetch,
   } = useQuery({
     queryKey: ["bookmark-list", ids],
-    queryFn: () => getBookmarkedPosts(ids, false, page),
+    queryFn: () => getBookmarkProducts(ids, page),
     enabled: ids[0] !== "",
   });
 
@@ -63,7 +63,7 @@ function Bookmarks() {
   return (
     <Box maxW="1500px" mx="auto">
       <>
-        <BreadCrumb base="Tin đã lưu" />
+        <BreadCrumb base="Sản phẩm yêu thích" />
         <Flex
           gap={2}
           w="full"
@@ -71,17 +71,15 @@ function Bookmarks() {
           flexDirection={{ base: "column", lg: "row" }}
           bg={bg}
         >
-          <Box pt={5} maxH={{ base: "auto", xl: count < 5 ? 760 : "850" }}>
+          <Box
+            pt={5}
+            w="100%"
+            maxH={{ base: "auto", xl: count < 5 ? 760 : "850" }}
+          >
             <Heading color={accent} size="md" pl={3}>
-              Danh sách bài đăng đã lưu
+              Danh sách sản phẩm yêu thích
             </Heading>
-            <List
-              data={data}
-              isLoading={isLoading}
-              count={count}
-              userpage
-              bmk
-            />
+            <List data={data} isLoading={isLoading} count={count} userpage />
           </Box>
           <Box py={5} minW={{ base: "full", lg: 300, xl: 400 }}>
             {navLinks.map((i, index) => (
@@ -93,7 +91,7 @@ function Bookmarks() {
                   {i.title}
                 </Link>
                 <UnorderedList className="contacts">
-                  {i.child_links.map((e) => (
+                  {i.child_links?.map((e) => (
                     <ListItem
                       key={e.type}
                       className="py-1 text-sm transition-colors duration-300 last:pb-3 hover:text-primary dark:hover:text-secondary"

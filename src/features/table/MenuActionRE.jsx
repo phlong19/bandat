@@ -6,12 +6,7 @@ import { PiDownload, PiUpload } from "react-icons/pi";
 import { HiOutlineTrash } from "react-icons/hi";
 import { TbEyeCheck } from "react-icons/tb";
 import { LiaMoneyBillWaveSolid } from "react-icons/lia";
-import {
-  ADMIN_LEVEL,
-  DEFAULT_RE_STATUS,
-  SELLING_STATUS,
-  SOLD_STATUS,
-} from "../../constants/anyVariables";
+import { ADMIN_LEVEL, INSTOCK, OUT_STOCK } from "../../constants/anyVariables";
 
 import { useMarkSold } from "./useMarkSold";
 import { useApprovePost } from "./useApprovePost";
@@ -35,7 +30,7 @@ function MenuActionRE({
   return (
     <MenuList fontSize="medium">
       {/* only admin can approve post */}
-      {level >= ADMIN_LEVEL && statusID === DEFAULT_RE_STATUS && (
+      {level >= ADMIN_LEVEL && statusID === INSTOCK && (
         <ChakraMenuItemDialog
           color="blue.600"
           action="Duyệt bài nhanh"
@@ -45,7 +40,7 @@ function MenuActionRE({
       )}
       {/* must be admin or author to mark sold */}
       {(level >= ADMIN_LEVEL || userID === authorID) &&
-        statusID === SELLING_STATUS && (
+        statusID === INSTOCK && (
           <ChakraMenuItemDialog
             color="blue.600"
             action={`Đánh dấu đã ${purType ? "bán" : "thuê"}`}
@@ -55,7 +50,7 @@ function MenuActionRE({
         )}
       {/* must be admin or author to de-active post */}
       {(level >= ADMIN_LEVEL || userID === authorID) &&
-        statusID === SELLING_STATUS && (
+        statusID === INSTOCK && (
           <ChakraMenuItemDialog
             color="red.600"
             action="Gỡ bài viết"
@@ -71,7 +66,7 @@ function MenuActionRE({
         to={`/quan-ly-bai-viet/${slug}`}
       >
         <TbEyeCheck fontSize="20" />
-        Xem {statusID !== SOLD_STATUS ? "/ Sửa" : ""}
+        Xem {statusID !== OUT_STOCK ? "/ Sửa" : ""}
       </MenuItem>
       {(level >= ADMIN_LEVEL || userID === authorID) && (
         <ChakraMenuItemDialog

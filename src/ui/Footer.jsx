@@ -1,11 +1,23 @@
 import { SlLocationPin } from "react-icons/sl";
 import { FiPhoneCall, FiHeadphones } from "react-icons/fi";
 import { TbUserQuestion } from "react-icons/tb";
-import { FaFacebook, FaSquareXTwitter, FaYoutube } from "react-icons/fa6";
+import {
+  FaFacebook,
+  FaSquareXTwitter,
+  FaTiktok,
+  FaYoutube,
+} from "react-icons/fa6";
 
 import Button from "./Button";
 import Logo from "./Logo";
-import { currentYear, fb, ytb, x, zalo } from "../constants/anyVariables";
+import {
+  currentYear,
+  fb,
+  ytb,
+  x,
+  zalo,
+  tiktok,
+} from "../constants/anyVariables";
 
 function Footer() {
   return (
@@ -45,34 +57,44 @@ function Footer() {
           </span>
 
           {/* socials media, mobile hidden */}
-          <div className="flex flex-col items-center justify-center pt-3.5 lg:mt-32 lg:block xl:mt-0">
+          <div className="mt-5 w-fit mx-auto lg:w-full flex flex-col items-center justify-center border-t border-dark pt-3.5 dark:border-white lg:block">
             <h3 className="text-xl font-bold">Kết nối với chúng tôi qua</h3>
             <ul className="flex gap-3 pb-3 pt-4 text-2xl text-primary dark:text-secondary">
-              <li>
+              <li className="rounded bg-white">
                 <a href={zalo}>
                   <img src="/zalo.png" alt="" className="w-[23px]" />
                 </a>
               </li>
               <li>
                 <a href={fb} target="_blank" rel="noreferrer">
-                  <FaFacebook color="#1877F2" />
+                  <FaFacebook
+                    color="#1877F2"
+                    className="rounded-full bg-white"
+                  />
                 </a>
               </li>
-              <li>
+              <li className="relative">
                 <a href={x} target="_blank" rel="noreferrer">
-                  <FaSquareXTwitter color="black" />
+                  <div className="absolute right-1 top-1 z-[1] h-4 w-4  rounded-full bg-white"></div>
+                  <FaSquareXTwitter className="relative z-[2]" color="black" />
+                </a>
+              </li>
+              <li className="relative">
+                <a href={ytb} target="_blank" rel="noreferrer">
+                  <div className="absolute right-1 top-1 z-[1] h-3 w-4  rounded-full bg-white"></div>
+                  <FaYoutube color="red" className="relative z-[2]" />
                 </a>
               </li>
               <li>
-                <a href={ytb} target="_blank" rel="noreferrer">
-                  <FaYoutube color="red" />
+                <a href={tiktok} target="_blank" rel="noreferrer">
+                  <FaTiktok color="black" />
                 </a>
               </li>
             </ul>
           </div>
         </div>
         {/* info */}
-        <div className="relative z-50 mb-3 mt-6 w-full text-left">
+        <div className="relative z-50 mt-6 w-full pb-3 text-left">
           <p className="lg:hidden">
             Copyright © 2023 - {currentYear} LandHub.com.vn.
           </p>

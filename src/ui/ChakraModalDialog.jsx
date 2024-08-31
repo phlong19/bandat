@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { newsForm } from "../constants/message";
 
-function ChakraModalDialog({ isOpen, onClose, onCloseDialog }) {
+function ChakraModalDialog({ isOpen, onClose, onCloseDialog, title, message }) {
   const cancelRef = useRef();
   const queryClient = useQueryClient();
 
@@ -24,11 +24,15 @@ function ChakraModalDialog({ isOpen, onClose, onCloseDialog }) {
       isOpen={isOpen}
       isCentered
     >
-      <AlertDialogOverlay />
-      <AlertDialogContent>
-        <AlertDialogHeader>{newsForm.dialogTitle}</AlertDialogHeader>
+      <AlertDialogOverlay zIndex={13000} />
+      <AlertDialogContent containerProps={{ zIndex: 15000 }}>
+        <AlertDialogHeader>
+          {title ? title : newsForm.dialogTitle}
+        </AlertDialogHeader>
         <AlertDialogCloseButton />
-        <AlertDialogBody>{newsForm.dialogMessage}</AlertDialogBody>
+        <AlertDialogBody>
+          {message ? message : newsForm.dialogMessage}
+        </AlertDialogBody>
         <AlertDialogFooter>
           <Button ref={cancelRef} onClick={onCloseDialog}>
             Hủy

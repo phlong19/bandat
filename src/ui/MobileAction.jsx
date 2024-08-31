@@ -1,7 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { Button, Flex, Text } from "@chakra-ui/react";
 
-import { FaDoorOpen, FaRightToBracket, FaUserPlus } from "react-icons/fa6";
+import {
+  FaDoorOpen,
+  FaNewspaper,
+  FaRightToBracket,
+  FaUserPlus,
+} from "react-icons/fa6";
 import Avatar from "./Avatar";
 import SpinnerFullPage from "./SpinnerFullPage";
 import MobileActionItem from "./MobileActionItem";
@@ -9,16 +14,22 @@ import MobileActionItem from "./MobileActionItem";
 import { mobileNavLinks } from "../constants/navlink";
 import { useAuth } from "../context/UserContext";
 import { useLogout } from "../features/auth/useLogout";
+import { useGetCategories } from "../hooks/useGetCategories";
 
 const { base, authen } = mobileNavLinks;
 
 function MobileAction({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
   const { logout } = useLogout();
+  const { categoryTree, isFetching } = useGetCategories();
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <SpinnerFullPage />;
   }
+
+  const navLinks = base.concat(
+    categoryTree.map((i) => ({ ...i, icon: "RegRectangleList" })),
+  );
 
   const arr = authen.filter((item) => item.access <= level);
 
@@ -74,16 +85,35 @@ function MobileAction({ onClose }) {
               />
             </li>
           ))}
-        {base.map((link) => (
-          <li key={link.title} className="relative w-full overflow-hidden">
+        {navLinks.map((rootLink, index) => (
+          <li key={index} className="relative w-full overflow-hidden">
             <MobileActionItem
-              to={link.to}
+              to={rootLink.to}
               onClose={onClose}
-              title={link.title}
-              icon={link.icon}
+              title={rootLink.title}
+              icon={rootLink.icon}
+              child={rootLink.child}
             />
           </li>
         ))}
+
+        <li>
+          <NavLink
+            to="/tin-tuc"
+            onClick={onClose}
+            className={({ isActive }) =>
+              isActive
+                ? "flex w-fit items-center gap-4 py-3 pl-4 text-primary dark:text-secondary"
+                : "flex w-fit items-center gap-4 py-3 pl-4 transition-colors duration-200 hover:text-primary dark:hover:text-secondary"
+            }
+          >
+            <span className="text-xl">
+              <FaNewspaper />
+            </span>
+            <span className="text-lg">Tin tức</span>
+          </NavLink>
+        </li>
+
         {isAuthenticated && (
           <li>
             <NavLink

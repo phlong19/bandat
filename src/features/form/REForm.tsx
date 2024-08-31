@@ -33,18 +33,16 @@ import QuillEditor from "./QuillEditor";
 import FilesDropzone from "./FilesDropzone";
 import ChakraNumberInput from "../../ui/ChakraNumberInput";
 import ChakraAlert from "../../ui/ChakraAlert";
-import AddressSelect from "../searchbar/AddressSelect";
-import DocumentCheckBoxes from "./DocumentCheckBoxes";
 import NameInput from "./NameInput";
 import GoBackButton from "../../ui/GoBackButton";
 
 // variables, custom hooks, helper funcs, messages
 import {
   BASE_MEDIA_UPLOAD,
-  DEFAULT_RE_STATUS,
+  INSTOCK,
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
-  SOLD_STATUS,
+  OUT_STOCK,
   m2,
   maxDesLength,
   maxLength,
@@ -52,7 +50,7 @@ import {
   minDesLength,
   minLength,
 } from "../../constants/anyVariables";
-import { directions, navLinks } from "../../constants/navlink";
+import { directions } from "../../constants/navlink";
 import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
 import { reform } from "../../constants/message";
 
@@ -60,52 +58,40 @@ import { useCreateRE } from "./useCreateRE";
 import { useUpdateRE } from "./useUpdateRE";
 import FormActions from "./FormActions";
 import unidecode from "unidecode";
-import Files360Dropzone from "./Files360Dropzone";
-import MapLocationPick from "./MapLocationPick";
+import { useGetCategories } from "../../hooks/useGetCategories";
+import { ListProps } from "../../model";
+import { Database } from "../../database";
 
-function REForm({ currentUserLevel, userID, edit = false, editData }) {
+interface Props {
+  level: number;
+  userID: string;
+  edit?: boolean;
+  editData: ListProps["data"];
+}
+
+function REForm({ level, userID, edit = false, editData }: Props) {
   // other states and derived states goes here
-  const [purType, setPurType] = useState(true);
   const accent = useColorModeValue("primary", "secondary");
-  const arr = purType ? navLinks[0].child_links : navLinks[1].child_links;
   let badgeColor = getStatusBadgeColor(editData?.status.id);
+
+  const { categoryTree, isFetching } = useGetCategories();
 
   // track new added & deleted medias & docs
   const addImagesRef = useRef([]);
   const addVideosRef = useRef([]);
   const deleteMediasRef = useRef([]);
-  const deleteDocsRef = useRef([]);
-  const addDocsRef = useRef([]);
 
   // load existed medias and docs
   const existedImages =
-    editData?.medias.filter(
-      (media) => media.isImage === true && media.is360Image === false,
-    ) || [];
+    editData?.images.filter((media) => media.isImage === true) || [];
   const existedVideos =
-    editData?.medias.filter((media) => media.isImage !== true) || [];
-  const existed360 =
-    editData?.medias.filter((media) => media.is360Image === true) || [];
-  const existedDocs = editData?.docs || [];
+    editData?.images.filter((media) => media.isImage !== true) || [];
 
   // medias & docs state
   const [files, setFiles] = useState({
     images: [...existedImages],
     videos: [...existedVideos],
   });
-  const [files360, setFiles360] = useState([...existed360]);
-
-  const [docs, setDocs] = useState([...existedDocs]);
-
-  const [check, setCheck] = useState(existed360.length > 0);
-
-  // for address select
-  const [cityID, setCityID] = useState(editData?.cityID || NaN);
-  const [disID, setDisID] = useState(editData?.disID || NaN);
-  const [wardID, setWardID] = useState(editData?.wardID || NaN);
-  const [position, setPosition] = useState(
-    edit ? { lat: editData.lat, lng: editData.long } : null,
-  );
 
   // custom hooks
   const { isCreating, create } = useCreateRE();
@@ -121,26 +107,17 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      address: editData?.address,
+      name: editData?.name,
       price: editData?.price,
-      des: editData?.des,
+      des: editData?.description,
       files: {
         images: existedImages,
         videos: existedVideos,
       },
-      files360: existed360,
     },
   });
 
-  function onSubmit(data) {
-    // check address
-    if (!cityID || !disID || !wardID) {
-      return toast.error(reform.missingAddress);
-    }
-    // check docs
-    if (docs.length < 1) {
-      return toast.error(reform.requiredDocs);
-    }
+  function onSubmit(data: any) {
     // check description exist
     if (!data.des) {
       return setError("des", {
@@ -173,43 +150,24 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
       create({
         ...data,
         price: priceNum,
-        cityID,
-        disID,
-        wardID,
-        purType,
-        status: DEFAULT_RE_STATUS,
+        status: INSTOCK,
         userID,
-        docs,
         slug,
-        lat: position?.lat || null,
-        long: position?.lng || null,
       });
     } else {
       update({
         ...data,
-        level: currentUserLevel,
+        level: level,
         userID,
-        authorID: editData?.userID,
-        postID: editData.id,
         price: priceNum,
-        cityID,
-        disID,
-        wardID,
-        purType,
-        status: DEFAULT_RE_STATUS,
+        status: INSTOCK,
         slug,
-        // docs
-        newDocs: addDocsRef.current,
-        deleteDocs: deleteDocsRef.current,
         // medias
         deleteMedias: deleteMediasRef.current,
         newMedias: {
           images: addImagesRef.current,
           videos: addVideosRef.current,
         },
-        oldFiles360: existed360,
-        lat: position?.lat || null,
-        long: position?.lng || null,
       });
     }
   }
@@ -227,7 +185,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
           pb={2}
         >
           <Heading size={{ base: "sm", md: "md" }} noOfLines={1}>
-            {!edit ? "Tạo" : "Sửa"} bài đăng bán bất động sản
+            {!edit ? "Thêm mới" : "Sửa"} thông tin sản phẩm
           </Heading>
           <Flex gap={3} align="center">
             <Text fontSize="sm" fontWeight="700">
@@ -240,7 +198,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
               borderRadius="lg"
               textTransform="capitalize"
             >
-              {editData?.status.status || "Chưa duyệt"}
+              {editData?.status?.type || "Còn hàng"}
             </Badge>
           </Flex>
         </Flex>
@@ -262,7 +220,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                     textAlign="left"
                     fontSize={{ base: "sm", md: "md" }}
                   >
-                    1. Địa chỉ BĐS
+                    1. Danh mục sản phẩm
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
@@ -273,53 +231,18 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                   <Grid templateColumns="repeat(2, 1fr)" gap={3} w="100%">
                     <FormControl isRequired>
                       <FormLabel>Dạng bán</FormLabel>
-                      <Select
-                        onChange={(e) => setPurType(e.target.value === "true")}
-                        value={editData?.purType}
-                      >
+                      <Select>
                         <option value="true">Bán</option>
                         <option value="false">Cho thuê</option>
                       </Select>
                     </FormControl>
                     <FormControl isRequired>
                       <FormLabel>Loại hình</FormLabel>
-                      <Select
-                        {...register("reType")}
-                        value={editData?.type.type}
-                      >
-                        {arr.map((opt) => (
-                          <option value={opt.type} key={opt.type}>
-                            {opt.title}
-                          </option>
-                        ))}
+                      <Select>
+                        <option>ho</option>
                       </Select>
                     </FormControl>
                   </Grid>
-                  {/* address */}
-                  <AddressSelect
-                    isForm
-                    cityID={cityID}
-                    disID={disID}
-                    wardID={wardID}
-                    setCityID={setCityID}
-                    setDisID={setDisID}
-                    setWardID={setWardID}
-                  />
-                  {/* address - details */}
-                  <FormControl isRequired>
-                    <FormLabel>Địa chỉ cụ thể</FormLabel>
-                    <Input
-                      type="text"
-                      placeholder="Số nhà - Ngõ - Ngách"
-                      {...register("address")}
-                    />
-                  </FormControl>
-                  {/* map location picker */}
-                  <MapLocationPick
-                    edit={edit}
-                    position={position}
-                    setPosition={setPosition}
-                  />
                 </VStack>
               </AccordionPanel>
             </AccordionItem>
@@ -357,24 +280,12 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                       },
                     })}
                     postId={editData?.id}
-                    error={errors.name}
+                    error={errors?.name}
                   />
                   {/* area & price */}
                   <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
-                    <ChakraNumberInput
-                      register={register}
-                      error={errors.area}
-                      label="Diện tích"
-                      name="area"
-                      req={true}
-                      placeholder={m2}
-                      value={editData?.area}
-                    />
-
-                    <FormControl isRequired isInvalid={errors.price}>
-                      <FormLabel>{`Giá trị ${
-                        purType ? "bán" : "thuê / tháng"
-                      }`}</FormLabel>
+                    <FormControl isRequired isInvalid={Boolean(errors.price)}>
+                      <FormLabel>`Giá sản phẩm</FormLabel>
                       <Controller
                         name="price"
                         control={control}
@@ -400,82 +311,37 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                     </FormControl>
                   </Grid>
 
-                  {/* documents */}
-                  <DocumentCheckBoxes
-                    setDocs={setDocs}
-                    value={existedDocs}
-                    deleteDocsRef={deleteDocsRef}
-                    addDocsRef={addDocsRef}
-                    edit={edit}
-                  />
-
                   {/* other fields */}
                   <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
                     <ChakraNumberInput
                       register={register}
-                      error={errors.bed_room}
+                      error={""}
                       label="Số phòng ngủ"
                       name="bed_room"
-                      value={editData?.bed_room}
+                      value={0}
                       req
-                    />
-
-                    <ChakraNumberInput
-                      register={register}
-                      error={errors.bath_room}
-                      label="Số phòng vệ sinh"
-                      name="bath_room"
-                      value={editData?.bath_room}
-                      req
-                    />
-
-                    <ChakraNumberInput
-                      register={register}
-                      error={errors.floor}
-                      label="Số lượng tầng"
-                      name="floor"
-                      value={editData?.floor}
                     />
                   </Grid>
                   <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
                     <ChakraNumberInput
                       register={register}
-                      name="facade"
-                      error={errors.facade}
-                      label="Mặt tiền"
-                      value={editData?.facade}
-                    />
-
-                    <ChakraNumberInput
-                      register={register}
-                      error={errors.entryLength}
+                      error={""}
                       label="Đường vào"
                       name="entryLength"
-                      value={editData?.entryLength}
+                      value={0}
                     />
 
                     <FormControl>
                       <FormLabel fontSize={{ base: "sm", md: "md" }}>
                         Hướng nhà
                       </FormLabel>
-                      <Select
-                        {...register("direction")}
-                        defaultValue={editData?.direction}
-                      >
-                        {directions.map((dir) => (
-                          <option value={dir} key={dir}>
-                            {dir}
-                          </option>
-                        ))}
+                      <Select>
+                        <option>hi</option>
                       </Select>
                     </FormControl>
                   </Grid>
                   <Flex w="100%">
-                    <Checkbox
-                      size={{ base: "sm", md: "md" }}
-                      {...register("fur")}
-                      defaultChecked={editData?.fur}
-                    >
+                    <Checkbox size={{ base: "sm", md: "md" }}>
                       Bất động sản có bao gồm nội thất?
                     </Checkbox>
                   </Flex>
@@ -484,10 +350,12 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             </AccordionItem>
           </Accordion>
           {/* des */}
-          <FormControl isRequired isInvalid={errors.des}>
+          <FormControl isRequired isInvalid={Boolean(errors.des)}>
             <FormLabel>Mô tả chi tiết</FormLabel>
             {errors.des && (
-              <FormErrorMessage>{errors.des.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.des.message?.toString()}
+              </FormErrorMessage>
             )}
             <Controller
               name="des"
@@ -496,7 +364,7 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                 <QuillEditor
                   onChange={onChange}
                   allowImage={false}
-                  value={editData?.des}
+                  value={editData?.description}
                 />
               )}
               rules={{
@@ -518,21 +386,9 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             gap={3}
             align={{ base: "start", md: "end" }}
           >
-            <FormControl isRequired isInvalid={errors.files}>
+            <FormControl isRequired isInvalid={Boolean(errors.files)}>
               <FormLabel>Hình ảnh, video bất động sản</FormLabel>
-              <Checkbox
-                required={false}
-                onChange={() => {
-                  setCheck((s) => !s);
-                  setFiles360([]);
-                  setValue("files360", []);
-                }}
-                size="sm"
-                color={useColorModeValue("gray.700", "gray.400")}
-                defaultChecked={check}
-              >
-                Tôi có thể cung cấp ảnh 360°
-              </Checkbox>
+
               <FormHelperText mb={2}>
                 {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
                 {files.videos.length}/{LIMIT_VID_UPLOAD} videos
@@ -556,35 +412,12 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
                 )}
               />
             </FormControl>
-
-            {check && (
-              <FormControl
-                isInvalid={false}
-                w={files360.length < 1 ? "70%" : "30%"}
-                minW={{ base: "full", md: "auto" }}
-              >
-                <FormLabel>Hình ảnh 360°</FormLabel>
-                <FormHelperText mb={2}>{files360.length}/1 ảnh</FormHelperText>
-                <Controller
-                  control={control}
-                  name="files360"
-                  render={({ field: { onChange } }) => (
-                    <Files360Dropzone
-                      onChange={onChange}
-                      files={files360}
-                      setFiles={setFiles360}
-                      setValue={setValue}
-                    />
-                  )}
-                />
-              </FormControl>
-            )}
           </Flex>
 
           {/* note */}
           {edit && <ChakraAlert type="warning" message={reform.note} />}
 
-          {editData?.status.id !== SOLD_STATUS && (
+          {editData?.status.id !== OUT_STOCK && (
             <Flex
               w="100%"
               justify={edit ? "space-between" : "end"}
@@ -592,11 +425,10 @@ function REForm({ currentUserLevel, userID, edit = false, editData }) {
             >
               {edit && (
                 <FormActions
-                  authorID={editData.profile.id}
-                  postID={editData.id}
-                  statusID={editData.status.id}
+                  postID={editData!.id}
+                  statusID={editData!.status.id}
                   userID={userID}
-                  level={currentUserLevel}
+                  level={level}
                 />
               )}
               <Button

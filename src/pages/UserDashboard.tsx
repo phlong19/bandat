@@ -13,14 +13,14 @@ import SkeletonREForm from "../ui/SkeletonREForm";
 import { EDITOR_LEVEL } from "../constants/anyVariables";
 
 function UserDashboard({ form = false }) {
-  const activePage = window.location.pathname.includes("dang-tin")
-    ? "Đăng tin"
-    : "Quản lý bài viết";
+  const activePage = window.location.pathname.includes("quan-ly")
+    ? "Quản lý sản phẩm"
+    : "Thêm sản phẩm";
 
   const { title } = useParams();
   const navigate = useNavigate();
   const { data, level, isLoading } = useAuth();
-  let { post, isFetching } = useGetRE(title, level, data.id);
+  let { product, isFetching } = useGetRE(title || "", level);
 
   // change page title
   useEffect(() => {
@@ -28,13 +28,13 @@ function UserDashboard({ form = false }) {
   }, [activePage]);
 
   useEffect(() => {
-    if (title && !post && !isFetching) {
-      toast.error("khong tim thay bai viet");
-      navigate("/dang-tin");
-    } else if (post) {
-      document.title = "Chi tiết bài viết " + post.name;
+    if (title && !product && !isFetching) {
+      toast.error("Không tìm thấy sản phẩm");
+      navigate("/quan-ly-san-pham");
+    } else if (product) {
+      document.title = "Chi tiết thông tin sản phẩm " + product.name;
     }
-  }, [post, navigate, isFetching, title, activePage]);
+  }, [product, navigate, isFetching, title, activePage]);
 
   useEffect(() => {
     if (level == EDITOR_LEVEL) {
@@ -65,9 +65,9 @@ function UserDashboard({ form = false }) {
           <REForm
             currentUserLevel={level}
             userID={data.id}
-            edit={Boolean(post)}
-            editData={post}
-            key={post?.id || "new"}
+            edit={Boolean(product)}
+            editData={product}
+            key={product?.id || "new"}
           />
         </Box>
       )}

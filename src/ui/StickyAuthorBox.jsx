@@ -18,39 +18,26 @@ import {
   FacebookIcon,
   FacebookMessengerShareButton,
 } from "react-share";
-import { Link } from "react-router-dom";
 
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
-import { hiddenLast3PhoneNum } from "../utils/helper";
 import { error, success } from "../constants/message";
 import { checkExist, deleteCookie, setCookie } from "../utils/reuse";
 import Avatar from "./Avatar";
-import unidecode from "unidecode";
-import slugify from "react-slugify";
 
-function StickyAuthorBox({ postID, author }) {
-  const { id, phone, fullName, avatar, email } = author;
+function StickyAuthorBox({ productID }) {
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
-  const border = useColorModeValue("gray.300", "whiteAlpha.700");
 
-  const [show, setShow] = useState(false);
   const [hover, setHover] = useState(false);
 
-  const check = checkExist(postID);
+  const check = checkExist(productID);
   const appId = import.meta.env.VITE_APPID;
   const link = window.location.href;
 
-  async function handleClick(e) {
-    e.stopPropagation();
-    if (show) {
-      await navigator.clipboard.writeText(`0${phone}`);
-      toast.success(success.copyToClipboard);
-    } else {
-      setShow(true);
-    }
-  }
+  const hotline = import.meta.env.VITE_HOTLINE;
+  const phone = import.meta.env.VITE_PHONE;
+  const email = import.meta.env.VITE_EMAIL;
 
   return (
     <Box
@@ -67,16 +54,11 @@ function StickyAuthorBox({ postID, author }) {
       h={{ base: "fit-content", md: "100%" }}
     >
       <Center flexDir="column">
-        <Avatar avatar={avatar} fullName={fullName} mobile badge={false} />
+        <Avatar avatar={null} fullName={"h l"} mobile badge={false} />
         <Text size="xs" color="gray.400" pt={3} fontFamily="roboto">
-          Được đăng bởi
+          nha thuoc ??
         </Text>
-        <Text
-          as={Link}
-          to={`/danh-ba/nguoi-dung/${slugify(unidecode(fullName))}?u=${id}`}
-        >
-          {fullName}
-        </Text>
+
         <VStack gap={2} my={2} w={{ base: "70%", sm: "40%", lg: "60%" }}>
           <Button
             bg={accent}
@@ -84,14 +66,16 @@ function StickyAuthorBox({ postID, author }) {
             w="full"
             _hover={{ opacity: 0.85 }}
             fontSize="sm"
-            title={show ? "Nhấn để sao chép" : "Nhấn để hiển thị"}
-            onClick={(e) => handleClick(e)}
+            as={ChakraLink}
+            href={`tel:${hotline}`}
           >
-            {show ? "0" + phone : hiddenLast3PhoneNum(phone)}
+            {hotline}
           </Button>
           {/* zalo chat */}
           <Button
-            leftIcon={<Image src="/zalo.png" h="16px" w="20px" />}
+            leftIcon={
+              <Image src="/zalo.png" w="20px" bg="white" className="!rounded" />
+            }
             w="full"
             variant="outline"
             fontWeight={500}
@@ -152,7 +136,7 @@ function StickyAuthorBox({ postID, author }) {
             </FacebookMessengerShareButton>
           </Tooltip>
 
-          <Tooltip label="Lưu vào tin của bạn">
+          <Tooltip label="Lưu vào yêu thích">
             <IconButton
               size="sm"
               onMouseEnter={() => setHover(true)}
@@ -162,10 +146,10 @@ function StickyAuthorBox({ postID, author }) {
               onClick={() => {
                 if (check) {
                   // delete
-                  deleteCookie(postID);
+                  deleteCookie(productID);
                   toast.success(success.removedBookmark);
                 } else {
-                  const isAdded = setCookie(postID, 14);
+                  const isAdded = setCookie(productID, 14);
                   if (isAdded) {
                     toast.success(success.addedBookmark);
                   } else {

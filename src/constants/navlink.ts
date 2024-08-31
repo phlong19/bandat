@@ -1,12 +1,15 @@
 import { ADMIN_LEVEL, EDITOR_LEVEL, USER_LEVEL } from "./anyVariables";
 
-interface Links {
+export interface Links {
+  id?: number;
   title: string;
-  to: string;
-  child_links: {
+  type: string;
+  child_links?: {
+    id?: number;
     title: string;
     type: string;
     child?: {
+      id?: number;
       title: string;
       type: string;
     }[];
@@ -16,7 +19,7 @@ interface Links {
 export const navLinks: Links[] = [
   {
     title: "Thực phẩm chức năng",
-    to: "thuc-pham-chuc-nang",
+    type: "thuc-pham-chuc-nang",
     child_links: [
       {
         title: "Cải thiện, tăng cường chức năng",
@@ -60,7 +63,7 @@ export const navLinks: Links[] = [
         child: [
           {
             type: "sua-tieu-duong-xuong-khop",
-            title: "Sữa tiểu đường, Xương khớp",
+            title: "Sữa tiểu đường, xương khớp",
           },
           {
             title: "Người ốm dậy, bổ sung thêm",
@@ -99,8 +102,8 @@ export const navLinks: Links[] = [
     ],
   },
   {
-    title: "Dược, mỹ phẩm",
-    to: "duoc-my-pham",
+    title: "Mỹ phẩm",
+    type: "my-pham",
     child_links: [
       {
         title: "Chăm sóc da chuyên sâu",
@@ -129,7 +132,7 @@ export const navLinks: Links[] = [
       {
         title: "Mỹ phẩm trang điểm",
         type: "my-pham-trang-diem",
-        child: [{ title: "Son môi", type: "subcategory" }],
+        child: [{ title: "Son môi", type: "son-moi" }],
       },
       {
         title: "Tóc, da đầu",
@@ -143,7 +146,7 @@ export const navLinks: Links[] = [
   },
   {
     title: "Thiết bị y tế",
-    to: "thiet-bi-y-te",
+    type: "thiet-bi-y-te",
     child_links: [
       {
         title: "Thiết bị theo dõi sức khỏe",
@@ -191,7 +194,7 @@ export const navLinks: Links[] = [
   },
   {
     title: "Sâm Hàn Quốc",
-    to: "sam-nam-han-quoc",
+    type: "sam-nam-han-quoc",
     child_links: [
       { title: "Nhân sâm Hàn Quốc", type: "nhan-sam-han-quoc" },
       { title: "Cao hồng sâm Hàn Quốc", type: "cao-hong-sam-han-quoc" },
@@ -219,53 +222,44 @@ export const navLinks: Links[] = [
 
 export const mobileNavLinks = {
   base: [
-    { title: "Đăng tin", icon: "PenToSquare", to: "dang-tin" },
-    { title: "Quản lý bài viết", icon: "ListUl", to: "quan-ly-bai-viet" },
-    { title: "Tin đăng đã lưu", icon: "Heart", to: "tin-da-luu" },
-    { title: "Trang chủ", icon: "House", to: "/" },
-    { title: "Nhà đất bán", icon: "HouseFlag", to: "nha-dat-ban" },
-    { title: "Nhà đất cho thuê", icon: "BuildingFlag", to: "nha-dat-cho-thue" },
-    { title: "Tin tức", icon: "Newspaper", to: "tin-tuc" },
-    { title: "Danh bạ", icon: "Headset", to: "danh-ba" },
+    { title: "Trang chủ", icon: "House", type: "/" },
+    { title: "Giỏ hàng", icon: "CartPlus", type: "/gio-hang" },
+    { title: "Sản phẩm yêu thích", icon: "Heart", type: "/san-pham-yeu-thich" },
   ],
   authen: [
+    {
+      title: "Quản lý đơn hàng",
+      accessLevel: ADMIN_LEVEL,
+      icon: "ListUl",
+      type: "/quan-ly-don-hang",
+    },
+
     {
       access: USER_LEVEL,
       title: "Quản lý tài khoản",
       icon: "CircleUser",
-      to: "tai-khoan",
+      type: "tai-khoan",
     },
     {
       access: EDITOR_LEVEL,
       title: "Quản lý tin tức",
       icon: "SquarePollHorizontal",
-      to: "quan-ly-tin-tuc",
+      type: "quan-ly-tin-tuc",
     },
     {
       access: ADMIN_LEVEL,
       title: "Admin Panel",
       icon: "BookBible",
-      to: "control",
+      type: "control",
     },
     {
       access: ADMIN_LEVEL,
       title: "Phân quyền",
       icon: "CodeBranch",
-      to: "role-management",
+      type: "role-management",
     },
   ],
 };
-
-export const directions = [
-  "Bắc",
-  "Đông Bắc",
-  "Đông",
-  "Đông Nam",
-  "Nam",
-  "Tây Nam",
-  "Tây",
-  "Tây Bắc",
-];
 
 export const prices = [
   { label: "Tất cả khoảng giá", value: "0" },
@@ -280,19 +274,18 @@ export const prices = [
 
 // re
 export const sortList = [
-  { label: "Ngày đăng mới nhất", value: "created_at-desc" },
-  { label: "Ngày đăng cũ nhất", value: "created_at-asc" },
+  { label: "Sản phẩm mới thêm", value: "created_at-desc" },
+  { label: "Tên sản phẩm (A-Z)", value: "name-asc" },
+  { label: "Tên sản phẩm (Z-A)", value: "name-desc" },
   { label: "Giá giảm dần", value: "price-desc" },
   { label: "Giá tăng dần", value: "price-asc" },
-  { label: "Diện tích giảm dần", value: "area-desc" },
-  { label: "Diện tích tăng dần", value: "area-asc" },
 ];
 
 export const filterList = [
-  { label: "Chờ duyệt", value: "status-waiting" },
-  { label: "Đã duyệt", value: "status-selling" },
-  { label: "Đã bán", value: "status-sold" },
-  { label: "Đã hết hạn", value: "status-expired" },
+  { label: "Còn hàng", value: "status-instock" },
+  { label: "Tạm hết", value: "status-temp" },
+  { label: "Hết hàng", value: "status-preout" },
+  { label: "Ngừng nhập", value: "status-out" },
 ];
 
 // news
@@ -306,19 +299,6 @@ export const sortNewsList = [
 export const filterNewsList = [
   { label: "Đã duyệt", value: "status-approved" },
   { label: "Chờ duyệt", value: "status-waiting" },
-];
-
-export const reportList = [
-  { label: "Địa chỉ của bất động sản", value: "address" },
-  {
-    label: "Các thông tin về: giá, diện tích, mô tả ....",
-    value: "informations",
-  },
-  { label: "Ảnh", value: "image" },
-  { label: "Trùng với tin bài khác", value: "duplicate" },
-  { label: "Không liên lạc được", value: "contact" },
-  { label: "Tin không có thật", value: "real" },
-  { label: "Bất động sản đã bán", value: "sold" },
 ];
 
 // report list

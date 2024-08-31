@@ -15,10 +15,10 @@ function NotFound() {
           404
         </Heading>
         <Text fontSize="18px" mt={3} mb={2}>
-          Page Not Found
+          Trang không tồn tại
         </Text>
         <Text color={"gray.500"} mb={6}>
-          The page you&apos;re looking for does not seem to exist
+          Trang bạn đang tìm kiếm không tồn tại trên website này.
         </Text>
 
         <Button
@@ -29,7 +29,7 @@ function NotFound() {
           as={Link}
           to="/"
         >
-          Go to Home
+          Về trang chủ
         </Button>
       </Box>
     </Center>

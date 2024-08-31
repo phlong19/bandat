@@ -16,7 +16,7 @@ import { PiDotsSixVerticalBold } from "react-icons/pi";
 
 // others
 import { formatDate, getStatusBadgeColor } from "../../utils/helper";
-import { SOLD_STATUS } from "../../constants/anyVariables";
+import { OUT_STOCK } from "../../constants/anyVariables";
 
 function TableRERow({ data, level, userID }) {
   const {
@@ -96,7 +96,7 @@ function TableRERow({ data, level, userID }) {
           colorScheme={statusBadge}
           textTransform="capitalize"
         >
-          {statusID == SOLD_STATUS && !purType ? "Đã thuê" : status}
+          {statusID == OUT_STOCK && !purType ? "Đã thuê" : status}
         </Badge>
       </Td>
       <Td>

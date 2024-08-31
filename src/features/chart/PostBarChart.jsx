@@ -19,7 +19,7 @@ import { vi } from "date-fns/locale";
 import ChartDatePicker from "./ChartDatePicker";
 import {
   billion,
-  DEFAULT_RE_STATUS,
+  INSTOCK,
   million,
 } from "../../constants/anyVariables";
 
@@ -75,7 +75,7 @@ function PostBarChart({ isFetchingAllData, allData = [] }) {
     }
     group[month]["Bài đăng"] += 1;
     group[month].totalAmount += cur.price / currency;
-    group[month]["Được duyệt"] += cur.status !== DEFAULT_RE_STATUS ? 1 : 0;
+    group[month]["Được duyệt"] += cur.status !== INSTOCK ? 1 : 0;
 
     return group;
   }, {});

@@ -19,7 +19,6 @@ const DetailsMediasModal = memo(function DetailsMediasModal({
   isOpen,
   settings,
   newMedia,
-  image360,
 }) {
   return (
     <Modal
@@ -38,13 +37,6 @@ const DetailsMediasModal = memo(function DetailsMediasModal({
               <AspectRatio key={media.id}>
                 {!media.isImage ? (
                   <video src={media.mediaLink} controls />
-                ) : media.is360Image ? (
-                  <AspectRatio ratio={16 / 9} w="full" _before="none">
-                    <ReactPhotoSphereViewer
-                      src={image360[0].mediaLink}
-                      width="100%"
-                    />
-                  </AspectRatio>
                 ) : (
                   <Image src={media.mediaLink} />
                 )}

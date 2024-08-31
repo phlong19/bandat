@@ -1,34 +1,27 @@
 import supabase from "./supabase";
 import {
   ADMIN_LEVEL,
-  DEFAULT_RE_STATUS,
   EXPRIRY_LENGTH,
+  INSTOCK,
   LIMIT_PER_PAGE,
-  SELLING_STATUS,
-  SOLD_STATUS,
   maxLength,
   minLength,
+  OUT_STOCK,
 } from "../constants/anyVariables";
-import {
-  deleteDocument,
-  getFullAddress,
-  getLatLong,
-  insertDocument,
-} from "./apiGeneral";
 import { deleteMedia, uploadMedia } from "./apiMedia";
 import { error as errorMessage } from "../constants/message";
 import { addDays } from "date-fns";
 
-export async function getList(type, citeria, sort, page) {
+export async function getList(type, filter, sort, page) {
   const from = (page - 1) * LIMIT_PER_PAGE;
   const to = from + LIMIT_PER_PAGE - 1;
 
   let typeID;
-  if (citeria) {
+  if (filter) {
     const { data, error } = await supabase
-      .from("REType")
+      .from("category")
       .select(`*`)
-      .eq("type", citeria)
+      .eq("type", filter)
       .limit(1)
       .single();
     if (error) {
@@ -36,26 +29,19 @@ export async function getList(type, citeria, sort, page) {
       throw new Error(errorMessage.fetchError);
     }
 
-    typeID = data.REType_ID;
+    typeID = data.id;
   }
 
   let query = supabase
-    .from("REDirectory")
+    .from("product")
     .select(
       `*,
-        city: CityDirectory (cityName),
-        dis: DistrictDirectory (disName),
-        ward: WardDirectory (wardName),
-        images: REMedias(*),
-        profile: Profile(id, fullName,avatar),
-        type: REType(*)
-    `,
+        images: product_image(*)
+      `,
       { count: "exact" },
     )
-    .eq("purType", type)
     .eq("images.isImage", true)
-    .eq("status", SELLING_STATUS)
-    .gt("expriryDate", new Date().toISOString())
+    .eq("status", INSTOCK)
     .limit(LIMIT_PER_PAGE)
     .range(from, to);
 
@@ -120,7 +106,7 @@ export async function getSinglePost(slug) {
     )
     .limit(1)
     .eq("slug", slug)
-    .eq("status", SELLING_STATUS)
+    .eq("status", INSTOCK)
     .gt("expriryDate", new Date().toISOString());
 
   const { data, error } = await query.single();
@@ -134,7 +120,7 @@ export async function getSinglePost(slug) {
 
 // create
 export async function createPost(newData) {
-  const { files, docs, reType, files360, ...reData } = newData;
+  const { files, reType, ...reData } = newData;
   let { lat, long } = reData;
 
   // get re type id, ex: nha-rieng = 1
@@ -149,19 +135,6 @@ export async function createPost(newData) {
   }
 
   const { REType_ID: typeID } = REType;
-
-  const fullAddress = await getFullAddress(
-    reData.cityID,
-    reData.disID,
-    reData.wardID,
-    reData.address,
-  );
-
-  if (!lat && !long) {
-    const pos = await getLatLong(fullAddress);
-    lat = pos.lat;
-    long = pos.long;
-  }
 
   // post
   const { data, error: createError } = await supabase
@@ -187,10 +160,6 @@ export async function createPost(newData) {
   // handle media
   files.images.forEach((file) => uploadMedia(file, postID));
   files.videos.forEach((file) => uploadMedia(file, postID));
-  files360.forEach((file) => uploadMedia(file, postID, true));
-
-  // handle docs
-  docs.forEach(async (id) => await insertDocument(id, postID));
 
   return null;
 }
@@ -202,8 +171,6 @@ export async function updatePost(newData) {
     userID,
     authorID,
     postID,
-    newDocs,
-    deleteDocs,
     deleteMedias,
     newMedias,
     reType,
@@ -230,20 +197,6 @@ export async function updatePost(newData) {
   if (typeIDError) {
     console.log(typeIDError);
     throw new Error(errorMessage.fetchError);
-  }
-
-  // update address and lat long no it change or not
-  const fullAddress = await getFullAddress(
-    reData.cityID,
-    reData.disID,
-    reData.wardID,
-    reData.address,
-  );
-
-  if (!lat && !long) {
-    const pos = await getLatLong(fullAddress);
-    lat = pos.lat;
-    long = pos.long;
   }
 
   // update post
@@ -301,10 +254,6 @@ export async function updatePost(newData) {
     files360.forEach((file) => uploadMedia(file, postID, true));
   }
 
-  // handle new docs
-  deleteDocs.forEach(async (doc) => await deleteDocument(doc.id));
-  newDocs.forEach(async (id) => await insertDocument(id, postID));
-
   return null;
 }
 
@@ -313,7 +262,7 @@ export async function approvePost(postID) {
   const { data, error } = await supabase
     .from("REDirectory")
     .update({
-      status: SELLING_STATUS,
+      status: INSTOCK,
       expriryDate: addDays(new Date(), EXPRIRY_LENGTH),
     })
     .eq("id", postID)
@@ -334,7 +283,7 @@ export async function approvePost(postID) {
 export async function markSold(id) {
   const { data, error } = await supabase
     .from("REDirectory")
-    .update({ status: SOLD_STATUS })
+    .update({ status: OUT_STOCK })
     .eq("id", id)
     .select();
 
@@ -353,7 +302,7 @@ export async function markSold(id) {
 export async function deactivePost(postID) {
   const { data, error } = await supabase
     .from("REDirectory")
-    .update({ status: DEFAULT_RE_STATUS })
+    .update({ status: INSTOCK })
     .eq("id", postID)
     .select();
 
@@ -412,7 +361,7 @@ export async function getRelatedPosts(address) {
     .eq("disID", disID)
     .eq("wardID", wardID)
     .eq("images.isImage", true)
-    .eq("status", SELLING_STATUS)
+    .eq("status", INSTOCK)
     .gt("expriryDate", new Date().toISOString());
 
   if (error) {
@@ -433,7 +382,7 @@ export async function getRelatedPosts(address) {
     .eq("cityID", cityID)
     .eq("disID", disID)
     .eq("images.isImage", true)
-    .eq("status", SELLING_STATUS)
+    .eq("status", INSTOCK)
     .gt("expriryDate", new Date().toISOString());
 
   if (error2) {
@@ -453,7 +402,7 @@ export async function getRelatedPosts(address) {
     .neq("id", postID)
     .eq("cityID", cityID)
     .eq("images.isImage", true)
-    .eq("status", SELLING_STATUS)
+    .eq("status", INSTOCK)
     .gt("expriryDate", new Date().toISOString());
 
   if (error3) {
@@ -482,7 +431,7 @@ export async function getRelatedPostsAuthor(currentPostID, authorID) {
     .eq("userID", authorID)
     .neq("id", currentPostID)
     .eq("images.isImage", true)
-    .eq("status", SELLING_STATUS)
+    .eq("status", INSTOCK)
     .gt("expriryDate", new Date().toISOString());
 
   if (error) {

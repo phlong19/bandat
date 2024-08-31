@@ -14,7 +14,6 @@ import {
 
 import { vi } from "date-fns/locale/vi";
 import BreadCrumb from "../ui/BreadCrumb";
-import NewsAccordionLinks from "../ui/NewsAccordionLinks";
 
 import { getNew } from "../services/apiNews";
 import { formatDate, getTime } from "../utils/helper";
@@ -197,8 +196,6 @@ function NewDetails() {
           </div>
         </div>
       </div>
-
-      <NewsAccordionLinks />
     </div>
   );
 }

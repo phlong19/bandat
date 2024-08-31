@@ -1,11 +1,9 @@
 import { Flex, Button } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
-import { useMapView } from "../context/MapViewContext";
 import { LIMIT_NEWS, LIMIT_PER_PAGE } from "../constants/anyVariables";
 
 function ChakraTablePagination({ count, news = false, page = "page" }) {
-  const { setMapView } = useMapView();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = Number(searchParams.get(page)) || 1;
   const limit = news ? LIMIT_NEWS : LIMIT_PER_PAGE;
@@ -40,7 +38,6 @@ function ChakraTablePagination({ count, news = false, page = "page" }) {
     setTimeout(() => {
       document.getElementById("breadcrumb-scroll")?.scrollIntoView();
     }, 100);
-    setMapView(false);
     searchParams.set(page, finalDestination.toString());
     setSearchParams(searchParams);
   }

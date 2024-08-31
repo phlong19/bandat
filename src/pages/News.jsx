@@ -10,9 +10,7 @@ import {
 
 import BreadCrumb from "../ui/BreadCrumb";
 import ChakraTablePagination from "../ui/ChakraTablePagination";
-import NewsAccordionLinks from "../ui/NewsAccordionLinks";
 
-import { city } from "../data/city";
 import { getNewsList, getPopularList } from "../services/apiNews";
 import { formatDate } from "../utils/helper";
 import { useEffect } from "react";
@@ -47,13 +45,8 @@ function News() {
       <div className="max-w-full bg-white dark:bg-darker">
         <div className="mx-auto flex max-w-[800px] flex-col items-center py-10 text-center">
           <h1 className="font-lexend text-2xl font-bold md:text-4xl">
-            Tin tức bất động sản mới nhất
+            Tin tức sản phẩm sức khỏe mới nhất
           </h1>
-          <p className="p-3 font-lexend text-base lg:text-xl">
-            Thông tin mới, đầy đủ, hấp dẫn về thị trường bất động sản Việt Nam
-            thông qua dữ liệu lớn về giá, giao dịch, nguồn cung - cầu và khảo
-            sát thực tế của đội ngũ phóng viên, biên tập của LandHub.com.vn.
-          </p>
         </div>
       </div>
 
@@ -63,11 +56,11 @@ function News() {
           <Spinner />
         </Center>
       ) : data && data?.length < 1 ? (
-        <Center minH="50dvh">
-          <Text fontSize="lg">Hiện không có bài viết tin tức.</Text>
+        <Center minH="70dvh">
+          <Text fontSize="lg">Hiện không có tin tức nào.</Text>
         </Center>
       ) : (
-        <div className=" justify-center bg-white dark:bg-darker lg:flex">
+        <div className="justify-center bg-white dark:bg-darker lg:flex">
           <div className="rounded-md bg-white px-3.5 dark:bg-darker">
             {data.map((item, i) => (
               <Link to={`/tin-tuc/` + item.slug} key={i}>
@@ -125,27 +118,10 @@ function News() {
                   </>
                 )}
               </div>
-              <div className="mt-5">
-                <div className="rounded-md border bg-white p-3 dark:bg-dark">
-                  <h1 className="text-center text-lg font-semibold">
-                    Thị trường BDS tại 10 tỉnh/thành phố lớn
-                  </h1>
-                  {/* considering remove in the future */}
-                  {city.map((item, i) => (
-                    <div key={i} className="flex items-center p-3">
-                      <img src={item.img} className="h-10 w-20 rounded-xl" />
-                      <h1 className="pl-3">{item.cityname}</h1>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
       )}
-      <div className="pt-4">
-        <NewsAccordionLinks />
-      </div>
     </div>
   );
 }

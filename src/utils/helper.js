@@ -2,23 +2,15 @@ import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import {
   ADMIN_LEVEL,
-  DEFAULT_RE_STATUS,
   EDITOR_LEVEL,
-  SELLING_STATUS,
-  SOLD_STATUS,
+  INSTOCK,
+  OUT_STOCK,
   USER_LEVEL,
   billion,
-  m2,
-  maxAreaSearch,
   million,
+  TEMP_OUT,
+  OUT,
 } from "../constants/anyVariables";
-import { navLinks, prices } from "../constants/navlink";
-
-// calc how much money per m2
-export function pricePerArea(purType, price, area) {
-  if (!purType) return;
-  return Math.ceil(price / area);
-}
 
 // 1.000.000.000 => 1 billion
 export function formatCurrency(input) {
@@ -31,6 +23,22 @@ export function formatCurrency(input) {
   if (Number(input) < million) {
     return Math.ceil(input / 1000) + " nghìn";
   }
+}
+
+/**
+ * format currency without vietnamese text
+ */
+export function formatCurrencyWOText(price) {
+  if (price < 0) {
+    return;
+  }
+
+  const formatPrice = Number(price);
+
+  return new Intl.NumberFormat("vi", {
+    style: "currency",
+    currency: "VND",
+  }).format(formatPrice);
 }
 
 // round the price
@@ -63,33 +71,23 @@ export function parseCurrency(input) {
   return numericValue;
 }
 
-// hidden last 3-digit of phone number
-export function hiddenLast3PhoneNum(input) {
-  if (!input) {
-    return "Không có SĐT";
-  }
-  return "0" + input.toString().slice(0, 6) + "***";
-}
-
-// just show lat 4 number
-export function showLast4PhoneNum(input) {
-  return "+84 *****" + input.toString().slice(-4);
-}
-
 // get re status badge color base on status
 export function getStatusBadgeColor(id) {
   if (!id) return "red";
 
   let color;
   switch (id) {
-    case SELLING_STATUS:
+    case INSTOCK:
       color = "green";
       break;
-    case DEFAULT_RE_STATUS:
+    case OUT_STOCK:
       color = "red";
       break;
-    case SOLD_STATUS:
+    case TEMP_OUT:
       color = "orange";
+      break;
+    case OUT:
+      color = "gray";
       break;
     default:
       break;
@@ -118,25 +116,6 @@ export function getStatusBadgeProfile(level) {
   return color;
 }
 
-export function getCoreNameType(name, type) {
-  switch (type) {
-    case "nha-mat-pho":
-      return name.slice(4)[0].toUpperCase() + name.slice(5);
-    case "dat-nen-du-an":
-      return name.slice(4)[0].toUpperCase() + name.slice(5);
-    case "dat-nen-tho-cu":
-      return name.slice(4)[0].toUpperCase() + name.slice(5);
-    case "cac-loai-khac":
-      return name.slice(-4);
-    case "kho-nha-xuong":
-      return "kho xưởng";
-    default:
-      break;
-  }
-
-  return name.split(",")[0];
-}
-
 export const checkInputType = (input) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^(0|\+84)?[0-9]{9}$/;
@@ -149,30 +128,9 @@ export const checkInputType = (input) => {
   }
 };
 
-// calc min - max range slider
-function getRETypeName(purType, input) {
-  let result;
-  if (purType) {
-    result = navLinks[0].child_links
-      .find((i) => i.type === input)
-      .title.toLowerCase();
-  } else {
-    result = navLinks[1].child_links
-      .find((i) => i.type === input)
-      .title.toLowerCase();
-  }
-
-  return result;
-}
-
 // sanitize query input
 export function sanitizeSearchInput(input = "") {
   return input.trim().split(" ").join(" & ");
-}
-
-// convert price for display query
-function getPriceLabel(input) {
-  return prices.find((i) => i.value === input).label.toLowerCase();
 }
 
 // convert price for api
@@ -195,36 +153,17 @@ export function convertPrice(input) {
   return { from: Number(from) * tag };
 }
 
-export function renderQueryLabel(search, city) {
-  if (!city) {
-    return;
-  }
-
-  const type = getRETypeName(search.purType, search.reType);
-  const area =
-    search?.area === "above"
-      ? ` trên ${maxAreaSearch}${m2}`
-      : search?.area?.[0] !== 1 || search?.area?.[1] !== maxAreaSearch
-        ? ` từ ${search?.area?.[0]} - ${search?.area?.[1]}${m2}`
-        : "";
-  const price =
-    search?.price !== "0" ? ` giá ${getPriceLabel(search?.price)}` : "";
-  const address = !isNaN(search?.cityID)
-    ? ` tại ${city.find((i) => i.cityID === search.cityID)?.cityName}`
-    : "";
-
-  return "Danh sách " + type + area + price + address;
-}
-
 // get status id
 export function getStatusID(value) {
   switch (value) {
-    case "waiting":
-      return DEFAULT_RE_STATUS;
-    case "selling":
-      return SELLING_STATUS;
-    case "sold":
-      return SOLD_STATUS;
+    case "instock":
+      return INSTOCK;
+    case "temp":
+      return TEMP_OUT;
+    case "out":
+      return OUT_STOCK;
+    case "preout":
+      return OUT;
     default:
       break;
   }

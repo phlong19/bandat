@@ -2,7 +2,7 @@
 export const currentYear = new Date().getFullYear();
 
 // max item 1 page
-export const LIMIT_PER_PAGE = 12;
+export const LIMIT_PER_PAGE = 20;
 // max news 1 page
 export const LIMIT_NEWS = 8;
 
@@ -30,11 +30,12 @@ const ADMIN_LEVEL = 3;
 export { USER_LEVEL, EDITOR_LEVEL, ADMIN_LEVEL };
 
 // social media links
-const fb = "";
-const ytb = "";
-const x = "";
-const zalo = "";
-export { fb, ytb, x, zalo };
+const fb = import.meta.env.VITE_FB;
+const ytb = import.meta.env.VITE_YTB;
+const x = import.meta.env.VITE_X;
+const zalo = import.meta.env.VITE_ZALO;
+const tiktok = import.meta.env.TIKTOK;
+export { fb, ytb, x, zalo, tiktok };
 
 // purType page title
 const purTypeTrue = `Mua Bán Nhà Đất Việt Nam Giá Rẻ, Mới Nhất ${currentYear}`;
@@ -78,11 +79,12 @@ export const reCaptions = [
   "Ngày hết hạn",
 ];
 
-// hardcode re status
-const DEFAULT_RE_STATUS = 1;
-const SELLING_STATUS = 2;
-const SOLD_STATUS = 3;
-export { DEFAULT_RE_STATUS, SELLING_STATUS, SOLD_STATUS };
+// hardcode product status
+const INSTOCK = 1; // con hang
+const TEMP_OUT = 2; // tam het hang
+const OUT_STOCK = 3; // het hang
+const OUT = 4; // ngung nhap hang
+export { INSTOCK, TEMP_OUT, OUT_STOCK, OUT };
 
 const local = `http://localhost:3000`;
 const landhub = `https://www.landhub.netlify.app`;

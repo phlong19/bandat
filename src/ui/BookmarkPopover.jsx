@@ -7,19 +7,16 @@ import {
   Spinner,
   Avatar,
   Tag,
-  TagLeftIcon,
   TagLabel,
   Divider,
   Text,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { PiFrameCornersLight } from "react-icons/pi";
 
-import { getBookmarkedPosts } from "../services/apiRE";
 import { getCookie } from "../utils/reuse";
-import { formatCurrency, pricePerArea } from "../utils/helper";
-import { m2 } from "../constants/anyVariables";
+import { formatCurrencyWOText } from "../utils/helper";
+import { getBookmarkProducts } from "../services/apiProduct";
 
 function BookmarkPopover() {
   const [values, setValues] = useState(getCookie());
@@ -31,7 +28,7 @@ function BookmarkPopover() {
     refetch,
   } = useQuery({
     queryKey: ["bookmark-list", ids],
-    queryFn: () => getBookmarkedPosts(ids, true),
+    queryFn: () => getBookmarkProducts(ids),
     enabled: ids[0] !== "",
   });
 
@@ -59,7 +56,7 @@ function BookmarkPopover() {
   if (count < 1 || ids.length == 0 || !data || data?.length < 1) {
     return (
       <Center minH={300}>
-        <Text>Hiện không lưu bài viết nào.</Text>
+        <Text>Hiện không lưu sản phẩm nào.</Text>
       </Center>
     );
   }
@@ -69,16 +66,21 @@ function BookmarkPopover() {
       {data.slice(0, 5).map((i, index) => (
         <Box key={i.id} title={i.name}>
           <Link
-            to={`/nha-dat/${i.slug}`}
-            className="group flex items-start justify-between gap-2.5"
+            to={`/san-pham/${i.slug}`}
+            className="group flex items-start gap-2.5"
           >
             <Avatar boxSize="38px" src={i.images[0].mediaLink} />
-            <h3
-              className="mb-1 line-clamp-2 text-ellipsis whitespace-normal
-                break-words text-xs capitalize text-black transition-colors duration-300 group-hover:text-primary dark:text-white dark:group-hover:text-secondary"
-            >
-              {i.name}
-            </h3>
+            <Box>
+              <h3
+                className="mb-1 line-clamp-2 text-ellipsis whitespace-normal
+              break-words text-xs capitalize text-black transition-colors duration-300 group-hover:text-primary dark:text-white dark:group-hover:text-secondary"
+              >
+                {i.name}
+              </h3>
+              <Text noOfLines={1} fontSize="11.5" color="gray">
+                {i.summary}
+              </Text>
+            </Box>
           </Link>
           <div className="flex items-center justify-end gap-3 font-roboto text-xs font-semibold text-primary dark:text-secondary">
             <Tag
@@ -88,23 +90,11 @@ function BookmarkPopover() {
               boxShadow="none"
               fontSize="xs"
             >
-              <TagLeftIcon as={PiFrameCornersLight} />
-              <TagLabel>{i.area + m2}</TagLabel>
+              <TagLabel>{i.status.type}</TagLabel>
             </Tag>{" "}
             -
             <Flex gap={1}>
-              <span>
-                {formatCurrency(i.price)} {!i.purType && "/ tháng"}
-              </span>
-              {i.purType && (
-                <span className="text-black dark:text-white">-</span>
-              )}
-              {i.purType && (
-                <span className="font-semibold text-primary dark:text-secondary">
-                  {formatCurrency(pricePerArea(i.purType, i.price, i.area))}/
-                  {m2}
-                </span>
-              )}
+              <span>{formatCurrencyWOText(i.price)}</span>
             </Flex>
           </div>
           {index != count - 1 && <Divider my={1} borderBottomWidth={2} />}
@@ -112,7 +102,7 @@ function BookmarkPopover() {
       ))}
 
       <Box>
-        <ChakraLink to="/tin-da-luu" as={Link} fontSize="13px">
+        <ChakraLink to="/san-pham-da-luu" as={Link} fontSize="13px">
           Xem đầy đủ
         </ChakraLink>
       </Box>

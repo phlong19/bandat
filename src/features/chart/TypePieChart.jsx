@@ -12,8 +12,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-import { formatCurrency, getCoreNameType } from "../../utils/helper";
-import { SOLD_STATUS } from "../../constants/anyVariables";
+import { formatCurrency } from "../../utils/helper";
+import { OUT_STOCK } from "../../constants/anyVariables";
 
 // top
 let top = 7;
@@ -78,7 +78,7 @@ function TypePieChart({ data, count, isLoading, refetch }) {
       if (!group[key]) {
         group[key] = {
           type: key,
-          name: getCoreNameType(cur.type.name, cur.type.type),
+          name: "",
           total: 0,
         };
       }
@@ -98,7 +98,7 @@ function TypePieChart({ data, count, isLoading, refetch }) {
       .slice(-top);
 
     // calc & sum sold posts
-    const soldPosts = data.filter((i) => i.status === SOLD_STATUS && i.purType);
+    const soldPosts = data.filter((i) => i.status === OUT_STOCK && i.purType);
     countSoldPosts = soldPosts.length;
     sum = soldPosts.reduce((acc, cur) => (acc += cur.price), 0);
   }

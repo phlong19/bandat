@@ -14,7 +14,6 @@ import {
   PinInputField,
 } from "@chakra-ui/react";
 import { useVerifyPhone } from "./useVerifyPhone";
-import { showLast4PhoneNum } from "../../utils/helper";
 import Logo from "../../ui/Logo";
 import useCountdown from "../../hooks/useCountDown";
 import { toast } from "react-hot-toast";
@@ -79,7 +78,7 @@ function VerifyPhone({ phoneNum }) {
                 fontWeight="bold"
                 color={useColorModeValue("gray.800", "whiteAlpha.800")}
               >
-                Số điện thoại {showLast4PhoneNum(phone)}
+                Số điện thoại {phone}
               </Center>
 
               <FormControl>

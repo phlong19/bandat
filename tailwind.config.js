@@ -18,6 +18,9 @@ export default {
         montserrat: ["Montserrat", "sans-serif"],
         lexend: ["Lexend", "sans-serif"],
         playfair: ["Playfair Display", "serif"],
+        alegreya: ["Alegreya", "serif"],
+        cascadia: ["Cascadia Code", "sans-serif"],
+        raleway: ["Raleway", "sans-serif"],
       },
       minWidth: {
         30: "120px",

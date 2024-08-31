@@ -1,4 +1,4 @@
-import supabase, { supabaseUrl } from "./supabase";
+import supabase, { news, supabaseUrl } from "./supabase";
 import { error as errorMessage } from "../constants/message";
 import { ADMIN_LEVEL, LIMIT_NEWS } from "../constants/anyVariables";
 import { v4 } from "uuid";
@@ -9,7 +9,7 @@ export async function getNewsList(page) {
   const to = from + LIMIT_NEWS - 1;
 
   const { data, count, error } = await supabase
-    .from("News")
+    .from(news)
     .select(
       `
       *,
@@ -32,7 +32,7 @@ export async function getNewsList(page) {
 // get single news
 export async function getNew(slug) {
   const { data, error } = await supabase
-    .from("News")
+    .from(news)
     .select(`*, author: Profile(fullName, avatar)`)
     .limit(1)
     .eq("slug", slug)
@@ -50,7 +50,7 @@ export async function getNew(slug) {
 export async function createNew(formData) {
   // check is post exist
   const { data: post, error: getPostError } = await supabase
-    .from("News")
+    .from(news)
     .select(`id`)
     .eq("slug", formData.slug);
 
@@ -76,7 +76,7 @@ export async function createNew(formData) {
     throw new Error(errorMessage.uploadFailed);
   }
 
-  const { error } = await supabase.from("News").insert([
+  const { error } = await supabase.from(news).insert([
     {
       ...newsData,
       thumbnail: `${supabaseUrl}/storage/v1/object/public/${data.fullPath}`,
@@ -132,7 +132,7 @@ export async function updateNews(formData) {
   }
 
   const { data: updatedNews, error } = await supabase
-    .from("News")
+    .from(news)
     .update({
       ...data,
       // if new file uploaded patch, or else just patch with old file url
@@ -158,7 +158,7 @@ export async function updateNews(formData) {
 // quick approved
 export async function approveNews(id) {
   const { data, error } = await supabase
-    .from("News")
+    .from(news)
     .update({ status: true })
     .eq("id", id)
     .select();
@@ -178,7 +178,7 @@ export async function approveNews(id) {
 // deactive
 export async function deactiveNews(id) {
   const { data, error } = await supabase
-    .from("News")
+    .from(news)
     .update({ status: false })
     .eq("id", id)
     .select();
@@ -197,7 +197,7 @@ export async function deactiveNews(id) {
 
 // delete
 export async function deleteNews(postID, level, userID) {
-  let query = supabase.from("News").delete().eq("id", postID);
+  let query = supabase.from(news).delete().eq("id", postID);
 
   if (level < ADMIN_LEVEL) {
     query = query.eq("userID", userID);
@@ -223,7 +223,7 @@ export async function deleteNews(postID, level, userID) {
 // so just get 5 oldest post :D
 export async function getPopularList() {
   const { data, error } = await supabase
-    .from("News")
+    .from(news)
     .select(`*`)
     .limit(5)
     .eq("status", true)
