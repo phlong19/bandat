@@ -26,12 +26,12 @@ import {
   Box,
   AccordionPanel,
   AccordionIcon,
+  Skeleton,
 } from "@chakra-ui/react";
 
 // UI
 import QuillEditor from "./QuillEditor";
 import FilesDropzone from "./FilesDropzone";
-import ChakraNumberInput from "../../ui/ChakraNumberInput";
 import ChakraAlert from "../../ui/ChakraAlert";
 import NameInput from "./NameInput";
 import GoBackButton from "../../ui/GoBackButton";
@@ -43,14 +43,14 @@ import {
   LIMIT_IMG_UPLOAD,
   LIMIT_VID_UPLOAD,
   OUT_STOCK,
-  m2,
+  OUT,
+  TEMP_OUT,
   maxDesLength,
   maxLength,
   million,
   minDesLength,
   minLength,
 } from "../../constants/anyVariables";
-import { directions } from "../../constants/navlink";
 import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
 import { reform } from "../../constants/message";
 
@@ -60,7 +60,6 @@ import FormActions from "./FormActions";
 import unidecode from "unidecode";
 import { useGetCategories } from "../../hooks/useGetCategories";
 import { ListProps } from "../../model";
-import { Database } from "../../database";
 
 interface Props {
   level: number;
@@ -75,6 +74,9 @@ function REForm({ level, userID, edit = false, editData }: Props) {
   let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   const { categoryTree, isFetching } = useGetCategories();
+  const [root, setRoot] = useState(0);
+  const [parent, setParent] = useState(0);
+  const child = useRef(0);
 
   // track new added & deleted medias & docs
   const addImagesRef = useRef([]);
@@ -114,6 +116,10 @@ function REForm({ level, userID, edit = false, editData }: Props) {
         images: existedImages,
         videos: existedVideos,
       },
+      brand: editData?.brand,
+      manu: editData?.manufacturer,
+      spec: editData?.specification,
+      status: editData?.status.id,
     },
   });
 
@@ -176,31 +182,10 @@ function REForm({ level, userID, edit = false, editData }: Props) {
     <>
       {edit && <GoBackButton />}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-5">
-        <Flex
-          justify="space-between"
-          flexDirection={{ base: "column", md: "row" }}
-          gap={{ base: 2, md: 0 }}
-          align="center"
-          pt="18"
-          pb={2}
-        >
+        <Flex align="center" pt="18" pb={2}>
           <Heading size={{ base: "sm", md: "md" }} noOfLines={1}>
             {!edit ? "Thêm mới" : "Sửa"} thông tin sản phẩm
           </Heading>
-          <Flex gap={3} align="center">
-            <Text fontSize="sm" fontWeight="700">
-              Trạng thái:
-            </Text>
-            <Badge
-              colorScheme={badgeColor}
-              fontSize="xs"
-              p={{ base: "1.5px 8px", md: "3px 10px" }}
-              borderRadius="lg"
-              textTransform="capitalize"
-            >
-              {editData?.status?.type || "Còn hàng"}
-            </Badge>
-          </Flex>
         </Flex>
         <ChakraAlert
           type="info"
@@ -227,21 +212,94 @@ function REForm({ level, userID, edit = false, editData }: Props) {
               </h2>
               <AccordionPanel pb={3}>
                 <VStack gap={3}>
-                  {/* purType & re type */}
-                  <Grid templateColumns="repeat(2, 1fr)" gap={3} w="100%">
-                    <FormControl isRequired>
-                      <FormLabel>Dạng bán</FormLabel>
-                      <Select>
-                        <option value="true">Bán</option>
-                        <option value="false">Cho thuê</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl isRequired>
-                      <FormLabel>Loại hình</FormLabel>
-                      <Select>
-                        <option>ho</option>
-                      </Select>
-                    </FormControl>
+                  <Grid templateColumns="repeat(3, 1fr)" gap={3} w="100%">
+                    {isFetching ? (
+                      <>
+                        <Skeleton
+                          height="40px"
+                          borderRadius="0.375rem"
+                        ></Skeleton>
+                        <Skeleton
+                          height="40px"
+                          borderRadius="0.375rem"
+                        ></Skeleton>
+                        <Skeleton
+                          height="40px"
+                          borderRadius="0.375rem"
+                        ></Skeleton>
+                      </>
+                    ) : (
+                      <>
+                        <FormControl isRequired>
+                          <FormLabel>Danh mục gốc</FormLabel>
+                          <Select
+                            onChange={(e) => setRoot(Number(e.target.value))}
+                            defaultValue="none"
+                          >
+                            <option value="none">---</option>
+                            {categoryTree?.map((item) => (
+                              <option value={item.id} key={item.id}>
+                                {item.title}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+
+                        <FormControl>
+                          <FormLabel>Danh mục cha</FormLabel>
+                          <Select
+                            defaultValue="none"
+                            onChange={(e) => setParent(Number(e.target.value))}
+                          >
+                            {!root ? (
+                              <option value="none">
+                                Vui lòng chọn danh mục gốc trước
+                              </option>
+                            ) : (
+                              categoryTree
+                                ?.find((i) => i.id === root)
+                                ?.child_links?.map((item) => (
+                                  <option value={item.id} key={item.id}>
+                                    {item.title}
+                                  </option>
+                                ))
+                            )}
+                          </Select>
+                        </FormControl>
+                        <FormControl>
+                          <FormLabel>Danh mục con</FormLabel>
+                          <Select
+                            defaultValue="none"
+                            onChange={(e) =>
+                              (child.current = Number(e.target.value))
+                            }
+                          >
+                            {!parent ? (
+                              <option value="none">
+                                Vui lòng chọn danh mục cha trước
+                              </option>
+                            ) : (
+                              categoryTree
+                                ?.reduce((acc: any[], cur) => {
+                                  if (cur.id === root) {
+                                    const found = cur.child_links?.find(
+                                      (i) => i.id === parent,
+                                    )?.child;
+                                    return found || [];
+                                  }
+
+                                  return acc;
+                                }, [])
+                                .map((i) => (
+                                  <option value={i.id} key={i.id}>
+                                    {i.title}
+                                  </option>
+                                ))
+                            )}
+                          </Select>
+                        </FormControl>
+                      </>
+                    )}
                   </Grid>
                 </VStack>
               </AccordionPanel>
@@ -285,7 +343,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                   {/* area & price */}
                   <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
                     <FormControl isRequired isInvalid={Boolean(errors.price)}>
-                      <FormLabel>`Giá sản phẩm</FormLabel>
+                      <FormLabel>Giá sản phẩm</FormLabel>
                       <Controller
                         name="price"
                         control={control}
@@ -309,42 +367,60 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                         </FormErrorMessage>
                       )}
                     </FormControl>
+                    <FormControl isInvalid={Boolean(errors.status)}>
+                      <FormLabel>Trạng thái</FormLabel>
+                      <Select
+                        {...register("status", {
+                          required: reform.requiredMessage,
+                        })}
+                      >
+                        <option value={INSTOCK}>Còn hàng</option>
+                        <option value={TEMP_OUT}>Tạm hết hàng</option>
+                        <option value={OUT_STOCK}>Hết hàng</option>
+                        <option value={OUT}>Ngừng nhập hàng</option>
+                      </Select>
+                      {errors.brand && (
+                        <FormErrorMessage>
+                          {errors.brand.message}
+                        </FormErrorMessage>
+                      )}
+                    </FormControl>
                   </Grid>
 
                   {/* other fields */}
                   <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-                    <ChakraNumberInput
-                      register={register}
-                      error={""}
-                      label="Số phòng ngủ"
-                      name="bed_room"
-                      value={0}
-                      req
-                    />
-                  </Grid>
-                  <Grid templateColumns="repeat(3,1fr)" w="100%" gap={3}>
-                    <ChakraNumberInput
-                      register={register}
-                      error={""}
-                      label="Đường vào"
-                      name="entryLength"
-                      value={0}
-                    />
+                    <FormControl isInvalid={Boolean(errors.brand)}>
+                      <FormLabel>Thương hiệu</FormLabel>
+                      <Input {...register("brand")} />
+                      {errors.brand && (
+                        <FormErrorMessage>
+                          {errors.brand.message}
+                        </FormErrorMessage>
+                      )}
+                    </FormControl>
+                    <FormControl isInvalid={Boolean(errors.manu)}>
+                      <FormLabel>Nhà sản xuất</FormLabel>
+                      <Input {...register("manu")} />
+                      {errors.manu && (
+                        <FormErrorMessage>
+                          {errors.manu.message}
+                        </FormErrorMessage>
+                      )}
+                    </FormControl>
 
-                    <FormControl>
-                      <FormLabel fontSize={{ base: "sm", md: "md" }}>
-                        Hướng nhà
-                      </FormLabel>
-                      <Select>
-                        <option>hi</option>
-                      </Select>
+                    <FormControl isInvalid={Boolean(errors.spec)}>
+                      <FormLabel>Quy cách</FormLabel>
+                      <Input
+                        {...register("spec")}
+                        placeholder="1 hộp 30 gói 100mg"
+                      />
+                      {errors.spec && (
+                        <FormErrorMessage>
+                          {errors.spec.message}
+                        </FormErrorMessage>
+                      )}
                     </FormControl>
                   </Grid>
-                  <Flex w="100%">
-                    <Checkbox size={{ base: "sm", md: "md" }}>
-                      Bất động sản có bao gồm nội thất?
-                    </Checkbox>
-                  </Flex>
                 </VStack>
               </AccordionPanel>
             </AccordionItem>
@@ -363,7 +439,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
               render={({ field: { onChange } }) => (
                 <QuillEditor
                   onChange={onChange}
-                  allowImage={false}
+                  allowImage
                   value={editData?.description}
                 />
               )}

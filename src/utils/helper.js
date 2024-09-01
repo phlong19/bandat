@@ -73,7 +73,7 @@ export function parseCurrency(input) {
 
 // get re status badge color base on status
 export function getStatusBadgeColor(id) {
-  if (!id) return "red";
+  if (!id) return "green";
 
   let color;
   switch (id) {

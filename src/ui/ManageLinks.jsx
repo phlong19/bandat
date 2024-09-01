@@ -1,8 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { Image, Flex, Button, Divider } from "@chakra-ui/react";
+import { Image, Flex, Button, Divider, Tooltip } from "@chakra-ui/react";
 
-import { TbBinaryTree, TbNews, TbTableOptions } from "react-icons/tb";
-import { HiOutlinePencilAlt } from "react-icons/hi";
+import {
+  TbBinaryTree,
+  TbNews,
+  TbReportAnalytics,
+  TbTableOptions,
+} from "react-icons/tb";
+import { FaPills } from "react-icons/fa6";
 
 import { useDarkMode } from "../context/DarkModeContext";
 import { ADMIN_LEVEL, EDITOR_LEVEL } from "../constants/anyVariables";
@@ -30,41 +35,62 @@ function ManageLinks({ level }) {
 
       {level != EDITOR_LEVEL && (
         <>
-          <NavLink to="/dang-tin" title="Đăng tin BĐS">
-            <Button variant="ghost" m={0}>
-              <HiOutlinePencilAlt fontSize="22" />
-            </Button>
-          </NavLink>
+          <Tooltip label="Thêm sản phẩm">
+            <NavLink to="/them-san-pham">
+              <Button variant="ghost" m={0}>
+                <FaPills fontSize="22" />
+              </Button>
+            </NavLink>
+          </Tooltip>
 
-          <NavLink to="/quan-ly-bai-viet" title="Quản lý bài viết BĐS">
-            <Button variant="ghost" m={0}>
-              <TbTableOptions fontSize="20" />
-            </Button>
-          </NavLink>
+          <Tooltip label="Quản lý sản phẩm">
+            <NavLink to="/quan-ly-san-pham">
+              <Button variant="ghost" m={0}>
+                <TbTableOptions fontSize="20" />
+              </Button>
+            </NavLink>
+          </Tooltip>
         </>
       )}
 
       <Divider w="75%" opacity={1} />
+      {level >= ADMIN_LEVEL && (
+        <Tooltip label="Quản lý đơn hàng">
+          <NavLink to="/quan-ly-don-hang">
+            <Button variant="ghost" m={0}>
+              <TbReportAnalytics fontSize={22} />
+            </Button>
+          </NavLink>
+        </Tooltip>
+      )}
+
+      <Divider w="75%" opacity={1} />
       {level >= EDITOR_LEVEL && (
-        <NavLink to="/quan-ly-tin-tuc" title="Quản lý tin tức">
-          <Button variant="ghost" m={0}>
-            <TbNews fontSize={22} />
-          </Button>
-        </NavLink>
+        <Tooltip label="Quản lý tin tức">
+          <NavLink to="/quan-ly-tin-tuc">
+            <Button variant="ghost" m={0}>
+              <TbNews fontSize={22} />
+            </Button>
+          </NavLink>
+        </Tooltip>
       )}
       <Divider w="75%" opacity={1} />
       {level >= ADMIN_LEVEL && (
         <>
-          <NavLink to="/control" title="Quản lý tổng hợp">
-            <Button variant="ghost" m={0}>
-              <BiExtension fontSize="21" />
-            </Button>
-          </NavLink>
-          <NavLink to="/role-management" title="Quản lý phân quyền">
-            <Button variant="ghost" m={0}>
-              <TbBinaryTree fontSize="21" />
-            </Button>
-          </NavLink>
+          <Tooltip label="Quản lý tổng hợp">
+            <NavLink to="/control">
+              <Button variant="ghost" m={0}>
+                <BiExtension fontSize="21" />
+              </Button>
+            </NavLink>
+          </Tooltip>
+          <Tooltip label="Quản lý phân quyền">
+            <NavLink to="/role-management">
+              <Button variant="ghost" m={0}>
+                <TbBinaryTree fontSize="21" />
+              </Button>
+            </NavLink>
+          </Tooltip>
         </>
       )}
     </Flex>

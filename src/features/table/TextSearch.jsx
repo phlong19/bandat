@@ -12,7 +12,7 @@ import {
 import { MdOutlineClear } from "react-icons/md";
 
 function TextSearch({ setQuery, viewOnly, profile }) {
-  const [search, setSearch] = useState(null);
+  const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const option = searchParams.get("option") || "fullName";
 

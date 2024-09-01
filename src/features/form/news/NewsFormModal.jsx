@@ -140,6 +140,7 @@ function NewsFormModal({
         size={isLoading ? "full" : "six"}
         closeOnEsc={false}
         closeOnOverlayClick={false}
+        onClose={onOpenDialog}
       >
         <ModalOverlay />
         {isLoading ? (
@@ -169,7 +170,7 @@ function NewsFormModal({
                 </Badge>
               </Flex>
             </ModalHeader>
-            <ModalCloseButton onClick={onOpenDialog} />
+            <ModalCloseButton />
 
             <ModalBody px={7}>
               <form onSubmit={handleSubmit(onSubmit)} id="form">
@@ -301,7 +302,7 @@ function NewsFormModal({
                   loadingText={!edit ? newsForm.creating : newsForm.saving}
                   right={0}
                   borderWidth={2}
-                  colorScheme="teal"
+                  colorScheme="green"
                   variant="outline"
                   type="submit"
                 >

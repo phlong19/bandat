@@ -3,6 +3,7 @@ import { error as errMessage } from "../constants/message";
 import { Links } from "../constants/navlink";
 /**
  * get all categories for header render
+ * @returns
  */
 export async function getAllCategories() {
   const { data, count, error } = await supabase
@@ -42,5 +43,5 @@ export async function getAllCategories() {
     return group;
   }, []);
 
-  return { categoryTree, count };
+  return { categoryTree, count, data };
 }

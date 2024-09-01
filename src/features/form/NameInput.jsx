@@ -5,16 +5,14 @@ import {
   Input,
   FormControl,
   FormLabel,
-  FormHelperText,
   FormErrorMessage,
   Badge,
   Flex,
   Spinner,
 } from "@chakra-ui/react";
 
-import { checkPost } from "../../services/apiRE";
+import { checkProduct } from "../../services/apiProduct";
 import { maxLength, minLength } from "../../constants/anyVariables";
-import { reform } from "../../constants/message";
 import unidecode from "unidecode";
 
 function NameInput({ postId, register, error }) {
@@ -23,8 +21,8 @@ function NameInput({ postId, register, error }) {
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["query-post-name", debouncedSearch],
-    queryFn: () => checkPost(debouncedSearch),
+    queryKey: ["query-product-name", debouncedSearch],
+    queryFn: () => checkProduct(debouncedSearch),
     enabled: search.length >= minLength,
   });
 
@@ -47,12 +45,12 @@ function NameInput({ postId, register, error }) {
   return (
     <FormControl isRequired isInvalid={error || invalid}>
       <Flex align="baseline" gap={1}>
-        <FormLabel>Tiêu đề</FormLabel>
+        <FormLabel>Tên sản phẩm</FormLabel>
         {isLoading ? (
           <Spinner size="xs" ml={2} speed="0.3s" />
         ) : invalid ? (
           <Badge colorScheme="red" borderRadius="sm" textTransform="capitalize">
-            <span className="px-[3px] text-[11px]">Tiêu đề đã tồn tại</span>
+            <span className="px-[3px] text-[11px]">Sản phẩm đã tồn tại</span>
           </Badge>
         ) : (
           <Badge
@@ -60,13 +58,10 @@ function NameInput({ postId, register, error }) {
             borderRadius="md"
             textTransform="capitalize"
           >
-            <span className="px-[3px] text-[11px]">Tiêu đề phù hợp</span>
+            <span className="px-[3px] text-[11px]">Tên phù hợp</span>
           </Badge>
         )}
       </Flex>
-      <FormHelperText mt={0} mb={2} fontSize='xs'>
-        {reform.noPhone}
-      </FormHelperText>
       <Input
         type="text"
         {...register}
