@@ -16,10 +16,7 @@ import {
   Select,
   VStack,
   Heading,
-  Checkbox,
   Flex,
-  Badge,
-  Text,
   Accordion,
   AccordionItem,
   AccordionButton,
@@ -51,7 +48,7 @@ import {
   minDesLength,
   minLength,
 } from "../../constants/anyVariables";
-import { getStatusBadgeColor, parseCurrency } from "../../utils/helper";
+import { parseCurrencBy } from "../../utils/helper";
 import { reform } from "../../constants/message";
 
 import { useCreateRE } from "./useCreateRE";
@@ -71,7 +68,6 @@ interface Props {
 function REForm({ level, userID, edit = false, editData }: Props) {
   // other states and derived states goes here
   const accent = useColorModeValue("primary", "secondary");
-  let badgeColor = getStatusBadgeColor(editData?.status.id);
 
   const { categoryTree, isFetching } = useGetCategories();
   const [root, setRoot] = useState(0);
@@ -111,22 +107,26 @@ function REForm({ level, userID, edit = false, editData }: Props) {
     defaultValues: {
       name: editData?.name,
       price: editData?.price,
-      des: editData?.description,
+      description: editData?.description,
       files: {
         images: existedImages,
         videos: existedVideos,
       },
       brand: editData?.brand,
-      manu: editData?.manufacturer,
-      spec: editData?.specification,
+      manufacturer: editData?.manufacturer,
+      specification: editData?.specification,
       status: editData?.status.id,
     },
   });
 
   function onSubmit(data: any) {
+    if (!root) {
+      return toast.error("Danh mục sản phẩm không được để trống!");
+    }
+
     // check description exist
-    if (!data.des) {
-      return setError("des", {
+    if (!data.description) {
+      return setError("description", {
         type: "required",
         message: reform.missingDes,
       });
@@ -142,7 +142,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
     // parse the price and check
     const priceNum = parseCurrency(data.price);
     // check price
-    if (priceNum < million) {
+    if (priceNum <= million / million) {
       return setError("price", {
         type: "min",
         message: reform.minPrice,
@@ -152,13 +152,16 @@ function REForm({ level, userID, edit = false, editData }: Props) {
     const formattedName = unidecode(data.name);
     const slug = slugify(formattedName);
 
+    console.log(data);
+
     if (!edit) {
       create({
         ...data,
         price: priceNum,
-        status: INSTOCK,
-        userID,
         slug,
+        rootCategory: root,
+        parentCategory: parent || null,
+        category: child.current || null,
       });
     } else {
       update({
@@ -177,6 +180,16 @@ function REForm({ level, userID, edit = false, editData }: Props) {
       });
     }
   }
+
+  let parentCat = categoryTree?.find((i) => i.id === root)?.child_links;
+  let childCat = categoryTree?.reduce((acc: any[], cur) => {
+    if (cur.id === root) {
+      const found = cur.child_links?.find((i) => i.id === parent)?.child;
+      return found || [];
+    }
+
+    return acc;
+  }, []);
 
   return (
     <>
@@ -236,12 +249,18 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                             onChange={(e) => setRoot(Number(e.target.value))}
                             defaultValue="none"
                           >
-                            <option value="none">---</option>
-                            {categoryTree?.map((item) => (
-                              <option value={item.id} key={item.id}>
-                                {item.title}
-                              </option>
-                            ))}
+                            {!categoryTree?.length ? (
+                              <option value="none">Không có dữ liệu</option>
+                            ) : (
+                              <>
+                                <option value="none">---</option>
+                                {categoryTree?.map((item) => (
+                                  <option value={item.id} key={item.id}>
+                                    {item.title}
+                                  </option>
+                                ))}
+                              </>
+                            )}
                           </Select>
                         </FormControl>
 
@@ -251,18 +270,21 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                             defaultValue="none"
                             onChange={(e) => setParent(Number(e.target.value))}
                           >
-                            {!root ? (
+                            {!parentCat?.length ? (
+                              <option value="none">Không có dữ liệu</option>
+                            ) : !root ? (
                               <option value="none">
                                 Vui lòng chọn danh mục gốc trước
                               </option>
                             ) : (
-                              categoryTree
-                                ?.find((i) => i.id === root)
-                                ?.child_links?.map((item) => (
+                              <>
+                                <option value="none">---</option>
+                                {parentCat?.map((item) => (
                                   <option value={item.id} key={item.id}>
                                     {item.title}
                                   </option>
-                                ))
+                                ))}
+                              </>
                             )}
                           </Select>
                         </FormControl>
@@ -274,27 +296,21 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                               (child.current = Number(e.target.value))
                             }
                           >
-                            {!parent ? (
+                            {!childCat?.length ? (
+                              <option value="none">Không có dữ liệu</option>
+                            ) : !parent ? (
                               <option value="none">
                                 Vui lòng chọn danh mục cha trước
                               </option>
                             ) : (
-                              categoryTree
-                                ?.reduce((acc: any[], cur) => {
-                                  if (cur.id === root) {
-                                    const found = cur.child_links?.find(
-                                      (i) => i.id === parent,
-                                    )?.child;
-                                    return found || [];
-                                  }
-
-                                  return acc;
-                                }, [])
-                                .map((i) => (
+                              <>
+                                <option value="none">---</option>
+                                {childCat?.map((i) => (
                                   <option value={i.id} key={i.id}>
                                     {i.title}
                                   </option>
-                                ))
+                                ))}
+                              </>
                             )}
                           </Select>
                         </FormControl>
@@ -370,8 +386,10 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                     <FormControl isInvalid={Boolean(errors.status)}>
                       <FormLabel>Trạng thái</FormLabel>
                       <Select
+                        defaultValue={INSTOCK}
                         {...register("status", {
                           required: reform.requiredMessage,
+                          valueAsNumber: true,
                         })}
                       >
                         <option value={INSTOCK}>Còn hàng</option>
@@ -398,25 +416,25 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                         </FormErrorMessage>
                       )}
                     </FormControl>
-                    <FormControl isInvalid={Boolean(errors.manu)}>
+                    <FormControl isInvalid={Boolean(errors.manufacturer)}>
                       <FormLabel>Nhà sản xuất</FormLabel>
-                      <Input {...register("manu")} />
-                      {errors.manu && (
+                      <Input {...register("manufacturer")} />
+                      {errors.manufacturer && (
                         <FormErrorMessage>
-                          {errors.manu.message}
+                          {errors.manufacturer.message}
                         </FormErrorMessage>
                       )}
                     </FormControl>
 
-                    <FormControl isInvalid={Boolean(errors.spec)}>
+                    <FormControl isInvalid={Boolean(errors.specification)}>
                       <FormLabel>Quy cách</FormLabel>
                       <Input
-                        {...register("spec")}
+                        {...register("specification")}
                         placeholder="1 hộp 30 gói 100mg"
                       />
-                      {errors.spec && (
+                      {errors.specification && (
                         <FormErrorMessage>
-                          {errors.spec.message}
+                          {errors.specification.message}
                         </FormErrorMessage>
                       )}
                     </FormControl>
@@ -426,20 +444,21 @@ function REForm({ level, userID, edit = false, editData }: Props) {
             </AccordionItem>
           </Accordion>
           {/* des */}
-          <FormControl isRequired isInvalid={Boolean(errors.des)}>
-            <FormLabel>Mô tả chi tiết</FormLabel>
-            {errors.des && (
+          <FormControl isRequired isInvalid={Boolean(errors.description)}>
+            <FormLabel>Mô tả chi tiết sản phẩm</FormLabel>
+            {errors.description && (
               <FormErrorMessage>
-                {errors.des.message?.toString()}
+                {errors.description.message?.toString()}
               </FormErrorMessage>
             )}
             <Controller
-              name="des"
+              name="description"
               control={control}
               render={({ field: { onChange } }) => (
                 <QuillEditor
                   onChange={onChange}
                   allowImage
+                  allowVideo
                   value={editData?.description}
                 />
               )}
@@ -463,7 +482,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
             align={{ base: "start", md: "end" }}
           >
             <FormControl isRequired isInvalid={Boolean(errors.files)}>
-              <FormLabel>Hình ảnh, video bất động sản</FormLabel>
+              <FormLabel>Hình ảnh, video sản phẩm</FormLabel>
 
               <FormHelperText mb={2}>
                 {files.images.length}/{LIMIT_IMG_UPLOAD} ảnh -{" "}
@@ -515,7 +534,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                 variant="outline"
                 type="submit"
               >
-                {!edit ? reform.submit : reform.save}
+                {!edit ? reform.create : reform.save}
               </Button>
             </Flex>
           )}

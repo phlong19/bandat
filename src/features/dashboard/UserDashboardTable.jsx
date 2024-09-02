@@ -54,9 +54,9 @@ function UserDashboardTable({ id, level }) {
           <TableRERow key={item.id} data={item} level={level} userID={id} />
         )}
         primaryButton={
-          <Link to="/dang-tin">
+          <Link to="/them-san-pham">
             <Button variant="outline" colorScheme="green" borderWidth={2}>
-              Tạo bài đăng
+              Thêm sản phẩm
             </Button>
           </Link>
         }

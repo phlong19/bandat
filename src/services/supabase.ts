@@ -12,8 +12,7 @@ export default supabase;
 const order = "order";
 const product = "product";
 const category = "category";
-const product_image = "product-image";
-const product_category = "product_category";
+const product_image = "product_image";
 const news = "News";
 const city = "CityDirectory";
 const dis = "DistrictDirectory";
@@ -24,7 +23,6 @@ const profile = "Profile";
 export {
   order,
   product,
-  product_category,
   product_image,
   profile,
   category,

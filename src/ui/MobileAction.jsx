@@ -76,9 +76,9 @@ function MobileAction({ onClose }) {
       <ul className="mt-3">
         {isAuthenticated &&
           arr.map((item) => (
-            <li key={item.access} className="relative w-full overflow-hidden">
+            <li key={item.type} className="relative w-full overflow-hidden">
               <MobileActionItem
-                to={item.to}
+                to={item.type}
                 title={item.title}
                 icon={item.icon}
                 onClose={onClose}
@@ -88,11 +88,11 @@ function MobileAction({ onClose }) {
         {navLinks.map((rootLink, index) => (
           <li key={index} className="relative w-full overflow-hidden">
             <MobileActionItem
-              to={rootLink.to}
+              to={rootLink.type}
               onClose={onClose}
               title={rootLink.title}
               icon={rootLink.icon}
-              child={rootLink.child}
+              child={rootLink.child_links}
             />
           </li>
         ))}

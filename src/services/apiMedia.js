@@ -1,9 +1,9 @@
-import supabase, { supabaseUrl } from "./supabase";
+import supabase, { product_image, supabaseUrl } from "./supabase";
 import { v4 } from "uuid";
 import { error as errorMessage } from "../constants/message";
 
-export async function uploadMedia(file, postID, is360Image = false) {
-  const fileName = `REDir - ${is360Image ? "360" : ""}${v4()}${postID}`;
+export async function uploadMedia(file, productID) {
+  const fileName = `Product - ${v4()}${productID}`;
   const isImage = file.type.startsWith("image");
 
   const { data: uploadedFile, error: uploadError } = await supabase.storage
@@ -14,12 +14,11 @@ export async function uploadMedia(file, postID, is360Image = false) {
     throw new uploadError(error.message);
   }
   // insert into re images
-  const { error } = await supabase.from("REMedias").insert([
+  const { error } = await supabase.from(product_image).insert([
     {
-      postID,
+      productID,
       mediaLink: `${supabaseUrl}/storage/v1/object/public/${uploadedFile.fullPath}`,
       isImage,
-      is360Image,
     },
   ]);
 
@@ -38,7 +37,7 @@ export async function deleteMedia(file) {
   // remove in junc table re medias if update post
   try {
     const { error } = await supabase
-      .from("REMedias")
+      .from(product_image)
       .delete()
       .eq("id", file.id);
 

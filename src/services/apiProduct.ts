@@ -10,6 +10,7 @@ import {
 } from "../constants/anyVariables";
 import { error as errorMessage } from "../constants/message";
 import { getStatusID, sanitizeSearchInput } from "../utils/helper";
+import { uploadMedia } from "./apiMedia";
 
 //#region get
 /**
@@ -135,7 +136,7 @@ export async function getBookmarkProducts(ids: string[], page?: number) {
  * @param slug a slugify string from input
  */
 export async function checkProduct(slug: string) {
-  if (!slug || slug < minLength || slug > maxLength) {
+  if (!slug || slug.length < minLength || slug.length > maxLength) {
     return null;
   }
 
@@ -158,7 +159,7 @@ export async function checkProduct(slug: string) {
  * @param slug string
  */
 export async function getProduct(slug: string) {
-  if (!slug || slug < minLength || slug > maxLength) {
+  if (!slug || slug.length < minLength || slug.length > maxLength) {
     return null;
   }
 
@@ -185,14 +186,33 @@ export async function getProduct(slug: string) {
 
   return data;
 }
-//#end_region
+//#endregion
 
 //#region crud product
 /**
  * create product
  * @param formData submit form object
  */
-export async function createProduct(formData: Record<string, string | number>) {
+export async function createProduct(formData: any) {
+  const { files, ...form } = formData;
+
+  const { data, error } = await supabase
+    .from(product)
+    .insert([form])
+    .select(`id`)
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantCreate);
+  }
+
+  const productID = data.id;
+
+  files.images.forEach((file: any) => uploadMedia(file, productID));
+  files.videos.forEach((file: any) => uploadMedia(file, productID));
+
   return null;
 }
 
@@ -201,6 +221,7 @@ export async function createProduct(formData: Record<string, string | number>) {
  * @param formData
  */
 export async function updateProduct(formData: any) {
+  // TODO: form missing summary field
   return null;
 }
 
@@ -249,7 +270,7 @@ export async function getFullProductList(
       `,
       { count: "exact" },
     )
-    .eq('images.isImage',true)
+    .eq("images.isImage", true)
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
 
@@ -266,7 +287,7 @@ export async function getFullProductList(
     const [col, status] = filter.split("-");
     const id = getStatusID(status);
     query = query.eq(col, id);
-  } 
+  }
 
   // text query
   if (textQuery !== "" && textQuery?.length > 2) {
@@ -286,7 +307,7 @@ export async function getFullProductList(
 /**
  * get single product for management
  */
-export async function getFullProduct(slug: string,level:number) {
+export async function getFullProduct(slug: string, level: number) {
   if (!slug || slug < minLength || slug > maxLength) {
     return null;
   }

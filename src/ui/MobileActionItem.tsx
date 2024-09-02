@@ -56,14 +56,14 @@ function MobileActionItem({ to, title, onClose, icon, child }: Props) {
         <AccordionPanel pb={4} display="flex" flexDir="column" fontSize="md">
           {child.map((child, index) => {
             return child.child ? (
-              <Accordion allowMultiple key={index}>
+              <Accordion allowMultiple key={child.type}>
                 <AccordionItem className="!border-none" my={1}>
                   <h2>
                     <AccordionButton my={1}>
                       <Box as="span" flex="1" textAlign="left">
                         <NavLink
                           onClick={onClose}
-                          to={`${to}/${child.type}`}
+                          to={`/danh-muc/${to}/${child.type}`}
                           className={({ isActive }) =>
                             isActive ? "!text-primary dark:text-secondary" : ""
                           }
@@ -91,7 +91,7 @@ function MobileActionItem({ to, title, onClose, icon, child }: Props) {
                           } flex items-center gap-1 pl-3.5`
                         }
                         key={link.type}
-                        to={`${to}/${child.type}/${link.type}`}
+                        to={`/danh-muc/${to}/${child.type}/${link.type}`}
                       >
                         <IoChevronForward />
                         {link.title}

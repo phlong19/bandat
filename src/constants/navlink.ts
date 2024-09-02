@@ -228,9 +228,21 @@ export const mobileNavLinks = {
   ],
   authen: [
     {
+      title: "Thêm sản phẩm",
+      access: ADMIN_LEVEL,
+      icon: "Pills",
+      type: "/them-san-pham",
+    },
+    {
+      title: "Quản lý sản phẩm",
+      access: ADMIN_LEVEL,
+      icon: "Wpforms",
+      type: "/them-san-pham",
+    },
+    {
       title: "Quản lý đơn hàng",
-      accessLevel: ADMIN_LEVEL,
-      icon: "ListUl",
+      access: ADMIN_LEVEL,
+      icon: "ListCheck",
       type: "/quan-ly-don-hang",
     },
 

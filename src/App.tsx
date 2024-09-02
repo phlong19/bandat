@@ -44,7 +44,8 @@ import {
   EDITOR_LEVEL,
   ADMIN_LEVEL,
   USER_LEVEL,
-} from "./constants/anyVariables"; 
+} from "./constants/anyVariables";
+import Order from "./pages/Order";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -68,7 +69,10 @@ function App() {
                   <Route index element={<Home />} />
 
                   {/* TODO: fix paths */}
-                  <Route path="danh-muc/:root/:parent?/:child?" element={<ListingPage />} />
+                  <Route
+                    path="danh-muc/:root/:parent?/:child?"
+                    element={<ListingPage />}
+                  />
 
                   <Route path="san-pham/:slug" element={<Details />} />
 
@@ -115,12 +119,45 @@ function App() {
                   {/* path for user to write & manage RE post */}
                   <Route
                     path="them-san-pham"
-                    element={<UserDashboard form />}
+                    element={
+                      <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                        <UserDashboard form />
+                      </ProtectedRoute>
+                    }
                   />
-                  <Route path="quan-ly-san-pham" element={<UserDashboard />} />
+                  <Route
+                    path="quan-ly-san-pham"
+                    element={
+                      <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                        <UserDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="quan-ly-san-pham/:title"
-                    element={<UserDashboard form />}
+                    element={
+                      <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                        <UserDashboard form />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path="quan-ly-don-hang"
+                    element={
+                      <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                        <Order />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path="quan-ly-don-hang/:id"
+                    element={
+                      <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                        <Order />
+                      </ProtectedRoute>
+                    }
                   />
 
                   {/* editor path */}

@@ -159,7 +159,7 @@ export const reform = {
   note: "Mỗi lần submit sửa là bài đăng sẽ chờ duyệt lại, hãy đảm bảo đúng các thông tin, bài đăng luôn được hiển thị",
 
   // button submit
-  submit: "Tạo sản phẩm",
+  create: "Tạo sản phẩm",
   save: "Lưu thay đổi",
   creating: "Đang tạo",
   saving: "Đang lưu",
