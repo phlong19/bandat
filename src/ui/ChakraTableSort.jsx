@@ -4,7 +4,7 @@ import { Select } from "@chakra-ui/react";
 import { sortList, sortNewsList } from "../constants/navlink";
 import { HiSortDescending } from "react-icons/hi";
 
-function ChakraTableSort({ news = false, re = false }) {
+function ChakraTableSort({ news = false }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const arr = !news ? sortList : sortNewsList;
 
@@ -28,11 +28,6 @@ function ChakraTableSort({ news = false, re = false }) {
           {i.label}
         </option>
       ))}
-      {re && (
-        <>
-          <option value="report-desc">Báo xấu cao</option>
-        </>
-      )}
     </Select>
   );
 }

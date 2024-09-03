@@ -22,8 +22,19 @@ export interface ListProps {
           id: number;
           type: string;
         };
+        rootCategory: number | Category;
+        parentCategory?: number | Category;
+        category?: number | Category;
       }
     | undefined;
+}
+
+export interface Category {
+  id: number;
+  created_at: string;
+  name: string;
+  slug: string;
+  parent: number | null;
 }
 
 export interface Product {

@@ -24,6 +24,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   Skeleton,
+  Textarea,
 } from "@chakra-ui/react";
 
 // UI
@@ -48,7 +49,7 @@ import {
   minDesLength,
   minLength,
 } from "../../constants/anyVariables";
-import { parseCurrencBy } from "../../utils/helper";
+import { parseCurrency } from "../../utils/helper";
 import { reform } from "../../constants/message";
 
 import { useCreateRE } from "./useCreateRE";
@@ -70,9 +71,9 @@ function REForm({ level, userID, edit = false, editData }: Props) {
   const accent = useColorModeValue("primary", "secondary");
 
   const { categoryTree, isFetching } = useGetCategories();
-  const [root, setRoot] = useState(0);
-  const [parent, setParent] = useState(0);
-  const child = useRef(0);
+  const [root, setRoot] = useState(editData?.rootCategory ?? 0);
+  const [parent, setParent] = useState(editData?.parentCategory ?? 0);
+  const child = useRef(editData?.category ?? 0);
 
   // track new added & deleted medias & docs
   const addImagesRef = useRef([]);
@@ -116,6 +117,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
       manufacturer: editData?.manufacturer,
       specification: editData?.specification,
       status: editData?.status.id,
+      summary: editData?.summary,
     },
   });
 
@@ -152,25 +154,21 @@ function REForm({ level, userID, edit = false, editData }: Props) {
     const formattedName = unidecode(data.name);
     const slug = slugify(formattedName);
 
-    console.log(data);
+    const formedData = {
+      ...data,
+      price: priceNum,
+      slug,
+      rootCategory: root,
+      parentCategory: parent || null,
+      category: child.current || null,
+    };
 
     if (!edit) {
-      create({
-        ...data,
-        price: priceNum,
-        slug,
-        rootCategory: root,
-        parentCategory: parent || null,
-        category: child.current || null,
-      });
+      create(formedData);
     } else {
+      return console.log(formedData);
       update({
-        ...data,
-        level: level,
-        userID,
-        price: priceNum,
-        status: INSTOCK,
-        slug,
+        ...formedData,
         // medias
         deleteMedias: deleteMediasRef.current,
         newMedias: {
@@ -247,7 +245,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                           <FormLabel>Danh mục gốc</FormLabel>
                           <Select
                             onChange={(e) => setRoot(Number(e.target.value))}
-                            defaultValue="none"
+                            defaultValue={edit ? (root as number) : "none"}
                           >
                             {!categoryTree?.length ? (
                               <option value="none">Không có dữ liệu</option>
@@ -267,7 +265,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                         <FormControl>
                           <FormLabel>Danh mục cha</FormLabel>
                           <Select
-                            defaultValue="none"
+                            defaultValue={edit ? (parent as number) : "none"}
                             onChange={(e) => setParent(Number(e.target.value))}
                           >
                             {!parentCat?.length ? (
@@ -291,7 +289,9 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                         <FormControl>
                           <FormLabel>Danh mục con</FormLabel>
                           <Select
-                            defaultValue="none"
+                            defaultValue={
+                              edit ? (child.current as number) : "none"
+                            }
                             onChange={(e) =>
                               (child.current = Number(e.target.value))
                             }
@@ -356,6 +356,12 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                     postId={editData?.id}
                     error={errors?.name}
                   />
+
+                  <FormControl>
+                    <FormLabel>Mô tả ngắn</FormLabel>
+                    <Textarea {...register("summary")}></Textarea>
+                  </FormControl>
+
                   {/* area & price */}
                   <Grid gap={3} templateColumns="repeat(2,1fr)" w="100%">
                     <FormControl isRequired isInvalid={Boolean(errors.price)}>
@@ -430,7 +436,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
                       <FormLabel>Quy cách</FormLabel>
                       <Input
                         {...register("specification")}
-                        placeholder="1 hộp 30 gói 100mg"
+                        placeholder="Ví dụ: 1 hộp 30 gói 100mg"
                       />
                       {errors.specification && (
                         <FormErrorMessage>
@@ -509,9 +515,6 @@ function REForm({ level, userID, edit = false, editData }: Props) {
             </FormControl>
           </Flex>
 
-          {/* note */}
-          {edit && <ChakraAlert type="warning" message={reform.note} />}
-
           {editData?.status.id !== OUT_STOCK && (
             <Flex
               w="100%"
@@ -520,7 +523,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
             >
               {edit && (
                 <FormActions
-                  postID={editData!.id}
+                  productID={editData!.id}
                   statusID={editData!.status.id}
                   userID={userID}
                   level={level}

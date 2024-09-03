@@ -237,7 +237,7 @@ export const mobileNavLinks = {
       title: "Quản lý sản phẩm",
       access: ADMIN_LEVEL,
       icon: "Wpforms",
-      type: "/them-san-pham",
+      type: "/quan-ly-san-pham",
     },
     {
       title: "Quản lý đơn hàng",
@@ -311,15 +311,4 @@ export const sortNewsList = [
 export const filterNewsList = [
   { label: "Đã duyệt", value: "status-approved" },
   { label: "Chờ duyệt", value: "status-waiting" },
-];
-
-// report list
-export const list = [
-  { value: "address", label: "Địa chỉ bất động sản" },
-  { value: "info", label: "Các thông tin: giá, diện tích, mô tả,..." },
-  { value: "media", label: "Ảnh" },
-  { value: "duplicate", label: "Trùng tin rao khác" },
-  { value: "contact", label: "Không liên lạc được" },
-  { value: "exist", label: "Tin không có thật" },
-  { value: "sold", label: "Bất động sản đã bán" },
 ];

@@ -11,6 +11,7 @@ import { useGetRE } from "../features/form/useGetRE";
 import { useAuth } from "../context/UserContext";
 import SkeletonREForm from "../ui/SkeletonREForm";
 import { EDITOR_LEVEL } from "../constants/anyVariables";
+import { ListProps } from "../model";
 
 function UserDashboard({ form = false }) {
   const activePage = window.location.pathname.includes("quan-ly")
@@ -63,10 +64,10 @@ function UserDashboard({ form = false }) {
       ) : (
         <Box maxWidth="85%" minWidth="85%" mx="auto">
           <REForm
-            currentUserLevel={level}
+            level={level}
             userID={data.id}
             edit={Boolean(product)}
-            editData={product}
+            editData={product as ListProps["data"]}
             key={product?.id || "new"}
           />
         </Box>

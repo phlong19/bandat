@@ -221,11 +221,33 @@ export async function createProduct(formData: any) {
  * @param formData
  */
 export async function updateProduct(formData: any) {
-  // TODO: form missing summary field
+
   return null;
 }
 
-// some quick action
+// some quick actions
+export async function updateStatus(params: {
+  statusID: number;
+  productID: number;
+}) {
+  const { productID, statusID } = params;
+  const { data, error } = await supabase
+    .from(product)
+    .update({ status: statusID })
+    .eq("id", productID)
+    .select();
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantUpdate);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantFindToUpdate);
+  }
+
+  return data;
+}
 
 //#endregion
 
@@ -235,7 +257,7 @@ export async function updateProduct(formData: any) {
  *
  */
 export async function getFullProductList(
-  userID: number,
+  userID: string,
   sort: string,
   filter: string,
   textQuery: string,
@@ -283,7 +305,7 @@ export async function getFullProductList(
   }
 
   // filter
-  if (filter !== "none" && filter !== "status-expired") {
+  if (filter !== "none") {
     const [col, status] = filter.split("-");
     const id = getStatusID(status);
     query = query.eq(col, id);
@@ -308,18 +330,19 @@ export async function getFullProductList(
  * get single product for management
  */
 export async function getFullProduct(slug: string, level: number) {
-  if (!slug || slug < minLength || slug > maxLength) {
+  if (!slug || slug.length < minLength || slug.length > maxLength) {
     return null;
   }
+
+  // rootCategory: category!product_rootCategory_fkey(*),
+  // parentCategory: category!product_parentCategory_fkey(*),
+  // category: category!product_category_fkey(*),
 
   let query = supabase
     .from(product)
     .select(
       `*,
-        medias: product_image(*),
-        rootCategory: category!product_rootCategory_fkey(*),
-        parentCategory: category!product_parentCategory_fkey(*),
-        category: category!product_category_fkey(*),
+        images: product_image(*),
         status(*)
   `,
     )

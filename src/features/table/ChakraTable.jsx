@@ -76,7 +76,7 @@ function ChakraTable({
               <>
                 {/* side actions */}
                 <ChakraTableFilter news={news} />
-                <ChakraTableSort news={news} re={re} />
+                <ChakraTableSort news={news} />
                 {/* for main action */}
                 {/* with post => link to dang-tin */}
                 {/* news / user + profile / docs => modal */}
@@ -122,9 +122,9 @@ function ChakraTable({
               (re ? (
                 <EmptyTable message={news ? newsForm.empty : emptyREList}>
                   {!news && (
-                    <Link to="/dang-tin">
+                    <Link to="/them-san-pham">
                       <Button colorScheme="green" variant="solid">
-                        Tạo bài đăng
+                        Thêm sản phẩm
                       </Button>
                     </Link>
                   )}

@@ -242,6 +242,8 @@ function NewsFormModal({
                         <QuillEditor
                           onChange={onChange}
                           value={editData?.content}
+                          allowImage
+                          allowVideo
                         />
                       )}
                     />

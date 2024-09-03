@@ -68,15 +68,15 @@ export { minTitle, maxTitle, minSummary, maxSummary, minContent, maxContent };
 
 // table captions
 export const reCaptions = [
-  "Người đăng",
-  "Dạng bán",
-  "Loại hình",
-  "Tiêu đề",
-  "Địa chỉ",
-  "Báo xấu",
+  "Hình ảnh",
+  "Tên sản phẩm",
+  "Giá tiền",
+  `Thương hiệu /
+   NSX`,
+  "Quy cách",
+  "Mô tả ngắn",
   "Trạng thái",
-  "Ngày đăng",
-  "Ngày hết hạn",
+  "Ngày thêm",
 ];
 
 // hardcode product status
