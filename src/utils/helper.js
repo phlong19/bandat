@@ -84,10 +84,10 @@ export function getStatusBadgeColor(id) {
       color = "red";
       break;
     case TEMP_OUT:
-      color = "orange";
+      color = "yellow";
       break;
     case OUT:
-      color = "gray";
+      color = "orange";
       break;
     default:
       break;

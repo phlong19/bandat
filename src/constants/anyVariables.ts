@@ -31,10 +31,10 @@ export { USER_LEVEL, EDITOR_LEVEL, ADMIN_LEVEL };
 
 // social media links
 const fb = import.meta.env.VITE_FB;
-const ytb = import.meta.env.VITE_YTB;
+const ytb = import.meta.env.VITE_YOUTUBE;
 const x = import.meta.env.VITE_X;
 const zalo = import.meta.env.VITE_ZALO;
-const tiktok = import.meta.env.TIKTOK;
+const tiktok = import.meta.env.VITE_TIKTOK;
 export { fb, ytb, x, zalo, tiktok };
 
 // purType page title
@@ -66,19 +66,6 @@ const minContent = 300;
 const maxContent = 10000;
 export { minTitle, maxTitle, minSummary, maxSummary, minContent, maxContent };
 
-// table captions
-export const reCaptions = [
-  "Hình ảnh",
-  "Tên sản phẩm",
-  "Giá tiền",
-  `Thương hiệu /
-   NSX`,
-  "Quy cách",
-  "Mô tả ngắn",
-  "Trạng thái",
-  "Ngày thêm",
-];
-
 // hardcode product status
 const INSTOCK = 1; // con hang
 const TEMP_OUT = 2; // tam het hang
@@ -92,6 +79,19 @@ export { local, landhub };
 export const questURL = `https://www.mapquestapi.com/geocoding/v1/address?key=${
   import.meta.env.VITE_QUEST_KEY
 }`;
+
+// table captions
+export const reCaptions = [
+  "Hình ảnh",
+  "Tên sản phẩm",
+  "Giá tiền",
+  `Thương hiệu /
+   NSX`,
+  "Quy cách",
+  "Mô tả ngắn",
+  "Trạng thái",
+  "Ngày thêm",
+];
 
 export const newsCaptions = [
   "Người đăng",
@@ -120,3 +120,9 @@ export { minName, maxName };
 // expriry range
 export const EXPRIRY_LENGTH = 14;
 export const phoneLength = 10;
+
+// order status
+const WAITING = 1;
+const COMPLETED = 2;
+const CANCEL = 3;
+export { WAITING, COMPLETED, CANCEL };

@@ -34,6 +34,7 @@ function ChakraTable({
   profile = true,
   viewOnly = false,
   re = false,
+  order = false,
   isLoading,
   page,
   setQuery,
@@ -75,10 +76,10 @@ function ChakraTable({
             {!viewOnly && (
               <>
                 {/* side actions */}
-                <ChakraTableFilter news={news} />
-                <ChakraTableSort news={news} />
+                <ChakraTableFilter news={news} order={order} />
+                <ChakraTableSort news={news} order={order} />
                 {/* for main action */}
-                {/* with post => link to dang-tin */}
+                {/* with post => link to them-san-pham */}
                 {/* news / user + profile / docs => modal */}
                 {primaryButton}
               </>

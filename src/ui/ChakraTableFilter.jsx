@@ -1,15 +1,20 @@
 import { Select } from "@chakra-ui/react";
 import { useSearchParams } from "react-router-dom";
 
-import { filterList, filterNewsList } from "../constants/navlink";
+import {
+  filterList,
+  filterNewsList,
+  filterOrderList,
+} from "../constants/navlink";
 import { BiFilterAlt } from "react-icons/bi";
 
-function ChakraTableFilter({ news }) {
+function ChakraTableFilter({ news, order }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const arr = !news ? filterList : filterNewsList;
+  const arr = news ? filterNewsList : !order ? filterList : filterOrderList;
 
   return (
-    <Select icon={<BiFilterAlt />}
+    <Select
+      icon={<BiFilterAlt />}
       title="Lọc"
       size="md"
       rounded="lg"

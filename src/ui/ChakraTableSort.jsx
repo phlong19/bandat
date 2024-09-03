@@ -1,12 +1,12 @@
 import { useSearchParams } from "react-router-dom";
 import { Select } from "@chakra-ui/react";
 
-import { sortList, sortNewsList } from "../constants/navlink";
+import { sortList, sortNewsList, orderSortList } from "../constants/navlink";
 import { HiSortDescending } from "react-icons/hi";
 
-function ChakraTableSort({ news = false }) {
+function ChakraTableSort({ news = false, order }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const arr = !news ? sortList : sortNewsList;
+  const arr = news ? sortNewsList : !order ? sortList : orderSortList;
 
   return (
     <Select

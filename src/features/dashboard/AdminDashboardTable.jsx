@@ -21,14 +21,10 @@ import {
 
 import ChakraBreadcrumb from "../../ui/ChakraBreadcrumb";
 import ChakraTable from "../table/ChakraTable";
-import TableDocRow from "../table/TableDocRow";
-import TableTypeRow from "../table/TableTypeRow";
 import TableUserRow from "../table/TableUserRow";
 import TableContactRow from "../table/TableContactRow";
 import AdminChart from "../chart/AdminChart";
 
-import { useGetFullTypeList } from "./useGetFullTypeList";
-import { useGetFullListDocs } from "./useGetFullListDocs";
 import { useGetFullUsers } from "./useGetFullUsers";
 import {
   ADMIN_LEVEL,
@@ -46,8 +42,6 @@ import { LiaSave } from "react-icons/lia";
 
 function AdminDashboardTable({ sub }) {
   const [query, setQuery] = useState("");
-  const { data, count, isFetching } = useGetFullListDocs(sub);
-  const { types, typesCount, isLoading } = useGetFullTypeList(sub);
   const { contacts, contactCount, isFetchingContact } = useGetContactLists(sub);
   const { users, usersCount, isUsering } = useGetFullUsers(query);
 
@@ -311,12 +305,11 @@ function AdminDashboardTable({ sub }) {
             data={contacts}
             captions={[
               "Tên",
-              "Số điện thoại",
+              "SĐT",
               "Email",
               "Tiêu đề",
               "Nội dung",
               "Ngày gửi",
-              "Người dùng",
             ]}
             count={contactCount}
             page="contact-page"
@@ -325,37 +318,6 @@ function AdminDashboardTable({ sub }) {
             viewOnly
             profile={false}
           />
-          <Flex
-            gap={3}
-            w="full"
-            flexDirection={{ base: "column", lg: "row" }}
-            maxH="55dvh"
-          >
-            <ChakraTable
-              isLoading={isLoading}
-              page="doc-page"
-              viewOnly
-              captions={["ID", "Tên", "Ngày tạo"]}
-              count={count}
-              data={data}
-              render={(item) => <TableDocRow data={item} key={item.doc_id} />}
-              title="Danh sách giấy tờ, tài liệu pháp lý"
-              profile={false}
-            />
-            <ChakraTable
-              viewOnly
-              isLoading={isFetching}
-              page="type-page"
-              captions={["Type ID", "Tên loại hình", "Ngày tạo"]}
-              count={typesCount}
-              data={types}
-              render={(item) => (
-                <TableTypeRow data={item} key={item.REType_ID} />
-              )}
-              title="Danh sách loại hình bất động sản"
-              profile={false}
-            />
-          </Flex>
         </>
       )}
     </Box>

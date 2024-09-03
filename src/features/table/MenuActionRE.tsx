@@ -37,7 +37,7 @@ function MenuActionRE({ userID, statusID, productID, slug, level }: Props) {
     <MenuList fontSize="medium">
       {level >= ADMIN_LEVEL && statusID !== OUT && (
         <ChakraMenuItemDialog
-          color="gray.400"
+          color="orange.500"
           action={`Đánh dấu ngừng nhập`}
           icon={<TbDownloadOff />}
           onAction={() => update({ statusID: OUT, productID })}
@@ -76,14 +76,14 @@ function MenuActionRE({ userID, statusID, productID, slug, level }: Props) {
         to={`/quan-ly-san-pham/${slug}`}
       >
         <TbEyeCheck fontSize="20" />
-        Xem {statusID !== OUT_STOCK ? "/ Sửa" : ""}
+        Xem / Sửa
       </MenuItem>
       {level >= ADMIN_LEVEL && (
         <ChakraMenuItemDialog
           color="red"
           action="Xóa"
           icon={<HiOutlineTrash />}
-          onAction={() => deletePost(productID, level, userID)}
+          onAction={() => deletePost({ productID })}
           warning
         />
       )}

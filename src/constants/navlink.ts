@@ -273,17 +273,6 @@ export const mobileNavLinks = {
   ],
 };
 
-export const prices = [
-  { label: "Tất cả khoảng giá", value: "0" },
-  { label: "Dưới 500 triệu", value: "500" },
-  { label: "500 - 1 tỷ", value: "500-1" },
-  { label: "1 - 5 tỷ", value: "1-5" },
-  { label: "5 - 10 tỷ", value: "5-10" },
-  { label: "10 - 30 tỷ", value: "10-30" },
-  { label: "30 - 60 tỷ", value: "30-60" },
-  { label: "Trên 60 tỷ", value: "60" },
-];
-
 // re
 export const sortList = [
   { label: "Sản phẩm mới thêm", value: "created_at-desc" },
@@ -311,4 +300,19 @@ export const sortNewsList = [
 export const filterNewsList = [
   { label: "Đã duyệt", value: "status-approved" },
   { label: "Chờ duyệt", value: "status-waiting" },
+];
+
+// order
+export const orderSortList = [
+  { label: "Đơn hàng mới", value: "created_at-desc" },
+  { label: "Tên người đặt (A-Z)", value: "name-asc" },
+  { label: "Tên người đặt (Z-A)", value: "name-desc" },
+  { label: "Giá giảm dần", value: "total-desc" },
+  { label: "Giá tăng dần", value: "total-asc" },
+];
+
+export const filterOrderList = [
+  { label: "Chờ xử lý", value: "status-waiting" },
+  { label: "Đã hoàn thành", value: "status-completed" },
+  { label: "Đã hủy", value: "status-cancel" },
 ];

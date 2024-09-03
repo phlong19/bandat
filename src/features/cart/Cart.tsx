@@ -64,7 +64,7 @@ export default function Cart() {
 
   if (error) {
     toast.error(errMessage.fetchError);
-    return navigate("/thuc-pham-chuc-nang");
+    return navigate("/danh-muc/thuc-pham-chuc-nang");
   }
 
   const mergedData = data.map((i) => ({
@@ -279,7 +279,7 @@ export default function Cart() {
             <Text fontSize={18}>Giỏ hàng của bạn hiện đang trống.</Text>
             <Button
               as={Link}
-              to="/thuc-pham-chuc-nang"
+              to="/danh-muc/thuc-pham-chuc-nang"
               colorScheme="green"
               leftIcon={<RiShoppingBasketFill size={17} />}
             >

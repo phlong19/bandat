@@ -10,7 +10,7 @@ import {
 } from "../constants/anyVariables";
 import { error as errorMessage } from "../constants/message";
 import { getStatusID, sanitizeSearchInput } from "../utils/helper";
-import { uploadMedia } from "./apiMedia";
+import { uploadMedia, deleteMedia } from "./apiMedia";
 
 //#region get
 /**
@@ -221,8 +221,38 @@ export async function createProduct(formData: any) {
  * @param formData
  */
 export async function updateProduct(formData: any) {
+  const { files: _, deleteMedias, newMedias, id, ...form } = formData;
 
-  return null;
+  const { data, error } = await supabase
+    .from(product)
+    .update(form)
+    .eq("id", id)
+    .select(`id`);
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantUpdate);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantFindToUpdate);
+  }
+
+  // handle new medias
+  newMedias.images.forEach(async (file: any) => await uploadMedia(file, id));
+  newMedias.videos.forEach(async (file: any) => await uploadMedia(file, id));
+
+  // handle delete old medias
+  if (deleteMedias.length > 0) {
+    deleteMedias.forEach(
+      async (file: any) =>
+        await deleteMedia(file).then(() =>
+          console.log("Delete media successfully"),
+        ),
+    );
+  }
+
+  return data;
 }
 
 // some quick actions
@@ -247,6 +277,29 @@ export async function updateStatus(params: {
   }
 
   return data;
+}
+
+/**
+ * @param productID productID
+ * @param userID current userID
+ */
+export async function deleteProduct({ productID }: { productID: number }) {
+  const { data, error } = await supabase
+    .from(product)
+    .delete()
+    .eq("id", productID)
+    .select();
+
+  if (error) {
+    console.log(error);
+    throw new Error(errorMessage.cantDelete);
+  }
+
+  if (data.length < 1) {
+    throw new Error(errorMessage.cantFindToDelete);
+  }
+
+  return null;
 }
 
 //#endregion

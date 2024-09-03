@@ -42,7 +42,6 @@ import { FaChalkboardUser, FaRegPaperPlane } from "react-icons/fa6";
 import validator from "validator";
 import { useForm } from "react-hook-form";
 import { createContact } from "../services/apiGeneral";
-import { useAuth } from "../context/UserContext";
 import { motion } from "framer-motion";
 import { TbTool } from "react-icons/tb";
 import { AiOutlineSafety } from "react-icons/ai";
@@ -87,9 +86,8 @@ const storyVar = {
 };
 
 function Home() {
-  const { data: profile, isLoading } = useAuth();
   const { onClose, onOpen, isOpen } = useDisclosure();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const { colorMode } = useColorMode();
 
   // gradient
@@ -121,7 +119,7 @@ function Home() {
   } = useForm();
 
   function onSubmit(data) {
-    mutate({ ...data, userID: profile?.id, email, phone: Number(data?.phone) });
+    mutate({ ...data, email, phone: Number(data?.phone) });
   }
 
   function handleOpen() {
@@ -138,7 +136,7 @@ function Home() {
   }
 
   useEffect(() => {
-    document.title = "LandHub - Website số 1 về mua bán, cho thuê bất động sản";
+    document.title = "Nhaf Thuoosc ACB";
   }, []);
 
   return (
@@ -382,7 +380,6 @@ function Home() {
                           Đóng
                         </Button>
                         <Button
-                          isDisabled={isLoading}
                           form="contact"
                           type="submit"
                           variant="outline"

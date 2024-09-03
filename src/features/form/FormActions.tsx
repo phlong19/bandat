@@ -34,7 +34,7 @@ function FormActions({ level, productID, userID, statusID }: Props) {
     <Flex gap={2} flexDirection="row-reverse">
       {level >= ADMIN_LEVEL && statusID !== OUT && (
         <ChakraFormDialog
-          color="gray.600"
+          color="orange.600"
           action="Ngừng nhập"
           onAction={() => update({ statusID: OUT, productID }, { onSettled })}
         />
@@ -73,9 +73,12 @@ function FormActions({ level, productID, userID, statusID }: Props) {
           color="red"
           action="Xóa sản phẩm"
           onAction={() =>
-            deletePost(productID, level, userID, {
-              onSettled,
-            })
+            deletePost(
+              { productID },
+              {
+                onSettled,
+              },
+            )
           }
           warning
         />

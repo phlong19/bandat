@@ -14,28 +14,6 @@ function UserDashboardTable({ id, level }: { id: string; level: number }) {
 
   return (
     <Flex flexDirection="column" gap={5}>
-      {/* {level != EDITOR_LEVEL && total > 0 && (
-        <SimpleGrid
-          columns={{ base: 1, lg: 2 }}
-          gap={2}
-          h={{ base: 1000, lg: 350 }}
-          minH={{ base: 1000, lg: 350 }}
-          maxH={{ base: 1000, lg: 350 }}
-          mb={{ lg: 14, xl: 8 }}
-        >
-         
-          <PostBarChart allData={data} isFetchingAllData={isFetching} />
-         
-          <TypePieChart
-            count={total}
-            data={data}
-            isLoading={isFetching}
-            refetch={refetch}
-          />
-        </SimpleGrid>
-      )} */}
-
-      {/* table */}
       <ChakraTable
         isLoading={isLoading}
         captions={reCaptions}

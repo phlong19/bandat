@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { updatePost } from "../../services/apiRE";
+import { updateProduct } from "../../services/apiProduct";
 import { success } from "../../constants/message";
 
 export function useUpdateRE() {
@@ -9,18 +9,20 @@ export function useUpdateRE() {
   const navigate = useNavigate();
 
   const { mutate: update, isPending: isUpdating } = useMutation({
-    mutationFn: (data) => updatePost(data),
+    mutationFn: (data) => updateProduct(data),
 
     onSuccess: () => {
       // set null for the just updated post
-      queryClient.removeQueries({ queryKey: ["RE-details"] });
+      queryClient.removeQueries({ queryKey: ["product-details"] });
       // must set exact
-      queryClient.invalidateQueries({ queryKey: ["REList"], exact: true });
+      queryClient.invalidateQueries({
+        queryKey: ["product-admin"],
+        exact: true,
+      });
       toast.success(success.updatePost);
-      navigate("/quan-ly-bai-viet");
+      navigate("/quan-ly-san-pham");
     },
     onError: (err) => {
-      console.log(err);
       toast.error(err.message);
     },
   });

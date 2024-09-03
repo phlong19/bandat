@@ -25,7 +25,7 @@ interface Props {
 function MobileActionItem({ to, title, onClose, icon, child }: Props) {
   const RootLink = () => (
     <NavLink
-      to={to}
+      to={!child ? to : `/danh-muc/${to}`}
       onClick={onClose}
       className={({ isActive }) =>
         isActive

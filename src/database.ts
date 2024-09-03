@@ -146,6 +146,7 @@ export type Database = {
           phone: number | null;
           total: number | null;
           wardID: number | null;
+          status: number;
         };
         Insert: {
           address?: string | null;
@@ -160,6 +161,7 @@ export type Database = {
           phone?: string | null;
           total?: number | null;
           wardID?: number | null;
+          status: number;
         };
         Update: {
           address?: string | null;
@@ -174,6 +176,7 @@ export type Database = {
           phone?: number | null;
           total?: number | null;
           wardID?: number | null;
+          status: number;
         };
         Relationships: [
           {

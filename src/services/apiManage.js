@@ -180,44 +180,6 @@ export async function getFullNewsList(userID, sort, filter, textQuery, page) {
   return { data, count };
 }
 
-// docs
-export async function getFullDocsList(page) {
-  const start = (page - 1) * LIMIT_PER_PAGE;
-  const end = start + LIMIT_PER_PAGE - 1;
-
-  const { data, count, error } = await supabase
-    .from("LegalDoc")
-    .select(`*`, { count: "exact" })
-    .limit(LIMIT_PER_PAGE)
-    .range(start, end);
-
-  if (error) {
-    console.log(error);
-    throw new Error(errorMessage.fetchError);
-  }
-
-  return { data, count };
-}
-
-// re type
-export async function getFullTypeList(page) {
-  const start = (page - 1) * LIMIT_PER_PAGE;
-  const end = start + LIMIT_PER_PAGE - 1;
-
-  const { data, count, error } = await supabase
-    .from("REType")
-    .select(`REType_ID, created_at, name`, { count: "exact" })
-    .limit(LIMIT_PER_PAGE)
-    .range(start, end);
-
-  if (error) {
-    console.log(error);
-    throw new Error(errorMessage.fetchError);
-  }
-
-  return { data, count };
-}
-
 // get profiles
 export async function getFullUserList(textQuery, option, page) {
   const start = (page - 1) * LIMIT_PER_PAGE;
@@ -299,7 +261,7 @@ export async function getContactLists(page) {
 
   let query = supabase
     .from("Contact")
-    .select(`*, profile: Profile(*)`, { count: "exact" })
+    .select(`*`, { count: "exact" })
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
 

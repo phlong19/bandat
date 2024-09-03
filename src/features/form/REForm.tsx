@@ -166,9 +166,9 @@ function REForm({ level, userID, edit = false, editData }: Props) {
     if (!edit) {
       create(formedData);
     } else {
-      return console.log(formedData);
       update({
         ...formedData,
+        id: editData?.id,
         // medias
         deleteMedias: deleteMediasRef.current,
         newMedias: {
