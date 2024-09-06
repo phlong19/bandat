@@ -1,17 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  SimpleGrid,
-  Spinner,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from "@chakra-ui/react";
+import { Box, Button, Center, SimpleGrid, Spinner } from "@chakra-ui/react";
 
 import ChakraBreadcrumb from "../ui/ChakraBreadcrumb";
 import ChakraTable from "../features/table/ChakraTable";
@@ -20,11 +7,16 @@ import { useAuth } from "../context/UserContext";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import TableOrderRow from "../features/table/TableOrderRow";
+import { Helmet } from "react-helmet-async";
+import { useGetOrderDetails } from "../hooks/useGetOrderDetails";
+import OrderDetailsModal from "../ui/OrderDetailsModal";
+import PostBarChart from "../features/chart/PostBarChart";
+import useGetComposedOrderData from "../hooks/useGetComposedOrderData";
 
 const captions = [
+  "Mã",
   "Người đặt",
   "SĐT",
-  "Địa chỉ",
   "Giá trị đơn",
   "Trạng thái",
   "Ngày tạo",
@@ -36,6 +28,13 @@ function Order() {
   const [selectedID, setSelectedID] = useState<number | null>(null);
 
   const { data, count, isFetching } = useGetFullOrderList(profile?.id, query);
+  const { details, isQuerying } = useGetOrderDetails(Number(selectedID));
+  const {
+    allData,
+    isLoadingAllData,
+    refetch,
+    count: total,
+  } = useGetComposedOrderData();
 
   function onClose() {
     setSelectedID(null);
@@ -51,26 +50,17 @@ function Order() {
 
   return (
     <Box gap={4} display="flex" flexDirection="column">
+      <Helmet>
+        <title>Quản lý đơn hàng</title>
+      </Helmet>
       <ChakraBreadcrumb page="Quản lý đơn hàng" />
 
-      {/* <SimpleGrid
-          columns={{ base: 1, lg: 2 }}
-          gap={2}
-          h={{ base: 1000, lg: 350 }}
-          minH={{ base: 1000, lg: 350 }}
-          maxH={{ base: 1000, lg: 350 }}
-          mb={{ lg: 14, xl: 8 }}
-        >
-         
-          <PostBarChart allData={data} isFetchingAllData={isFetching} />
-         
-          <TypePieChart
-            count={total}
-            data={data}
-            isLoading={isFetching}
-            refetch={refetch}
-          />
-        </SimpleGrid> */}
+      <PostBarChart
+        allData={allData as any}
+        refetch={refetch}
+        count={total}
+        isFetching={isLoadingAllData}
+      />
 
       <ChakraTable
         isLoading={isFetching}
@@ -79,10 +69,10 @@ function Order() {
         title="Quản lý danh sách đơn hàng"
         render={(item: any) => (
           <TableOrderRow
+            setSelectedID={setSelectedID}
             key={item.id}
             data={item}
             level={level}
-            userID={profile.id}
           />
         )}
         primaryButton={
@@ -97,28 +87,12 @@ function Order() {
         order
       />
 
-      <Modal isOpen={Boolean(selectedID)} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>hi</ModalBody>
-
-          <ModalFooter justifyContent="space-between">
-            <Button
-              colorScheme="red"
-              variant="outline"
-              mr={3}
-              onClick={onClose}
-            >
-              Close
-            </Button>
-            <Button colorScheme="green" variant="outline">
-              Secondary Action
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <OrderDetailsModal
+        isQuerying={isQuerying}
+        onClose={onClose}
+        selectedID={selectedID}
+        details={details as any}
+      />
     </Box>
   );
 }

@@ -22,14 +22,13 @@ import { useDeletePost } from "./useDeletePost";
 import { useUpdateProductStatus } from "./useUpdateProductStatus";
 
 interface Props {
-  userID: string;
   statusID: number;
   productID: number;
   slug: string;
   level: number;
 }
 
-function MenuActionRE({ userID, statusID, productID, slug, level }: Props) {
+function MenuActionRE({ statusID, productID, slug, level }: Props) {
   const { update } = useUpdateProductStatus();
   const { deletePost } = useDeletePost();
 

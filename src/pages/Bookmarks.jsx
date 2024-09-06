@@ -16,6 +16,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getCookie } from "../utils/reuse";
 import List from "../features/list/List";
 import { getBookmarkProducts } from "../services/apiProduct";
+import { Helmet } from "react-helmet-async";
 
 function Bookmarks() {
   const bg = useColorModeValue("white", "darker");
@@ -62,6 +63,9 @@ function Bookmarks() {
 
   return (
     <Box maxW="1500px" mx="auto">
+      <Helmet>
+        <title>Danh sách sản phẩm yêu thích</title>
+      </Helmet>
       <>
         <BreadCrumb base="Sản phẩm yêu thích" />
         <Flex

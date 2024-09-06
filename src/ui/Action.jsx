@@ -3,7 +3,7 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { FaRegNewspaper } from "react-icons/fa";
 import { LiaBibleSolid } from "react-icons/lia";
 import { RiListSettingsLine } from "react-icons/ri";
-import { BsDoorOpen } from "react-icons/bs";
+import { BsBoxes, BsDoorOpen } from "react-icons/bs";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 
 import ToggleTheme from "./ToggleTheme";
@@ -18,6 +18,7 @@ import BookmarkPopover from "./BookmarkPopover";
 import { TbBinaryTree, TbShoppingCart } from "react-icons/tb";
 import { Button as ChakraButton } from "@chakra-ui/react";
 import { useAppSelector } from "../hooks/redux";
+import { MdOutlineAccountTree } from "react-icons/md";
 
 function Action({ onClose }) {
   const { data, isAuthenticated, level, isLoading } = useAuth();
@@ -78,6 +79,20 @@ function Action({ onClose }) {
                       <RiListSettingsLine />
                     </span>
                     Quản lý sản phẩm
+                  </NavLink>
+
+                  <NavLink to="/quan-ly-don-hang" className="user-item">
+                    <span className="text-xl">
+                      <BsBoxes />
+                    </span>
+                    Quản lý đơn hàng
+                  </NavLink>
+
+                  <NavLink to="/quan-ly-danh-muc" className="user-item">
+                    <span className="text-xl">
+                      <MdOutlineAccountTree />
+                    </span>
+                    Quản lý danh mục
                   </NavLink>
                 </>
               )}

@@ -515,32 +515,29 @@ function REForm({ level, userID, edit = false, editData }: Props) {
             </FormControl>
           </Flex>
 
-          {editData?.status.id !== OUT_STOCK && (
-            <Flex
-              w="100%"
-              justify={edit ? "space-between" : "end"}
-              align="center"
+          <Flex
+            w="100%"
+            justify={edit ? "space-between" : "end"}
+            align="center"
+          >
+            {edit && (
+              <FormActions
+                productID={editData!.id}
+                statusID={editData!.status.id}
+                level={level}
+              />
+            )}
+            <Button
+              isLoading={isCreating || isUpdating}
+              loadingText={!edit ? reform.creating : reform.saving}
+              borderWidth={2}
+              colorScheme="green"
+              variant="outline"
+              type="submit"
             >
-              {edit && (
-                <FormActions
-                  productID={editData!.id}
-                  statusID={editData!.status.id}
-                  userID={userID}
-                  level={level}
-                />
-              )}
-              <Button
-                isLoading={isCreating || isUpdating}
-                loadingText={!edit ? reform.creating : reform.saving}
-                borderWidth={2}
-                colorScheme="green"
-                variant="outline"
-                type="submit"
-              >
-                {!edit ? reform.create : reform.save}
-              </Button>
-            </Flex>
-          )}
+              {!edit ? reform.create : reform.save}
+            </Button>
+          </Flex>
         </VStack>
       </form>
     </>

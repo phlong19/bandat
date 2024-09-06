@@ -1,3 +1,5 @@
+import { Json } from "./database";
+
 export interface ListProps {
   data?:
     | {
@@ -40,4 +42,32 @@ export interface Category {
 export interface Product {
   id: number;
   quantity?: number;
+}
+
+export interface OrderData {
+  id: number;
+  name: string;
+  phone: string;
+  status: {
+    id: number;
+    created_at: string;
+    type: string;
+  };
+  total: number;
+  details: Json;
+  created_at: string;
+
+  city: {
+    cityName: string;
+  };
+  dis: {
+    disName: string;
+  };
+  ward: {
+    wardName: string;
+  };
+  address: string;
+
+  email: string | null;
+  note: string | null;
 }

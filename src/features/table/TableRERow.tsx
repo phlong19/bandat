@@ -112,7 +112,7 @@ function TableRERow({ data, level, userID }: Props) {
           {statusID === OUT ? "Ngừng nhập" : type}
         </Badge>
       </Td>
-      <Td pr='2px'>
+      <Td>
         <Text pb=".5rem">{formatDate(created_at)}</Text>
       </Td>
 
@@ -125,7 +125,6 @@ function TableRERow({ data, level, userID }: Props) {
             productID={id}
             slug={slug}
             statusID={statusID}
-            userID={userID}
             level={level}
           />
         </Menu>

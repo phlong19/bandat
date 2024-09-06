@@ -1,10 +1,9 @@
-import supabase, { order } from "./supabase";
+import supabase, { order, profile } from "./supabase";
 import { error as errorMessage } from "../constants/message";
-import { ADMIN_LEVEL } from "../constants/anyVariables";
 
 export async function getProfileData() {
   const { data, count, error } = await supabase
-    .from("Profile")
+    .from(profile)
     .select(`id, created_at`, { count: "exact" });
 
   if (error) {
@@ -15,14 +14,12 @@ export async function getProfileData() {
   return { data, count };
 }
 
-export async function getProductData(userID, level) {
-  let query = supabase.from(order).select(`*`, { count: "exact" });
+export async function getComposedOrderData() {
+  let query = supabase
+    .from(order)
+    .select(`id, created_at, total, status(*)`, { count: "exact" });
 
-  if (level < ADMIN_LEVEL) {
-    query = query.eq("userID", userID);
-  }
-
-  const { data, count, error } = await query.order("created_at", {
+  const { data, error, count } = await query.order("created_at", {
     ascending: true,
   });
 

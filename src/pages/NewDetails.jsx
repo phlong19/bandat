@@ -20,7 +20,6 @@ import { formatDate, getTime } from "../utils/helper";
 import Avatar from "../ui/Avatar";
 import { formatDistanceToNow } from "date-fns";
 import GoBackButton from "../ui/GoBackButton";
-import { useEffect } from "react";
 import {
   FacebookIcon,
   FacebookMessengerShareButton,
@@ -31,6 +30,7 @@ import {
 import { success } from "../constants/message";
 import toast from "react-hot-toast";
 import { BsLink45Deg } from "react-icons/bs";
+import { Helmet } from "react-helmet-async";
 
 function NewDetails() {
   const { title } = useParams();
@@ -40,13 +40,6 @@ function NewDetails() {
     queryFn: () => getNew(title),
     enabled: Boolean(title),
   });
-
-  // change page title
-  useEffect(() => {
-    if (data) {
-      document.title = data.title;
-    }
-  }, [data]);
 
   if (isLoading) {
     return (
@@ -78,6 +71,9 @@ function NewDetails() {
   return (
     <div className="mx-auto max-w-[1500px] bg-white pb-8 dark:bg-darker lg:rounded-lg lg:pb-6">
       <BreadCrumb Hline={Hline} />
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
 
       <div className="mt-5">
         <Flex my={2} ml={{ base: 2, lg: 4, xl: 5 }}>

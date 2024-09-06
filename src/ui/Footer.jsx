@@ -17,6 +17,9 @@ import {
   x,
   zalo,
   tiktok,
+  email,
+  hotline,
+  phone,
 } from "../constants/anyVariables";
 
 function Footer() {
@@ -43,16 +46,16 @@ function Footer() {
             <span className="hidden px-3 text-xl text-primary dark:text-secondary lg:block">
               <FiPhoneCall />
             </span>
-            (024) 3562 5939 - <br className="lg:hidden" />
-            (024) 3562 5940
+            {phone} - <br className="lg:hidden" />
+            {hotline}
           </h3>
 
           <h3 className="pt-3 font-semibold text-primary dark:text-secondary lg:hidden">
-            hotro@landhub.com
+            {email}
           </h3>
           <span className="flex justify-center pt-4 lg:hidden">
-            <Button to="tel:19009069" icon={<FiPhoneCall />}>
-              1900 9069
+            <Button to={`tel:${hotline}`} icon={<FiPhoneCall />}>
+              {hotline}
             </Button>
           </span>
 
@@ -96,13 +99,13 @@ function Footer() {
         {/* info */}
         <div className="relative z-50 mt-6 w-full pb-3 text-left">
           <p className="lg:hidden">
-            Copyright © 2023 - {currentYear} LandHub.com.vn.
+            Copyright © 2023 - {currentYear} tenwebsite.com
           </p>
           {/* mobile hidden */}
           <div className="mt-3 hidden w-full font-roboto lg:flex lg:justify-around lg:gap-2">
             <div className="h-36 w-1/3 max-w-[200px]">
               <a
-                href="tel:19009069"
+                href={`tel:${hotline}`}
                 className="ml-1 flex h-full items-center justify-start gap-3 xl:justify-center"
               >
                 <span className="text-4xl">
@@ -111,7 +114,7 @@ function Footer() {
                 <div>
                   <p className="font-normal">Hotline:</p>
                   <p className="text-sm font-semibold xl:text-base">
-                    1900 9069
+                    {hotline}
                   </p>
                 </div>
               </a>
@@ -134,7 +137,7 @@ function Footer() {
             </div>
             <div className="h-36 w-1/3 max-w-[200px] lg:ml-3 xl:mr-0">
               <a
-                href="mailto:hotro@landhub.com.vn"
+                href={`mailto:${email}`}
                 className="flex h-full items-center justify-center gap-3"
               >
                 <span className="text-4xl">
@@ -142,9 +145,7 @@ function Footer() {
                 </span>
                 <div>
                   <p className="font-normal">Chăm sóc khách hàng:</p>
-                  <p className="text-sm font-semibold xl:text-base">
-                    hotro@landhub.com.vn
-                  </p>
+                  <p className="text-sm font-semibold xl:text-base">{email}</p>
                 </div>
               </a>
             </div>

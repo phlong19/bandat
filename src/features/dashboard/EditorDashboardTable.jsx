@@ -9,6 +9,7 @@ import ChakraBreadcrumb from "../../ui/ChakraBreadcrumb";
 import { newsCaptions } from "../../constants/anyVariables";
 import { useGetSingleNews } from "./useGetSingleNews";
 import { useGetFullNewsList } from "./useGetFullNewsList";
+import { Helmet } from "react-helmet-async";
 
 function EditorDashboardTable({ id }) {
   const [slug, setSlug] = useState("");
@@ -21,6 +22,9 @@ function EditorDashboardTable({ id }) {
 
   return (
     <Box gap={4} display="flex" flexDirection="column">
+      <Helmet>
+        <title>Quản lý tin tức</title>
+      </Helmet>
       <ChakraBreadcrumb page="Quản lý tin tức" />
       <ChakraTable
         isLoading={isFetching}

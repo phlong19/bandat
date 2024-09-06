@@ -65,13 +65,13 @@ function MobileActionItem({ to, title, onClose, icon, child }: Props) {
                           onClick={onClose}
                           to={`/danh-muc/${to}/${child.type}`}
                           className={({ isActive }) =>
-                            isActive ? "!text-primary dark:text-secondary" : ""
+                            `${isActive && "!text-primary dark:text-secondary"} transition-colors duration-200 hover:text-primary dark:hover:text-secondary`
                           }
                         >
                           {child.title}
                         </NavLink>
                       </Box>
-                      <AccordionIcon />
+                      {child.child.length > 0 && <AccordionIcon />}
                     </AccordionButton>
                   </h2>
 
@@ -82,13 +82,13 @@ function MobileActionItem({ to, title, onClose, icon, child }: Props) {
                     gap={1}
                     fontSize="md"
                   >
-                    {child.child.map((link) => (
+                    {child?.child?.map((link) => (
                       <NavLink
                         onClick={onClose}
                         className={({ isActive }) =>
                           `${
                             isActive && "text-primary dark:text-secondary"
-                          } flex items-center gap-1 pl-3.5`
+                          } flex items-center gap-1 pl-3.5 transition-colors duration-200 hover:text-primary dark:hover:text-secondary`
                         }
                         key={link.type}
                         to={`/danh-muc/${to}/${child.type}/${link.type}`}
@@ -106,9 +106,10 @@ function MobileActionItem({ to, title, onClose, icon, child }: Props) {
                 to={`${to}/${child.type}`}
                 key={index}
                 className={({ isActive }) =>
-                  isActive ? "pb-1 !text-primary dark:text-secondary" : " pb-1"
+                  `${isActive && "!text-primary dark:text-secondary"} transition-colors duration-200 hover:text-primary dark:hover:text-secondary`
                 }
               >
+                <IoChevronForward />
                 {child.title}
               </NavLink>
             );

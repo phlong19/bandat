@@ -71,6 +71,7 @@ function ChakraTable({
                 setQuery={setQuery}
                 viewOnly={viewOnly}
                 profile={profile}
+                order={order}
               />
             )}
             {!viewOnly && (

@@ -17,7 +17,6 @@ export function useUpdateRE() {
       // must set exact
       queryClient.invalidateQueries({
         queryKey: ["product-admin"],
-        exact: true,
       });
       toast.success(success.updatePost);
       navigate("/quan-ly-san-pham");

@@ -22,6 +22,7 @@ export interface FormData {
   wardID: number;
   details: Json;
   total: number;
+  status: number;
 }
 
 /**
@@ -41,9 +42,6 @@ export async function createOrder(formData: FormData) {
 
   return data;
 }
-
-// TODO: add a thank you page after checkout
-// test the purchase flow
 
 //#region manage section
 
@@ -88,7 +86,9 @@ export async function getFullOrderList({
 
   let query = supabase
     .from(order)
-    .select(`*, city: CityDirectory(*)`, { count: "exact" })
+    .select(`id, name, phone, email, created_at, total, status(*)`, {
+      count: "exact",
+    })
     .limit(LIMIT_PER_PAGE)
     .range(start, end);
 
@@ -109,7 +109,9 @@ export async function getFullOrderList({
 
   // text query
   if (textQuery !== "" && textQuery?.length > 2) {
-    query = query.textSearch("name", sanitizeSearchInput(textQuery));
+    query = query.textSearch("name", sanitizeSearchInput(textQuery), {
+      type: "websearch",
+    });
   }
 
   const { data, count, error } = await query;
@@ -120,6 +122,28 @@ export async function getFullOrderList({
   }
 
   return { data, count };
+}
+
+/**
+ * get order details at manage page for modal
+ * @param orderID number
+ */
+export async function getOrderDetails(orderID: number) {
+  const { data, error } = await supabase
+    .from(order)
+    .select(
+      `*, city: CityDirectory(cityName), dis: DistrictDirectory(disName), ward: WardDirectory(wardName), status(*)`,
+    )
+    .eq("id", orderID)
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(errMessage.fetchError);
+  }
+
+  retun;
 }
 
 // quick actions: update status and delete
@@ -163,7 +187,7 @@ export async function deleteOrder({ orderID }: { orderID: number }) {
     throw new Error(errMessage.cantFindToDelete);
   }
 
-  return null;
+  return data;
 }
 
 //#endregion

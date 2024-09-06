@@ -230,20 +230,26 @@ export const mobileNavLinks = {
     {
       title: "Thêm sản phẩm",
       access: ADMIN_LEVEL,
-      icon: "Pills",
+      icon: "FileCirclePlus",
       type: "/them-san-pham",
     },
     {
       title: "Quản lý sản phẩm",
       access: ADMIN_LEVEL,
-      icon: "Wpforms",
+      icon: "Pills",
       type: "/quan-ly-san-pham",
     },
     {
       title: "Quản lý đơn hàng",
       access: ADMIN_LEVEL,
-      icon: "ListCheck",
+      icon: "BoxesStacked",
       type: "/quan-ly-don-hang",
+    },
+    {
+      title: "Quản lý danh mục",
+      access: ADMIN_LEVEL,
+      icon: "FolderTree",
+      type: "/quan-ly-danh-muc",
     },
 
     {

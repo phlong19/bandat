@@ -41,7 +41,7 @@ export async function getList(type: string, sort: string, page: number) {
   let query = supabase
     .from(product)
     .select(
-      `*,
+      `id, name, slug, price, specification, summary,
         images: product_image(*),
         status(*)  
     `,
@@ -79,7 +79,7 @@ export async function getCartProducts(ids: number[]) {
   const { data, error } = await supabase
     .from(product)
     .select(
-      `*,  
+      `id, name, specification, brand, manufacturer, summary, price,  
         images: product_image(*), 
         status(*)
       `,
@@ -103,7 +103,7 @@ export async function getBookmarkProducts(ids: string[], page?: number) {
   let query = supabase
     .from(product)
     .select(
-      `*,  
+      `id, name, specification, brand, manufacturer, summary, price,  
         images: product_image(*), 
         status(*)
       `,
@@ -339,7 +339,7 @@ export async function getFullProductList(
   let query = supabase
     .from(product)
     .select(
-      `*,
+      `id, created_at, slug, name, specification, brand, manufacturer, summary, price,
         images: product_image(*),
         status(*)
       `,

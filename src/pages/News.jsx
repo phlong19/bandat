@@ -13,7 +13,7 @@ import ChakraTablePagination from "../ui/ChakraTablePagination";
 
 import { getNewsList, getPopularList } from "../services/apiNews";
 import { formatDate } from "../utils/helper";
-import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 function News() {
   const summaryColor = useColorModeValue("gray.700", "gray.300");
@@ -35,12 +35,11 @@ function News() {
     staleTime: Infinity,
   });
 
-  useEffect(() => {
-    document.title = "Thông tin bất động sản Việt Nam cập nhật mới nhất";
-  }, []);
-
   return (
     <div className="mx-auto max-w-[1500px] bg-white pb-8 dark:bg-darker lg:rounded-lg lg:pb-6">
+      <Helmet>
+        <title>Thông tin sức khỏe - Sản phẩm sức khỏe</title>
+      </Helmet>
       <BreadCrumb />
       <div className="max-w-full bg-white dark:bg-darker">
         <div className="mx-auto flex max-w-[800px] flex-col items-center py-10 text-center">

@@ -39,6 +39,7 @@ import { getUsers, updateUserRole } from "../../services/apiManage";
 import toast from "react-hot-toast";
 import { getStatusBadgeProfile } from "../../utils/helper";
 import { LiaSave } from "react-icons/lia";
+import { Helmet } from "react-helmet-async";
 
 function AdminDashboardTable({ sub }) {
   const [query, setQuery] = useState("");
@@ -110,6 +111,9 @@ function AdminDashboardTable({ sub }) {
 
   return (
     <Box gap={4} display="flex" flexDirection="column">
+      <Helmet>
+        <title>Quản lý tổng hợp</title>
+      </Helmet>
       <ChakraBreadcrumb page="Admin" />
 
       {/* chart */}

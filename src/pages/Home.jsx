@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   Box,
@@ -45,6 +45,7 @@ import { createContact } from "../services/apiGeneral";
 import { motion } from "framer-motion";
 import { TbTool } from "react-icons/tb";
 import { AiOutlineSafety } from "react-icons/ai";
+import { Helmet } from "react-helmet-async";
 
 const variants = {
   offscreen: {
@@ -135,12 +136,11 @@ function Home() {
     onClose();
   }
 
-  useEffect(() => {
-    document.title = "Nhaf Thuoosc ACB";
-  }, []);
-
   return (
     <Box py={5}>
+      <Helmet>
+        <title>Nhà thuốc ABC</title>
+      </Helmet>
       <VideoBackgroundWithSearch />
       <Box mx="auto" maxW="1500px">
         {/* stats */}

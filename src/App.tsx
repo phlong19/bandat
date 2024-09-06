@@ -18,6 +18,9 @@ import EditorDashboard from "./pages/EditorDashboard";
 import AccountManagement from "./pages/AccountManagement";
 import Cart from "./pages/Cart";
 import Details from "./pages/Details";
+import Order from "./pages/Order";
+import OrderSuccess from "./pages/OrderSuccess";
+import Categories from "./pages/Categories";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -45,7 +48,6 @@ import {
   ADMIN_LEVEL,
   USER_LEVEL,
 } from "./constants/anyVariables";
-import Order from "./pages/Order";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -68,7 +70,6 @@ function App() {
                 <Route element={<AppLayout />}>
                   <Route index element={<Home />} />
 
-                  {/* TODO: fix paths */}
                   <Route
                     path="danh-muc/:root/:parent?/:child?"
                     element={<ListingPage />}
@@ -85,6 +86,12 @@ function App() {
 
                 {/* no layout with these path */}
                 <Route element={<AuthenticationLayout />}>
+                  {/* no layout neeeded */}
+                  <Route
+                    path="dat-hang-thanh-cong"
+                    element={<OrderSuccess />}
+                  />
+
                   <Route path="dang-nhap" element={<Login />} />
                   <Route path="dang-ky" element={<Register />} />
                   <Route path="quen-mat-khau" element={<LoginMagicLink />} />
@@ -156,6 +163,16 @@ function App() {
                     element={
                       <ProtectedRoute accessLevel={ADMIN_LEVEL}>
                         <Order />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* categories */}
+                  <Route
+                    path="quan-ly-danh-muc"
+                    element={
+                      <ProtectedRoute accessLevel={ADMIN_LEVEL}>
+                        <Categories />
                       </ProtectedRoute>
                     }
                   />

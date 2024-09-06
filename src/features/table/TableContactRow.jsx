@@ -1,6 +1,6 @@
 import { Tr, Td, Text } from "@chakra-ui/react";
 
-import { formatDate } from "../../utils/helper";
+import { format } from "date-fns";
 
 function TableContactRow({ data }) {
   const { created_at, name, email, phone, title, content } = data;
@@ -25,7 +25,7 @@ function TableContactRow({ data }) {
         <Text noOfLines={2}>{content}</Text>
       </Td>
       <Td>
-        <Text pb=".5rem">{formatDate(created_at)}</Text>
+        <Text pb=".5rem">{format(new Date(created_at), 'HH:mm dd/MM/yyyy')}</Text>
       </Td>
     </Tr>
   );

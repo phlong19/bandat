@@ -21,6 +21,7 @@ export default {
         alegreya: ["Alegreya", "serif"],
         cascadia: ["Cascadia Code", "sans-serif"],
         raleway: ["Raleway", "sans-serif"],
+        dancing: ["Dancing Script", "cursive"],
       },
       minWidth: {
         30: "120px",

@@ -4,11 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import parse from "html-react-parser";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { useMediaQuery } from "react-responsive";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 
 // libs ui and ui
 import {
@@ -58,6 +56,7 @@ import { getRelatedPosts } from "../services/apiRE";
 import { formatCurrency } from "../utils/helper";
 import { error } from "../constants/message";
 import { getProduct } from "../services/apiProduct";
+import { Helmet } from "react-helmet-async";
 
 function Details() {
   const accent = useColorModeValue("primary", "secondary");
@@ -82,13 +81,6 @@ function Details() {
     queryFn: () => getProduct(slug!),
     enabled: Boolean(slug),
   });
-
-  // change page title
-  useEffect(() => {
-    if (product) {
-      document.title = "LandHub - " + product.name;
-    }
-  }, []);
 
   // api get related post on address
   const { data: relatedPosts, isLoading: isQuerying } = useQuery({
@@ -175,6 +167,9 @@ function Details() {
 
   return (
     <Box maxW="1500px" mx="auto" p={3} px={{ base: 2, md: 4, xl: 5 }}>
+      <Helmet>
+        <title>Chi tiết thông tin sản phẩm {name}</title>
+      </Helmet>
       <Flex justify="space-between" align="center" pb={2}>
         <GoBackButton />
         <Flex gap={2}>

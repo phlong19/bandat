@@ -77,7 +77,7 @@ function LoginForm() {
           >
             <Stack spacing={4} w="full">
               <FormInput
-                label="Email / SĐT"
+                label="Email"
                 errors={errors}
                 hookForm={{
                   ...register("emailOrPhone", {

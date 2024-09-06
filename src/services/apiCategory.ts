@@ -45,3 +45,67 @@ export async function getAllCategories() {
 
   return { categoryTree, count, data };
 }
+
+interface FormData {
+  form: {
+    id: number;
+    name: string;
+    parent?: number | null;
+    slug: string;
+  };
+  isEdit: boolean;
+}
+
+/**
+ *
+ * @param formData
+ */
+export async function updateCategory(formData: FormData) {
+  const {
+    form: { id, name, slug, parent },
+    isEdit,
+  } = formData;
+
+  let query = supabase.from(category);
+
+  if (isEdit) {
+    query = query.update({ name, slug, parent }).eq("id", id);
+  } else {
+    query = query.insert([{ name, slug, parent }]);
+  }
+
+  const { data, error } = await query.select();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Không thể cập nhật danh mục, thử lại sau");
+  }
+
+  if (data.length < 1) {
+    throw new Error(errMessage.cantFindToUpdate);
+  }
+
+  return data;
+}
+
+/**
+ * delete category by id
+ */
+export async function deleteCategory(id: number) {
+  const { data, error } = await supabase
+    .from(category)
+    .delete()
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Không thể xóa danh mục, thử lại sau");
+  }
+
+  if (data.length < 1) {
+    throw new Error(errMessage.cantFindToDelete);
+  }
+
+  return data;
+}

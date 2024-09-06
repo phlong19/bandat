@@ -10,7 +10,8 @@ function ManageLayout() {
       <Box
         flex={1}
         minH="100dvh"
-        overflowY="scroll"
+        overflowY="auto"
+        overflowX='hidden'
         scrollBehavior="smooth"
         px={{ base: 2, md: "6" }}
         py="30"

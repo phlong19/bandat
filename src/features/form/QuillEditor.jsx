@@ -32,6 +32,7 @@ Font.whitelist = [
   "Montserrat",
   "Playfair",
   "Oswald",
+  "Dancing",
   "Inter",
   "Open",
   "Alegreya",

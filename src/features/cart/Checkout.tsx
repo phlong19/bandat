@@ -22,19 +22,18 @@ import ChakraAlert from "../../ui/ChakraAlert";
 
 import { useForm } from "react-hook-form";
 import { LuChevronsLeft } from "react-icons/lu";
-import { TbList, TbUserSquareRounded } from "react-icons/tb";
+import { TbList, TbMapPin, TbUserSquareRounded } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/redux";
 import { getCartProducts } from "../../services/apiProduct";
 import toast from "react-hot-toast";
 import { formatCurrencyWOText } from "../../utils/helper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddressSelect from "../searchbar/AddressSelect";
 import { useCreateOrder } from "./useCreateOrder";
+import { WAITING } from "../../constants/anyVariables";
 
 const requiredMessage = "Không bỏ trống trường này";
-
-
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -55,7 +54,7 @@ export default function Checkout() {
     formState: { errors },
   } = useForm();
 
-  const {mutate,isPending} = useCreateOrder()
+  const { mutate, isPending } = useCreateOrder();
 
   const {
     data = [],
@@ -66,12 +65,6 @@ export default function Checkout() {
     queryFn: () => getCartProducts(ids),
     enabled: ids.length > 0,
   });
-
-  useEffect(() => {
-    if (!count || data.length < 1) {
-      navigate("/gio-hang", { state: { stage: 1 } });
-    }
-  }, [count, data.length]);
 
   if (error) {
     toast.error("Đã xảy ra lỗi, quay về giỏ hàng");
@@ -88,10 +81,27 @@ export default function Checkout() {
     0,
   );
 
-  function onSubmit(data:any) {
-      if(!cityID || !disID || !wardID){
-        toast.error
-      }
+  function onSubmit(data: any) {
+    if (!cityID || !disID || !wardID) {
+      return toast.error("Vui lòng cung cấp đầy đủ địa chỉ giao hàng.");
+    }
+
+    const formedData = {
+      ...data,
+      total,
+      details: JSON.stringify(
+        mergedData.map((i) => ({
+          ...i,
+          images: i.images.filter((img) => img.isImage === true).slice(0, 1),
+        })),
+      ),
+      cityID,
+      disID,
+      wardID,
+      status: WAITING,
+    };
+
+    mutate(formedData);
   }
 
   return (
@@ -131,7 +141,7 @@ export default function Checkout() {
               fontSize={21}
               className="flex items-center gap-1 pb-3.5 !font-roboto"
             >
-              <TbList />
+              <TbList className="text-primary" />
               Danh sách sản phẩm
             </Heading>
 
@@ -177,11 +187,12 @@ export default function Checkout() {
               fontSize={21}
               className="flex items-center gap-1 py-3.5 !font-roboto"
             >
-              <TbUserSquareRounded /> Thông tin người đặt
+              <TbUserSquareRounded className="text-primary" /> Thông tin người
+              đặt
             </Heading>
             <SimpleGrid
               mb={3}
-              columns={2}
+              columns={{ base: 1, sm: 2 }}
               spacing={{ base: 2.5, md: 5, xl: 8 }}
             >
               <FormControl isRequired isInvalid={Boolean(errors.name)}>
@@ -230,11 +241,13 @@ export default function Checkout() {
             </SimpleGrid>
 
             <FormControl>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>
+                Email <span className="text-[13px]">(Không bắt buộc)</span>
+              </FormLabel>
               <Input
                 type="email"
                 {...register("email")}
-                placeholder="Không bắt buộc"
+                placeholder="Địa chỉ Email"
               />
               {errors.email && (
                 <FormErrorMessage>
@@ -247,7 +260,7 @@ export default function Checkout() {
                 fontSize={21}
                 className="flex items-center gap-1 pb-3.5 !font-roboto"
               >
-                <TbUserSquareRounded /> Địa chỉ nhận hàng
+                <TbMapPin className="text-primary" /> Địa chỉ nhận hàng
               </Heading>
 
               <AddressSelect
@@ -340,6 +353,7 @@ export default function Checkout() {
                 colorScheme="green"
                 type="submit"
                 form="order"
+                isLoading={isPending || isLoading}
               >
                 Hoàn tất
               </Button>

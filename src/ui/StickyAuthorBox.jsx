@@ -28,6 +28,7 @@ import Avatar from "./Avatar";
 function StickyAuthorBox({ productID }) {
   const accent = useColorModeValue("primary", "secondary");
   const wb = useColorModeValue("light", "darker");
+  const border = useColorModeValue("gray.300", "whiteAlpha.700");
 
   const [hover, setHover] = useState(false);
 
@@ -89,7 +90,7 @@ function StickyAuthorBox({ productID }) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              window.open(`https://chat.zalo.me/?phone=0${phone}`);
+              window.open(`https://chat.zalo.me/?phone=${phone}`);
             }}
           >
             Chat qua Zalo

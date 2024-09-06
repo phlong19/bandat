@@ -5,6 +5,7 @@ import { useListingPage } from "../features/list/useListingPage";
 import { useSearch } from "../features/searchbar/useSearch";
 import SpinnerFullPage from "../ui/SpinnerFullPage";
 import { useGetCategories } from "../hooks/useGetCategories";
+import { Helmet } from "react-helmet-async";
 
 function ListingPage() {
   const { categoryTree, isFetching } = useGetCategories();
@@ -49,12 +50,17 @@ function ListingPage() {
   const listCount = search ? queryCount : count;
 
   return (
-    <List
-      breadcrumb={labels}
-      data={listData}
-      count={listCount}
-      isLoading={isLoading || isQuerying}
-    />
+    <>
+      <Helmet>
+        <title>Danh sách sản phẩm {labels.slice(-1)[0].title}</title>
+      </Helmet>
+      <List
+        breadcrumb={labels}
+        data={listData}
+        count={listCount}
+        isLoading={isLoading || isQuerying}
+      />
+    </>
   );
 }
 

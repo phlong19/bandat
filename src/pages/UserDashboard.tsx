@@ -12,6 +12,7 @@ import { useAuth } from "../context/UserContext";
 import SkeletonREForm from "../ui/SkeletonREForm";
 import { EDITOR_LEVEL } from "../constants/anyVariables";
 import { ListProps } from "../model";
+import { Helmet } from "react-helmet-async";
 
 function UserDashboard({ form = false }) {
   const activePage = window.location.pathname.includes("quan-ly")
@@ -22,11 +23,6 @@ function UserDashboard({ form = false }) {
   const navigate = useNavigate();
   const { data, level, isLoading } = useAuth();
   let { product, isFetching } = useGetRE(title || "", level);
-
-  // change page title
-  useEffect(() => {
-    document.title = activePage;
-  }, [activePage]);
 
   useEffect(() => {
     if (title && !product && !isFetching) {
@@ -58,6 +54,9 @@ function UserDashboard({ form = false }) {
 
   return (
     <Box gap={4} display="flex" flexDirection="column">
+      <Helmet>
+        <title>{activePage}</title>
+      </Helmet>
       <ChakraBreadcrumb page={activePage} />
       {!form ? (
         <UserDashboardTable id={data.id} level={level} />

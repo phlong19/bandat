@@ -11,7 +11,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { memo } from "react";
-import { ReactPhotoSphereViewer } from "react-photo-sphere-viewer";
 import Slider from "react-slick";
 
 const DetailsMediasModal = memo(function DetailsMediasModal({

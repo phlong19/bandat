@@ -84,7 +84,8 @@ const cartSlice = createSlice({
       state.count = 0;
       state.products = [];
 
-      localStorage.clear();
+      localStorage.removeItem("products");
+      localStorage.removeItem("count");
     },
   },
 });

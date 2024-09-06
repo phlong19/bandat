@@ -15,11 +15,10 @@ import { useUpdateProductStatus } from "../table/useUpdateProductStatus";
 interface Props {
   level: number;
   productID: number;
-  userID: string;
   statusID: number;
 }
 
-function FormActions({ level, productID, userID, statusID }: Props) {
+function FormActions({ level, productID, statusID }: Props) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { deletePost } = useDeletePost();

@@ -38,6 +38,7 @@ import { useForm } from "react-hook-form";
 import { account } from "../constants/message";
 import OtherInformations from "../features/account/OtherInformations";
 import ModalPhone from "../features/account/ModalPhone";
+import { Helmet } from "react-helmet-async";
 
 function AccountManagement() {
   const { data, email, user, level, isLoading } = useAuth();
@@ -71,6 +72,9 @@ function AccountManagement() {
 
   return (
     <Box>
+      <Helmet>
+        <title>Quản lý thông tin tài khoản cá nhân</title>
+      </Helmet>
       <ChakraBreadcrumb page="Tài khoản" />
       <Card bg={bg} mt={7}>
         <CardHeader>

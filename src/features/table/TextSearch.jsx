@@ -12,7 +12,7 @@ import {
 import { MdOutlineClear } from "react-icons/md";
 
 function TextSearch({ setQuery, viewOnly, profile }) {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const option = searchParams.get("option") || "fullName";
 
@@ -27,7 +27,7 @@ function TextSearch({ setQuery, viewOnly, profile }) {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, setQuery]);
+  }, [search, setQuery, length]);
 
   return (
     <InputGroup minW="200">

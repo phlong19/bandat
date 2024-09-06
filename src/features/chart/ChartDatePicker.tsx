@@ -5,18 +5,39 @@ import {
   Text,
   Button,
   useColorModeValue,
+  Box,
+  Stack,
 } from "@chakra-ui/react";
 import { RangeDatepicker } from "chakra-dayzed-datepicker";
+import { COMPLETED, WAITING } from "../../constants/anyVariables";
+import { formatCurrencyWOText } from "../../utils/helper";
+
+interface Props {
+  sum: number;
+  total: number;
+  count: number | null | undefined;
+  status: number;
+  setStatus: React.Dispatch<React.SetStateAction<number>>;
+  dateRange: Date[];
+  setDateRange: React.Dispatch<React.SetStateAction<Date[]>>;
+}
 
 function ChartDatePicker({
+  sum,
   count,
-  purType,
+  total,
+  status,
+  setStatus,
   dateRange,
   setDateRange,
-  setPurType,
-}) {
+}: Props) {
   const accent = useColorModeValue("primary", "secondary");
-  const title = purType ? "Bán" : "Cho thuê";
+  const title =
+    status == WAITING
+      ? "Chờ xử lý"
+      : status > COMPLETED
+        ? "Đã hủy"
+        : "Đã hoàn thành";
 
   const props = useMemo(
     () => ({
@@ -55,7 +76,11 @@ function ChartDatePicker({
           _dark: { color: "black" },
         },
       },
-      inputProps: { w: "60%", size: "sm", borderRadius: "md" },
+      inputProps: {
+        w: { base: "100%", md: "70%" },
+        size: "md",
+        borderRadius: "md",
+      },
       calendarPanelProps: {
         wrapperProps: {
           borderColor: "green",
@@ -90,30 +115,44 @@ function ChartDatePicker({
           fontWeight="500"
           color={accent}
         >
-          Dữ liệu bài đăng theo dạng bán
+          Dữ liệu đơn hàng theo trạng thái
         </Heading>
-        <Text pr={18}>
-          Số bài đăng {title.toLocaleLowerCase()} BĐS : {count || "---"}
-        </Text>
+        <Text textAlign="end">Tổng số đơn hàng: {count}</Text>
       </Flex>
-      <Flex gap={1.5} justify="center" w="full">
-        <RangeDatepicker
-          propsConfigs={props}
-          closeOnSelect
-          configs={{ dateFormat: "dd/MM/yyyy", firstDayOfWeek: 1 }}
-          selectedDates={dateRange}
-          onDateChange={setDateRange}
-        />
-        <Button
-          colorScheme="green"
-          variant="ghost"
-          borderWidth={0.5}
-          fontWeight={400}
-          size="sm"
-          onClick={() => setPurType((s) => !s)}
+      <Flex gap={3} w="full">
+        <Flex
+          flexGrow={1}
+          flexDirection={{ base: "column", md: "row" }}
+          align="center"
+          gap={2}
+          ml="40px"
         >
-          {title}
-        </Button>
+          <RangeDatepicker
+            propsConfigs={props}
+            closeOnSelect
+            configs={{ dateFormat: "dd/MM/yyyy", firstDayOfWeek: 1 }}
+            selectedDates={dateRange}
+            onDateChange={setDateRange}
+          />
+          <Button
+            colorScheme="green"
+            borderWidth={0.5}
+            fontWeight={400}
+            onClick={() => setStatus((s) => (s > COMPLETED ? WAITING : s + 1))}
+          >
+            {title}
+          </Button>
+        </Flex>
+
+        <Stack spacing={1} w="fit-content" textAlign="end">
+          <Text fontSize="13">
+            Tổng số đơn hàng {title.toLocaleLowerCase()}: {total}
+          </Text>
+          <Text fontSize="13">
+            Tổng giá trị đơn hàng {title.toLocaleLowerCase()}:{" "}
+            {formatCurrencyWOText(sum)}
+          </Text>
+        </Stack>
       </Flex>
     </>
   );

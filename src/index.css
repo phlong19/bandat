@@ -9,9 +9,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.cdnfonts.com/css/cascadia-code");
-
-/* leaflet */
-@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -215,6 +213,12 @@ a.active button.chakra-button {
   content: "Lexend" !important;
 }
 
+.ql-picker.ql-font .ql-picker-label[data-value="Dancing"]::before,
+.ql-picker.ql-font .ql-picker-item[data-value="Dancing"]::before {
+  font-family: "Dancing Script", cursive;
+  content: "Dancing" !important;
+}
+
 .ql-picker.ql-font .ql-picker-label[data-value="Montserrat"]::before,
 .ql-picker.ql-font .ql-picker-item[data-value="Montserrat"]::before {
   font-family: "Montserrat", sans-serif;
@@ -267,6 +271,10 @@ a.active button.chakra-button {
 .ql-picker.ql-font .ql-picker-item[data-value="Cas"]::before {
   font-family: "Cascadia Code", sans-serif;
   content: "Cascadia" !important;
+}
+
+.ql-font-Dancing {
+  font-family: "Dancing Script", cursive;
 }
 
 .ql-font-Cas {
@@ -347,13 +355,6 @@ ul.slick-dots li.slick-active div#video-thumbnail {
 /* marker li */
 ul.contacts li::marker {
   color: var(--ql-color);
-}
-
-/* map picker control searchbar */
-.leaflet-control-geosearch.leaflet-geosearch-bar form input.glass,
-.leaflet-control-geosearch.leaflet-geosearch-bar form div.results {
-  color: black;
-  background-color: inherit;
 }
 
 div.content-render.detail img {

@@ -35,7 +35,10 @@ const ytb = import.meta.env.VITE_YOUTUBE;
 const x = import.meta.env.VITE_X;
 const zalo = import.meta.env.VITE_ZALO;
 const tiktok = import.meta.env.VITE_TIKTOK;
-export { fb, ytb, x, zalo, tiktok };
+const email = import.meta.env.VITE_EMAIL;
+const hotline = import.meta.env.VITE_HOTLINE;
+const phone = import.meta.env.VITE_PHONE;
+export { fb, ytb, x, zalo, tiktok,hotline,phone,email };
 
 // purType page title
 const purTypeTrue = `Mua Bán Nhà Đất Việt Nam Giá Rẻ, Mới Nhất ${currentYear}`;

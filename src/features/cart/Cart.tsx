@@ -39,6 +39,7 @@ import {
   remove,
 } from "../../redux/cartSlice";
 import ChakraModalDialog from "../../ui/ChakraModalDialog";
+import { INSTOCK } from "../../constants/anyVariables";
 
 const captions = ["Sản phẩm", "Số lượng", "Thành tiền"];
 
@@ -159,6 +160,9 @@ export default function Cart() {
                   >
                     <Flex gap={5}>
                       <AspectRatio
+                        className={
+                          i.status?.id !== INSTOCK ? "grayscale" : "grayscale-0"
+                        }
                         minW={{ base: "150px", md: "190px" }}
                         maxW={190}
                         ratio={16 / 9}
@@ -180,10 +184,10 @@ export default function Cart() {
                           fontSize={13}
                           fontStyle="italic"
                         >
-                          Hiệu: {i.brand} - {i.specification}
+                          {i.specification}
                         </Text>
                         <Text noOfLines={{ base: 2, md: 3 }} fontSize={13}>
-                          {i.description}
+                          {i.summary}
                         </Text>
                       </Stack>
                     </Flex>

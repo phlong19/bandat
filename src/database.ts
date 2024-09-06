@@ -20,16 +20,16 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: number;
-          name?: string | null;
+          name: string;
           parent?: number | null;
-          slug?: string | null;
+          slug: string;
         };
         Update: {
           created_at?: string;
           id?: number;
-          name?: string | null;
+          name?: string;
           parent?: number | null;
-          slug?: string | null;
+          slug?: string;
         };
         Relationships: [
           {
@@ -44,39 +44,69 @@ export type Database = {
       CityDirectory: {
         Row: {
           cityID: number;
-          cityName: string | null;
+          cityName: string;
           created_at: string;
         };
         Insert: {
           cityID?: number;
-          cityName?: string | null;
+          cityName: string;
           created_at?: string;
         };
         Update: {
           cityID?: number;
-          cityName?: string | null;
+          cityName?: string;
           created_at?: string;
+        };
+        Relationships: [];
+      };
+      Contact: {
+        Row: {
+          content: string;
+          created_at: string;
+          email: string;
+          id: number;
+          name: string;
+          phone: string | null;
+          title: string;
+        };
+        Insert: {
+          content: string;
+          created_at?: string;
+          email: string;
+          id?: number;
+          name: string;
+          phone?: string | null;
+          title: string;
+        };
+        Update: {
+          content?: string;
+          created_at?: string;
+          email?: string;
+          id?: number;
+          name?: string;
+          phone?: string | null;
+          title?: string;
         };
         Relationships: [];
       };
       DistrictDirectory: {
         Row: {
-          cityID: number | null;
+          cityID: number;
           created_at: string;
           disID: number;
-          disName: string | null;
+          disName: string;
         };
         Insert: {
-          cityID?: number | null;
+          cityID: number;
           created_at?: string;
           disID?: number;
-          disName?: string | null;
+          disName: string;
         };
         Update: {
-          cityID?: number | null;
+          cityID?: number;
           created_at?: string;
           disID?: number;
-          disName?: string | null;
+          disName?: string;
         };
         Relationships: [
           {
@@ -90,36 +120,36 @@ export type Database = {
       };
       News: {
         Row: {
-          content: string | null;
+          content: string;
           created_at: string;
           id: number;
-          slug: string | null;
-          status: boolean | null;
-          summary: string | null;
-          thumbnail: string | null;
-          title: string | null;
+          slug: string;
+          status: boolean;
+          summary: string;
+          thumbnail: string;
+          title: string;
           userID: string | null;
         };
         Insert: {
-          content?: string | null;
+          content: string;
           created_at?: string;
           id?: number;
-          slug?: string | null;
-          status?: boolean | null;
-          summary?: string | null;
-          thumbnail?: string | null;
-          title?: string | null;
+          slug: string;
+          status: boolean;
+          summary: string;
+          thumbnail: string;
+          title: string;
           userID?: string | null;
         };
         Update: {
-          content?: string | null;
+          content?: string;
           created_at?: string;
           id?: number;
-          slug?: string | null;
-          status?: boolean | null;
-          summary?: string | null;
-          thumbnail?: string | null;
-          title?: string | null;
+          slug?: string;
+          status?: boolean;
+          summary?: string;
+          thumbnail?: string;
+          title?: string;
           userID?: string | null;
         };
         Relationships: [
@@ -134,49 +164,49 @@ export type Database = {
       };
       order: {
         Row: {
-          address: string | null;
-          cityID: number | null;
+          address: string;
+          cityID: number;
           created_at: string;
-          details: Json | null;
-          disID: number | null;
+          details: Json;
+          disID: number;
           email: string | null;
           id: number;
-          name: string | null;
+          name: string;
           note: string | null;
-          phone: number | null;
-          total: number | null;
-          wardID: number | null;
+          phone: string;
           status: number;
+          total: number;
+          wardID: number;
         };
         Insert: {
-          address?: string | null;
-          cityID?: number | null;
+          address: string;
+          cityID: number;
           created_at?: string;
-          details?: Json | null;
-          disID?: number | null;
+          details: Json;
+          disID: number;
           email?: string | null;
           id?: number;
-          name?: string | null;
+          name: string;
           note?: string | null;
-          phone?: string | null;
-          total?: number | null;
-          wardID?: number | null;
+          phone: string;
           status: number;
+          total: number;
+          wardID: number;
         };
         Update: {
-          address?: string | null;
-          cityID?: number | null;
+          address?: string;
+          cityID?: number;
           created_at?: string;
-          details?: Json | null;
-          disID?: number | null;
+          details?: Json;
+          disID?: number;
           email?: string | null;
           id?: number;
-          name?: string | null;
+          name?: string;
           note?: string | null;
-          phone?: number | null;
-          total?: number | null;
-          wardID?: number | null;
-          status: number;
+          phone?: string;
+          status?: number;
+          total?: number;
+          wardID?: number;
         };
         Relationships: [
           {
@@ -194,6 +224,13 @@ export type Database = {
             referencedColumns: ["disID"];
           },
           {
+            foreignKeyName: "order_status_fkey";
+            columns: ["status"];
+            isOneToOne: false;
+            referencedRelation: "order_status";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "order_wardID_fkey";
             columns: ["wardID"];
             isOneToOne: false;
@@ -202,53 +239,71 @@ export type Database = {
           },
         ];
       };
+      order_status: {
+        Row: {
+          created_at: string;
+          id: number;
+          type: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          type: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          type?: string;
+        };
+        Relationships: [];
+      };
       product: {
         Row: {
           brand: string | null;
           category: number | null;
           created_at: string;
-          description: string | null;
+          description: string;
           id: number;
           manufacturer: string | null;
           name: string;
           parentCategory: number | null;
           price: number;
-          rootCategory: number | null;
-          slug: string | null;
+          rootCategory: number;
+          slug: string;
           specification: string | null;
-          status: number | null;
+          status: number;
           summary: string | null;
         };
         Insert: {
           brand?: string | null;
           category?: number | null;
           created_at?: string;
-          description?: string | null;
+          description: string;
           id?: number;
           manufacturer?: string | null;
-          name?: string | null;
+          name: string;
           parentCategory?: number | null;
-          price?: number | null;
-          rootCategory?: number | null;
-          slug?: string | null;
+          price: number;
+          rootCategory: number;
+          slug: string;
           specification?: string | null;
-          status?: number | null;
+          status?: number;
           summary?: string | null;
         };
         Update: {
           brand?: string | null;
           category?: number | null;
           created_at?: string;
-          description?: string | null;
+          description?: string;
           id?: number;
           manufacturer?: string | null;
-          name?: string | null;
+          name?: string;
           parentCategory?: number | null;
-          price?: number | null;
-          rootCategory?: number | null;
-          slug?: string | null;
+          price?: number;
+          rootCategory?: number;
+          slug?: string;
           specification?: string | null;
-          status?: number | null;
+          status?: number;
           summary?: string | null;
         };
         Relationships: [
@@ -293,16 +348,16 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: number;
-          isImage?: boolean | null;
+          isImage?: boolean;
           mediaLink?: string;
-          productID?: number | null;
+          productID: number;
         };
         Update: {
           created_at?: string;
           id?: number;
-          isImage?: boolean | null;
+          isImage?: boolean;
           mediaLink?: string;
-          productID?: number | null;
+          productID?: number;
         };
         Relationships: [
           {
@@ -321,13 +376,16 @@ export type Database = {
           avatar: string | null;
           bio: string | null;
           birthday: string | null;
+          cityID: number | null;
           created_at: string;
+          disID: number | null;
           email: string | null;
-          fullName: string | null;
+          fullName: string;
           id: string;
-          level: number | null;
+          level: number;
           phone: number | null;
           sex: boolean | null;
+          wardID: number | null;
         };
         Insert: {
           address?: string | null;
@@ -335,13 +393,16 @@ export type Database = {
           avatar?: string | null;
           bio?: string | null;
           birthday?: string | null;
+          cityID?: number | null;
           created_at?: string;
+          disID?: number | null;
           email?: string | null;
-          fullName?: string | null;
+          fullName: string;
           id: string;
-          level?: number | null;
+          level: number;
           phone?: number | null;
           sex?: boolean | null;
+          wardID?: number | null;
         };
         Update: {
           address?: string | null;
@@ -349,15 +410,32 @@ export type Database = {
           avatar?: string | null;
           bio?: string | null;
           birthday?: string | null;
+          cityID?: number | null;
           created_at?: string;
+          disID?: number | null;
           email?: string | null;
-          fullName?: string | null;
+          fullName?: string;
           id?: string;
-          level?: number | null;
+          level?: number;
           phone?: number | null;
           sex?: boolean | null;
+          wardID?: number | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "Profile_cityID_fkey";
+            columns: ["cityID"];
+            isOneToOne: false;
+            referencedRelation: "CityDirectory";
+            referencedColumns: ["cityID"];
+          },
+          {
+            foreignKeyName: "Profile_disID_fkey";
+            columns: ["disID"];
+            isOneToOne: false;
+            referencedRelation: "DistrictDirectory";
+            referencedColumns: ["disID"];
+          },
           {
             foreignKeyName: "Profile_id_fkey";
             columns: ["id"];
@@ -365,44 +443,51 @@ export type Database = {
             referencedRelation: "users";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "Profile_wardID_fkey";
+            columns: ["wardID"];
+            isOneToOne: false;
+            referencedRelation: "WardDirectory";
+            referencedColumns: ["wardID"];
+          },
         ];
       };
       status: {
         Row: {
           created_at: string;
           id: number;
-          type: string | null;
+          type: string;
         };
         Insert: {
           created_at?: string;
           id?: number;
-          type?: string | null;
+          type: string;
         };
         Update: {
           created_at?: string;
           id?: number;
-          type?: string | null;
+          type?: string;
         };
         Relationships: [];
       };
       WardDirectory: {
         Row: {
           created_at: string;
-          disID: number | null;
+          disID: number;
           wardID: number;
-          wardName: string | null;
+          wardName: string;
         };
         Insert: {
           created_at?: string;
-          disID?: number | null;
+          disID: number;
           wardID?: number;
-          wardName?: string | null;
+          wardName: string;
         };
         Update: {
           created_at?: string;
-          disID?: number | null;
+          disID?: number;
           wardID?: number;
-          wardName?: string | null;
+          wardName?: string;
         };
         Relationships: [
           {
