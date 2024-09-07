@@ -29,7 +29,7 @@ function Searchbar() {
   });
 
   function onSubmit(data) {
-    if (data?.query || data?.query?.length < 1) {
+    if (!data?.query || data?.query?.length < 1) {
       return;
     }
     // send data to destination page location (hook)

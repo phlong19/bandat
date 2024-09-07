@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { getList } from "../../services/apiProduct";
 import { LIMIT_PER_PAGE } from "../../constants/anyVariables";
 
-export function useListingPage(type, search) {
+export function useListingPage(type: string) {
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
 
@@ -13,11 +13,10 @@ export function useListingPage(type, search) {
   const { data: { data, count } = {}, isLoading } = useQuery({
     queryKey: ["product-client", type, sort, page],
     queryFn: () => getList(type, sort, page),
-    enabled: !search,
   });
 
   // PRE-FETCHING
-  const totalPage = Math.ceil(count / LIMIT_PER_PAGE);
+  const totalPage = Math.ceil(Number(count) / LIMIT_PER_PAGE);
   // A. next page
   if (page < totalPage) {
     queryClient.prefetchQuery({

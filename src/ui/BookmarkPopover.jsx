@@ -102,7 +102,7 @@ function BookmarkPopover() {
       ))}
 
       <Box>
-        <ChakraLink to="/san-pham-da-luu" as={Link} fontSize="13px">
+        <ChakraLink to="/san-pham-yeu-thich" as={Link} fontSize="13px">
           Xem đầy đủ
         </ChakraLink>
       </Box>

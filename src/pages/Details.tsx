@@ -115,6 +115,9 @@ function Details() {
     specification,
     name,
     created_at,
+    parentCategory,
+    rootCategory,
+    category,
     price,
   } = product;
 
@@ -178,14 +181,7 @@ function Details() {
             colorScheme="green"
             fontSize={{ base: "xs", md: "sm" }}
           >
-            type
-          </Tag>
-          <Tag
-            variant="outline"
-            colorScheme="green"
-            fontSize={{ base: "xs", md: "sm" }}
-          >
-            type.name
+            {category?.name}
           </Tag>
         </Flex>
       </Flex>
@@ -311,7 +307,7 @@ function Details() {
             </Box>
           </Box>
           {/* sticky post author */}
-          <StickyAuthorBox postID={id} />
+          <StickyAuthorBox productID={id} />
         </Flex>
       </Box>
       {isMobile && <Disclaimer name={name} />}

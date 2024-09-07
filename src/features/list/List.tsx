@@ -36,8 +36,10 @@ function List({
   userpage = false,
 }: Props) {
   const location = useLocation();
-  const search = location.state?.fullData;
+  const search = location.state?.query;
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const bread = search ? { base: "Tìm kiếm" } : { links: breadcrumb };
 
   return (
     <div className="relative mx-auto h-full min-h-[80%] max-w-[1500px] justify-center px-2.5 sm:px-4 lg:flex lg:gap-2">
@@ -52,12 +54,7 @@ function List({
               search ? "text-base" : "text-lg"
             } pt-3 font-lexend font-medium`}
           >
-            {!userpage &&
-              (!search ? (
-                <Breadcrumb links={breadcrumb} />
-              ) : (
-                `Danh sách ${search}`
-              ))}
+            {!userpage && <Breadcrumb {...bread} />}
           </h2>
           {!userpage && (
             <div className="py-4">
@@ -68,7 +65,10 @@ function List({
             {/* counter */}
             <span className="inline-block text-sm">
               Có <span>{formatNumber(count)}</span> sản phẩm{" "}
-              {breadcrumb?.slice(-1)[0].title.toLowerCase()}.
+              {!search
+                ? breadcrumb?.slice(-1)[0]?.title?.toLowerCase()
+                : `liên quan`}
+              .
             </span>
 
             {count > 0 && (
@@ -100,7 +100,9 @@ function List({
             <SkeletonList />
           ) : count > 0 ? (
             <>
-              <div className="mx-auto mt-3 max-w-[1500px] space-y-4 md:grid md:grid-cols-2 md:gap-2 md:space-y-0 lg:grid-cols-4 lg:gap-3 xl:grid-cols-5 xl:gap-4">
+              <div
+                className={`${userpage ? "" : "xl:grid-cols-5 xl:gap-4"} mx-auto mt-3 max-w-[1500px] space-y-4 md:grid md:grid-cols-2 md:gap-2 md:space-y-0 lg:grid-cols-4 lg:gap-3 `}
+              >
                 {data.map((item, index) => (
                   <ListItem key={index} data={item} />
                 ))}

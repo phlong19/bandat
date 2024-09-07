@@ -52,7 +52,7 @@ function ListItem({ data }: Props) {
     >
       <Link to={`/san-pham/${slug}`}>
         {/* images */}
-        <div className="relative mx-auto w-full overflow-hidden">
+        <div className="relative mx-auto w-full overflow-hidden min-h-[130px]">
           <ItemImages
             images={images}
             productID={id}
@@ -72,7 +72,7 @@ function ListItem({ data }: Props) {
       </div>
 
       <div>
-        <Text noOfLines={2} fontSize="15" color="gray">
+        <Text noOfLines={2} fontSize="13" minH='40px' color="gray" >
           {summary}
         </Text>
         <Text fontSize="13.5" mt={1} noOfLines={1} pt="1px" fontStyle="italic">

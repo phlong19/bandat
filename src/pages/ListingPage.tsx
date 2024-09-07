@@ -1,8 +1,7 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import List from "../features/list/List";
 
 import { useListingPage } from "../features/list/useListingPage";
-import { useSearch } from "../features/searchbar/useSearch";
 import SpinnerFullPage from "../ui/SpinnerFullPage";
 import { useGetCategories } from "../hooks/useGetCategories";
 import { Helmet } from "react-helmet-async";
@@ -10,13 +9,7 @@ import { Helmet } from "react-helmet-async";
 function ListingPage() {
   const { categoryTree, isFetching } = useGetCategories();
   const { root, parent, child } = useParams();
-  const { state } = useLocation();
-  const search = state?.query;
-  const { data, count, isLoading } = useListingPage(
-    child ?? parent ?? root,
-    search,
-  );
-  const { queryData, queryCount, isQuerying } = useSearch(search);
+  const { data, count, isLoading } = useListingPage(child ?? parent ?? root);
 
   if (isFetching) {
     return <SpinnerFullPage />;
@@ -46,19 +39,16 @@ function ListingPage() {
       (type) => type !== null && flatLinks?.find((link) => link.type === type),
     );
 
-  const listData = search ? queryData : data;
-  const listCount = search ? queryCount : count;
-
   return (
     <>
       <Helmet>
-        <title>Danh sách sản phẩm {labels.slice(-1)[0].title}</title>
+        <title>Danh sách sản phẩm +{labels.slice(-1)[0]?.title}</title>
       </Helmet>
       <List
         breadcrumb={labels}
-        data={listData}
-        count={listCount}
-        isLoading={isLoading || isQuerying}
+        data={data as any}
+        count={count as any}
+        isLoading={isLoading}
       />
     </>
   );

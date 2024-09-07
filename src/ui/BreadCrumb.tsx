@@ -38,7 +38,7 @@ function BreadCrumb({ base = "Tin tức", Hline, links }: Props) {
           ) : (
             <>
               {root && (
-                <NavLink to={"/" + root.type}>
+                <NavLink to={"/danh-muc/" + root.type}>
                   <h1 className="line-clamp-1 font-semibold transition-colors duration-300 hover:text-secondary">
                     {root.title}
                   </h1>
@@ -48,7 +48,7 @@ function BreadCrumb({ base = "Tin tức", Hline, links }: Props) {
               {parent && (
                 <>
                   <IoIosArrowForward />
-                  <NavLink to={`/${root.type}/${parent.type}`}>
+                  <NavLink to={`/danh-muc/${root.type}/${parent.type}`}>
                     <h1 className="line-clamp-1 font-semibold transition-colors duration-300 hover:text-secondary">
                       {parent.title}
                     </h1>
@@ -59,7 +59,7 @@ function BreadCrumb({ base = "Tin tức", Hline, links }: Props) {
               {child && (
                 <>
                   <IoIosArrowForward />
-                  <NavLink to={`/${root.type}/${parent.type}/${child.type}`}>
+                  <NavLink to={`/danh-muc/${root.type}/${parent.type}/${child.type}`}>
                     <h1 className="line-clamp-1 font-semibold transition-colors duration-300 hover:text-secondary">
                       {child.title}
                     </h1>

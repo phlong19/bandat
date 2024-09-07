@@ -21,6 +21,7 @@ import Details from "./pages/Details";
 import Order from "./pages/Order";
 import OrderSuccess from "./pages/OrderSuccess";
 import Categories from "./pages/Categories";
+import SearchPage from "./pages/SearchPage";
 
 // UI
 import AppLayout from "./ui/AppLayout";
@@ -78,7 +79,7 @@ function App() {
                   <Route path="san-pham/:slug" element={<Details />} />
 
                   <Route path="gio-hang" element={<Cart />} />
-                  <Route path="tim-kiem" element={<ListingPage />} />
+                  <Route path="tim-kiem" element={<SearchPage />} />
                   <Route path="san-pham-yeu-thich" element={<Bookmarks />} />
                   <Route path="tin-tuc" element={<News />} />
                   <Route path="tin-tuc/:title" element={<NewDetails />} />

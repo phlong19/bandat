@@ -1,6 +1,6 @@
 import supabase, { product } from "./supabase";
 import { error as errorMessage } from "../constants/message";
-import { LIMIT_PER_PAGE, INSTOCK } from "../constants/anyVariables";
+import { LIMIT_PER_PAGE } from "../constants/anyVariables";
 import { sanitizeSearchInput } from "../utils/helper";
 
 /**
@@ -10,7 +10,8 @@ import { sanitizeSearchInput } from "../utils/helper";
  * @param {*} page search param
  * @returns
  */
-export async function queryList(query, sort, page) {
+
+export async function queryList(query: string, sort: string, page: number) {
   if (!query) return;
 
   const from = (page - 1) * LIMIT_PER_PAGE;
