@@ -1,12 +1,10 @@
 import supabase, { category, product, profile } from "./supabase";
 import {
   ADMIN_LEVEL,
-  EXPRIRY_LENGTH,
   INSTOCK,
   LIMIT_PER_PAGE,
   maxLength,
   minLength,
-  OUT_STOCK,
 } from "../constants/anyVariables";
 import { error as errorMessage } from "../constants/message";
 import { getStatusID, sanitizeSearchInput } from "../utils/helper";
@@ -103,7 +101,7 @@ export async function getBookmarkProducts(ids: string[], page?: number) {
   let query = supabase
     .from(product)
     .select(
-      `id, name, specification, brand, manufacturer, summary, price,  
+      `id, name, slug, specification, brand, manufacturer, summary, price,  
         images: product_image(*), 
         status(*)
       `,

@@ -13,7 +13,7 @@ function ItemImages({ images, productID, typeID, type }) {
   return (
     <div className="relative items-stretch justify-center md:flex md:gap-0.5">
       <img
-        src={images[0].mediaLink}
+        src={images[0]?.mediaLink}
         alt="main img"
         className="aspect-video w-full rounded object-cover md:rounded-md md:pt-[1px] lg:h-full"
       />

@@ -64,7 +64,6 @@ function UserDashboard({ form = false }) {
         <Box maxWidth="85%" minWidth="85%" mx="auto">
           <REForm
             level={level}
-            userID={data.id}
             edit={Boolean(product)}
             editData={product as ListProps["data"]}
             key={product?.id || "new"}

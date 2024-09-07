@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Flex, SimpleGrid } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 
 import ChakraTable from "../table/ChakraTable";
 import TableRERow from "../table/TableRERow";
@@ -20,7 +20,7 @@ function UserDashboardTable({ id, level }: { id: string; level: number }) {
         data={reList}
         title="Quản lý danh sách sản phẩm"
         render={(item: any) => (
-          <TableRERow key={item.id} data={item} level={level} userID={id} />
+          <TableRERow key={item.id} data={item} level={level} />
         )}
         primaryButton={
           <Link to="/them-san-pham">

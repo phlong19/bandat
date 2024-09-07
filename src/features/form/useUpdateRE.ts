@@ -12,14 +12,15 @@ export function useUpdateRE() {
     mutationFn: (data) => updateProduct(data),
 
     onSuccess: () => {
-      // set null for the just updated post
-      queryClient.removeQueries({ queryKey: ["product-details"] });
-      // must set exact
-      queryClient.invalidateQueries({
-        queryKey: ["product-admin"],
-      });
-      toast.success(success.updatePost);
       navigate("/quan-ly-san-pham");
+      toast.success(success.updatePost);
+      queryClient.removeQueries({ queryKey: ["product-details"] });
+
+      setTimeout(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["product-admin"],
+        });
+      }, 3000);
     },
     onError: (err) => {
       toast.error(err.message);

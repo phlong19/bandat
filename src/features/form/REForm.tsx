@@ -61,12 +61,11 @@ import { ListProps } from "../../model";
 
 interface Props {
   level: number;
-  userID: string;
   edit?: boolean;
   editData: ListProps["data"];
 }
 
-function REForm({ level, userID, edit = false, editData }: Props) {
+function REForm({ level, edit = false, editData }: Props) {
   // other states and derived states goes here
   const accent = useColorModeValue("primary", "secondary");
 
@@ -121,6 +120,8 @@ function REForm({ level, userID, edit = false, editData }: Props) {
     },
   });
 
+  console.log(files);
+
   function onSubmit(data: any) {
     if (!root) {
       return toast.error("Danh mục sản phẩm không được để trống!");
@@ -134,7 +135,7 @@ function REForm({ level, userID, edit = false, editData }: Props) {
       });
     }
     // check submit data has files? is the number of images enough?
-    if (!data?.files || data?.files?.images?.length < BASE_MEDIA_UPLOAD) {
+    if (!data?.files || files.images.length < BASE_MEDIA_UPLOAD) {
       return setError("files", {
         type: "required",
         message: reform.missingImages,

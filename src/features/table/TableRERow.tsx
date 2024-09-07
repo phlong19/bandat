@@ -29,10 +29,9 @@ import { OUT } from "../../constants/anyVariables";
 interface Props {
   data: ListProps["data"];
   level: number;
-  userID: string;
 }
 
-function TableRERow({ data, level, userID }: Props) {
+function TableRERow({ data, level }: Props) {
   const {
     id,
     name,
@@ -60,7 +59,7 @@ function TableRERow({ data, level, userID }: Props) {
                 borderRadius="8px"
                 border="1px solid lightgray"
                 minW={120}
-                src={images[0].mediaLink}
+                src={images[0]?.mediaLink}
                 me="18px"
                 alt={name}
               />

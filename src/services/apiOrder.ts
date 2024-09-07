@@ -143,7 +143,7 @@ export async function getOrderDetails(orderID: number) {
     throw new Error(errMessage.fetchError);
   }
 
-  retun;
+  return data;
 }
 
 // quick actions: update status and delete
